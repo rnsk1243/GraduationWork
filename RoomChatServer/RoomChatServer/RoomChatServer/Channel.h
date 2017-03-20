@@ -2,37 +2,39 @@
 #include<WinSock2.h>
 #include<list>
 #include<iostream>
+#include"Link.h"
 using namespace std;
-typedef list<SOCKET*> SocketList;
-typedef SocketList::iterator SocketListIt;
+class CLink;
+typedef list<CLink*> LinkList;
+typedef LinkList::iterator LinkListIt;
 
 class CChannel
 {
 	int ChannelNum;
-	SocketList* ChannelSocketList;
-	CRITICAL_SECTION* CS_ChannelSocketList;
+	LinkList* ClientInfos;
+	CRITICAL_SECTION* CS_MyInfoList;
 public:
 	CChannel(int channelNum);
 	~CChannel();
 #pragma region get,set 함수
 	int getChannelNum() { return ChannelNum; }
-	SocketListIt getIterBegin() { return ChannelSocketList->begin(); }
-	SocketListIt getIterEnd() { return ChannelSocketList->end(); }
+	LinkListIt getIterMyInfoBegin() { return ClientInfos->begin(); }
+	LinkListIt getIterMyInfoEnd() { return ClientInfos->end(); }
 #pragma endregion
 
 #pragma region push,erase 함수
-	void pushSocket(SOCKET* clientSocket)
+	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(CS_ChannelSocketList);
-		ChannelSocketList->push_front(clientSocket);
-		LeaveCriticalSection(CS_ChannelSocketList);
+		EnterCriticalSection(CS_MyInfoList);
+		ClientInfos->push_front(client);
+		LeaveCriticalSection(CS_MyInfoList);
 	}
-	SocketListIt eraseSocket(SocketListIt socketListIt)
+	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
-		SocketListIt temp;
-		EnterCriticalSection(CS_ChannelSocketList);
-		temp = ChannelSocketList->erase(socketListIt);
-		LeaveCriticalSection(CS_ChannelSocketList);
+		LinkListIt temp;
+		EnterCriticalSection(CS_MyInfoList);
+		temp = ClientInfos->erase(myInfoListIt);
+		LeaveCriticalSection(CS_MyInfoList);
 		return temp;
 	}
 #pragma endregion

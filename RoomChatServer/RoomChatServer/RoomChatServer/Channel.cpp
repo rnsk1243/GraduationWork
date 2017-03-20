@@ -2,18 +2,18 @@
 
 
 
-CChannel::CChannel(int channelNum):ChannelNum(channelNum)
+CChannel::CChannel(int channelNum):
+	ChannelNum(channelNum),
+	ClientInfos(new LinkList()),
+	CS_MyInfoList(new CRITICAL_SECTION)
 {
-	ChannelSocketList = new SocketList();
-	CS_ChannelSocketList = new CRITICAL_SECTION();
-	InitializeCriticalSection(CS_ChannelSocketList);
+	InitializeCriticalSection(CS_MyInfoList);
 }
 
 
 CChannel::~CChannel()
 {
 	cout << "채널 삭제" << endl;
-	delete &ChannelNum;
-	delete ChannelSocketList;
-	DeleteCriticalSection(CS_ChannelSocketList);
+	delete ClientInfos;
+	DeleteCriticalSection(CS_MyInfoList);
 }

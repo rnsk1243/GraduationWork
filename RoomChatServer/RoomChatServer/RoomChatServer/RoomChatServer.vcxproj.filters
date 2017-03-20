@@ -13,17 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="MyInfo">
-      <UniqueIdentifier>{c26d0160-7f8c-49f9-9bdc-ef72cb6e1812}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Room">
       <UniqueIdentifier>{2c9783e2-ef3f-475a-87d8-d8469d4cab83}</UniqueIdentifier>
     </Filter>
     <Filter Include="Channel">
       <UniqueIdentifier>{a89e6cd6-486b-465b-9146-93f8d426493e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Link">
-      <UniqueIdentifier>{8e67b044-6952-4a46-8a20-e7423ef44fb2}</UniqueIdentifier>
     </Filter>
     <Filter Include="NetWork">
       <UniqueIdentifier>{e56956a5-a7c1-4ec1-ac4a-7f31d2595b0f}</UniqueIdentifier>
@@ -37,28 +31,22 @@
     <Filter Include="MakeSocket">
       <UniqueIdentifier>{46f6a419-9e04-417e-ad42-451aac251820}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SendRecv">
+      <UniqueIdentifier>{2f7679ea-9c31-48fe-8736-e94f239d7c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RoomChannelManager">
+      <UniqueIdentifier>{8e67b044-6952-4a46-8a20-e7423ef44fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Link">
+      <UniqueIdentifier>{c26d0160-7f8c-49f9-9bdc-ef72cb6e1812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MyInfo.cpp">
-      <Filter>MyInfo</Filter>
-    </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>Room</Filter>
     </ClCompile>
     <ClCompile Include="Channel.cpp">
       <Filter>Channel</Filter>
-    </ClCompile>
-    <ClCompile Include="Link.cpp">
-      <Filter>Link</Filter>
-    </ClCompile>
-    <ClCompile Include="NetWork.cpp">
-      <Filter>NetWork</Filter>
-    </ClCompile>
-    <ClCompile Include="ChannelHandlere.cpp">
-      <Filter>Channel\ChannelHandlere</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomHandlere.cpp">
-      <Filter>Room\RoomHandlere</Filter>
     </ClCompile>
     <ClCompile Include="MakeSocket.cpp">
       <Filter>MakeSocket</Filter>
@@ -66,31 +54,52 @@
     <ClCompile Include="MainProc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SendRecv.cpp">
+      <Filter>SendRecv</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomChannelManager.cpp">
+      <Filter>RoomChannelManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandController.cpp">
+      <Filter>NetWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Link.cpp">
+      <Filter>Link</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomHandler.cpp">
+      <Filter>Room\RoomHandlere</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelHandler.cpp">
+      <Filter>Channel\ChannelHandlere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyInfo.h">
-      <Filter>MyInfo</Filter>
-    </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>Room</Filter>
     </ClInclude>
     <ClInclude Include="Channel.h">
       <Filter>Channel</Filter>
     </ClInclude>
+    <ClInclude Include="MakeSocket.h">
+      <Filter>MakeSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="SendRecv.h">
+      <Filter>SendRecv</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomChannelManager.h">
+      <Filter>RoomChannelManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandController.h">
+      <Filter>NetWork</Filter>
+    </ClInclude>
     <ClInclude Include="Link.h">
       <Filter>Link</Filter>
     </ClInclude>
-    <ClInclude Include="NetWork.h">
-      <Filter>NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="ChannelHandlere.h">
-      <Filter>Channel\ChannelHandlere</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomHandlere.h">
+    <ClInclude Include="RoomHandler.h">
       <Filter>Room\RoomHandlere</Filter>
     </ClInclude>
-    <ClInclude Include="MakeSocket.h">
-      <Filter>MakeSocket</Filter>
+    <ClInclude Include="ChannelHandler.h">
+      <Filter>Channel\ChannelHandlere</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

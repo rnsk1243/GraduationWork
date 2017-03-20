@@ -1,65 +1,34 @@
 #pragma once
-#include<list>
-#include<iostream>
-#include"Channel.h"
-#include"Room.h"
-class CMyInfo;
-using namespace std;
-#pragma region 타입재정의
-typedef list<CChannel*> ChannelList;
-typedef list<CRoom*> RoomList;
-typedef list<CChannel*>::iterator ChannelListIt;
-typedef list<CRoom*>::iterator RoomListIt;
-#pragma endregion
+#include<WinSock2.h>
+const int BufSize = 1024;
+
+// 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
+struct MessageStruct
+{
+	char* message;
+	int* sendRecvSize;
+	MessageStruct():message(new char[BufSize]), sendRecvSize(new int){}
+};
 
 class CLink
 {
-	ChannelList* Channels;
-	RoomList* Rooms;
-#pragma region 크리티컬 섹션
-	CRITICAL_SECTION* CS_Room;
-	CRITICAL_SECTION* CS_Channel;
-	/*
-	Room 과 Channel 핸들에서 exit함수가 있으므로 안씀
-	bool eraseRoomSocket(CMyInfo* clientInfo);
-	bool eraseChannelSocket(CMyInfo* clientInfo);
-	*/
-#pragma endregion
+	// 현재 내가 속한 방 번호
+	int MyRoomNum;
+	// 현재 내가 속한 채널 번호
+	int MyChannelNum;
+	// 클라이언트 소켓
+	SOCKET* ClientSocket;
+	MessageStruct* MS;
 public:
-	CLink();
+	CLink(SOCKET* clientSocket);
 	~CLink();
-#pragma region push, erase 메소드
-	void pushChannel(CChannel* newChannel)
-	{
-		EnterCriticalSection(CS_Channel);
-		Channels->push_front(newChannel);
-		LeaveCriticalSection(CS_Channel);
-	}
-	void pushRoom(CRoom* newRoom)
-	{
-		EnterCriticalSection(CS_Room);
-		Rooms->push_front(newRoom);
-		LeaveCriticalSection(CS_Room);
-	}
-	RoomListIt eraseRoom(RoomListIt delRoom)
-	{
-		RoomListIt temp;
-		EnterCriticalSection(CS_Room);
-		temp = Rooms->erase(delRoom);
-		LeaveCriticalSection(CS_Room);
-		return temp;
-	}
+#pragma region get, set 함수
+	MessageStruct* getMessageStruct() { return MS; }
+	SOCKET* getClientSocket() { return ClientSocket; }
+	int getMyRoomNum() { return MyRoomNum; }
+	int getMyChannelNum() { return MyChannelNum; }
+	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
+	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 #pragma endregion
-
-#pragma region get 메소드
-	RoomListIt getMyRoomIter(int ChannelNum, int roomNum);
-	CChannel* getMyChannel(int ChannelNum);
-
-	ChannelListIt getIterChannelBegin() { return Channels->begin(); }
-	ChannelListIt getIterChannelEnd() { return Channels->end(); }
-	RoomListIt getIterRoomBegin() { return Rooms->begin(); }
-	RoomListIt getIterRoomEnd() { return Rooms->end(); }
-#pragma endregion
-	bool isRoomListEmpty() { return Rooms->empty(); }
 };
- 
+

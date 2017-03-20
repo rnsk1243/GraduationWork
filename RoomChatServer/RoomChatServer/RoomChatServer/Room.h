@@ -3,7 +3,11 @@
 #include<iostream>
 #include<list>
 #include"Channel.h"
+class CChannel;
+class CLink;
 using namespace std;
+
+
 class CRoom
 {
 	char* RoomName;
@@ -11,26 +15,28 @@ class CRoom
 	int RoomNum;
 	// 현재 들어있는 방 인원
 	int AmountPeople;
-	SocketList* RoomSocketList;
-	CRITICAL_SECTION* CS_RoomSocketList;
+	LinkList* ClientInfos;
+	CRITICAL_SECTION* CS_MyInfoList;
+	void increasePeople() { AmountPeople++; }
+	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
 public:
-	CRoom(int roomNo,int channelNum, char* roomName);
+	CRoom(int roomNum,int channelNum, char* roomName);
 	~CRoom();
 #pragma region push, erase 함수
-	void pushSocket(SOCKET* clientSocket)
+	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(CS_RoomSocketList);
-		RoomSocketList->push_front(clientSocket);
+		EnterCriticalSection(CS_MyInfoList);
+		ClientInfos->push_front(client);
 		increasePeople();
-		LeaveCriticalSection(CS_RoomSocketList);
+		LeaveCriticalSection(CS_MyInfoList);
 	}
-	SocketListIt eraseSocket(SocketListIt socketListIt)
+	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
-		SocketListIt temp;
-		EnterCriticalSection(CS_RoomSocketList);
-		temp = RoomSocketList->erase(socketListIt);
+		LinkListIt temp;
+		EnterCriticalSection(CS_MyInfoList);
+		temp = ClientInfos->erase(myInfoListIt);
 		decreasePeople();
-		LeaveCriticalSection(CS_RoomSocketList);
+		LeaveCriticalSection(CS_MyInfoList);
 		return temp;
 	}
 #pragma endregion
@@ -38,11 +44,9 @@ public:
 	int getRoomNum() { return RoomNum; }
 	int getChannelNum() { return ChannelNum; }
 	char* getRoomName() { return RoomName; }
-	SocketListIt getIterSocketBegin() { return RoomSocketList->begin(); }
-	SocketListIt getIterSocketEnd() { return RoomSocketList->end(); }
+	LinkListIt getIterMyInfoBegin() { return ClientInfos->begin(); }
+	LinkListIt getIterMyInfoEnd() { return ClientInfos->end(); }
 	int getAmountPeople() { return AmountPeople; }
 #pragma endregion
-	void increasePeople() { AmountPeople++; }
-	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
 };
 

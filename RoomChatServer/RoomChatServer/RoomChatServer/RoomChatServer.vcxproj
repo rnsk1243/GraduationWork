@@ -148,24 +148,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Channel.h" />
-    <ClInclude Include="ChannelHandlere.h" />
-    <ClInclude Include="Link.h" />
+    <ClInclude Include="ChannelHandler.h" />
+    <ClInclude Include="RoomChannelManager.h" />
     <ClInclude Include="MakeSocket.h" />
-    <ClInclude Include="MyInfo.h" />
-    <ClInclude Include="NetWork.h" />
+    <ClInclude Include="Link.h" />
+    <ClInclude Include="CommandController.h" />
     <ClInclude Include="Room.h" />
-    <ClInclude Include="RoomHandlere.h" />
+    <ClInclude Include="RoomHandler.h" />
+    <ClInclude Include="SendRecv.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="ChannelHandlere.cpp" />
-    <ClCompile Include="Link.cpp" />
+    <ClCompile Include="ChannelHandler.cpp" />
+    <ClCompile Include="RoomChannelManager.cpp" />
     <ClCompile Include="MainProc.cpp" />
     <ClCompile Include="MakeSocket.cpp" />
-    <ClCompile Include="MyInfo.cpp" />
-    <ClCompile Include="NetWork.cpp" />
+    <ClCompile Include="Link.cpp" />
+    <ClCompile Include="CommandController.cpp" />
     <ClCompile Include="Room.cpp" />
-    <ClCompile Include="RoomHandlere.cpp" />
+    <ClCompile Include="RoomHandler.cpp" />
+    <ClCompile Include="SendRecv.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

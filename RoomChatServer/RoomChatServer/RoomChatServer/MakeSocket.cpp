@@ -2,11 +2,11 @@
 
 
 
-CMakeSocket::CMakeSocket()
+CMakeSocket::CMakeSocket():
+	hServSock(new SOCKET())
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAddr;
-	hServSock = new SOCKET();
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		cout << "WSAStartup() error!" << endl;
 
