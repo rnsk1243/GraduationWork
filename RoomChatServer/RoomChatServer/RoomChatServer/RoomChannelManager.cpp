@@ -52,3 +52,4 @@ CChannel * CRoomChannelManager::getMyChannel(int ChannelNum)
 	return nullptr;
 }
 
+

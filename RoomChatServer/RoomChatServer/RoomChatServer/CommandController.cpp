@@ -91,6 +91,39 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 		RoomHandlere->exitRoom(clientInfo, RoomChannelManager);
 
 	}
+	else if (*command == 'i')
+	{
+#pragma region 풀방까지 몇명 필요?
+		CRoom* myRoom = *RoomChannelManager->getMyRoomIter(channelNum, roomNum);
+		// 풀방까지 몇명 필요한가? (제한인원 - 현재 방 인원)
+		int limitToPeopleNum = EnterRoomPeopleLimit - (myRoom->getAmountPeople());
+#pragma endregion
+		// 합칠 대상 방 검색
+		RoomListIt roomListBegin = RoomChannelManager->getIterRoomBegin();
+		RoomListIt roomListEnd = RoomChannelManager->getIterRoomEnd();
+		bool isMergeSucces = false;
+		for (; roomListBegin != roomListEnd; ++roomListBegin)
+		{
+			if (roomNum == (*roomListBegin)->getRoomNum())
+			{
+				cout << "나 자신 방" << endl;
+				continue;
+			}
+			if ((*roomListBegin)->getAmountPeople() <= limitToPeopleNum)
+			{
+				CRoom* targetRoom = (*roomListBegin);
+				if (myRoom->mergeRoom(targetRoom))
+				{
+					RoomChannelManager->eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
+					delete targetRoom; // 방 제거
+				}
+				cout << "방 합체 완료" << endl; isMergeSucces = true;
+				break; // 가장 먼저 검색되는 아무 방과 병합 후 빠져나옴
+			}
+		}
+		if (!isMergeSucces)
+			cout << "방 merge 실패" << endl;
+	}
 #pragma endregion
 	return SuccesCommand;
 }

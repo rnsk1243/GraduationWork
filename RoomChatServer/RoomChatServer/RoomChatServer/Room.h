@@ -48,5 +48,26 @@ public:
 	LinkListIt getIterMyInfoEnd() { return ClientInfos->end(); }
 	int getAmountPeople() { return AmountPeople; }
 #pragma endregion
+	bool mergeRoom(CRoom* targetRoom)
+	{
+		EnterCriticalSection(CS_MyInfoList);
+		EnterCriticalSection(targetRoom->CS_MyInfoList);
+		// 실제 옮기기 전에 준비작업으로 room정보 수정
+#pragma region 옮기는 방안에 있는 클라이언트들의 room정보 수정(방 번호라든지..)
+		LinkListIt linkBegin = targetRoom->getIterMyInfoBegin();
+		LinkListIt linkEnd = targetRoom->getIterMyInfoEnd();
+		for (; linkBegin != linkEnd; ++linkBegin)
+		{
+			CLink* targetClient = (*linkBegin);
+			targetClient->setMyRoomNum(RoomNum);
+			increasePeople(); // 방 인원수 갱신
+		}
+#pragma endregion 
+		ClientInfos->merge(*targetRoom->ClientInfos); // 실제 옮김
+
+		LeaveCriticalSection(targetRoom->CS_MyInfoList);
+		LeaveCriticalSection(CS_MyInfoList);
+		return true;
+	}
 };
 

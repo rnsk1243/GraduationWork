@@ -38,6 +38,5 @@ public:
 		return temp;
 	}
 #pragma endregion
-
 };
 

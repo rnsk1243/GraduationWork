@@ -16,11 +16,16 @@ CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
 
 CRoom::~CRoom()
 {
-	cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
-	// delete &ChannelNum; 지울 필요가 없나요?
-	delete RoomName;
-	delete ClientInfos;
-	DeleteCriticalSection(CS_MyInfoList);
-	cout << "방 삭제 완료" << endl;
+	if (ClientInfos->empty())
+	{
+		cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
+		delete RoomName;
+		delete ClientInfos;
+		DeleteCriticalSection(CS_MyInfoList);
+		cout << "방 삭제 완료" << endl;
+	}else
+	{
+		cout << "방 삭제 실패" << endl;
+	}
 }
 
