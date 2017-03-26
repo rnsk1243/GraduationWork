@@ -2,10 +2,11 @@
 
 
 
-CCommandController::CCommandController(CRoomChannelManager* roomChannelManager, CChannelHandler* channelHandler, CRoomHandler* roomHandler)
-	:RoomChannelManager(roomChannelManager), 
+CCommandController::CCommandController(CChannelManager* channelManager, CRoomManager* roomManager, CChannelHandler* channelHandler, CRoomHandler* roomHandler)
+	:ChannelManager(channelManager),
+	RoomManager(roomManager), 
 	ChannelHandler(channelHandler), 
-	RoomHandlere(roomHandler)
+	RoomHandler(roomHandler)
 {
 }
 
@@ -23,14 +24,14 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 	cout << "명령 처리 시작" << endl;
 	int channelNum = clientInfo->getMyChannelNum();
 	int roomNum = clientInfo->getMyRoomNum();
-	*command++;
+	command++;
 #pragma region 명령처리
 	if (*command == 'e') // 방에 입장
 	{
 		bool isEnterSucces = false;
 #pragma region 개설된 모든 방
-		RoomListIt roomBegin = RoomChannelManager->getIterRoomBegin();
-		RoomListIt roomEnd = RoomChannelManager->getIterRoomEnd();
+		RoomListIt roomBegin = RoomManager->getIterRoomBegin();
+		RoomListIt roomEnd = RoomManager->getIterRoomEnd();
 #pragma endregion
 #pragma region 내가 입장 할 수 있는 방 찾기
 		for (; roomBegin != roomEnd; ++roomBegin)
@@ -41,10 +42,11 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 				if (room->getAmountPeople() < EnterRoomPeopleLimit)
 				{
 					cout << "방에 입장" << endl;
-					RoomHandlere->enterRoom(clientInfo, RoomChannelManager, room->getRoomNum());
+					RoomHandler->enterRoom(clientInfo, RoomManager, room->getRoomNum());
 					// 채널에서는 나가기
-					ChannelHandler->exitChannel(clientInfo, RoomChannelManager);
+					ChannelHandler->exitChannel(clientInfo, ChannelManager);
 					isEnterSucces = true;
+					break;
 				}
 			}
 		}
@@ -56,51 +58,52 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 	{
 		if(NoneRoom != clientInfo->getMyRoomNum())
 			return SuccesCommand;
-		ChannelHandler->exitChannel(clientInfo, RoomChannelManager);
+		ChannelHandler->exitChannel(clientInfo, ChannelManager);
 		if (channelNum == MaxChannelNum)
 		{
-			ChannelHandler->enterChannel(clientInfo, RoomChannelManager, 0);
+			ChannelHandler->enterChannel(clientInfo, ChannelManager, 0);
 			return SuccesCommand;
 		}
-		ChannelListIt channelBegin = RoomChannelManager->getIterChannelBegin();
-		ChannelListIt channelEnd = RoomChannelManager->getIterChannelEnd();
+		ChannelListIt channelBegin = ChannelManager->getIterChannelBegin(); // const iterator로 바꿈
+		ChannelListIt channelEnd = ChannelManager->getIterChannelEnd();
 		for (; channelBegin != channelEnd; ++channelBegin)
 		{
 			if ((*channelBegin)->getChannelNum() == channelNum)
 			{
 				++channelBegin;
 				int moveChannelNum = (*channelBegin)->getChannelNum();
-				ChannelHandler->enterChannel(clientInfo, RoomChannelManager, moveChannelNum);
+				ChannelHandler->enterChannel(clientInfo, ChannelManager, moveChannelNum);
 				cout << moveChannelNum << "번 채널 변경" << endl;
+				break;
 			}
 		}
 	}
 	else if (*command == 'm')
 	{
 		//원래 채널에서는 나가기
-		ChannelHandler->exitChannel(clientInfo, RoomChannelManager);
+		ChannelHandler->exitChannel(clientInfo, ChannelManager);
 		cout << "방 만들기" << endl;
-		char* roomName = RoomHandlere->returnRoomName(command);
-		RoomHandlere->makeRoom(clientInfo, RoomChannelManager, roomName);
+		char* roomName = RoomHandler->returnRoomName(command);
+		RoomHandler->makeRoom(clientInfo, RoomManager, roomName);
 	}
 	else if (*command == 'o')
 	{
 		// 다시 채널로 돌아가고
-		ChannelHandler->enterChannel(clientInfo, RoomChannelManager, channelNum);
+		ChannelHandler->enterChannel(clientInfo, ChannelManager, channelNum);
 		cout << "방에서 나가기" << endl;
-		RoomHandlere->exitRoom(clientInfo, RoomChannelManager);
+		RoomHandler->exitRoom(clientInfo, RoomManager);
 
 	}
 	else if (*command == 'i')
 	{
 #pragma region 풀방까지 몇명 필요?
-		CRoom* myRoom = *RoomChannelManager->getMyRoomIter(channelNum, roomNum);
+		CRoom* myRoom = *RoomManager->getMyRoomIter(channelNum, roomNum);
 		// 풀방까지 몇명 필요한가? (제한인원 - 현재 방 인원)
 		int limitToPeopleNum = EnterRoomPeopleLimit - (myRoom->getAmountPeople());
 #pragma endregion
 		// 합칠 대상 방 검색
-		RoomListIt roomListBegin = RoomChannelManager->getIterRoomBegin();
-		RoomListIt roomListEnd = RoomChannelManager->getIterRoomEnd();
+		RoomListIt roomListBegin = RoomManager->getIterRoomBegin();
+		RoomListIt roomListEnd = RoomManager->getIterRoomEnd();
 		bool isMergeSucces = false;
 		for (; roomListBegin != roomListEnd; ++roomListBegin)
 		{
@@ -114,7 +117,7 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 				CRoom* targetRoom = (*roomListBegin);
 				if (myRoom->mergeRoom(targetRoom))
 				{
-					RoomChannelManager->eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
+					RoomManager->eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
 					delete targetRoom; // 방 제거
 				}
 				cout << "방 합체 완료" << endl; isMergeSucces = true;
@@ -142,12 +145,12 @@ bool CCommandController::deleteClientSocket(CLink* clientInfo)
 	if (NoneRoom == myRoomNum)
 	{
 		// 채널일때
-		return ChannelHandler->exitChannel(clientInfo, RoomChannelManager);
+		return ChannelHandler->exitChannel(clientInfo, ChannelManager);
 	}
 	else
 	{
 		// 방일때
-		return RoomHandlere->exitRoom(clientInfo, RoomChannelManager);
+		return RoomHandler->exitRoom(clientInfo, RoomManager);
 	}
 	return false;
 }

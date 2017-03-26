@@ -10,11 +10,11 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(CLink* clientInfo, CRoomChannelManager* roomChannelManager, int targetChannelNo)
+bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager* channelManager, int targetChannelNo)
 {
 	// channel리스트 iterator
-	ChannelListIt iterBegin = roomChannelManager->getIterChannelBegin();
-	ChannelListIt iterEnd = roomChannelManager->getIterChannelEnd();
+	ChannelListIt iterBegin = channelManager->getIterChannelBegin();
+	ChannelListIt iterEnd = channelManager->getIterChannelEnd();
 	
 	// 옮기고자 하는 번호의 Channel 포인터 얻기
 	for (; iterBegin != iterEnd; ++iterBegin)
@@ -31,9 +31,9 @@ bool CChannelHandler::enterChannel(CLink* clientInfo, CRoomChannelManager* roomC
 	return false;
 }
 
-bool CChannelHandler::exitChannel(CLink* clientInfo, CRoomChannelManager* roomChannelManager)
+bool CChannelHandler::exitChannel(CLink* clientInfo, CChannelManager* channelManager)
 {
-	CChannel* myChannel = roomChannelManager->getMyChannel(clientInfo->getMyChannelNum());
+	CChannel* myChannel = channelManager->getMyChannel(clientInfo->getMyChannelNum());
 	cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
 
 	if (myChannel != nullptr)
@@ -57,7 +57,3 @@ bool CChannelHandler::exitChannel(CLink* clientInfo, CRoomChannelManager* roomCh
 	}
 }
 
-bool CChannelHandler::pushChannel(CChannel * newChannel)
-{
-	return false;
-}

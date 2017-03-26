@@ -1,7 +1,8 @@
 #pragma once
 #include"ChannelHandler.h"
 #include"RoomHandler.h"
-#include"RoomChannelManager.h"
+#include"ChannelManager.h"
+#include"RoomManager.h"
 
 const int IntSize = 4;
 const int OccuredError = -1;
@@ -13,11 +14,12 @@ const int MaxChannelNum = 5;
 
 class CCommandController
 {
-	CRoomChannelManager* RoomChannelManager;
+	CChannelManager* ChannelManager;
+	CRoomManager* RoomManager;
 	CChannelHandler* ChannelHandler;
-	CRoomHandler* RoomHandlere;
+	CRoomHandler* RoomHandler;
 public:
-	CCommandController(CRoomChannelManager* roomChannelManager, CChannelHandler* channelHandler, CRoomHandler* roomHandler);
+	CCommandController(CChannelManager* channelManager, CRoomManager* roomManager, CChannelHandler* channelHandler, CRoomHandler* roomHandler);
 	~CCommandController();
 	// 명령 처리 함수(방 만들기 등)
 	int commandHandling(CLink* clientInfo, char* command);

@@ -1,12 +1,13 @@
 #include<iostream>
-#include"MakeSocket.h"
+#include"ReadyNetWork.h"
 #include"CommandController.h"
 #include"Link.h"
 #include"ChannelHandler.h"
 #include"RoomHandler.h"
-#include"RoomChannelManager.h"
+#include"RoomManager.h"
+#include"ChannelManager.h"
 #include"Channel.h"
-#include"SendRecv.h"
+#include"ActionNetWork.h"
 #include<process.h>
 using namespace std;
 
@@ -16,36 +17,38 @@ const int ChannelNum = 5;
 
 struct SendRecvParam
 {
-	CMakeSocket* socket;
-	CRoomChannelManager* roomChannelManager;
+	SOCKET* clientSocket;
+	CRoomManager* roomManager;
+	CChannelManager* channelManager;
 	CCommandController* commandController;
-	CSendRecv* sendRecv;
-	SendRecvParam(CMakeSocket* socket_, CRoomChannelManager* roomChannelManager_, CCommandController* commandController_, CSendRecv* sendRecv_) :
-		socket(socket_), roomChannelManager(roomChannelManager_), commandController(commandController_), sendRecv(sendRecv_) {}
+	CActionNetWork* actionNetWork;
+	SendRecvParam(SOCKET* clientSocket_, CRoomManager* roomManager_, CChannelManager* channelManager_, CCommandController* commandController_, CActionNetWork* actionNetWork_) :
+		clientSocket(clientSocket_), roomManager(roomManager_), channelManager(channelManager_), commandController(commandController_), actionNetWork(actionNetWork_) {}
 };
 
 unsigned int __stdcall thSendRecv(PVOID pvParam)
 {
 	SendRecvParam* SRParam = (SendRecvParam*)pvParam;
-	CMakeSocket* socket = SRParam->socket;
-	CRoomChannelManager* roomChannelManager = SRParam->roomChannelManager;
+	SOCKET* clientSocket = SRParam->clientSocket;
+	CRoomManager* roomManager = SRParam->roomManager;
+	CChannelManager* channelManager = SRParam->channelManager;
 	CCommandController* commandController = SRParam->commandController;
-	CSendRecv* sendRecv = SRParam->sendRecv;
+	CActionNetWork* actionNetWork = SRParam->actionNetWork;
 
-	SOCKET* clientSocket = socket->Accept();
+
 	CLink* clientInfo = new CLink(clientSocket);
 	// StartChannelNum 채널에 입장
-	commandController->getChannelHandler()->enterChannel(clientInfo, roomChannelManager, StartChannelNum);
+	commandController->getChannelHandler()->enterChannel(clientInfo, channelManager, StartChannelNum);
 
 	while (true)
 	{
-		int isRecvSuccesResultValue = sendRecv->recvn(clientInfo, commandController);
+		int isRecvSuccesResultValue = actionNetWork->recvn(clientInfo, commandController);
 		if (SuccesRecv == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
 			// 받은 메시지 내용 임시 복사
 			//MessageStruct message(*clientInfo->getMessageStruct());
 
-			sendRecv->sendn(clientInfo, roomChannelManager);
+			actionNetWork->sendn(clientInfo, roomManager, channelManager);
 		}
 		else if (OccuredError == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
@@ -63,22 +66,25 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 
 void main()
 {
-	CSendRecv* sendRecv = new CSendRecv();
-	CMakeSocket* socket = new CMakeSocket();
+	CActionNetWork* actionNetWork = new CActionNetWork();
+	CReadyNetWork* readyNetWork = new CReadyNetWork();
 	CChannelHandler* channelHandler = new CChannelHandler();
 	CRoomHandler* roomHandler = new CRoomHandler();
-	CRoomChannelManager* roomChannelManager = new CRoomChannelManager();
-	CCommandController* commandController = new CCommandController(roomChannelManager, channelHandler, roomHandler);
+	CChannelManager* channelManager = new CChannelManager();
+	CRoomManager* roomManager = new CRoomManager();
+	CCommandController* commandController = new CCommandController(channelManager, roomManager, channelHandler, roomHandler);
 	for (int i = ChannelNum; i >= 0; i--)
 	{
 		CChannel* newChannel = new CChannel(i);
-		roomChannelManager->pushChannel(newChannel);
+		channelManager->pushChannel(newChannel);
 	}
-	SendRecvParam* SRParam = new SendRecvParam(socket, roomChannelManager, commandController, sendRecv);
 
-	for(int i=0; i<MakeThreadNum; i++)
+	while (true)
 	{
+		SOCKET* clientSocket = readyNetWork->Accept();
+		SendRecvParam* SRParam = new SendRecvParam(clientSocket, roomManager, channelManager, commandController, actionNetWork);
 		_beginthreadex(NULL, NULL, thSendRecv, SRParam, 0, NULL);
 	}
+	
 	getchar();
 }

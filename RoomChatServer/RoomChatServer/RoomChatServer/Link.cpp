@@ -3,7 +3,7 @@
 
 CLink::CLink(SOCKET* clientSocket):ClientSocket(clientSocket), Name(new char[NameSize]), MyChannelNum(0), MyRoomNum(NoneRoom), MS(new MessageStruct())
 {
-	//	Name = "abc"; 값으로 초기화 하면 나중에 바꿀 수가 없다. 왜지?
+		//Name = "abc";// 값으로 초기화 하면 나중에 바꿀 수가 없다. 왜지?
 }
 
 

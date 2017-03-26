@@ -10,6 +10,7 @@ CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
 	ClientInfos(new LinkList()),
 	CS_MyInfoList(new CRITICAL_SECTION)
 {
+	
 	InitializeCriticalSection(CS_MyInfoList);
 }
 
