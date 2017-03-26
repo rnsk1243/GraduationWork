@@ -10,11 +10,11 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(CLink* clientInfo, CRoomChannelManager* link, int targetChannelNo)
+bool CChannelHandler::enterChannel(CLink* clientInfo, CRoomChannelManager* roomChannelManager, int targetChannelNo)
 {
 	// channel리스트 iterator
-	ChannelListIt iterBegin = link->getIterChannelBegin();
-	ChannelListIt iterEnd = link->getIterChannelEnd();
+	ChannelListIt iterBegin = roomChannelManager->getIterChannelBegin();
+	ChannelListIt iterEnd = roomChannelManager->getIterChannelEnd();
 	
 	// 옮기고자 하는 번호의 Channel 포인터 얻기
 	for (; iterBegin != iterEnd; ++iterBegin)

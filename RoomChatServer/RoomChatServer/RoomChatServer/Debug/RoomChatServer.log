@@ -1,4 +1,4 @@
-﻿  ChannelHandler.cpp
+﻿  Channel.cpp
   코드를 생성하고 있습니다...
   컴파일하고 있습니다...
   CommandController.cpp
@@ -10,5 +10,6 @@
   Room.cpp
   MainProc.cpp
   Link.cpp
-  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\Debug\RoomChatServer.exe
-  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\Debug\RoomChatServer.pdb (Full PDB)
+  ChannelHandler.cpp
+  RoomChatServer.vcxproj -> E:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\Debug\RoomChatServer.exe
+  RoomChatServer.vcxproj -> E:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\Debug\RoomChatServer.pdb (Full PDB)

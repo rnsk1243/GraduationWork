@@ -30,7 +30,7 @@ int CSendRecv::sendn(CLink* clientInfo, CRoomChannelManager* roomChannelManager,
 	LinkListIt iterEnd;
 
 	CChannel* myChannel;
-	CRoom* myRoom;
+	CRoom* myRoom = nullptr;
 #pragma endregion
 
 #pragma region 내가 속한 채널 방 가져오기
@@ -69,7 +69,11 @@ int CSendRecv::sendn(CLink* clientInfo, CRoomChannelManager* roomChannelManager,
 		{
 			continue; // 보내지 않고 통과
 		}
+
 		SOCKET* clientSocket = (*iterBegin)->getClientSocket();
+
+		sendMyName(clientSocket, clientInfo, roomChannelManager); // 이름 보내기
+
 		send(*clientSocket, (char*)size, IntSize, flags); // 사이즈 보내기
 		while (true)
 		{
@@ -126,4 +130,35 @@ int CSendRecv::recvn(CLink* clientInfo, CCommandController* commandController, i
 #pragma endregion
 	cout << "받은 메시지 = " << MS->message << endl;
 	return SuccesRecv;
+}
+
+int CSendRecv::sendMyName(SOCKET* clientSocket, CLink * clientInfo, CRoomChannelManager * roomChannelManager, int flags)
+{
+	if (nullptr == clientInfo->getMyName())
+	{
+		cout << "이름 없음" << endl;
+		return NullNameError;
+	}
+	MessageStruct myName;
+	myName.message = clientInfo->getMyName();
+	*myName.sendRecvSize = strlen(myName.message);
+
+	cout << "보낼 메세지 = " << myName.message << endl;
+	cout << "보낼 사이즈 = " << *myName.sendRecvSize << endl;
+
+	int temp = 0;
+	temp = send(*clientSocket, (char*)myName.sendRecvSize, IntSize, flags); // 사이즈 보내기
+	if (IntSize == temp)
+	{
+		temp = 0;
+		while (true)
+		{
+			temp += send(*clientSocket, myName.message, *myName.sendRecvSize, flags);
+			if (temp >= *myName.sendRecvSize)
+				break;
+		}
+	}
+	
+
+	return *myName.sendRecvSize;
 }

@@ -58,8 +58,8 @@ bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomChannelManager* roomChannelM
 		return false;
 	}
 	int myChannelNum = clientInfo->getMyChannelNum();
-	CRoom* newRoom;
-	int roomNum;
+	CRoom* newRoom = nullptr;
+	int roomNum = 0;
 
 	if (roomChannelManager->isRoomListEmpty())
 	{

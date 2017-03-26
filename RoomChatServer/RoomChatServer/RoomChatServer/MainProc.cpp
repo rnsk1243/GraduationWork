@@ -11,6 +11,8 @@
 using namespace std;
 
 const int StartChannelNum = 0;
+const int MakeThreadNum = 3;
+const int ChannelNum = 5;
 
 struct SendRecvParam
 {
@@ -40,6 +42,9 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 		int isRecvSuccesResultValue = sendRecv->recvn(clientInfo, commandController);
 		if (SuccesRecv == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
+			// 받은 메시지 내용 임시 복사
+			//MessageStruct message(*clientInfo->getMessageStruct());
+
 			sendRecv->sendn(clientInfo, roomChannelManager);
 		}
 		else if (OccuredError == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
@@ -64,15 +69,16 @@ void main()
 	CRoomHandler* roomHandler = new CRoomHandler();
 	CRoomChannelManager* roomChannelManager = new CRoomChannelManager();
 	CCommandController* commandController = new CCommandController(roomChannelManager, channelHandler, roomHandler);
-	for (int i = 5; i >= 0; i--)
+	for (int i = ChannelNum; i >= 0; i--)
 	{
 		CChannel* newChannel = new CChannel(i);
 		roomChannelManager->pushChannel(newChannel);
 	}
 	SendRecvParam* SRParam = new SendRecvParam(socket, roomChannelManager, commandController, sendRecv);
 
-	while (true)
-	{		
+	for(int i=0; i<MakeThreadNum; i++)
+	{
 		_beginthreadex(NULL, NULL, thSendRecv, SRParam, 0, NULL);
 	}
+	getchar();
 }

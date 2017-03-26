@@ -124,6 +124,12 @@ int CCommandController::commandHandling(CLink* clientInfo, char * command)
 		if (!isMergeSucces)
 			cout << "방 merge 실패" << endl;
 	}
+	else if (*command == 'n')
+	{
+		// 기존 이름 변경
+		clientInfo->changeName(command, 1);
+		cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
+	}
 #pragma endregion
 	return SuccesCommand;
 }
