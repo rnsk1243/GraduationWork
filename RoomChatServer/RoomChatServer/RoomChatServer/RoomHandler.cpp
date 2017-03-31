@@ -11,36 +11,36 @@ CRoomHandler::~CRoomHandler()
 {
 }
 
-bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
+bool CRoomHandler::exitRoom(CLink& clientInfo, CRoomManager& roomManager)
 {
 #pragma region 나가고자 하는 방 전달자(iter)찾기
-	int channelNum = clientInfo->getMyChannelNum();
-	int roomNum = clientInfo->getMyRoomNum();
+	int channelNum = clientInfo.getMyChannelNum();
+	int roomNum = clientInfo.getMyRoomNum();
 	if (roomNum == NoneRoom)
 		return false;
-	RoomListIt myRoomIter = roomManager->getMyRoomIter(channelNum, roomNum); // 나가고자하는 방 전달자
+	RoomListIt myRoomIter = roomManager.getMyRoomIter(channelNum, roomNum); // 나가고자하는 방 전달자
 #pragma endregion
 	// 만약 없는 방이면
 	if (&myRoomIter == nullptr)
 		return false;
-	CRoom* currentRoom = *myRoomIter;
-	cout << currentRoom->getRoomName() << " 방을 나갑니다." << endl;
+	CRoom currentRoom = *myRoomIter;
+	cout << currentRoom.getRoomName() << " 방을 나갑니다." << endl;
 #pragma region 방안에 클라이언트 찾아서 erase시키기
-	LinkListIt iterBegin = currentRoom->getIterMyInfoBegin();
-	LinkListIt iterEnd = currentRoom->getIterMyInfoEnd();
+	LinkListIt iterBegin = currentRoom.getIterMyInfoBegin();
+	LinkListIt iterEnd = currentRoom.getIterMyInfoEnd();
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		CLink* client = (*iterBegin);
-		if (client == clientInfo)
+		CLink client = (*iterBegin);
+		if (client.getMyPKNum() == clientInfo.getMyPKNum())
 		{
-			client->setMyRoomNum(NoneRoom);
-			iterBegin = currentRoom->eraseClient(iterBegin); // 원래 있던 방에서 빼기	
-			if (0 == currentRoom->getAmountPeople())
+			client.setMyRoomNum(NoneRoom);
+			iterBegin = currentRoom.eraseClient(iterBegin); // 원래 있던 방에서 빼기	
+			if (0 == currentRoom.getAmountPeople())
 			{
-				cout << currentRoom->getRoomName() << " 방에 아무도 없습니다." << endl;
+				cout << currentRoom.getRoomName() << " 방에 아무도 없습니다." << endl;
 				// 방 리스트에서 삭제 시키고
-				roomManager->eraseRoom(myRoomIter);
-				delete currentRoom;
+				roomManager.eraseRoom(myRoomIter);
+				//delete currentRoom; 
 			}
 			break;
 		}
@@ -50,48 +50,48 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	return true;
 }
 
-bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomManager* roomManager, char* roomName)
+bool CRoomHandler::makeRoom(CLink& clientInfo, CRoomManager& roomManager, char* roomName)
 {
-	if (clientInfo->getMyRoomNum() != NoneRoom)
+	if (clientInfo.getMyRoomNum() != NoneRoom)
 	{
 		cout << "방에 들어와 있음" << endl;
 		return false;
 	}
-	int myChannelNum = clientInfo->getMyChannelNum();
-	CRoom* newRoom = nullptr;
+	int myChannelNum = clientInfo.getMyChannelNum();
+
 	int roomNum = 0;
 
-	if (roomManager->isRoomListEmpty())
+	if (roomManager.isRoomListEmpty())
 	{
 		roomNum = 0;
 	}
 	else 
 	{
-		roomNum = (*roomManager->getIterRoomBegin())->getRoomNum() + 1; // 여기 함수로 뺄것
+		roomNum = roomManager.getIterRoomBegin()->getRoomNum() + 1; // 여기 함수로 뺄것
 	}
-	newRoom = new CRoom(roomNum, myChannelNum, roomName);
+	CRoom newRoom(roomNum, myChannelNum, roomName);
 	cout << roomNum << " 번으로 방 만듬" << endl;
 	// 새로운 room 만듬
-	roomManager->pushRoom(newRoom);
+	roomManager.pushRoom(newRoom);
 	// 새로운 room에 소켓 넣어줌
-	newRoom->pushClient(clientInfo);
-	clientInfo->setMyRoomNum(roomNum);
+	newRoom.pushClient(clientInfo);
+	clientInfo.setMyRoomNum(roomNum);
 	cout << "방 만들기 성공" << endl;
 	return true;
 }
 
-bool CRoomHandler::enterRoom(CLink* clientInfo, CRoomManager* roomManager, int targetRoomNo)
+bool CRoomHandler::enterRoom(CLink& clientInfo, CRoomManager& roomManager, int targetRoomNo)
 {
-	RoomListIt iterBegin = roomManager->getIterRoomBegin();
-	RoomListIt iterEnd = roomManager->getIterRoomEnd();
+	RoomListIt iterBegin = roomManager.getIterRoomBegin();
+	RoomListIt iterEnd = roomManager.getIterRoomEnd();
 	// 들어가고자 하는 번호의 room이 있나?
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		CRoom* curRoom = (*iterBegin);
-		if (targetRoomNo == curRoom->getRoomNum())
+		CRoom curRoom = *iterBegin;
+		if (targetRoomNo == curRoom.getRoomNum())
 		{
-			curRoom->pushClient(clientInfo);// 방에 넣어주기
-			clientInfo->setMyRoomNum(targetRoomNo);
+			curRoom.pushClient(clientInfo);// 방에 넣어주기
+			clientInfo.setMyRoomNum(targetRoomNo);
 			return true; // 더 이상 볼일 없으므로 함수를 끝냄
 		}
 	}

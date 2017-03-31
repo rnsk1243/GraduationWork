@@ -2,11 +2,9 @@
 
 
 
-CChannelManager::CChannelManager():
-	Channels(new ChannelList), 
-	CS_Channel(new CRITICAL_SECTION())
+CChannelManager::CChannelManager()
 {
-	InitializeCriticalSection(CS_Channel);
+	InitializeCriticalSection(&CS_Channel);
 }
 
 
@@ -14,16 +12,16 @@ CChannelManager::~CChannelManager()
 {
 }
 
-CChannel * CChannelManager::getMyChannel(int ChannelNum)
+CChannel CChannelManager::getMyChannel(int ChannelNum)
 {
-	ChannelListIt iterBegin = Channels->begin();
-	ChannelListIt iterEnd = Channels->end();
+	ChannelListIt iterBegin = Channels.begin();
+	ChannelListIt iterEnd = Channels.end();
 
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		if ((*iterBegin)->getChannelNum() == ChannelNum)
+		if (iterBegin->getChannelNum() == ChannelNum)
 			return *iterBegin;
 	}
 	cout << ChannelNum << "번 채널이 없습니다." << endl;
-	return nullptr;
+	return *iterBegin; // nullptr의 역참조하면 오류 날텐데?? 뭘 리턴해야할까..?
 }
