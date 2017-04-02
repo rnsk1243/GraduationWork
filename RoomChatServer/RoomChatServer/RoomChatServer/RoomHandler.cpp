@@ -67,7 +67,7 @@ bool CRoomHandler::makeRoom(CLink& clientInfo, CRoomManager& roomManager, char* 
 	}
 	else 
 	{
-		roomNum = roomManager.getIterRoomBegin()->getRoomNum() + 1; // 여기 함수로 뺄것
+//		roomNum = roomManager.getIterRoomBegin()->getRoomNum() + 1; // 여기 함수로 뺄것
 	}
 	CRoom newRoom(roomNum, myChannelNum, roomName);
 	cout << roomNum << " 번으로 방 만듬" << endl;
@@ -82,19 +82,19 @@ bool CRoomHandler::makeRoom(CLink& clientInfo, CRoomManager& roomManager, char* 
 
 bool CRoomHandler::enterRoom(CLink& clientInfo, CRoomManager& roomManager, int targetRoomNo)
 {
-	RoomListIt iterBegin = roomManager.getIterRoomBegin();
-	RoomListIt iterEnd = roomManager.getIterRoomEnd();
+//	RoomListIt iterBegin = roomManager.getIterRoomBegin();
+//	RoomListIt iterEnd = roomManager.getIterRoomEnd();
 	// 들어가고자 하는 번호의 room이 있나?
-	for (; iterBegin != iterEnd; ++iterBegin)
-	{
-		CRoom curRoom = *iterBegin;
-		if (targetRoomNo == curRoom.getRoomNum())
-		{
-			curRoom.pushClient(clientInfo);// 방에 넣어주기
-			clientInfo.setMyRoomNum(targetRoomNo);
-			return true; // 더 이상 볼일 없으므로 함수를 끝냄
-		}
-	}
+	//for (; iterBegin != iterEnd; ++iterBegin)
+	//{
+	//	CRoom curRoom = *iterBegin;
+	//	if (targetRoomNo == curRoom.getRoomNum())
+	//	{
+	//		curRoom.pushClient(clientInfo);// 방에 넣어주기
+	//		clientInfo.setMyRoomNum(targetRoomNo);
+	//		return true; // 더 이상 볼일 없으므로 함수를 끝냄
+	//	}
+	//}
 	cout << "없는 방 입니다." << endl;
 	return false;
 }

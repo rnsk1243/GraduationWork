@@ -83,7 +83,7 @@ public:
 			increasePeople(); // 방 인원수 갱신
 		}
 #pragma endregion 
-		ClientInfos.merge(targetRoom.ClientInfos); // 실제 옮김
+		//ClientInfos.merge(targetRoom.ClientInfos); // 실제 옮김
 		LeaveCriticalSection(&targetRoom.CS_MyInfoList);
 		LeaveCriticalSection(&CS_MyInfoList);
 		return true;
