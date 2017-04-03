@@ -12,15 +12,17 @@ class CChannelManager
 {
 	ChannelList* Channels;
 	CRITICAL_SECTION* CS_Channel;
+	CChannelManager(const CChannelManager&);
+	CChannelManager& operator=(const CChannelManager&);
 public:
-	CChannelManager();
+	CChannelManager(int channelAmount);
 	~CChannelManager();
 	ChannelListIt getIterChannelBegin() { return Channels->begin(); }
 	ChannelListIt getIterChannelEnd() { return Channels->end(); }
 	void pushChannel(CChannel* newChannel)
 	{
 		EnterCriticalSection(CS_Channel);
-		Channels->push_front(newChannel);
+		Channels->push_back(newChannel);
 		LeaveCriticalSection(CS_Channel);
 	}
 	CChannel * getMyChannel(int ChannelNum);

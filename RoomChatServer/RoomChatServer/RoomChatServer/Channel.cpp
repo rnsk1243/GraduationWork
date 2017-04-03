@@ -14,6 +14,12 @@ CChannel::CChannel(int channelNum):
 CChannel::~CChannel()
 {
 	cout << "채널 삭제" << endl;
-	delete ClientInfos;
+	LinkListIt begin = getIterMyInfoBegin();
+	LinkListIt end = getIterMyInfoEnd();
+	for (; begin != end; ++begin)
+	{
+		delete(*begin);
+	}
+	ClientInfos->clear();
 	DeleteCriticalSection(CS_MyInfoList);
 }

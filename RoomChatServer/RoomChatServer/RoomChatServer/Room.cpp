@@ -21,7 +21,13 @@ CRoom::~CRoom()
 	{
 		cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
 		delete RoomName;
-		delete ClientInfos;
+		LinkListIt begin = getIterMyInfoBegin();
+		LinkListIt end = getIterMyInfoEnd();
+		for (; begin != end; ++begin)
+		{
+			delete(*begin);
+		}
+		ClientInfos->clear();
 		DeleteCriticalSection(CS_MyInfoList);
 		cout << "방 삭제 완료" << endl;
 	}else

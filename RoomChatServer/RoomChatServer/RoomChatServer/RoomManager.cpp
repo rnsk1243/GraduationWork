@@ -11,6 +11,14 @@ CRoomManager::CRoomManager() :
 
 CRoomManager::~CRoomManager()
 {
+	RoomListIt begin = getIterRoomBegin();
+	RoomListIt end = getIterRoomEnd();
+	for (; begin != end; ++begin)
+	{
+		delete(*begin);
+	}
+	Rooms->clear();
+	DeleteCriticalSection(CS_Room);
 }
 
 RoomListIt CRoomManager::getMyRoomIter(int ChannelNum, int roomNum)
@@ -33,5 +41,12 @@ RoomListIt CRoomManager::getMyRoomIter(int ChannelNum, int roomNum)
 	cout << roomNum << "번 방이 없습니다." << endl;
 	//RoomListIt* error = nullptr;
 	return iterBegin; // iterBegin == iterEnd 이면 방이없다.
+}
+
+int CRoomManager::getEmptyRoomNum()
+{
+	RoomListIt roomEnd = Rooms->end();
+	--roomEnd;
+	return ((*roomEnd)->getRoomNum() + 1);
 }
 

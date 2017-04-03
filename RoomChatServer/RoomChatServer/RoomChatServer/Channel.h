@@ -13,6 +13,8 @@ class CChannel
 	int ChannelNum;
 	LinkList* ClientInfos;
 	CRITICAL_SECTION* CS_MyInfoList;
+	CChannel(const CChannel&);
+	CChannel& operator=(const CChannel&);
 public:
 	CChannel(int channelNum);
 	~CChannel();
@@ -26,7 +28,7 @@ public:
 	void pushClient(CLink* client)
 	{
 		EnterCriticalSection(CS_MyInfoList);
-		ClientInfos->push_front(client);
+		ClientInfos->push_back(client);
 		LeaveCriticalSection(CS_MyInfoList);
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)

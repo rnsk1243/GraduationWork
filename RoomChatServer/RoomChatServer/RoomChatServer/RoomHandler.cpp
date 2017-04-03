@@ -67,7 +67,7 @@ bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomManager* roomManager, char* 
 	}
 	else 
 	{
-		roomNum = (*roomManager->getIterRoomBegin())->getRoomNum() + 1; // 여기 함수로 뺄것
+		roomNum = roomManager->getEmptyRoomNum();
 	}
 	newRoom = new CRoom(roomNum, myChannelNum, roomName);
 	cout << roomNum << " 번으로 방 만듬" << endl;

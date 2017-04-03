@@ -7,6 +7,8 @@ const int NoneRoom = -1;
 
 class CRoomHandler
 {
+	CRoomHandler(const CRoomHandler&);
+	CRoomHandler& operator=(const CRoomHandler&);
 public:
 	CRoomHandler();
 	~CRoomHandler();

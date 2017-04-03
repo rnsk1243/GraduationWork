@@ -16,7 +16,8 @@ class CRoomManager
 	RoomList* Rooms;
 #pragma region 크리티컬 섹션
 	CRITICAL_SECTION* CS_Room;
-	
+	CRoomManager(const CRoomManager&);
+	CRoomManager& operator=(const CRoomManager&);
 #pragma endregion
 public:
 	CRoomManager();
@@ -26,7 +27,7 @@ public:
 	void pushRoom(CRoom* newRoom)
 	{
 		EnterCriticalSection(CS_Room);
-		Rooms->push_front(newRoom);
+		Rooms->push_back(newRoom);
 		LeaveCriticalSection(CS_Room);
 	}
 	RoomListIt eraseRoom(RoomListIt delRoom)
@@ -43,6 +44,7 @@ public:
 	RoomListIt getMyRoomIter(int ChannelNum, int roomNum);
 	RoomListIt getIterRoomBegin() { return Rooms->begin(); }
 	RoomListIt getIterRoomEnd() { return Rooms->end(); }
+	int getEmptyRoomNum();
 #pragma endregion
 	bool isRoomListEmpty() { return Rooms->empty(); }
 };

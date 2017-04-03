@@ -9,6 +9,8 @@ using namespace std;
 
 class CChannelHandler
 {
+	CChannelHandler(const CChannelHandler&);
+	CChannelHandler& operator=(const CChannelHandler&);
 public:
 	CChannelHandler();
 	~CChannelHandler();

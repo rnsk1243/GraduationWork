@@ -19,6 +19,8 @@ class CRoom
 	CRITICAL_SECTION* CS_MyInfoList;
 	void increasePeople() { AmountPeople++; }
 	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
+	CRoom(const CRoom&);
+	CRoom& operator=(const CRoom&);
 public:
 	CRoom(int roomNum,int channelNum, char* roomName);
 	~CRoom();
@@ -26,7 +28,7 @@ public:
 	void pushClient(CLink* client)
 	{
 		EnterCriticalSection(CS_MyInfoList);
-		ClientInfos->push_front(client);
+		ClientInfos->push_back(client);
 		increasePeople();
 		LeaveCriticalSection(CS_MyInfoList);
 	}
