@@ -3,14 +3,17 @@
 
 
 CChannel::CChannel(int channelNum):
-	ChannelNum(channelNum)
+	ChannelNum(channelNum),
+	ClientInfos(new LinkList()),
+	CS_MyInfoList(new CRITICAL_SECTION)
 {
-	InitializeCriticalSection(&CS_MyInfoList);
+	InitializeCriticalSection(CS_MyInfoList);
 }
 
 
 CChannel::~CChannel()
 {
 	cout << "채널 삭제" << endl;
-	DeleteCriticalSection(&CS_MyInfoList);
+	delete ClientInfos;
+	DeleteCriticalSection(CS_MyInfoList);
 }

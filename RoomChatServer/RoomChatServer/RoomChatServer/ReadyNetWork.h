@@ -11,6 +11,6 @@ class CReadyNetWork
 public:
 	CReadyNetWork();
 	~CReadyNetWork();
-	SOCKET Accept();
+	SOCKET* Accept();
 };
 
