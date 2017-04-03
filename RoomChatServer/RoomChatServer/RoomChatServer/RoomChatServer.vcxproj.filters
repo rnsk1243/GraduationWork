@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Room">
+      <UniqueIdentifier>{2c9783e2-ef3f-475a-87d8-d8469d4cab83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Channel">
+      <UniqueIdentifier>{a89e6cd6-486b-465b-9146-93f8d426493e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetWork">
+      <UniqueIdentifier>{e56956a5-a7c1-4ec1-ac4a-7f31d2595b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Channel\ChannelHandlere">
+      <UniqueIdentifier>{e7dea1ce-49c6-45d7-ba07-9b590cfa20dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Room\RoomHandlere">
+      <UniqueIdentifier>{bc71e515-45b6-47a5-87da-053d9a81ff3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Link">
+      <UniqueIdentifier>{c26d0160-7f8c-49f9-9bdc-ef72cb6e1812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Channel\ChannelManager">
+      <UniqueIdentifier>{d4a39a6d-cbb7-4667-9b1f-822a8799ab8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Room\RoomManager">
+      <UniqueIdentifier>{1cfe705c-4168-4426-bdf0-fedffe93065b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ActionNetWork">
+      <UniqueIdentifier>{2f7679ea-9c31-48fe-8736-e94f239d7c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ReadyNetWork">
+      <UniqueIdentifier>{46f6a419-9e04-417e-ad42-451aac251820}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Room.cpp">
+      <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="Channel.cpp">
+      <Filter>Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="MainProc.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandController.cpp">
+      <Filter>NetWork</Filter>
+    </ClCompile>
+    <ClCompile Include="Link.cpp">
+      <Filter>Link</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomHandler.cpp">
+      <Filter>Room\RoomHandlere</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelHandler.cpp">
+      <Filter>Channel\ChannelHandlere</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelManager.cpp">
+      <Filter>Channel\ChannelManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Room\RoomManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionNetWork.cpp">
+      <Filter>ActionNetWork</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadyNetWork.cpp">
+      <Filter>ReadyNetWork</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Room.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="Channel.h">
+      <Filter>Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandController.h">
+      <Filter>NetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="Link.h">
+      <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomHandler.h">
+      <Filter>Room\RoomHandlere</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelHandler.h">
+      <Filter>Channel\ChannelHandlere</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelManager.h">
+      <Filter>Channel\ChannelManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Room\RoomManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionNetWork.h">
+      <Filter>ActionNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadyNetWork.h">
+      <Filter>ReadyNetWork</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
