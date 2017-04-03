@@ -38,7 +38,7 @@ struct MessageStruct
 class CLink
 {
 	// 내 고유번호
-	const int MyPKNum;
+	int MyPKNum;
 	char* Name;
 	// 현재 내가 속한 방 번호
 	int MyRoomNum;
@@ -98,6 +98,13 @@ public:
 			MS = link.MS;
 			return *this;
 		}
+	}
+	bool operator<(const CLink& other)
+	{
+		if (MyPKNum > other.MyPKNum)
+			return true;
+		else
+			return false;
 	}
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }
