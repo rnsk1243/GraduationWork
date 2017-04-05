@@ -1,13 +1,18 @@
-﻿  MainProc.cpp
-  CommandController.cpp
-  ChannelManager.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  ActionNetWork.cpp
+﻿  ActionNetWork.cpp
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(81): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(113): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(157): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(162): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  RoomHandler.cpp
+  Room.cpp
+  CommandController.cpp
+  Link.cpp
+  ReadyNetWork.cpp
+  MainProc.cpp
+  RoomManager.cpp
+  ChannelManager.cpp
+  ChannelHandler.cpp
+  Channel.cpp
   코드를 생성하고 있습니다...
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)
