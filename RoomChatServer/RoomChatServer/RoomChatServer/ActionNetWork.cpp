@@ -1,7 +1,7 @@
 #include "ActionNetWork.h"
 #include "ChannelManager.h"
 #include"RoomManager.h"
-
+#include"ReadHandler.h"
 
 CActionNetWork::CActionNetWork()
 {
@@ -10,6 +10,41 @@ CActionNetWork::CActionNetWork()
 
 CActionNetWork::~CActionNetWork()
 {
+}
+
+int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
+{
+	char temp[4];
+	int isSuccess = recv(socket, temp, IntSize, flags);
+
+	if (isSuccess == SOCKET_ERROR)
+	{
+		cout << "1recvn ERROR" << endl;
+		return SOCKET_ERROR;
+	}
+	MS.sendRecvSize = *(int*)temp;
+
+	// 임시로 만든 temp 메모리 반환
+#pragma endregion
+#pragma region 메세지 받기
+	size_t left = MS.sendRecvSize;
+	isSuccess = 0;
+	while (left > 0)
+	{
+		isSuccess += recv(socket, MS.message, left, flags);
+		//cout << "success = " << isSuccess << endl;
+		if (isSuccess == SOCKET_ERROR)
+		{
+			cout << "2recvn ERROR" << endl;
+			return SOCKET_ERROR;
+		}
+		else if (isSuccess >= left)
+			break;
+	}
+	MS.message[left] = '\0';
+#pragma endregion
+	cout << "받은 idPw메시지 = " << MS.message << endl;
+	return SuccesRecv;
 }
 
 int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
@@ -88,10 +123,25 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	return SuccesSend;
 }
 
+int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
+{
+	char* message = MS.message;
+	size_t size = MS.sendRecvSize;
+	send(socket, (char*)&size, IntSize, flags); // 사이즈 보내기
+	size_t temp = 0;
+	while (true)
+	{
+		temp += send(socket, message, size, flags);
+		if (temp >= size)
+			break;
+	}
+	return SuccesSend;
+}
+
 int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandController, int flags)
 {
 #pragma region 받을 데이터 크기 가져오기
-	char* temp = new char[4];
+	char temp[4];
 	SOCKET& clientSocket = clientInfo.getClientSocket();
 	MessageStruct& MS = clientInfo.getMessageStruct();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
@@ -102,12 +152,10 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 		return SOCKET_ERROR;
 	}
 	MS.sendRecvSize = *(int*)temp;
-
-	// 임시로 만든 temp 메모리 반환
-	delete temp;
 #pragma endregion
 #pragma region 메세지 받기
 	size_t left = MS.sendRecvSize;
+	isSuccess = 0;
 	while (left > 0)
 	{
 		isSuccess += recv(clientSocket, MS.message, left, flags);

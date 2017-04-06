@@ -151,6 +151,8 @@
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
+    <ClInclude Include="Lobby.h" />
+    <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="ReadyNetWork.h" />
     <ClInclude Include="Link.h" />
@@ -158,11 +160,14 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomHandler.h" />
     <ClInclude Include="ActionNetWork.h" />
+    <ClInclude Include="WriteHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelHandler.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
+    <ClCompile Include="Lobby.cpp" />
+    <ClCompile Include="ReadHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="MainProc.cpp" />
     <ClCompile Include="ReadyNetWork.cpp" />
@@ -171,6 +176,7 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomHandler.cpp" />
     <ClCompile Include="ActionNetWork.cpp" />
+    <ClCompile Include="WriteHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,12 +1,6 @@
 #include "CommandController.h"
 
-
-
-CCommandController::CCommandController(CChannelManager& channelManager, CRoomManager& roomManager, CChannelHandler& channelHandler, CRoomHandler& roomHandler)
-	:ChannelManager(channelManager),
-	RoomManager(roomManager), 
-	ChannelHandler(channelHandler), 
-	RoomHandler(roomHandler)
+CCommandController::CCommandController()
 {
 }
 
@@ -44,7 +38,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 					cout << "방에 입장" << endl;
 					RoomHandler.enterRoom(&clientInfo, &RoomManager, room->getRoomNum());
 					// 채널에서는 나가기
-					ChannelHandler.exitChannel(&clientInfo, &ChannelManager);
+					ChannelHandler.exitChannel(clientInfo, ChannelManager);
 					isEnterSucces = true;
 					break;
 				}
@@ -58,10 +52,10 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	{
 		if(NoneRoom != clientInfo.getMyRoomNum())
 			return SuccesCommand;
-		ChannelHandler.exitChannel(&clientInfo, &ChannelManager);
+		ChannelHandler.exitChannel(clientInfo, ChannelManager);
 		if (channelNum == MaxChannelNum)
 		{
-			ChannelHandler.enterChannel(&clientInfo, &ChannelManager, EnterChannelNum);
+			ChannelHandler.enterChannel(&clientInfo, ChannelManager, EnterChannelNum);
 			return SuccesCommand;
 		}
 		ChannelListIt channelBegin = ChannelManager.getIterChannelBegin(); // const iterator로 바꿈
@@ -72,7 +66,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 			{
 				++channelBegin;
 				int moveChannelNum = (*channelBegin)->getChannelNum();
-				ChannelHandler.enterChannel(&clientInfo, &ChannelManager, moveChannelNum);
+				ChannelHandler.enterChannel(&clientInfo, ChannelManager, moveChannelNum);
 				cout << moveChannelNum << "번 채널 변경" << endl;
 				break;
 			}
@@ -81,7 +75,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	else if (*command == 'm')
 	{
 		//원래 채널에서는 나가기
-		ChannelHandler.exitChannel(&clientInfo, &ChannelManager);
+		ChannelHandler.exitChannel(clientInfo, ChannelManager);
 		cout << "방 만들기" << endl;
 		char* roomName = RoomHandler.returnRoomName(command);
 		RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName);
@@ -89,7 +83,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	else if (*command == 'o')
 	{
 		// 다시 채널로 돌아가고
-		ChannelHandler.enterChannel(&clientInfo, &ChannelManager, channelNum);
+		ChannelHandler.enterChannel(&clientInfo, ChannelManager, channelNum);
 		cout << "방에서 나가기" << endl;
 		RoomHandler.exitRoom(&clientInfo, &RoomManager);
 
@@ -145,7 +139,7 @@ bool CCommandController::deleteClientSocket(CLink& clientInfo)
 	if (NoneRoom == myRoomNum)
 	{
 		// 채널일때
-		return ChannelHandler.exitChannel(&clientInfo, &ChannelManager);
+		return ChannelHandler.exitChannel(clientInfo, ChannelManager);
 	}
 	else
 	{

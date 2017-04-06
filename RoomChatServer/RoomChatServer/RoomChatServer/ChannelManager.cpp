@@ -2,12 +2,12 @@
 #include"CommandController.h"
 
 
-CChannelManager::CChannelManager(int channelAmount):
+CChannelManager::CChannelManager():
 	Channels(new ChannelList), 
 	CS_Channel(new CRITICAL_SECTION())
 {
 	InitializeCriticalSection(CS_Channel);
-	for (int i = EnterChannelNum; i <= channelAmount; i++)
+	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
 	{
 		CChannel* newChannel = new CChannel(i);
 		pushChannel(newChannel);

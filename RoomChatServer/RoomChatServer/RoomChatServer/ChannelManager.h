@@ -15,7 +15,7 @@ class CChannelManager
 	CChannelManager(const CChannelManager&);
 	CChannelManager& operator=(const CChannelManager&);
 public:
-	CChannelManager(int channelAmount);
+	CChannelManager();
 	~CChannelManager();
 	ChannelListIt getIterChannelBegin() { return Channels->begin(); }
 	ChannelListIt getIterChannelEnd() { return Channels->end(); }
