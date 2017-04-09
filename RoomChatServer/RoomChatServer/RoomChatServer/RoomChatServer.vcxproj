@@ -151,6 +151,7 @@
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
+    <ClInclude Include="ConstEnumInfo.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="RoomManager.h" />

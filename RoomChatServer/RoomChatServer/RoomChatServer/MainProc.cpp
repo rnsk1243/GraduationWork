@@ -57,8 +57,7 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 		}
 	}
 
-	MessageStruct MS;
-	CLink clientInfo(clientSocket, MS, lobby.getMessageStruct().message);
+	CLink clientInfo(clientSocket, lobby.getMessageStruct().message);
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// StartChannelNum 채널에 입장

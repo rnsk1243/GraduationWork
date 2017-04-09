@@ -140,5 +140,8 @@
     <ClInclude Include="ActionNetWork.h">
       <Filter>ActionNetWork</Filter>
     </ClInclude>
+    <ClInclude Include="ConstEnumInfo.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

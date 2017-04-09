@@ -188,24 +188,24 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 		cout << "이름 없음" << endl;
 		return NullNameError;
 	}
-	MessageStruct* myName = clientInfo.getMyNameMessageStruct();
-	myName->message = clientInfo.getMyName();
-	myName->sendRecvSize = strlen(myName->message);
+	MessageStruct& myName = clientInfo.getMyNameMessageStruct();
+	myName.message = clientInfo.getMyName();
+	myName.sendRecvSize = strlen(myName.message);
 
-	cout << "보낼 메세지 = " << myName->message << endl;
-	cout << "보낼 사이즈 = " << myName->sendRecvSize << endl;
+	cout << "보낼 메세지 = " << myName.message << endl;
+	cout << "보낼 사이즈 = " << myName.sendRecvSize << endl;
 
 	int temp = 0;
-	temp = send(clientSocket, (char*)&myName->sendRecvSize, IntSize, flags); // 사이즈 보내기
+	temp = send(clientSocket, (char*)&myName.sendRecvSize, IntSize, flags); // 사이즈 보내기
 	if (IntSize == temp)
 	{
 		temp = 0;
 		while (true)
 		{
-			temp += send(clientSocket, myName->message, myName->sendRecvSize, flags);
-			if (temp >= myName->sendRecvSize)
+			temp += send(clientSocket, myName.message, myName.sendRecvSize, flags);
+			if (temp >= myName.sendRecvSize)
 				break;
 		}
 	}
-	return myName->sendRecvSize;
+	return myName.sendRecvSize;
 }

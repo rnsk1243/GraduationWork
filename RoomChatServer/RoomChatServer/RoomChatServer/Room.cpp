@@ -6,18 +6,16 @@ CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
 	RoomNum(roomNum),
 	ChannelNum(channelNum),
 	RoomName(roomName),
-	AmountPeople(0),
-	ClientInfos(new LinkList()),
-	CS_MyInfoList(new CRITICAL_SECTION)
+	AmountPeople(0)
 {
 	
-	InitializeCriticalSection(CS_MyInfoList);
+	InitializeCriticalSection(&CS_MyInfoList);
 }
 
 
 CRoom::~CRoom()
 {
-	if (ClientInfos->empty())
+	if (ClientInfos.empty())
 	{
 		cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
 		delete RoomName;
@@ -27,8 +25,8 @@ CRoom::~CRoom()
 		{
 			delete(*begin);
 		}
-		ClientInfos->clear();
-		DeleteCriticalSection(CS_MyInfoList);
+		ClientInfos.clear();
+		DeleteCriticalSection(&CS_MyInfoList);
 		cout << "방 삭제 완료" << endl;
 	}else
 	{

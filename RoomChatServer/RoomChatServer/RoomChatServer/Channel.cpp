@@ -3,11 +3,9 @@
 
 
 CChannel::CChannel(int channelNum):
-	ChannelNum(channelNum),
-	ClientInfos(new LinkList()),
-	CS_MyInfoList(new CRITICAL_SECTION)
+	ChannelNum(channelNum)
 {
-	InitializeCriticalSection(CS_MyInfoList);
+	InitializeCriticalSection(&CS_MyInfoList);
 }
 
 
@@ -20,6 +18,6 @@ CChannel::~CChannel()
 	{
 		delete(*begin);
 	}
-	ClientInfos->clear();
-	DeleteCriticalSection(CS_MyInfoList);
+	ClientInfos.clear();
+	DeleteCriticalSection(&CS_MyInfoList);
 }

@@ -46,12 +46,12 @@ class CLink
 	int MyChannelNum;
 	// 클라이언트 소켓
 	SOCKET& ClientSocket;
-	MessageStruct& MS;
-	MessageStruct* NameMS;
+	MessageStruct MS;
+	MessageStruct NameMS;
 	CLink(const CLink&);
 	CLink& operator=(const CLink&);
 public:
-	CLink(SOCKET& clientSocket, MessageStruct& ms, char* name_);
+	CLink(SOCKET& clientSocket, char* name_);
 	~CLink();
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }
@@ -61,7 +61,7 @@ public:
 	char* getMyName() { return Name; }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
-	MessageStruct* getMyNameMessageStruct() { return NameMS; }
+	MessageStruct& getMyNameMessageStruct() { return NameMS; }
 #pragma endregion
 	void changeName(const char* name, int start)
 	{
