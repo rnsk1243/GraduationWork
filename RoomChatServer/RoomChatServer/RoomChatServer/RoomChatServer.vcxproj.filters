@@ -125,9 +125,6 @@
     <ClInclude Include="RoomManager.h">
       <Filter>Room\RoomManager</Filter>
     </ClInclude>
-    <ClInclude Include="ActionNetWork.h">
-      <Filter>ActionNetWork</Filter>
-    </ClInclude>
     <ClInclude Include="ReadyNetWork.h">
       <Filter>ReadyNetWork</Filter>
     </ClInclude>
@@ -139,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionNetWork.h">
+      <Filter>ActionNetWork</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

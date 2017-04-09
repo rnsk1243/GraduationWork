@@ -27,14 +27,11 @@ bool CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 		strcpy(MS.message, id.c_str());
 		return true;
 	}
-	else
-	{
-		cout << "로그인 실패" << endl;
-		strcpy(MS.message, "ID or PW 오류 입니다.");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
-		return false;
-	}
+	cout << "로그인 실패" << endl;
+	strcpy(MS.message, "ID or PW 오류 입니다.");
+	MS.sendRecvSize = strlen(MS.message);
+	actionNetWork.sendn(clientSocket, MS);
+	
 	return false;
 }
 
