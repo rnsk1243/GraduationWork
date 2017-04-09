@@ -4,7 +4,7 @@
 #include<stdarg.h>
 #include<fstream>
 using namespace std;
-const int IdPwSize = 256;
+
 
 class CReadHandler
 {

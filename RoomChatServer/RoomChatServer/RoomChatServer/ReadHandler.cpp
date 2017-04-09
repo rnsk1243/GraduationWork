@@ -1,5 +1,5 @@
 #include "ReadHandler.h"
-
+#include"ConstEnumInfo.h"
 
 
 CReadHandler::CReadHandler()

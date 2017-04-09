@@ -9,9 +9,10 @@
 #include"Channel.h"
 #include"ActionNetWork.h"
 #include"Lobby.h"
+#include"ConstEnumInfo.h"
 #include<process.h>
 using namespace std;
-const int MakeThreadNum = 3;
+
 
 
 struct SendRecvParam

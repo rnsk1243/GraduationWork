@@ -2,7 +2,7 @@
 #include"Link.h"
 #include"CommandController.h"
 
-const int NullNameError = -1;
+
 
 class CActionNetWork
 {

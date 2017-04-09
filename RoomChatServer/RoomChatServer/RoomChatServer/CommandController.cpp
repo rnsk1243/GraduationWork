@@ -1,4 +1,5 @@
 #include "CommandController.h"
+#include"ConstEnumInfo.h"
 
 CCommandController::CCommandController()
 {
