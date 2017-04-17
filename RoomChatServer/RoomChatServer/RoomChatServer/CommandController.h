@@ -11,6 +11,7 @@ const int SuccesCommand = 2;
 const int SuccesSend = 3;
 const int EnterRoomPeopleLimit = 2;
 const int MaxChannelNum = 5;
+const int EnterChannelNum = 1; // 처음 접속 채널
 
 class CCommandController
 {
@@ -18,6 +19,8 @@ class CCommandController
 	CRoomManager& RoomManager;
 	CChannelHandler& ChannelHandler;
 	CRoomHandler& RoomHandler;
+	CCommandController(const CCommandController&);
+	CCommandController& operator=(const CCommandController&);
 public:
 	CCommandController(CChannelManager& channelManager, CRoomManager& roomManager, CChannelHandler& channelHandler, CRoomHandler& roomHandler);
 	~CCommandController();

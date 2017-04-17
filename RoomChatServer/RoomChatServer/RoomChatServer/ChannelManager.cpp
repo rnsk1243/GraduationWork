@@ -1,27 +1,42 @@
 #include "ChannelManager.h"
+#include"CommandController.h"
 
 
-
-CChannelManager::CChannelManager()
+CChannelManager::CChannelManager(int channelAmount):
+	Channels(new ChannelList), 
+	CS_Channel(new CRITICAL_SECTION())
 {
-	InitializeCriticalSection(&CS_Channel);
+	InitializeCriticalSection(CS_Channel);
+	for (int i = EnterChannelNum; i <= channelAmount; i++)
+	{
+		CChannel* newChannel = new CChannel(i);
+		pushChannel(newChannel);
+	}
 }
 
 
 CChannelManager::~CChannelManager()
 {
+	ChannelListIt begin = getIterChannelBegin();
+	ChannelListIt end = getIterChannelEnd();
+	for (; begin != end; ++begin)
+	{
+		delete(*begin);
+	}
+	Channels->clear();
+	DeleteCriticalSection(CS_Channel);
 }
 
-CChannel CChannelManager::getMyChannel(int ChannelNum)
+CChannel * CChannelManager::getMyChannel(int ChannelNum)
 {
-	ChannelListIt iterBegin = Channels.begin();
-	ChannelListIt iterEnd = Channels.end();
+	ChannelListIt iterBegin = Channels->begin();
+	ChannelListIt iterEnd = Channels->end();
 
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		if (iterBegin->getChannelNum() == ChannelNum)
+		if ((*iterBegin)->getChannelNum() == ChannelNum)
 			return *iterBegin;
 	}
 	cout << ChannelNum << "번 채널이 없습니다." << endl;
-	return *iterBegin; // nullptr의 역참조하면 오류 날텐데?? 뭘 리턴해야할까..?
+	return nullptr;
 }

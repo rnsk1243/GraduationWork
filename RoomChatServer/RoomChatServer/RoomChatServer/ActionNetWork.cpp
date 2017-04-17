@@ -15,11 +15,11 @@ CActionNetWork::~CActionNetWork()
 int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
 {
 #pragma region 보낼메시지, 채널&방 번호 가져옴
-	MessageStruct MS = clientInfo.getMessageStruct();
+	MessageStruct& MS = clientInfo.getMessageStruct();
 	if (MS.message == nullptr)
 		return OccuredError;
 	char* message = MS.message;
-	int size = MS.sendRecvSize;
+	size_t size = MS.sendRecvSize;
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
 
@@ -29,50 +29,53 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 #pragma region 전달자 및 나의 방 담을 임시 변수
 	LinkListIt iterBegin;
 	LinkListIt iterEnd;
+
+	CChannel* myChannel = nullptr;
+	CRoom* myRoom = nullptr;
 #pragma endregion
 
 #pragma region 내가 속한 채널 방 가져오기
 	if (roomNum == NoneRoom)
 	{
-		CChannel myChannel =  channelManager.getMyChannel(channelNum);
-		//if (myChannel == nullptr)
-		//{
-		//	cout << "나의 채널 객체를 찾을 수 없습니다" << endl;
-		//	return OccuredError;
-		//}
+		myChannel =  channelManager.getMyChannel(channelNum);
+		if (myChannel == nullptr)
+		{
+			cout << "나의 채널 객체를 찾을 수 없습니다" << endl;
+			return OccuredError;
+		}
 		// 채널 소켓 리스트 iter
-		iterBegin = myChannel.getIterMyInfoBegin();
-		iterEnd = myChannel.getIterMyInfoEnd();
+		iterBegin = myChannel->getIterMyInfoBegin();
+		iterEnd = myChannel->getIterMyInfoEnd();
 	}
 	else
 	{
-		CRoom myRoom = *roomManager.getMyRoomIter(channelNum, roomNum);
+		CRoom* myRoom = *(roomManager.getMyRoomIter(channelNum, roomNum));
 		// 방 소켓 리스트 iter
-		/*if (myRoom == nullptr)
+		if (myRoom == nullptr)
 		{
 			cout << "나의 방객체를 찾을 수 없습니다" << endl;
 			return OccuredError;
-		}*/
-		iterBegin = myRoom.getIterMyInfoBegin();
-		iterEnd = myRoom.getIterMyInfoEnd();
+		}
+		iterBegin = myRoom->getIterMyInfoBegin();
+		iterEnd = myRoom->getIterMyInfoEnd();
 	}
 #pragma endregion
 #pragma region 내가 속한 채널 or 방에게 보내기
 	// 방에 있는 모든 사람에게 보내기
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		int temp = 0;
+		size_t temp = 0;
 		// 메시지 보낸 자신이면
-		if (iterBegin->getMyPKNum() == clientInfo.getMyPKNum())
+		if ((*iterBegin) == &clientInfo)
 		{
 			continue; // 보내지 않고 통과
 		}
 
-		SOCKET clientSocket = iterBegin->getClientSocket();
+		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
 
 		sendMyName(clientSocket, clientInfo); // 이름 보내기
 
-		send(clientSocket, (char*)size, IntSize, flags); // 사이즈 보내기
+		send(clientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
 		while (true)
 		{
 			temp += send(clientSocket, message, size, flags);
@@ -89,8 +92,8 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 {
 #pragma region 받을 데이터 크기 가져오기
 	char* temp = new char[4];
-	SOCKET clientSocket = clientInfo.getClientSocket();
-	MessageStruct MS = clientInfo.getMessageStruct();
+	SOCKET& clientSocket = clientInfo.getClientSocket();
+	MessageStruct& MS = clientInfo.getMessageStruct();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
@@ -104,7 +107,7 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 	delete temp;
 #pragma endregion
 #pragma region 메세지 받기
-	int left = MS.sendRecvSize;
+	size_t left = MS.sendRecvSize;
 	while (left > 0)
 	{
 		isSuccess += recv(clientSocket, MS.message, left, flags);
@@ -137,26 +140,24 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 		cout << "이름 없음" << endl;
 		return NullNameError;
 	}
-	MessageStruct myName;
-	myName.message = clientInfo.getMyName();
-	myName.sendRecvSize = strlen(myName.message);
+	MessageStruct* myName = clientInfo.getMyNameMessageStruct();
+	myName->message = clientInfo.getMyName();
+	myName->sendRecvSize = strlen(myName->message);
 
-	cout << "보낼 메세지 = " << myName.message << endl;
-	cout << "보낼 사이즈 = " << myName.sendRecvSize << endl;
+	cout << "보낼 메세지 = " << myName->message << endl;
+	cout << "보낼 사이즈 = " << myName->sendRecvSize << endl;
 
 	int temp = 0;
-	temp = send(clientSocket, (char*)myName.sendRecvSize, IntSize, flags); // 사이즈 보내기
+	temp = send(clientSocket, (char*)&myName->sendRecvSize, IntSize, flags); // 사이즈 보내기
 	if (IntSize == temp)
 	{
 		temp = 0;
 		while (true)
 		{
-			temp += send(clientSocket, myName.message, myName.sendRecvSize, flags);
-			if (temp >= myName.sendRecvSize)
+			temp += send(clientSocket, myName->message, myName->sendRecvSize, flags);
+			if (temp >= myName->sendRecvSize)
 				break;
 		}
 	}
-	
-
-	return myName.sendRecvSize;
+	return myName->sendRecvSize;
 }

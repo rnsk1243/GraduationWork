@@ -1,3 +1,4 @@
+//#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 #include<WinSock2.h>
 #include<iostream>
@@ -9,110 +10,63 @@ const int NameSize = 30;
 struct MessageStruct
 {
 	char* message;
-	int sendRecvSize;
-	MessageStruct():
-		message(new char[BufSize]),
-		sendRecvSize(0)
-	{}
-	MessageStruct(const MessageStruct& ms):
-		sendRecvSize(ms.sendRecvSize)
+	size_t sendRecvSize;
+	MessageStruct():message(new char[BufSize]){}
+	MessageStruct& operator=(const MessageStruct& copyMS)
 	{
-		if (ms.message)
-		{
-			int length = strlen(ms.message) + 1;
-			message = new char[length];
-			for (int i = 0; i < length - 1; i++)
-			{
-				message[i] = ms.message[i];
-			}
-			message[length - 1] = '\0';
-		}
+		if (this == &copyMS)
+			return *this;
+		cout << "메시지 복사" << endl;
+		size_t length = strlen(copyMS.message) + 1;
+		message = new char[length];
+		strcpy_s(message, length, copyMS.message);
+		return *this;
+	}
+	MessageStruct(const MessageStruct& copyMS) :sendRecvSize(copyMS.sendRecvSize)
+	{
+		cout << "메시지 복사" << endl;
+		size_t length = strlen(copyMS.message) + 1;
+		message = new char[length];
+		strcpy_s(message, length, copyMS.message);
 	}
 	~MessageStruct()
 	{
-		cout << "메세지 구조체 소멸자 호출" << endl;
-		delete message;
+		cout << "메시지 소멸자 호출" << endl;
+		delete[] message;
+		message = nullptr;
 	}
 };
 
 class CLink
 {
-	// 내 고유번호
-	const int MyPKNum;
 	char* Name;
 	// 현재 내가 속한 방 번호
 	int MyRoomNum;
 	// 현재 내가 속한 채널 번호
 	int MyChannelNum;
 	// 클라이언트 소켓
-	SOCKET& ClientSocket; // &로 선언한 이유는 클래스 생성시 바로 초기화 해줄 것이고
-	// 종료될때까지 바뀌지 않는 값이기 때문
+	SOCKET& ClientSocket;
 	MessageStruct& MS;
+	MessageStruct* NameMS;
+	CLink(const CLink&);
+	CLink& operator=(const CLink&);
 public:
-	CLink(SOCKET& clientSocket, MessageStruct& MS, int myPKNum);
+	CLink(SOCKET& clientSocket, MessageStruct& ms);
 	~CLink();
-	// 복사 생성자
-	CLink(const CLink& link) :
-		MyRoomNum(link.MyRoomNum),
-		MyChannelNum(link.MyChannelNum),
-		ClientSocket(link.ClientSocket),
-		MS(link.MS),
-		MyPKNum(link.MyPKNum)
-	{
-		if (link.Name)
-		{
-			int length = strlen(link.Name) + 1;
-			Name = new char[length];
-			for (int i = 0; i < length - 1; i++)
-			{
-				Name[i] = link.Name[i];
-			}
-			Name[length - 1] = '\0';
-		}
-
-	}
-	CLink& operator = (const CLink& link)
-	{
-		if (this == &link)
-			return *this;
-		else 
-		{
-			if (link.Name)
-			{
-				if (Name)
-				{
-					delete Name;
-					Name = nullptr;
-				}
-				int length = strlen(link.Name) + 1;
-				Name = new char[length];
-				for (int i = 0; i < length - 1; i++)
-				{
-					Name[i] = link.Name[i];
-				}
-				Name[length - 1] = '\0';
-			}
-			MyRoomNum = link.MyChannelNum;
-			MyChannelNum = link.MyChannelNum;
-			ClientSocket = link.ClientSocket;
-			MS = link.MS;
-			return *this;
-		}
-	}
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
+	MessageStruct* getMyNameMessageStruct() { return NameMS; }
 	char* getMyName() { return Name; }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
-	int getMyPKNum() { return MyPKNum; }
 #pragma endregion
 	void changeName(const char* name, int start)
 	{
 		//Name = '\0';
-		int char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
+		size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
 		for (int i = 0; i < char_size; i++)
 		{
 			Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사

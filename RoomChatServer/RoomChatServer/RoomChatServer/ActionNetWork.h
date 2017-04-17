@@ -6,6 +6,8 @@ const int NullNameError = -1;
 
 class CActionNetWork
 {
+	CActionNetWork(const CActionNetWork&);
+	CActionNetWork& operator=(const CActionNetWork&);
 public:
 	CActionNetWork();
 	~CActionNetWork();

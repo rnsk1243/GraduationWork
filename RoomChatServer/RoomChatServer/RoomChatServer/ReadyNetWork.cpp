@@ -33,25 +33,23 @@ CReadyNetWork::~CReadyNetWork()
 	closesocket(*hServSock);
 }
 
-SOCKET CReadyNetWork::Accept()
+void CReadyNetWork::Accept(SOCKET& hClientSock)
 {
 	if (hServSock == nullptr)
 	{
 		cout << "Accept Error" << endl;
-		return -1;
+		return;
 	}
-	// 소켓&주소 메모리 할당
-	SOCKET hClientSock;
-	SOCKADDR_IN hClntAddr;
+	// 소켓주소 메모리 할당
+	SOCKADDR_IN* hClntAddr = new SOCKADDR_IN();
 	int szClntAddr;
 	// accept
-	szClntAddr = sizeof(hClntAddr);
-	hClientSock = accept(*hServSock, (SOCKADDR*)&hClntAddr, &szClntAddr);// list나 벡터에 저장
+	szClntAddr = sizeof(*hClntAddr);
+	hClientSock = accept(*hServSock, (SOCKADDR*)hClntAddr, &szClntAddr);// list나 벡터에 저장
 																		 //cout << "accept 에서의 주소 = " << hClntSock << endl;
 	if (hClientSock == INVALID_SOCKET)
 		cout << "accept() error" << endl;
 	else
 		cout << "Connected client" << endl;
 
-	return hClientSock; // 복사해서 잘 넘겨주길..
 }

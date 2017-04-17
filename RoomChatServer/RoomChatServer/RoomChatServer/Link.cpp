@@ -1,20 +1,20 @@
 #include"Link.h"
 #include"RoomHandler.h"
 
-CLink::CLink(SOCKET& clientSocket, MessageStruct& MS, int myPKNum):
-	ClientSocket(clientSocket),
-	Name(new char[NameSize]),
-	MyChannelNum(0),
-	MyRoomNum(NoneRoom),
-	MS(MS),
-	MyPKNum(myPKNum)
+CLink::CLink(SOCKET& clientSocket, MessageStruct& ms):
+	ClientSocket(clientSocket), 
+	Name(new char[NameSize]), 
+	MyChannelNum(0), MyRoomNum(NoneRoom),
+	MS(ms),
+	NameMS(new MessageStruct())
 {
-		//Name = "abc";// 값으로 초기화 하면 나중에 바꿀 수가 없다. 왜지?
 }
 
 
 CLink::~CLink()
 {
-	cout << Name << "CLink 클라이언트 정보가 삭제 됩니다." << endl;
+	cout << Name << "클라이언트 정보가 삭제 됩니다." << endl;
 	delete[] Name;
+	delete NameMS;
+	closesocket(ClientSocket);
 }
