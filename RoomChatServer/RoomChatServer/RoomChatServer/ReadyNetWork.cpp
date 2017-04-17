@@ -1,5 +1,5 @@
 #include "ReadyNetWork.h"
-
+#include"ConstEnumInfo.h"
 
 
 CReadyNetWork::CReadyNetWork():

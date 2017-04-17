@@ -3,7 +3,7 @@
 using namespace std;
 #include"Link.h"
 #include"RoomManager.h"
-const int NoneRoom = -1;
+
 
 class CRoomHandler
 {

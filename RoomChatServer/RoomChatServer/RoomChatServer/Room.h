@@ -15,8 +15,8 @@ class CRoom
 	int RoomNum;
 	// 현재 들어있는 방 인원
 	int AmountPeople;
-	LinkList* ClientInfos;
-	CRITICAL_SECTION* CS_MyInfoList;
+	LinkList ClientInfos;
+	CRITICAL_SECTION CS_MyInfoList;
 	void increasePeople() { AmountPeople++; }
 	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
 	CRoom(const CRoom&);
@@ -27,18 +27,18 @@ public:
 #pragma region push, erase 함수
 	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(CS_MyInfoList);
-		ClientInfos->push_back(client);
+		EnterCriticalSection(&CS_MyInfoList);
+		ClientInfos.push_back(client);
 		increasePeople();
-		LeaveCriticalSection(CS_MyInfoList);
+		LeaveCriticalSection(&CS_MyInfoList);
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
-		EnterCriticalSection(CS_MyInfoList);
-		temp = ClientInfos->erase(myInfoListIt);
+		EnterCriticalSection(&CS_MyInfoList);
+		temp = ClientInfos.erase(myInfoListIt);
 		decreasePeople();
-		LeaveCriticalSection(CS_MyInfoList);
+		LeaveCriticalSection(&CS_MyInfoList);
 		return temp;
 	}
 #pragma endregion
@@ -46,14 +46,14 @@ public:
 	int getRoomNum() { return RoomNum; }
 	int getChannelNum() { return ChannelNum; }
 	char* getRoomName() { return RoomName; }
-	LinkListIt getIterMyInfoBegin() { return ClientInfos->begin(); }
-	LinkListIt getIterMyInfoEnd() { return ClientInfos->end(); }
+	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
+	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
 	int getAmountPeople() { return AmountPeople; }
 #pragma endregion
 	bool mergeRoom(CRoom* targetRoom)
 	{
-		EnterCriticalSection(CS_MyInfoList);
-		EnterCriticalSection(targetRoom->CS_MyInfoList);
+		EnterCriticalSection(&CS_MyInfoList);
+		EnterCriticalSection(&targetRoom->CS_MyInfoList);
 		// 실제 옮기기 전에 준비작업으로 room정보 수정
 #pragma region 옮기는 방안에 있는 클라이언트들의 room정보 수정(방 번호라든지..)
 		LinkListIt linkBegin = targetRoom->getIterMyInfoBegin();
@@ -65,10 +65,10 @@ public:
 			increasePeople(); // 방 인원수 갱신
 		}
 #pragma endregion 
-		ClientInfos->merge(*targetRoom->ClientInfos); // 실제 옮김
+		ClientInfos.merge(targetRoom->ClientInfos); // 실제 옮김
 
-		LeaveCriticalSection(targetRoom->CS_MyInfoList);
-		LeaveCriticalSection(CS_MyInfoList);
+		LeaveCriticalSection(&targetRoom->CS_MyInfoList);
+		LeaveCriticalSection(&CS_MyInfoList);
 		return true;
 	}
 };

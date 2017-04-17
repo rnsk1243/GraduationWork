@@ -10,11 +10,11 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager* channelManager, int targetChannelNo)
+bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelManager, int targetChannelNo)
 {
 	// channel리스트 iterator
-	ChannelListIt iterBegin = channelManager->getIterChannelBegin();
-	ChannelListIt iterEnd = channelManager->getIterChannelEnd();
+	ChannelListIt iterBegin = channelManager.getIterChannelBegin();
+	ChannelListIt iterEnd = channelManager.getIterChannelEnd();
 	
 	// 옮기고자 하는 번호의 Channel 포인터 얻기
 	for (; iterBegin != iterEnd; ++iterBegin)
@@ -31,9 +31,9 @@ bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager* channelMa
 	return false;
 }
 
-bool CChannelHandler::exitChannel(CLink* clientInfo, CChannelManager* channelManager)
+bool CChannelHandler::exitChannel(CLink& clientInfo, CChannelManager& channelManager)
 {
-	CChannel* myChannel = channelManager->getMyChannel(clientInfo->getMyChannelNum());
+	CChannel* myChannel = channelManager.getMyChannel(clientInfo.getMyChannelNum());
 	cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
 
 	if (myChannel != nullptr)
@@ -42,7 +42,7 @@ bool CChannelHandler::exitChannel(CLink* clientInfo, CChannelManager* channelMan
 		LinkListIt iterEnd = myChannel->getIterMyInfoEnd();
 		for (; iterBegin != iterEnd; ++iterBegin)
 		{
-			if ((*iterBegin) == clientInfo)
+			if ((*iterBegin) == &clientInfo)
 			{
 				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 방에서 빼기
 				break;

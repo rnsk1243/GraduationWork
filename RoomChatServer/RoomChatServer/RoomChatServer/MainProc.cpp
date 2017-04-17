@@ -8,37 +8,61 @@
 #include"ChannelManager.h"
 #include"Channel.h"
 #include"ActionNetWork.h"
+#include"Lobby.h"
+#include"ConstEnumInfo.h"
 #include<process.h>
 using namespace std;
 
 
-const int MakeThreadNum = 3;
-const int ChannelAmount = 5;
 
 struct SendRecvParam
 {
 	SOCKET& clientSocket;
-	CRoomManager& roomManager;
-	CChannelManager& channelManager;
 	CCommandController& commandController;
 	CActionNetWork& actionNetWork;
-	SendRecvParam(SOCKET& clientSocket_, CRoomManager& roomManager_, CChannelManager& channelManager_, CCommandController& commandController_, CActionNetWork& actionNetWork_) :
-		clientSocket(clientSocket_), roomManager(roomManager_), channelManager(channelManager_), commandController(commandController_), actionNetWork(actionNetWork_) {}
+	SendRecvParam(SOCKET& clientSocket_, CCommandController& commandController_, CActionNetWork& actionNetWork_) :
+		clientSocket(clientSocket_), commandController(commandController_), actionNetWork(actionNetWork_) {}
 };
 
 unsigned int __stdcall thSendRecv(PVOID pvParam)
 {
 	SendRecvParam* SRParam = (SendRecvParam*)pvParam;
 	SOCKET& clientSocket = SRParam->clientSocket;
-	CRoomManager& roomManager = SRParam->roomManager;
-	CChannelManager& channelManager = SRParam->channelManager;
 	CCommandController& commandController = SRParam->commandController;
 	CActionNetWork& actionNetWork = SRParam->actionNetWork;
 
-	MessageStruct MS;
-	CLink clientInfo(clientSocket, MS);
+	CLobby lobby;
+	bool isLogin = false;
+	while (!isLogin)
+	{
+		lobby.SendMenuInfo(clientSocket, actionNetWork);
+		actionNetWork.recvn(clientSocket, lobby.getMessageStruct());
+		int choose = lobby.ChooseMenu(lobby.getMessageStruct().message, clientSocket, actionNetWork);
+		switch (choose)
+		{
+		case 1:
+			if (lobby.Login(clientSocket, actionNetWork))
+			{
+				isLogin = true;
+				break;
+			}
+			else
+			{
+				break;
+			}
+		case 2:
+			lobby.JoinMember(clientSocket, actionNetWork);
+			break;
+		default:
+			break;
+		}
+	}
+
+	CLink clientInfo(clientSocket, lobby.getMessageStruct().message);
+	CChannelManager& channelManager = commandController.getChannelManager();
+	CRoomManager& roomManager = commandController.getRoomManager();
 	// StartChannelNum 채널에 입장
-	commandController.getChannelHandler().enterChannel(&clientInfo, &channelManager, EnterChannelNum);
+	commandController.getChannelHandler().enterChannel(&clientInfo, channelManager, EnterChannelNum);
 
 	while (true)
 	{
@@ -67,17 +91,13 @@ void main()
 {
 	CActionNetWork actionNetWork;
 	CReadyNetWork readyNetWork;
-	CChannelHandler channelHandler;
-	CRoomHandler roomHandler;
-	CChannelManager channelManager(ChannelAmount);
-	CRoomManager roomManager;
-	CCommandController commandController(channelManager, roomManager, channelHandler, roomHandler);
+	CCommandController commandController;
 
 	while (true)
 	{
 		SOCKET* clientSocket = new SOCKET();
 		readyNetWork.Accept(*clientSocket);
-		SendRecvParam SRParam(*clientSocket, roomManager, channelManager, commandController, actionNetWork);
+		SendRecvParam SRParam(*clientSocket, commandController, actionNetWork);
 		_beginthreadex(NULL, NULL, thSendRecv, &SRParam, 0, NULL);
 	}
 	
