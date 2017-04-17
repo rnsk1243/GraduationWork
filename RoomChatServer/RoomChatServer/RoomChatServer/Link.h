@@ -3,8 +3,7 @@
 #include<WinSock2.h>
 #include<iostream>
 using namespace std;
-const int BufSize = 1024;
-const int NameSize = 30;
+#include"ConstEnumInfo.h"
 
 // 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
 struct MessageStruct
@@ -46,22 +45,22 @@ class CLink
 	int MyChannelNum;
 	// 클라이언트 소켓
 	SOCKET& ClientSocket;
-	MessageStruct& MS;
-	MessageStruct* NameMS;
+	MessageStruct MS;
+	MessageStruct NameMS;
 	CLink(const CLink&);
 	CLink& operator=(const CLink&);
 public:
-	CLink(SOCKET& clientSocket, MessageStruct& ms);
+	CLink(SOCKET& clientSocket, char* name_);
 	~CLink();
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
-	MessageStruct* getMyNameMessageStruct() { return NameMS; }
 	char* getMyName() { return Name; }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
+	MessageStruct& getMyNameMessageStruct() { return NameMS; }
 #pragma endregion
 	void changeName(const char* name, int start)
 	{

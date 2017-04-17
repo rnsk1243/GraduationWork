@@ -2,12 +2,10 @@
 #include"CommandController.h"
 
 
-CChannelManager::CChannelManager(int channelAmount):
-	Channels(new ChannelList), 
-	CS_Channel(new CRITICAL_SECTION())
+CChannelManager::CChannelManager()
 {
-	InitializeCriticalSection(CS_Channel);
-	for (int i = EnterChannelNum; i <= channelAmount; i++)
+	InitializeCriticalSection(&CS_Channel);
+	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
 	{
 		CChannel* newChannel = new CChannel(i);
 		pushChannel(newChannel);
@@ -23,14 +21,14 @@ CChannelManager::~CChannelManager()
 	{
 		delete(*begin);
 	}
-	Channels->clear();
-	DeleteCriticalSection(CS_Channel);
+	Channels.clear();
+	DeleteCriticalSection(&CS_Channel);
 }
 
 CChannel * CChannelManager::getMyChannel(int ChannelNum)
 {
-	ChannelListIt iterBegin = Channels->begin();
-	ChannelListIt iterEnd = Channels->end();
+	ChannelListIt iterBegin = Channels.begin();
+	ChannelListIt iterEnd = Channels.end();
 
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{

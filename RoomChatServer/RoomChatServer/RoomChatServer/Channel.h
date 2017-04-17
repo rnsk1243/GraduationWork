@@ -11,8 +11,8 @@ typedef LinkList::iterator LinkListIt;
 class CChannel
 {
 	int ChannelNum;
-	LinkList* ClientInfos;
-	CRITICAL_SECTION* CS_MyInfoList;
+	LinkList ClientInfos;
+	CRITICAL_SECTION CS_MyInfoList;
 	CChannel(const CChannel&);
 	CChannel& operator=(const CChannel&);
 public:
@@ -20,23 +20,23 @@ public:
 	~CChannel();
 #pragma region get,set 함수
 	int getChannelNum() { return ChannelNum; }
-	LinkListIt getIterMyInfoBegin() { return ClientInfos->begin(); }
-	LinkListIt getIterMyInfoEnd() { return ClientInfos->end(); }
+	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
+	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
 #pragma endregion
 
 #pragma region push,erase 함수
 	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(CS_MyInfoList);
-		ClientInfos->push_back(client);
-		LeaveCriticalSection(CS_MyInfoList);
+		EnterCriticalSection(&CS_MyInfoList);
+		ClientInfos.push_back(client);
+		LeaveCriticalSection(&CS_MyInfoList);
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
-		EnterCriticalSection(CS_MyInfoList);
-		temp = ClientInfos->erase(myInfoListIt);
-		LeaveCriticalSection(CS_MyInfoList);
+		EnterCriticalSection(&CS_MyInfoList);
+		temp = ClientInfos.erase(myInfoListIt);
+		LeaveCriticalSection(&CS_MyInfoList);
 		return temp;
 	}
 #pragma endregion

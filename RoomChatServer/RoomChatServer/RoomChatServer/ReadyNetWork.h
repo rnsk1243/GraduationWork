@@ -3,7 +3,7 @@
 #include<iostream>
 using namespace std;
 
-const int Port = 9000;
+
 
 class CReadyNetWork
 {

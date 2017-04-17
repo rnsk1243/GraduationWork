@@ -13,9 +13,9 @@ typedef RoomList::iterator RoomListIt;
 
 class CRoomManager
 {
-	RoomList* Rooms;
+	RoomList Rooms;
 #pragma region 크리티컬 섹션
-	CRITICAL_SECTION* CS_Room;
+	CRITICAL_SECTION CS_Room;
 	CRoomManager(const CRoomManager&);
 	CRoomManager& operator=(const CRoomManager&);
 #pragma endregion
@@ -26,26 +26,26 @@ public:
 
 	void pushRoom(CRoom* newRoom)
 	{
-		EnterCriticalSection(CS_Room);
-		Rooms->push_back(newRoom);
-		LeaveCriticalSection(CS_Room);
+		EnterCriticalSection(&CS_Room);
+		Rooms.push_back(newRoom);
+		LeaveCriticalSection(&CS_Room);
 	}
 	RoomListIt eraseRoom(RoomListIt delRoom)
 	{
 		RoomListIt temp;
-		EnterCriticalSection(CS_Room);
-		temp = Rooms->erase(delRoom);
-		LeaveCriticalSection(CS_Room);
+		EnterCriticalSection(&CS_Room);
+		temp = Rooms.erase(delRoom);
+		LeaveCriticalSection(&CS_Room);
 		return temp;
 	}
 #pragma endregion
 
 #pragma region get 메소드
 	RoomListIt getMyRoomIter(int ChannelNum, int roomNum);
-	RoomListIt getIterRoomBegin() { return Rooms->begin(); }
-	RoomListIt getIterRoomEnd() { return Rooms->end(); }
+	RoomListIt getIterRoomBegin() { return Rooms.begin(); }
+	RoomListIt getIterRoomEnd() { return Rooms.end(); }
 	int getEmptyRoomNum();
 #pragma endregion
-	bool isRoomListEmpty() { return Rooms->empty(); }
+	bool isRoomListEmpty() { return Rooms.empty(); }
 };
  

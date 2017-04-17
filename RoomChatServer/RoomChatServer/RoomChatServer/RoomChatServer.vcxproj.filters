@@ -43,6 +43,18 @@
     <Filter Include="ReadyNetWork">
       <UniqueIdentifier>{46f6a419-9e04-417e-ad42-451aac251820}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lobby">
+      <UniqueIdentifier>{e40ff6c1-4241-4165-9ba1-646ae3b15440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lobby\IOHandler">
+      <UniqueIdentifier>{32d9f017-df9b-4311-8a96-a86d25e0eb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lobby\IOHandler\hRead">
+      <UniqueIdentifier>{98d0897c-2b6d-4804-8a04-aef003b74b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lobby\IOHandler\hWrite">
+      <UniqueIdentifier>{10e60441-2645-4db2-81f8-b5f2ef7434c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -78,6 +90,15 @@
     <ClCompile Include="ReadyNetWork.cpp">
       <Filter>ReadyNetWork</Filter>
     </ClCompile>
+    <ClCompile Include="WriteHandler.cpp">
+      <Filter>Lobby\IOHandler\hWrite</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadHandler.cpp">
+      <Filter>Lobby\IOHandler\hRead</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby.cpp">
+      <Filter>Lobby</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Room.h">
@@ -104,11 +125,23 @@
     <ClInclude Include="RoomManager.h">
       <Filter>Room\RoomManager</Filter>
     </ClInclude>
+    <ClInclude Include="ReadyNetWork.h">
+      <Filter>ReadyNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteHandler.h">
+      <Filter>Lobby\IOHandler\hWrite</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadHandler.h">
+      <Filter>Lobby\IOHandler\hRead</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby.h">
+      <Filter>Lobby</Filter>
+    </ClInclude>
     <ClInclude Include="ActionNetWork.h">
       <Filter>ActionNetWork</Filter>
     </ClInclude>
-    <ClInclude Include="ReadyNetWork.h">
-      <Filter>ReadyNetWork</Filter>
+    <ClInclude Include="ConstEnumInfo.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
