@@ -55,6 +55,12 @@
     <Filter Include="Lobby\IOHandler\hWrite">
       <UniqueIdentifier>{10e60441-2645-4db2-81f8-b5f2ef7434c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GoogleProtoBuf">
+      <UniqueIdentifier>{b5a50f51-6e52-4358-a185-cc8ed35c85a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GoogleProtoBuf\Proto">
+      <UniqueIdentifier>{98977d26-eaed-437b-911f-7c76cf0bd8a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -98,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="graduationWork.pb.cc">
+      <Filter>GoogleProtoBuf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,5 +152,13 @@
     <ClInclude Include="ConstEnumInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="graduationWork.pb.h">
+      <Filter>GoogleProtoBuf</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="graduationWork.proto">
+      <Filter>GoogleProtoBuf\Proto</Filter>
+    </None>
   </ItemGroup>
 </Project>

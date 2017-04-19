@@ -2,6 +2,8 @@
 #include "ChannelManager.h"
 #include"RoomManager.h"
 #include"ReadHandler.h"
+#include"graduationWork.pb.h"
+using namespace graduationWork;
 
 CActionNetWork::CActionNetWork()
 {
@@ -12,9 +14,11 @@ CActionNetWork::~CActionNetWork()
 {
 }
 
-int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
+int CActionNetWork::recvn(SOCKET & socket, Message& g_MS, int flags)
 {
-	char temp[4];
+	char temp[IntSize];
+	char tempMessage[BufSize];
+	
 	int isSuccess = recv(socket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
@@ -22,16 +26,15 @@ int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
 		cout << "1recvn ERROR" << endl;
 		return SOCKET_ERROR;
 	}
-	MS.sendRecvSize = *(int*)temp;
+	int left = *(int*)temp;
 
 	// 임시로 만든 temp 메모리 반환
 #pragma endregion
 #pragma region 메세지 받기
-	size_t left = MS.sendRecvSize;
 	isSuccess = 0;
 	while (left > 0)
 	{
-		isSuccess += recv(socket, MS.message, left, flags);
+		isSuccess += recv(socket, tempMessage, left, flags);
 		//cout << "success = " << isSuccess << endl;
 		if (isSuccess == SOCKET_ERROR)
 		{
@@ -41,25 +44,32 @@ int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
 		else if (isSuccess >= left)
 			break;
 	}
-	MS.message[left] = '\0';
+	bool isParseSucces = g_MS.ParseFromArray(tempMessage, isSuccess);
+	if (!isParseSucces)
+		return ParseFail;
 #pragma endregion
-	cout << "받은 idPw메시지 = " << MS.message << endl;
+	cout << "받은 idPw메시지 = " << g_MS.message() << endl;
+//	g_MS.set_messagesize(isSuccess);
 	return SuccesRecv;
 }
 
 int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
 {
+	char temp[BufSize];
 #pragma region 보낼메시지, 채널&방 번호 가져옴
-	MessageStruct& MS = clientInfo.getMessageStruct();
-	if (MS.message == nullptr)
+	Message& g_MS = clientInfo.getMessage();
+	if (&g_MS.message() == nullptr)
 		return OccuredError;
-	char* message = MS.message;
-	size_t size = MS.sendRecvSize;
+	
+	size_t size = g_MS.ByteSize();
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
 
-	cout << "보낼 메세지 = " << message << endl;
+	cout << "보낼 메세지 = " << g_MS.message() << endl;
 	cout << "보낼 사이즈 = " << size << endl;
+	bool isSerializeSucces = g_MS.SerializeToArray(temp, size);
+	if (!isSerializeSucces)
+		return SerializeFail;
 #pragma endregion
 #pragma region 전달자 및 나의 방 담을 임시 변수
 	LinkListIt iterBegin;
@@ -99,7 +109,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	// 방에 있는 모든 사람에게 보내기
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		size_t temp = 0;
+		size_t sendSize = 0;
 		// 메시지 보낸 자신이면
 		if ((*iterBegin) == &clientInfo)
 		{
@@ -113,8 +123,8 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 		send(clientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
 		while (true)
 		{
-			temp += send(clientSocket, message, size, flags);
-			if (temp >= size)
+			sendSize += send(clientSocket, temp, size, flags);
+			if (sendSize >= size)
 				break;
 		}
 	}
@@ -123,10 +133,12 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	return SuccesSend;
 }
 
-int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
+int CActionNetWork::sendn(SOCKET & socket, Message& g_MS, int flags)
 {
-	char* message = MS.message;
-	size_t size = MS.sendRecvSize;
+	char message[BufSize];
+	int size = g_MS.ByteSize();
+	
+	g_MS.SerializeToArray(message, size);
 	send(socket, (char*)&size, IntSize, flags); // 사이즈 보내기
 	size_t temp = 0;
 	while (true)
@@ -141,9 +153,9 @@ int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
 int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandController, int flags)
 {
 #pragma region 받을 데이터 크기 가져오기
-	char temp[4];
+	char temp[IntSize];
 	SOCKET& clientSocket = clientInfo.getClientSocket();
-	MessageStruct& MS = clientInfo.getMessageStruct();
+	Message& g_MS = clientInfo.getMessageStruct();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
