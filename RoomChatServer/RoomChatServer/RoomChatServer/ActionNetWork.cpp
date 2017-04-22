@@ -154,8 +154,9 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 {
 #pragma region 받을 데이터 크기 가져오기
 	char temp[IntSize];
+	char message[BufSize];
 	SOCKET& clientSocket = clientInfo.getClientSocket();
-	Message& g_MS = clientInfo.getMessageStruct();
+	Message& g_MS = clientInfo.getMessage();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
@@ -163,14 +164,13 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 		cout << "1recvn ERROR" << endl;
 		return SOCKET_ERROR;
 	}
-	MS.sendRecvSize = *(int*)temp;
+	int left = *(int*)temp;
 #pragma endregion
 #pragma region 메세지 받기
-	size_t left = MS.sendRecvSize;
 	isSuccess = 0;
 	while (left > 0)
 	{
-		isSuccess += recv(clientSocket, MS.message, left, flags);
+		isSuccess += recv(clientSocket, message, left, flags);
 		//cout << "success = " << isSuccess << endl;
 		if (isSuccess == SOCKET_ERROR)
 		{
@@ -180,44 +180,44 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 		else if (isSuccess >= left)
 			break;
 	}
-	MS.message[left] = '\0';
+	g_MS.ParseFromArray(message, left);
+//	char* charMessage = g_MS.message().c_str();
 #pragma endregion
-#pragma region 명령메시지 이면 처리
-	char* ptr = strchr(MS.message, '/');
-	if (ptr != nullptr)
-	{
-		return commandController.commandHandling(clientInfo, ptr);
-	}
-#pragma endregion
-	cout << "받은 메시지 = " << MS.message << endl;
+//#pragma region 명령메시지 이면 처리
+//	char* ptr = strchr(g_MS.message(), '/');
+//	if (ptr != nullptr)
+//	{
+//		return commandController.commandHandling(clientInfo, ptr);
+//	}
+//#pragma endregion
+	cout << "받은 메시지 = " << g_MS.message() << endl;
 	return SuccesRecv;
 }
 
 int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
 {
-	if (nullptr == clientInfo.getMyName())
+	if (clientInfo.getMyName().empty())
 	{
 		cout << "이름 없음" << endl;
 		return NullNameError;
 	}
-	MessageStruct& myName = clientInfo.getMyNameMessageStruct();
-	myName.message = clientInfo.getMyName();
-	myName.sendRecvSize = strlen(myName.message);
-
-	cout << "보낼 메세지 = " << myName.message << endl;
-	cout << "보낼 사이즈 = " << myName.sendRecvSize << endl;
+	Message& myName = clientInfo.getMyNameMessage();
+	myName.set_message(clientInfo.getMyName());
+	int sendRecvSize = myName.ByteSize();
 
 	int temp = 0;
-	temp = send(clientSocket, (char*)&myName.sendRecvSize, IntSize, flags); // 사이즈 보내기
+	char myNameMessage[NameSize];
+	myName.SerializeToArray(myNameMessage, sendRecvSize);
+	temp = send(clientSocket, (char*)&sendRecvSize, IntSize, flags); // 사이즈 보내기
 	if (IntSize == temp)
 	{
 		temp = 0;
 		while (true)
 		{
-			temp += send(clientSocket, myName.message, myName.sendRecvSize, flags);
-			if (temp >= myName.sendRecvSize)
+			temp += send(clientSocket, myNameMessage, sendRecvSize, flags);
+			if (temp >= sendRecvSize)
 				break;
 		}
 	}
-	return myName.sendRecvSize;
+	return SuccesSend;
 }

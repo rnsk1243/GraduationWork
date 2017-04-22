@@ -40,7 +40,7 @@ using namespace graduationWork;
 
 class CLink
 {
-	char* Name;
+	string Name;
 	// 현재 내가 속한 방 번호
 	int MyRoomNum;
 	// 현재 내가 속한 채널 번호
@@ -52,14 +52,14 @@ class CLink
 	CLink(const CLink&);
 	CLink& operator=(const CLink&);
 public:
-	CLink(SOCKET& clientSocket, char* name_);
+	CLink(SOCKET& clientSocket, string name_);
 	~CLink();
 #pragma region get, set 함수
 	Message& getMessage() { return g_MS; }
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
-	char* getMyName() { return Name; }
+	string& getMyName() { return Name; }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 	Message& getMyNameMessage() { return g_NameMS; }

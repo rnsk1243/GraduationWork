@@ -1,227 +1,56 @@
-﻿  graduationWork.pb.cc
-  MainProc.cpp
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(10): error C3646: 'MS': 알 수 없는 재정의 지정자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(10): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C2143: 구문 오류: ';'이(가) '&' 앞에 없습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C2334: '{' 앞에 예기치 않은 토큰이 있습니다. 명백한 함수 본문을 건너뜁니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(39): error C2039: 'getMessageStruct': 'CLobby'의 멤버가 아닙니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(7): note: 'CLobby' 선언을 참조하십시오.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(39): error C2661: 'CActionNetWork::recvn': 오버로드된 함수에서 1개의 매개 변수를 사용하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(40): error C2039: 'getMessageStruct': 'CLobby'의 멤버가 아닙니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(7): note: 'CLobby' 선언을 참조하십시오.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(40): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(61): error C2039: 'getMessageStruct': 'CLobby'의 멤버가 아닙니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(7): note: 'CLobby' 선언을 참조하십시오.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(61): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(61): error C2664: 'CLink::CLink(const CLink &)': 인수 1을(를) 'SOCKET'에서 'const CLink &'(으)로 변환할 수 없습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(61): note: 원인: 'SOCKET'에서 'const CLink'(으)로 변환할 수 없습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\mainproc.cpp(61): note: 소스 형식을 가져올 수 있는 생성자가 없거나 생성자 오버로드 확인이 모호합니다.
-  Lobby.cpp
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(10): error C3646: 'MS': 알 수 없는 재정의 지정자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(10): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C2143: 구문 오류: ';'이(가) '&' 앞에 없습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.h(20): error C2334: '{' 앞에 예기치 않은 토큰이 있습니다. 명백한 함수 본문을 건너뜁니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(7): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(7): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(7): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(8): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(8): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(8): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(8): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(8): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(9): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(10): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(11): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(11): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(11): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(14): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(14): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(14): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(15): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(15): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(15): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(15): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(15): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(16): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(17): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(18): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(18): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(18): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(24): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(24): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(24): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(25): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(25): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(25): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(25): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(25): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(26): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(27): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(27): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(27): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(31): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(31): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(31): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(32): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(32): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(32): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(32): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(32): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(33): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(41): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(41): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(41): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(42): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(42): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(42): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(42): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(42): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(43): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(44): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(45): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(45): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(45): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(48): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(48): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(48): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(49): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(49): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(49): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(49): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(49): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(50): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(51): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(52): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(52): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(52): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(58): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(58): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(58): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(59): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(59): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(59): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(59): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(59): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(60): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(66): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(66): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(66): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(67): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(67): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(67): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(67): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(67): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(68): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(74): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(74): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(74): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(75): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(75): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(75): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(75): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(75): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(76): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(88): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(88): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(88): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(89): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(89): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(89): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(89): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(89): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(90): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(94): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(94): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(94): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(95): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(95): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(95): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(95): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(95): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(96): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(110): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(110): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(110): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(111): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(111): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(111): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(111): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(111): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\lobby.cpp(112): error C2065: 'MS': 선언되지 않은 식별자입니다.
+﻿  WriteHandler.cpp
   ActionNetWork.cpp
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(70): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(126): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(158): error C2065: 'MessageStruct': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(158): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(158): error C2039: 'getMessageStruct': 'CLink'의 멤버가 아닙니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roommanager.h(6): note: 'CLink' 선언을 참조하십시오.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(166): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(166): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(166): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(169): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(169): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(169): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(173): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(173): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(173): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(173): error C2660: 'recv': 함수는 3개의 매개 변수를 사용하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(183): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(183): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(183): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(186): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(186): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(186): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(192): error C2065: 'MS': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(192): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(192): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(203): error C2065: 'MessageStruct': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(203): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(203): error C2039: 'getMyNameMessageStruct': 'CLink'의 멤버가 아닙니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roommanager.h(6): note: 'CLink' 선언을 참조하십시오.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(204): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(204): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(204): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(207): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(207): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(207): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(208): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(208): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(208): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(211): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(211): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(211): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(211): error C2660: 'send': 함수는 3개의 매개 변수를 사용하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): error C2228: '.message' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(217): error C2660: 'send': 함수는 2개의 매개 변수를 사용하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(218): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(218): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(218): note: 'unknown-type' 형식입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(222): error C2065: 'myName': 선언되지 않은 식별자입니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(222): error C2228: '.sendRecvSize' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(222): note: 'unknown-type' 형식입니다.
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  RoomManager.cpp
   RoomHandler.cpp
   Room.cpp
-  Link.cpp
   CommandController.cpp
+  Link.cpp
+  ReadyNetWork.cpp
+  MainProc.cpp
+  RoomManager.cpp
+  ReadHandler.cpp
+  Lobby.cpp
+  graduationWork.pb.cc
   ChannelManager.cpp
   ChannelHandler.cpp
   Channel.cpp
   코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  ReadyNetWork.cpp
-  ReadHandler.cpp
-  코드를 생성하고 있습니다...
+libprotobufd.lib(arena.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(arena.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(arenastring.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(arenastring.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(extension_set.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(extension_set.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(generated_message_util.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(generated_message_util.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(coded_stream.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(coded_stream.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(zero_copy_stream.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(zero_copy_stream.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(zero_copy_stream_impl_lite.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(zero_copy_stream_impl_lite.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(message_lite.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(message_lite.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(repeated_field.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(repeated_field.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(atomicops_internals_x86_msvc.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(atomicops_internals_x86_msvc.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(common.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(common.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(int128.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(int128.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(once.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(once.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(status.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(status.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(stringpiece.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(stringpiece.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(stringprintf.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(stringprintf.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(structurally_valid.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(structurally_valid.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(strutil.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(strutil.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(wire_format_lite.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(wire_format_lite.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(any.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(any.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(descriptor.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(descriptor.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(descriptor.pb.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(descriptor.pb.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(descriptor_database.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(descriptor_database.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(dynamic_message.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(dynamic_message.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(extension_set_heavy.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(extension_set_heavy.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(generated_message_reflection.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(generated_message_reflection.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(strtod.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(strtod.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(tokenizer.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(tokenizer.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(zero_copy_stream_impl.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(zero_copy_stream_impl.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(map_field.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(map_field.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(message.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(message.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(reflection_ops.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(reflection_ops.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(substitute.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(substitute.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(text_format.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(text_format.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(unknown_field_set.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(unknown_field_set.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+libprotobufd.lib(wire_format.obj) : warning LNK4099: 'libprotobuf.pdb' PDB를 'libprotobufd.lib(wire_format.obj)' 또는 'D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\libprotobuf.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
+  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)

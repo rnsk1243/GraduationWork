@@ -37,7 +37,7 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	{
 		lobby.SendMenuInfo(clientSocket, actionNetWork);
 		actionNetWork.recvn(clientSocket, lobby.getMessageStruct());
-		int choose = lobby.ChooseMenu(lobby.getMessageStruct().message, clientSocket, actionNetWork);
+		int choose = lobby.ChooseMenu(lobby.getMessageStruct().message(), clientSocket, actionNetWork);
 		switch (choose)
 		{
 		case 1:
@@ -58,7 +58,7 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 		}
 	}
 
-	CLink clientInfo(clientSocket, lobby.getMessageStruct().message);
+	CLink clientInfo(clientSocket, lobby.getMessageStruct().message());
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// StartChannelNum 채널에 입장

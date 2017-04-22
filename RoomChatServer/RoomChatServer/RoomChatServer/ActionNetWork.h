@@ -2,8 +2,6 @@
 #include"Link.h"
 #include"CommandController.h"
 
-
-
 class CActionNetWork
 {
 	CActionNetWork(const CActionNetWork&);
