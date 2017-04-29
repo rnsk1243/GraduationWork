@@ -152,6 +152,7 @@
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="ConstEnumInfo.h" />
+    <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="RoomManager.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelHandler.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
+    <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="ReadHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />

@@ -1,82 +1,69 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Lobby.h"
+#include"ErrorHandler.h"
 
-bool CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
+int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
 	string id, pw;
-	strcpy(MS.message, "ID : ");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
-	actionNetWork.recvn(clientSocket, MS);
+	// ID 묻기
+	actionNetWork.askClient(clientSocket, MS, "ID : ");
 	id = MS.message;
 	if (0 == id.compare("9"))
-		return false;
-	strcpy(MS.message, "PW : ");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
-	actionNetWork.recvn(clientSocket, MS);
+		return CErrorHandler::ErrorHandler(Cancel);
+
+	// PW 묻기
+	actionNetWork.askClient(clientSocket, MS, "PW : ");
 	pw = MS.message;
 	if (0 == pw.compare("9"))
-		return false;
+		return CErrorHandler::ErrorHandler(Cancel);
 	if (ReadHandler.CheckIDandPassWord(id, pw))
 	{
 		cout << "로그인 성공" << endl;
-		strcpy(MS.message, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
+		actionNetWork.notificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
 		strcpy(MS.message, id.c_str());
-		return true;
+		return CErrorHandler::ErrorHandler(SUCCES_LOGIN);
 	}
 	cout << "로그인 실패" << endl;
-	strcpy(MS.message, "ID or PW 오류 입니다.");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
-	
-	return false;
+	return CErrorHandler::ErrorHandler(ERROR_LOGIN);
 }
 
-bool CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
+
+int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
 	string id, pw;
-	strcpy(MS.message, "원하는 ID : ");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
-	actionNetWork.recvn(clientSocket, MS);
+	// ID 묻기
+	if (SUCCES_ASKCLIENT != actionNetWork.askClient(clientSocket, MS, "원하는 ID : "))
+		return CErrorHandler::ErrorHandler(ERROR_RECV);
 	id = MS.message;
 	if (0 == id.compare("9"))
-		return false;
-	strcpy(MS.message, "PW 입력 : ");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
-	actionNetWork.recvn(clientSocket, MS);
+		return CErrorHandler::ErrorHandler(Cancel);
+
+	if(SUCCES_ASKCLIENT != actionNetWork.askClient(clientSocket, MS, "PW 입력 : "))
+		return CErrorHandler::ErrorHandler(ERROR_RECV);
 	pw = MS.message;
 	if (0 == pw.compare("9"))
-		return false;
+		return CErrorHandler::ErrorHandler(Cancel);
+
 	if (!ReadHandler.CheckOverlapID(id))
 	{
 		cout << "id 중복 입니다." << endl;
-		strcpy(MS.message, "id 중복 입니다.");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
-		return false;
+		actionNetWork.notificationClient(clientSocket, MS, "id 중복 입니다.");
+		return CErrorHandler::ErrorHandler(OVERLAPID);
 	}
+
 	if (WriteHandler.write("test.txt", 2, id, pw))
 	{
 		cout << "회원가입 성공" << endl;
-		strcpy(MS.message, "회원가입 성공 했습니다. 로그인 해주세요.");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
-		return true;
+		actionNetWork.notificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");
+		return CErrorHandler::ErrorHandler(SUCCES_JOIN);
 	}
 	else
 	{
 		cout << "회원가입 실패" << endl;
-		strcpy(MS.message, "회원가입 실패 입니다.");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
-		return false;
+		actionNetWork.notificationClient(clientSocket, MS, "회원가입 실패 입니다.");
+		return CErrorHandler::ErrorHandler(ERROR_JOIN);
 	}
-	return false;
+	return CErrorHandler::ErrorHandler(ERROR_EXCEPTION);
 }
 
 int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & actionNetWork)
@@ -85,29 +72,52 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 	{
 	case '1':
 		cout << "로그인" << endl;
-		strcpy(MS.message, "로그인 화면 입니다. 9번입력 : 취소");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
+		actionNetWork.notificationClient(clientSocket, MS, "로그인 화면 입니다. 9번입력 : 취소");
 		return 1;
 	case '2':
 		cout << "회원가입" << endl;
-		strcpy(MS.message, "회원가입 화면 입니다. 9번입력 : 취소");
-		MS.sendRecvSize = strlen(MS.message);
-		actionNetWork.sendn(clientSocket, MS);
+		actionNetWork.notificationClient(clientSocket, MS, "회원가입 화면 입니다. 9번입력 : 취소");
 		return 2;
 	case '9':
 		cout << "이전 메뉴로 돌아가기" << endl;
 		SendMenuInfo(clientSocket, actionNetWork);
-		return -1;
+		return 9;
 	default:
-		return -1;
+		break;
 	}
-	return -1;
+	return CErrorHandler::ErrorHandler(ERROR_MENUOUT);
 }
 
-void CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
+int CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	strcpy(MS.message, "환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");
-	MS.sendRecvSize = strlen(MS.message);
-	actionNetWork.sendn(clientSocket, MS);
+	return actionNetWork.notificationClient(clientSocket, MS, "환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");;
+}
+
+int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWork)
+{
+	int resultLoginFunc = 0;
+	SendMenuInfo(clientSocket, actionNetWork);
+	actionNetWork.recvn(clientSocket, getMessageStruct());
+	int choose = ChooseMenu(getMessageStruct().message, clientSocket, actionNetWork);
+	switch (choose)
+	{
+	case 1:
+		resultLoginFunc = Login(clientSocket, actionNetWork);
+		if (SUCCES_LOGIN == resultLoginFunc)
+		{
+			return SUCCES_LOGIN;
+		}
+		else if (Cancel == resultLoginFunc)
+		{
+			return Cancel;
+		}
+		return ERROR_RECV;
+	case 2:
+		return JoinMember(clientSocket, actionNetWork);
+	case 9:
+		return Cancel;
+	default:
+		return ERROR_RECV;
+	}
+	return ERROR_SEND;
 }

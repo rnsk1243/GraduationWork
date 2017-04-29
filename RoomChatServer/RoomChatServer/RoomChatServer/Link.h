@@ -58,6 +58,7 @@ public:
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
 	char* getMyName() { return Name; }
+	void setDefaultName() { if (nullptr == Name) { Name = "이름없음"; } }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 	MessageStruct& getMyNameMessageStruct() { return NameMS; }

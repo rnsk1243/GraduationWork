@@ -1,20 +1,8 @@
-﻿  RoomManager.cpp
-  RoomHandler.cpp
-  Room.cpp
-  MainProc.cpp
-  Lobby.cpp
-  Link.cpp
-  CommandController.cpp
-  ChannelManager.cpp
-  ChannelHandler.cpp
-  Channel.cpp
-  ActionNetWork.cpp
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(34): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(116): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(134): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(161): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(205): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(210): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
+﻿  ActionNetWork.cpp
+e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(35): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(117): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(140): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(169): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+e:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\actionnetwork.cpp(218): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   RoomChatServer.vcxproj -> E:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
   RoomChatServer.vcxproj -> E:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)

@@ -10,13 +10,14 @@ class CLobby
 	MessageStruct MS;
 	CLobby(const CLobby&);
 	CLobby& operator=(const CLobby&);
+	int Login(SOCKET& clientSocket, CActionNetWork& actionNetWork);
+	int JoinMember(SOCKET& clientSocket, CActionNetWork& actionNetWork);
+	int ChooseMenu(char* message, SOCKET & clientSocket, CActionNetWork & actionNetWork);
+	int SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork);
 public:
 	CLobby(){}
 	~CLobby(){}
-	bool Login(SOCKET& clientSocket, CActionNetWork& actionNetWork);
-	bool JoinMember(SOCKET& clientSocket, CActionNetWork& actionNetWork);
-	int ChooseMenu(char* message, SOCKET & clientSocket, CActionNetWork & actionNetWork);
-	void SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork);
-	MessageStruct& getMessageStruct() { return MS; }
+	MessageStruct& getMessageStruct() { return MS; }	
+	int ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWork);
 };
 

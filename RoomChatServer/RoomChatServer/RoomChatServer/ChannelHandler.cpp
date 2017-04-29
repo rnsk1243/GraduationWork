@@ -34,10 +34,9 @@ bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelMa
 bool CChannelHandler::exitChannel(CLink& clientInfo, CChannelManager& channelManager)
 {
 	CChannel* myChannel = channelManager.getMyChannel(clientInfo.getMyChannelNum());
-	cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
-
 	if (myChannel != nullptr)
 	{
+		cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
 		LinkListIt iterBegin = myChannel->getIterMyInfoBegin();
 		LinkListIt iterEnd = myChannel->getIterMyInfoEnd();
 		for (; iterBegin != iterEnd; ++iterBegin)
