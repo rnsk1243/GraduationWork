@@ -40,7 +40,6 @@ using namespace graduationWork;
 
 class CLink
 {
-	string Name;
 	// 현재 내가 속한 방 번호
 	int MyRoomNum;
 	// 현재 내가 속한 채널 번호
@@ -59,21 +58,20 @@ public:
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
-	string& getMyName() { return Name; }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 	Message& getMyNameMessage() { return g_NameMS; }
 #pragma endregion
-	void changeName(const char* name, int start)
-	{
-		//Name = '\0';
-		size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
-		for (int i = 0; i < char_size; i++)
-		{
-			Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사
-		}
-		Name[char_size] = '\0';
-		cout << "바뀐 이름 = " << Name << endl;
-	}
+	//void changeName(const char* name, int start)
+	//{
+	//	//Name = '\0';
+	//	size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
+	//	for (int i = 0; i < char_size; i++)
+	//	{
+	//		Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사
+	//	}
+	//	Name[char_size] = '\0';
+	//	cout << "바뀐 이름 = " << Name << endl;
+	//}
 };
 

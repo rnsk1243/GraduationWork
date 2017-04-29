@@ -100,6 +100,6 @@ int CLobby::ChooseMenu(string message, SOCKET & clientSocket, CActionNetWork & a
 
 void CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	g_MS.set_message("환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");
+	g_MS.set_message("Welcome: Enter 1: Login / Enter 2: Join / Enter 9: Cancel");
 	actionNetWork.sendn(clientSocket, g_MS);
 }

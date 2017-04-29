@@ -32,4 +32,14 @@ message Message {
 	bytes message = 1;
 }
 
+enum DataType {
+	MESSAGE = 0;
+	TRANSFORM = 1;
+}
+
+message DataSize {
+	DataType type = 1;
+	int32 size = 2;
+}
+
 // [END messages]

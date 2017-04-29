@@ -5,7 +5,8 @@
 #define PROTOBUF_graduationWork_2eproto__INCLUDED
 
 #include <string>
-
+#include<istream>
+using namespace std;
 #include <google/protobuf/stubs/common.h>
 
 #if GOOGLE_PROTOBUF_VERSION < 3002000
@@ -27,9 +28,13 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 namespace graduationWork {
+class DataSize;
+class DataSizeDefaultTypeInternal;
+extern DataSizeDefaultTypeInternal _DataSize_default_instance_;
 class Message;
 class MessageDefaultTypeInternal;
 extern MessageDefaultTypeInternal _Message_default_instance_;
@@ -54,12 +59,32 @@ void AddDescriptors();
 void InitDefaults();
 }  // namespace protobuf_graduationWork_2eproto
 
+enum DataType {
+  MESSAGE = 0,
+  TRANSFORM = 1,
+  DataType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  DataType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool DataType_IsValid(int value);
+const DataType DataType_MIN = MESSAGE;
+const DataType DataType_MAX = TRANSFORM;
+const int DataType_ARRAYSIZE = DataType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DataType_descriptor();
+inline const ::std::string& DataType_Name(DataType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DataType_descriptor(), value);
+}
+inline bool DataType_Parse(
+    const ::std::string& name, DataType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DataType>(
+    DataType_descriptor(), name, value);
+}
 // ===================================================================
 
 class Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.Vector3) */ {
  public:
   Vector3();
-  Vector3(float x, float y, float z);
   virtual ~Vector3();
 
   Vector3(const Vector3& from);
@@ -157,7 +182,6 @@ class Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 class Transform : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.Transform) */ {
  public:
   Transform();
-  Transform(Vector3* position, Vector3* rotation, Vector3* scale);
   virtual ~Transform();
 
   Transform(const Transform& from);
@@ -274,7 +298,7 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   virtual ~Message();
 
   Message(const Message& from);
-
+  Message(string& str);
   inline Message& operator=(const Message& from) {
     CopyFrom(from);
     return *this;
@@ -354,6 +378,96 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr message_;
+  mutable int _cached_size_;
+  friend struct  protobuf_graduationWork_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.DataSize) */ {
+ public:
+  DataSize();
+  virtual ~DataSize();
+  DataSize(int size, DataType type);
+  DataSize(const DataSize& from);
+
+  inline DataSize& operator=(const DataSize& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DataSize& default_instance();
+
+  static inline const DataSize* internal_default_instance() {
+    return reinterpret_cast<const DataSize*>(
+               &_DataSize_default_instance_);
+  }
+
+  void Swap(DataSize* other);
+
+  // implements Message ----------------------------------------------
+
+  inline DataSize* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DataSize* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DataSize& from);
+  void MergeFrom(const DataSize& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output)
+      const PROTOBUF_FINAL {
+    return InternalSerializeWithCachedSizesToArray(
+        ::google::protobuf::io::CodedOutputStream::IsDefaultSerializationDeterministic(), output);
+  }
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DataSize* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // .graduationWork.DataType type = 1;
+  void clear_type();
+  static const int kTypeFieldNumber = 1;
+  ::graduationWork::DataType type() const;
+  void set_type(::graduationWork::DataType value);
+
+  // int32 size = 2;
+  void clear_size();
+  static const int kSizeFieldNumber = 2;
+  ::google::protobuf::int32 size() const;
+  void set_size(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:graduationWork.DataSize)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  int type_;
+  ::google::protobuf::int32 size_;
   mutable int _cached_size_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
 };
@@ -598,7 +712,41 @@ inline void Message::set_allocated_message(::std::string* message) {
   // @@protoc_insertion_point(field_set_allocated:graduationWork.Message.message)
 }
 
+// -------------------------------------------------------------------
+
+// DataSize
+
+// .graduationWork.DataType type = 1;
+inline void DataSize::clear_type() {
+  type_ = 0;
+}
+inline ::graduationWork::DataType DataSize::type() const {
+  // @@protoc_insertion_point(field_get:graduationWork.DataSize.type)
+  return static_cast< ::graduationWork::DataType >(type_);
+}
+inline void DataSize::set_type(::graduationWork::DataType value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.DataSize.type)
+}
+
+// int32 size = 2;
+inline void DataSize::clear_size() {
+  size_ = 0;
+}
+inline ::google::protobuf::int32 DataSize::size() const {
+  // @@protoc_insertion_point(field_get:graduationWork.DataSize.size)
+  return size_;
+}
+inline void DataSize::set_size(::google::protobuf::int32 value) {
+  
+  size_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.DataSize.size)
+}
+
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -608,6 +756,20 @@ inline void Message::set_allocated_message(::std::string* message) {
 
 
 }  // namespace graduationWork
+
+#ifndef SWIG
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::graduationWork::DataType> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::graduationWork::DataType>() {
+  return ::graduationWork::DataType_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
+#endif  // SWIG
 
 // @@protoc_insertion_point(global_scope)
 

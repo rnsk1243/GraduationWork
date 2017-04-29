@@ -4,8 +4,6 @@
 #include"ChannelManager.h"
 #include"RoomManager.h"
 
-
-
 class CCommandController
 {
 	CChannelManager ChannelManager;

@@ -5,6 +5,7 @@
 #include"graduationWork.pb.h"
 using namespace graduationWork;
 
+
 CActionNetWork::CActionNetWork()
 {
 }
@@ -12,26 +13,59 @@ CActionNetWork::CActionNetWork()
 
 CActionNetWork::~CActionNetWork()
 {
+	
 }
 
-int CActionNetWork::recvn(SOCKET & socket, Message& g_MS, int flags)
+int CActionNetWork::sendSize(SOCKET & sock, int size, DataType type, int flags)
 {
-	char temp[IntSize];
-	char tempMessage[BufSize];
-	
-	int isSuccess = recv(socket, temp, IntSize, flags);
+	DataSize g_size(size, type);
+	char temp[BufSize];
+	int byteSize = g_size.ByteSize();
+	cout << "DataSize 크기 = " << byteSize << endl;
+	bool isSerialize = g_size.SerializeToArray(temp, byteSize);
+	if (!isSerialize)
+		return SerializeFail;
 
-	if (isSuccess == SOCKET_ERROR)
+	int sendSize = 0;
+	while (true)
+	{
+		sendSize += send(sock, temp, byteSize, flags);
+		cout << "보낸 크기0 = " << sendSize << endl;
+		if (sendSize >= byteSize)
+			break;
+	}
+	cout << "보낸 크기 = " << sendSize << endl;
+	return sendSize;
+}
+
+int CActionNetWork::recvSize(SOCKET & sock, DataSize& g_size, int flags)
+{
+	// DataSize 초기화
+	g_size.Clear();
+	char temp[BufSize];
+	int size = 0;
+	size += recv(sock, temp, recvSizeByteSize, flags);
+	if (size == SOCKET_ERROR)
 	{
 		cout << "1recvn ERROR" << endl;
 		return SOCKET_ERROR;
 	}
-	int left = *(int*)temp;
 
-	// 임시로 만든 temp 메모리 반환
+	bool isParse = g_size.ParseFromArray(temp, size);
+	if (!isParse)
+		return ParseFail;
+
+	return g_size.size();
+}
+
+int CActionNetWork::recvn(SOCKET & socket, Message& g_MS, int flags)
+{
+	char tempMessage[BufSize];
+	DataSize g_size;
+	int left = recvSize(socket, g_size);
 #pragma endregion
 #pragma region 메세지 받기
-	isSuccess = 0;
+	int isSuccess = 0;
 	while (left > 0)
 	{
 		isSuccess += recv(socket, tempMessage, left, flags);
@@ -61,12 +95,10 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	if (&g_MS.message() == nullptr)
 		return OccuredError;
 	
-	size_t size = g_MS.ByteSize();
+	int size = g_MS.ByteSize();
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
 
-	cout << "보낼 메세지 = " << g_MS.message() << endl;
-	cout << "보낼 사이즈 = " << size << endl;
 	bool isSerializeSucces = g_MS.SerializeToArray(temp, size);
 	if (!isSerializeSucces)
 		return SerializeFail;
@@ -109,7 +141,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	// 방에 있는 모든 사람에게 보내기
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		size_t sendSize = 0;
+		size_t curDataSize = 0;
 		// 메시지 보낸 자신이면
 		if ((*iterBegin) == &clientInfo)
 		{
@@ -117,14 +149,12 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 		}
 
 		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
-
 		sendMyName(clientSocket, clientInfo); // 이름 보내기
-
-		send(clientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
+		sendSize(clientSocket, size, DataType::MESSAGE);
 		while (true)
 		{
-			sendSize += send(clientSocket, temp, size, flags);
-			if (sendSize >= size)
+			curDataSize += send(clientSocket, temp, size, flags);
+			if (curDataSize >= size)
 				break;
 		}
 	}
@@ -137,9 +167,8 @@ int CActionNetWork::sendn(SOCKET & socket, Message& g_MS, int flags)
 {
 	char message[BufSize];
 	int size = g_MS.ByteSize();
-	
 	g_MS.SerializeToArray(message, size);
-	send(socket, (char*)&size, IntSize, flags); // 사이즈 보내기
+	sendSize(socket, size, DataType::MESSAGE);// 사이즈 보내기
 	size_t temp = 0;
 	while (true)
 	{
@@ -153,21 +182,15 @@ int CActionNetWork::sendn(SOCKET & socket, Message& g_MS, int flags)
 int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandController, int flags)
 {
 #pragma region 받을 데이터 크기 가져오기
-	char temp[IntSize];
 	char message[BufSize];
 	SOCKET& clientSocket = clientInfo.getClientSocket();
 	Message& g_MS = clientInfo.getMessage();
-	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
-	if (isSuccess == SOCKET_ERROR)
-	{
-		cout << "1recvn ERROR" << endl;
-		return SOCKET_ERROR;
-	}
-	int left = *(int*)temp;
+	DataSize g_dataSize;
+	int left = recvSize(clientSocket, g_dataSize);
 #pragma endregion
 #pragma region 메세지 받기
-	isSuccess = 0;
+	int isSuccess = 0;
 	while (left > 0)
 	{
 		isSuccess += recv(clientSocket, message, left, flags);
@@ -196,28 +219,20 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 
 int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
 {
-	if (clientInfo.getMyName().empty())
-	{
-		cout << "이름 없음" << endl;
-		return NullNameError;
-	}
-	Message& myName = clientInfo.getMyNameMessage();
-	myName.set_message(clientInfo.getMyName());
-	int sendRecvSize = myName.ByteSize();
 
-	int temp = 0;
+	Message& myName = clientInfo.getMyNameMessage();
+	int sendRecvSize = myName.ByteSize();
+	
+	sendSize(clientSocket, sendRecvSize, DataType::MESSAGE);
+
 	char myNameMessage[NameSize];
 	myName.SerializeToArray(myNameMessage, sendRecvSize);
-	temp = send(clientSocket, (char*)&sendRecvSize, IntSize, flags); // 사이즈 보내기
-	if (IntSize == temp)
+	int temp = 0;
+	while (true)
 	{
-		temp = 0;
-		while (true)
-		{
-			temp += send(clientSocket, myNameMessage, sendRecvSize, flags);
-			if (temp >= sendRecvSize)
-				break;
-		}
+		temp += send(clientSocket, myNameMessage, sendRecvSize, flags);
+		if (temp >= sendRecvSize)
+			break;
 	}
-	return SuccesSend;
+	return temp;
 }

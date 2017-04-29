@@ -5,6 +5,7 @@ const int BufSize = 1024;
 const int NameSize = 30;
 const int IdPwSize = 256;
 const int IntSize = 4;
+const int recvSizeByteSize = 10;
 //const int G_MessageSize = 32;
 //const int G_TransformSize = 48;
 //const int G_VectorSize = 32;

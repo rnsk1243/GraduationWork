@@ -24,13 +24,16 @@ class TransformDefaultTypeInternal : public ::google::protobuf::internal::Explic
 } _Transform_default_instance_;
 class MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Message> {
 } _Message_default_instance_;
+class DataSizeDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DataSize> {
+} _DataSize_default_instance_;
 
 namespace protobuf_graduationWork_2eproto {
 
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[3];
+::google::protobuf::Metadata file_level_metadata[4];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 }  // namespace
 
@@ -55,18 +58,26 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, message_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, size_),
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, -1, sizeof(Vector3)},
   { 7, -1, sizeof(Transform)},
   { 15, -1, sizeof(Message)},
+  { 20, -1, sizeof(DataSize)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_Vector3_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Transform_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Message_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DataSize_default_instance_),
 };
 
 namespace {
@@ -76,7 +87,7 @@ void protobuf_AssignDescriptors() {
   ::google::protobuf::MessageFactory* factory = NULL;
   AssignDescriptors(
       "graduationWork.proto", schemas, file_default_instances, TableStruct::offsets, factory,
-      file_level_metadata, NULL, NULL);
+      file_level_metadata, file_level_enum_descriptors, NULL);
 }
 
 void protobuf_AssignDescriptorsOnce() {
@@ -87,7 +98,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 4);
 }
 
 }  // namespace
@@ -99,6 +110,8 @@ void TableStruct::Shutdown() {
   delete file_level_metadata[1].reflection;
   _Message_default_instance_.Shutdown();
   delete file_level_metadata[2].reflection;
+  _DataSize_default_instance_.Shutdown();
+  delete file_level_metadata[3].reflection;
 }
 
 void TableStruct::InitDefaultsImpl() {
@@ -108,6 +121,7 @@ void TableStruct::InitDefaultsImpl() {
   _Vector3_default_instance_.DefaultConstruct();
   _Transform_default_instance_.DefaultConstruct();
   _Message_default_instance_.DefaultConstruct();
+  _DataSize_default_instance_.DefaultConstruct();
   _Transform_default_instance_.get_mutable()->position_ = const_cast< ::graduationWork::Vector3*>(
       ::graduationWork::Vector3::internal_default_instance());
   _Transform_default_instance_.get_mutable()->rotation_ = const_cast< ::graduationWork::Vector3*>(
@@ -129,12 +143,14 @@ void AddDescriptorsImpl() {
       "osition\030\002 \001(\0132\027.graduationWork.Vector3\022)"
       "\n\010rotation\030\003 \001(\0132\027.graduationWork.Vector"
       "3\022&\n\005scale\030\004 \001(\0132\027.graduationWork.Vector"
-      "3\"\032\n\007Message\022\017\n\007message\030\001 \001(\014B+\252\002(Google"
-      ".Protobuf.GraduationWork.Transformb\006prot"
-      "o3"
+      "3\"\032\n\007Message\022\017\n\007message\030\001 \001(\014\"@\n\010DataSiz"
+      "e\022&\n\004type\030\001 \001(\0162\030.graduationWork.DataTyp"
+      "e\022\014\n\004size\030\002 \001(\005*&\n\010DataType\022\013\n\007MESSAGE\020\000"
+      "\022\r\n\tTRANSFORM\020\001B+\252\002(Google.Protobuf.Grad"
+      "uationWork.Transformb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 322);
+      descriptor, 428);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "graduationWork.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -153,6 +169,20 @@ struct StaticDescriptorInitializer {
 
 }  // namespace protobuf_graduationWork_2eproto
 
+const ::google::protobuf::EnumDescriptor* DataType_descriptor() {
+  protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_graduationWork_2eproto::file_level_enum_descriptors[0];
+}
+bool DataType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 // ===================================================================
 
@@ -169,10 +199,6 @@ Vector3::Vector3()
   }
   SharedCtor();
   // @@protoc_insertion_point(constructor:graduationWork.Vector3)
-}
-Vector3::Vector3(float x, float y, float z)
-{
-	x_ = x; y_ = y; z_ = z;
 }
 Vector3::Vector3(const Vector3& from)
   : ::google::protobuf::Message(),
@@ -496,12 +522,6 @@ Transform::Transform()
   SharedCtor();
   // @@protoc_insertion_point(constructor:graduationWork.Transform)
 }
-Transform::Transform(Vector3 * position, Vector3 * rotation, Vector3 * scale)
-{
-	position_ = position;
-	rotation_ = rotation;
-	scale_ = scale;
-}
 Transform::Transform(const Transform& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
@@ -539,15 +559,12 @@ Transform::~Transform() {
 
 void Transform::SharedDtor() {
   if (this != internal_default_instance()) {
-	  release_position();
     delete position_;
   }
   if (this != internal_default_instance()) {
-	  release_rotation();
     delete rotation_;
   }
   if (this != internal_default_instance()) {
-	  release_scale();
     delete scale_;
   }
 }
@@ -1001,6 +1018,11 @@ Message::Message(const Message& from)
   // @@protoc_insertion_point(copy_constructor:graduationWork.Message)
 }
 
+Message::Message(string & str)
+{
+	set_message(str);
+}
+
 void Message::SharedCtor() {
   message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
@@ -1240,6 +1262,292 @@ void Message::set_allocated_message(::std::string* message) {
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
   // @@protoc_insertion_point(field_set_allocated:graduationWork.Message.message)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DataSize::kTypeFieldNumber;
+const int DataSize::kSizeFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DataSize::DataSize()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_graduationWork_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:graduationWork.DataSize)
+}
+DataSize::DataSize(const DataSize& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&type_, &from.type_,
+    reinterpret_cast<char*>(&size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(size_));
+  // @@protoc_insertion_point(copy_constructor:graduationWork.DataSize)
+}
+
+void DataSize::SharedCtor() {
+  ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(size_));
+  _cached_size_ = 0;
+}
+
+DataSize::~DataSize() {
+  // @@protoc_insertion_point(destructor:graduationWork.DataSize)
+  SharedDtor();
+}
+
+DataSize::DataSize(int size, DataType type)
+{
+	size_ = size;
+	type_ = type;
+}
+
+void DataSize::SharedDtor() {
+}
+
+void DataSize::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DataSize::descriptor() {
+  protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_graduationWork_2eproto::file_level_metadata[3].descriptor;
+}
+
+const DataSize& DataSize::default_instance() {
+  protobuf_graduationWork_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+DataSize* DataSize::New(::google::protobuf::Arena* arena) const {
+  DataSize* n = new DataSize;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DataSize::Clear() {
+// @@protoc_insertion_point(message_clear_start:graduationWork.DataSize)
+  ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
+    reinterpret_cast<char*>(&type_) + sizeof(size_));
+}
+
+bool DataSize::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:graduationWork.DataSize)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // .graduationWork.DataType type = 1;
+      case 1: {
+        if (tag == 8u) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          set_type(static_cast< ::graduationWork::DataType >(value));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 size = 2;
+      case 2: {
+        if (tag == 16u) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &size_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:graduationWork.DataSize)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:graduationWork.DataSize)
+  return false;
+#undef DO_
+}
+
+void DataSize::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:graduationWork.DataSize)
+  // .graduationWork.DataType type = 1;
+  if (this->type() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->type(), output);
+  }
+
+  // int32 size = 2;
+  if (this->size() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->size(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:graduationWork.DataSize)
+}
+
+::google::protobuf::uint8* DataSize::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic;  // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.DataSize)
+  // .graduationWork.DataType type = 1;
+  if (this->type() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->type(), target);
+  }
+
+  // int32 size = 2;
+  if (this->size() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->size(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.DataSize)
+  return target;
+}
+
+size_t DataSize::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:graduationWork.DataSize)
+  size_t total_size = 0;
+
+  // .graduationWork.DataType type = 1;
+  if (this->type() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+  }
+
+  // int32 size = 2;
+  if (this->size() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->size());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DataSize::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.DataSize)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DataSize* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DataSize>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.DataSize)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.DataSize)
+    MergeFrom(*source);
+  }
+}
+
+void DataSize::MergeFrom(const DataSize& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.DataSize)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from.type() != 0) {
+    set_type(from.type());
+  }
+  if (from.size() != 0) {
+    set_size(from.size());
+  }
+}
+
+void DataSize::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.DataSize)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DataSize::CopyFrom(const DataSize& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.DataSize)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DataSize::IsInitialized() const {
+  return true;
+}
+
+void DataSize::Swap(DataSize* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DataSize::InternalSwap(DataSize* other) {
+  std::swap(type_, other->type_);
+  std::swap(size_, other->size_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DataSize::GetMetadata() const {
+  protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_graduationWork_2eproto::file_level_metadata[3];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// DataSize
+
+// .graduationWork.DataType type = 1;
+void DataSize::clear_type() {
+  type_ = 0;
+}
+::graduationWork::DataType DataSize::type() const {
+  // @@protoc_insertion_point(field_get:graduationWork.DataSize.type)
+  return static_cast< ::graduationWork::DataType >(type_);
+}
+void DataSize::set_type(::graduationWork::DataType value) {
+  
+  type_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.DataSize.type)
+}
+
+// int32 size = 2;
+void DataSize::clear_size() {
+  size_ = 0;
+}
+::google::protobuf::int32 DataSize::size() const {
+  // @@protoc_insertion_point(field_get:graduationWork.DataSize.size)
+  return size_;
+}
+void DataSize::set_size(::google::protobuf::int32 value) {
+  
+  size_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.DataSize.size)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

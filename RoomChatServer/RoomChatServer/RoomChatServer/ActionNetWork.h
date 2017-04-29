@@ -1,11 +1,15 @@
 #pragma once
 #include"Link.h"
 #include"CommandController.h"
+//#include"graduationWork.pb.h"
 
 class CActionNetWork
 {
 	CActionNetWork(const CActionNetWork&);
 	CActionNetWork& operator=(const CActionNetWork&);
+	// Size º¸³»±â
+	int sendSize(SOCKET& sock, int size, DataType type, int flags = 0);
+	int recvSize(SOCKET& sock, DataSize& g_size, int flags = 0);
 public:
 	CActionNetWork();
 	~CActionNetWork();
