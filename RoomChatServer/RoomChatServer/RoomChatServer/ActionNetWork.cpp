@@ -5,6 +5,7 @@
 #include"ReadHandler.h"
 #include"ErrorHandler.h"
 
+
 CActionNetWork::CActionNetWork()
 {
 }
@@ -32,7 +33,7 @@ int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
 	isSuccess = 0;
 	while (left > 0)
 	{
-		isSuccess += recv(socket, MS.message, left, flags);
+		isSuccess += recv(socket, MS.message, (int)left, flags);
 		//cout << "success = " << isSuccess << endl;
 		if (isSuccess == SOCKET_ERROR)
 		{
@@ -114,7 +115,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 			return CErrorHandler::ErrorHandler(ERROR_SEND);
 		while (true)
 		{
-			temp += send(clientSocket, message, size, flags);
+			temp += send(clientSocket, message, (int)size, flags);
 			if (temp == SOCKET_ERROR)
 				return CErrorHandler::ErrorHandler(ERROR_SEND);
 			if (temp >= size)
@@ -137,7 +138,7 @@ int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
 	int temp = 0;
 	while (true)
 	{
-		temp += send(socket, message, size, flags);
+		temp += send(socket, message, (int)size, flags);
 		if (temp == SOCKET_ERROR)
 			return CErrorHandler::ErrorHandler(ERROR_SEND);
 		if (temp >= size)
@@ -166,7 +167,7 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 	isSuccess = 0;
 	while (left > 0)
 	{
-		isSuccess += recv(clientSocket, MS.message, left, flags);
+		isSuccess += recv(clientSocket, MS.message, (int)left, flags);
 		//cout << "success = " << isSuccess << endl;
 		if (isSuccess == SOCKET_ERROR)
 		{
@@ -215,7 +216,7 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 		temp = 0;
 		while (true)
 		{
-			temp += send(clientSocket, myName.message, myName.sendRecvSize, flags);
+			temp += send(clientSocket, myName.message, (int)myName.sendRecvSize, flags);
 			if (temp == SOCKET_ERROR)
 			{
 				return CErrorHandler::ErrorHandler(ERROR_SEND);

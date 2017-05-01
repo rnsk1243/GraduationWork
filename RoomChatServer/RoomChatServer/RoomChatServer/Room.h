@@ -3,6 +3,7 @@
 #include<iostream>
 #include<list>
 #include"Channel.h"
+#include"RAII.h"
 class CChannel;
 class CLink;
 using namespace std;
@@ -16,7 +17,8 @@ class CRoom
 	// 현재 들어있는 방 인원
 	int AmountPeople;
 	LinkList ClientInfos;
-	CRITICAL_SECTION CS_MyInfoList;
+	//CRITICAL_SECTION CS_MyInfoList;
+	MUTEX RAII_RoomMUTEX;
 	void increasePeople() { AmountPeople++; }
 	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
 	CRoom(const CRoom&);
@@ -27,10 +29,11 @@ public:
 #pragma region push, erase 함수
 	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(&CS_MyInfoList);
-		ClientInfos.push_back(client);
-		increasePeople();
-		LeaveCriticalSection(&CS_MyInfoList);
+		{
+			ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
+			ClientInfos.push_back(client);
+			increasePeople();
+		}
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
