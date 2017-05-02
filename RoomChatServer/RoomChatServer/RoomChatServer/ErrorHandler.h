@@ -7,9 +7,9 @@ using namespace std;
 
 class CErrorHandler
 {
-	static int EndClientThread(const int code)
+	static EnumErrorCode EndClientThread(EnumErrorCode code)
 	{
-		cout << "에러코드 = " << code << endl;
+		cout << "에러코드 = " << EnumErrorCode(code) << endl;
 		//_endthreadex(0);
 		return code;
 	}
@@ -18,7 +18,7 @@ class CErrorHandler
 	CErrorHandler& operator=(const CErrorHandler&);
 	~CErrorHandler();
 public:
-	static int ErrorHandler(const int code)
+	static EnumErrorCode ErrorHandler(EnumErrorCode code)
 	{
 		switch (code)
 		{

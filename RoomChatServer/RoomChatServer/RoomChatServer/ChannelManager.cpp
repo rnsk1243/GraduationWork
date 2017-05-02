@@ -4,7 +4,7 @@
 
 CChannelManager::CChannelManager()
 {
-	InitializeCriticalSection(&CS_Channel);
+	//InitializeCriticalSection(&CS_Channel);
 	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
 	{
 		CChannel* newChannel = new CChannel(i);
@@ -22,7 +22,7 @@ CChannelManager::~CChannelManager()
 		delete(*begin);
 	}
 	Channels.clear();
-	DeleteCriticalSection(&CS_Channel);
+	//DeleteCriticalSection(&CS_Channel);
 }
 
 CChannel * CChannelManager::getMyChannel(int ChannelNum)

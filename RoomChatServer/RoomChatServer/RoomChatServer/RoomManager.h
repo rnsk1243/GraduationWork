@@ -15,7 +15,8 @@ class CRoomManager
 {
 	RoomList Rooms;
 #pragma region 크리티컬 섹션
-	CRITICAL_SECTION CS_Room;
+//	CRITICAL_SECTION CS_Room;
+	MUTEX RAII_RoomManagerMUTEX;
 	CRoomManager(const CRoomManager&);
 	CRoomManager& operator=(const CRoomManager&);
 #pragma endregion
@@ -26,16 +27,18 @@ public:
 
 	void pushRoom(CRoom* newRoom)
 	{
-		EnterCriticalSection(&CS_Room);
-		Rooms.push_back(newRoom);
-		LeaveCriticalSection(&CS_Room);
+		{
+			ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
+			Rooms.push_back(newRoom);
+		}
 	}
 	RoomListIt eraseRoom(RoomListIt delRoom)
 	{
 		RoomListIt temp;
-		EnterCriticalSection(&CS_Room);
-		temp = Rooms.erase(delRoom);
-		LeaveCriticalSection(&CS_Room);
+		{
+			ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
+			temp = Rooms.erase(delRoom);
+		}
 		return temp;
 	}
 #pragma endregion

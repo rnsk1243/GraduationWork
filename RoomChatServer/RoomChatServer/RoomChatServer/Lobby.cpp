@@ -23,7 +23,9 @@ int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 		strcpy(MS.message, id.c_str());
 		return CErrorHandler::ErrorHandler(SUCCES_LOGIN);
 	}
-	cout << "로그인 실패" << endl;
+	cout << "아이디 혹은 비밀번호가 틀립니다." << endl;
+	actionNetWork.notificationClient(clientSocket, MS, "아이디 혹은 비밀번호가 틀립니다.");
+	strcpy(MS.message, id.c_str());
 	return CErrorHandler::ErrorHandler(ERROR_LOGIN);
 }
 
@@ -83,6 +85,7 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 		SendMenuInfo(clientSocket, actionNetWork);
 		return 9;
 	default:
+
 		break;
 	}
 	return CErrorHandler::ErrorHandler(ERROR_MENUOUT);
@@ -111,13 +114,17 @@ int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWo
 		{
 			return Cancel;
 		}
+		else if (ERROR_LOGIN == resultLoginFunc)
+		{
+			return ERROR_LOGIN;
+		}
 		return ERROR_RECV;
 	case 2:
 		return JoinMember(clientSocket, actionNetWork);
 	case 9:
 		return Cancel;
 	default:
-		return ERROR_RECV;
+		return ERROR_WRONG_INPUT;
 	}
 	return ERROR_SEND;
 }

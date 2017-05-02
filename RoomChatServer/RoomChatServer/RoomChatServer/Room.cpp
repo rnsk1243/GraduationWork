@@ -9,7 +9,7 @@ CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
 	AmountPeople(0)
 {
 	
-	InitializeCriticalSection(&CS_MyInfoList);
+	//InitializeCriticalSection(&CS_MyInfoList);
 }
 
 
@@ -26,7 +26,7 @@ CRoom::~CRoom()
 			delete(*begin);
 		}
 		ClientInfos.clear();
-		DeleteCriticalSection(&CS_MyInfoList);
+		//DeleteCriticalSection(&CS_MyInfoList);
 		cout << "방 삭제 완료" << endl;
 	}else
 	{

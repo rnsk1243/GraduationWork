@@ -18,24 +18,27 @@ using namespace std;
 
 //thSendRecv(SOCKET& clientSocket, CCommandController& commandController, CActionNetWork& actionNetWork)
 
-int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNetWork)
+int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNetWork, void* v_lobby)
 {
 	SOCKET& clientSocket = (*(SOCKET*)v_clientSocket);
 	CCommandController& commandController = (*(CCommandController*)v_commandController);
 	CActionNetWork& actionNetWork = (*(CActionNetWork*)v_actionNetWork);
-
-	CLobby lobby;
+	CLobby& lobby = (*(CLobby*)v_lobby);
+	//CLobby lobby;
 	int isLogin = 0;
 	while (SUCCES_LOGIN != isLogin)
 	{
 		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork);
+		CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
 		if (ERROR_RECV == isLogin || ERROR_SEND == isLogin)
 		{
-			_endthreadex(0);
+			return CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
+			//_endthreadex(0);
 		}
 	}
 
 	CLink clientInfo(clientSocket, lobby.getMessageStruct().message);
+	cout << "clientInfo 주소 = " << &clientInfo << endl;
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// EnterChannelNum 채널에 입장
@@ -50,18 +53,20 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		{
 			if (ERROR_SEND == actionNetWork.sendn(clientInfo, roomManager, channelManager))
 			{
-				if (commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+				if (!commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 				{
-					_endthreadex(0);
+					return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+					//_endthreadex(0);
 				}
 			}
 		}
 		else if (ERROR_RECV == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
-			if (commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+			if (!commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 			{
-				_endthreadex(0);
+				return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+				//_endthreadex(0);
 			}
 			return 0;
 		}
@@ -73,13 +78,14 @@ void main()
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 	CActionNetWork actionNetWork;
+	CLobby lobby;
 
 	while (true)
 	{
 		SOCKET* clientSocket = new SOCKET();
 		readyNetWork.Accept(*clientSocket);
 		
-		thread clientThread(thSendRecv, clientSocket, &commandController, &actionNetWork);
+		thread clientThread(thSendRecv, clientSocket, &commandController, &actionNetWork, &lobby);
 		clientThread.detach();
 	}
 	

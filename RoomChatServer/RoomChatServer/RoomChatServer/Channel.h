@@ -3,6 +3,7 @@
 #include<list>
 #include<iostream>
 #include"Link.h"
+#include"RAII.h"
 using namespace std;
 class CLink;
 typedef list<CLink*> LinkList;
@@ -12,9 +13,11 @@ class CChannel
 {
 	int ChannelNum;
 	LinkList ClientInfos;
-	CRITICAL_SECTION CS_MyInfoList;
+	//CRITICAL_SECTION CS_MyInfoList;
 	CChannel(const CChannel&);
 	CChannel& operator=(const CChannel&);
+	MUTEX RAII_ChannelMUTEX;
+	//CRITICALSECTION CS;
 public:
 	CChannel(int channelNum);
 	~CChannel();
@@ -27,16 +30,18 @@ public:
 #pragma region push,erase ÇÔ¼ö
 	void pushClient(CLink* client)
 	{
-		EnterCriticalSection(&CS_MyInfoList);
-		ClientInfos.push_back(client);
-		LeaveCriticalSection(&CS_MyInfoList);
+		{
+			ScopeLock<MUTEX> MU(RAII_ChannelMUTEX);
+			ClientInfos.push_back(client);
+		}
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
-		EnterCriticalSection(&CS_MyInfoList);
-		temp = ClientInfos.erase(myInfoListIt);
-		LeaveCriticalSection(&CS_MyInfoList);
+		{
+			ScopeLock<MUTEX> MU(RAII_ChannelMUTEX);
+			temp = ClientInfos.erase(myInfoListIt);
+		}
 		return temp;
 	}
 #pragma endregion

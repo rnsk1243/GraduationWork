@@ -43,7 +43,7 @@ bool CChannelHandler::exitChannel(CLink& clientInfo, CChannelManager& channelMan
 		{
 			if ((*iterBegin) == &clientInfo)
 			{
-				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 방에서 빼기
+				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 채널에서 빼기
 				break;
 			}
 		}

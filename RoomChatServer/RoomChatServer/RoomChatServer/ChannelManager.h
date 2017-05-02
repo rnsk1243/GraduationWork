@@ -11,7 +11,8 @@ typedef ChannelList::iterator ChannelListIt;
 class CChannelManager
 {
 	ChannelList Channels;
-	CRITICAL_SECTION CS_Channel;
+	MUTEX RAII_ChannelManagerMUTEX;
+	//CRITICAL_SECTION CS_Channel;
 	CChannelManager& operator=(const CChannelManager&);
 	CChannelManager(const CChannelManager&);
 public:
@@ -21,9 +22,10 @@ public:
 	ChannelListIt getIterChannelEnd() { return Channels.end(); }
 	void pushChannel(CChannel* newChannel)
 	{
-		EnterCriticalSection(&CS_Channel);
-		Channels.push_back(newChannel);
-		LeaveCriticalSection(&CS_Channel);
+		{
+			ScopeLock<MUTEX> MU(RAII_ChannelManagerMUTEX); // lock
+			Channels.push_back(newChannel);
+		}// unlock
 	}
 	CChannel * getMyChannel(int ChannelNum);
 };

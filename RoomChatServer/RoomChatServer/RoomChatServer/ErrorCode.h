@@ -17,7 +17,9 @@ enum EnumErrorCode
 	// send 에러
 	ERROR_SEND = 21,
 
-	///////////// 기타 관련 70~89 return////////////
+	///////////// 기타 관련 60~89 return////////////
+	// 잘못 입력
+	ERROR_WRONG_INPUT = 69,
 	// 클라이언트 묻기 성공/
 	SUCCES_ASKCLIENT = 70,
 	// 클라이언트 통보 성공
@@ -40,6 +42,7 @@ enum EnumErrorCode
 	ERROR_EXIT_ROOM = 93,
 	ERROR_MAKE_ROOM = 95,
 	ERROR_ENTER_ROOM = 97,
+	ERROR_DELETE_SOCKET = 99,
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

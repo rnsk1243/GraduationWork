@@ -76,7 +76,7 @@ public:
 	~ScopeLock()
 	{
 		obj.unlock();
-		obj.~T();
+		//obj.~T();
 	}
 
 };

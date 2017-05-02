@@ -3,7 +3,7 @@
 
 CRoomManager::CRoomManager()
 {
-	InitializeCriticalSection(&CS_Room);
+	//InitializeCriticalSection(&CS_Room);
 }
 
 
@@ -16,7 +16,7 @@ CRoomManager::~CRoomManager()
 		delete(*begin);
 	}
 	Rooms.clear();
-	DeleteCriticalSection(&CS_Room);
+	//DeleteCriticalSection(&CS_Room);
 }
 
 RoomListIt CRoomManager::getMyRoomIter(int ChannelNum, int roomNum)

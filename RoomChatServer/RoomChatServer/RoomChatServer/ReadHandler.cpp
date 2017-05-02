@@ -1,6 +1,6 @@
 #include "ReadHandler.h"
 #include"ConstEnumInfo.h"
-
+#include"ActionNetWork.h"
 
 CReadHandler::CReadHandler()
 {
@@ -48,7 +48,7 @@ bool CReadHandler::Search(const char * textFileName, bool isFullMatch, int count
 
 		for (int i = 0; i < count; i++)
 		{
-			if (count > tempVec.size()) // tempVec 범위 벗어나는것 방지
+			if (count > (int)tempVec.size()) // tempVec 범위 벗어나는것 방지
 				break;
 			int compareResult = searchTarget[i].compare(tempVec[i]);
 			if (0 == compareResult)

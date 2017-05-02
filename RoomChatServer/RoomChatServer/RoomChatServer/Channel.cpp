@@ -5,7 +5,7 @@
 CChannel::CChannel(int channelNum):
 	ChannelNum(channelNum)
 {
-	InitializeCriticalSection(&CS_MyInfoList);
+	//InitializeCriticalSection(&CS_MyInfoList);
 }
 
 
@@ -19,5 +19,5 @@ CChannel::~CChannel()
 		delete(*begin);
 	}
 	ClientInfos.clear();
-	DeleteCriticalSection(&CS_MyInfoList);
+	// DeleteCriticalSection(&CS);
 }

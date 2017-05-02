@@ -153,6 +153,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 
 bool CCommandController::deleteClientSocket(CLink& clientInfo)
 {
+	cout << "지울 소켓 이름 = " << clientInfo.getMyName() << endl;
 	int myChannelNum = clientInfo.getMyChannelNum();
 	int myRoomNum = clientInfo.getMyRoomNum();
 	//방에 있나 채널에 있나 확인
@@ -164,7 +165,10 @@ bool CCommandController::deleteClientSocket(CLink& clientInfo)
 			CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 			return false;
 		}
-		else { return true; }
+		else 
+		{ 
+			return true; 
+		}
 	}
 	else
 	{
@@ -173,6 +177,10 @@ bool CCommandController::deleteClientSocket(CLink& clientInfo)
 		{
 			CErrorHandler::ErrorHandler(ERROR_EXIT_ROOM);
 			return false;
+		}
+		else 
+		{
+			return true;
 		}
 	}
 	return false;

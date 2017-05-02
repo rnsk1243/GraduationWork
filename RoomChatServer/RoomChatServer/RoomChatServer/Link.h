@@ -10,7 +10,7 @@ struct MessageStruct
 {
 	char* message;
 	size_t sendRecvSize;
-	MessageStruct():message(new char[BufSize]){}
+	MessageStruct() :message(new char[BufSize]) { cout << "메시지 생성자 호출 주소 = " << &message << endl; }
 	MessageStruct& operator=(const MessageStruct& copyMS)
 	{
 		if (this == &copyMS)
@@ -30,7 +30,7 @@ struct MessageStruct
 	}
 	~MessageStruct()
 	{
-		cout << "메시지 소멸자 호출" << endl;
+		cout << " 메시지 소멸자 호출 소멸될 메시지 주소 = " << &message << "// 값 = " << message << endl;
 		delete[] message;
 		message = nullptr;
 	}
@@ -46,7 +46,6 @@ class CLink
 	// 클라이언트 소켓
 	SOCKET& ClientSocket;
 	MessageStruct MS;
-	MessageStruct NameMS;
 	CLink(const CLink&);
 	CLink& operator=(const CLink&);
 public:
@@ -61,13 +60,12 @@ public:
 	void setDefaultName() { if (nullptr == Name) { Name = "이름없음"; } }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
-	MessageStruct& getMyNameMessageStruct() { return NameMS; }
 #pragma endregion
 	void changeName(const char* name, int start)
 	{
 		//Name = '\0';
 		size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
-		for (int i = 0; i < char_size; i++)
+		for (size_t i = 0; i < char_size; i++)
 		{
 			Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사
 		}

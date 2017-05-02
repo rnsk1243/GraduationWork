@@ -22,7 +22,7 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	RoomListIt myRoomIter = roomManager->getMyRoomIter(channelNum, roomNum); // 나가고자하는 방 전달자
 #pragma endregion
 	// 만약 없는 방이면
-	if (&myRoomIter == nullptr)
+	if (myRoomIter == roomManager->getIterRoomEnd())
 		return false;
 	CRoom* currentRoom = *myRoomIter;
 	cout << currentRoom->getRoomName() << " 방을 나갑니다." << endl;
