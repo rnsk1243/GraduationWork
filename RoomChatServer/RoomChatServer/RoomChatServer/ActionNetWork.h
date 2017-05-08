@@ -15,7 +15,7 @@ public:
 	int sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags = 0);
 	// 내가 담당하는 클라이언트에게만 보내기
 	int sendn(SOCKET& socket, MessageStruct& MS, int flags = 0);
-	int recvn(CLink& clientInfo, CCommandController& commandController, int flags = 0);
+	int recvn(shared_ptr<CLink> clientInfo, CCommandController& commandController, int flags = 0);
 	// 내가 담당하는 클라이언트에게 답장 받기
 	int recvn(SOCKET& socket, MessageStruct& MS, int flags = 0);
 	int sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags = 0);

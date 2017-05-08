@@ -152,6 +152,7 @@
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="ConstEnumInfo.h" />
+    <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="RAII.h" />

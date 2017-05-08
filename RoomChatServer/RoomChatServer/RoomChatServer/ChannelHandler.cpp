@@ -1,5 +1,5 @@
 #include "ChannelHandler.h"
-
+#include"ErrorHandler.h"
 
 CChannelHandler::CChannelHandler()
 {
@@ -10,8 +10,18 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelManager, int targetChannelNo)
+bool CChannelHandler::enterChannel(shared_ptr<CLink> shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
 {
+	CLink* clientInfo = nullptr;
+	if (0 < shared_clientInfo.use_count())
+	{
+		clientInfo = shared_clientInfo.get();
+	}
+	else
+	{
+		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		return false;
+	}
 	// channel리스트 iterator
 	ChannelListIt iterBegin = channelManager.getIterChannelBegin();
 	ChannelListIt iterEnd = channelManager.getIterChannelEnd();
@@ -22,8 +32,7 @@ bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelMa
 		if (targetChannelNo == (*iterBegin)->getChannelNum())
 		{
 			cout << targetChannelNo << "번 채널로 이동 합니다." << endl;
-			shared_ptr<CLink> pushObj(clientInfo); // 메모리 관리객체에게 넘기고
-			(*iterBegin)->pushClient(pushObj); // 채널에 넣어주기
+			(*iterBegin)->pushClient(shared_clientInfo); // 채널에 넣어주기
 			clientInfo->setMyChannelNum(targetChannelNo);
 			return true; // 더 이상 볼일 없으므로 함수를 끝냄
 		}

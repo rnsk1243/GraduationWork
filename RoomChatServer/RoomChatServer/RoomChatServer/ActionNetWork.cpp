@@ -147,12 +147,21 @@ int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandController, int flags)
+int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandController& commandController, int flags)
 {
+	CLink* clientInfo = nullptr;
+	if (0 < shared_clientInfo.use_count())
+	{
+		clientInfo = shared_clientInfo.get();
+	}
+	else
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+	}
 #pragma region 받을 데이터 크기 가져오기
 	char temp[4];
-	SOCKET& clientSocket = clientInfo.getClientSocket();
-	MessageStruct& MS = clientInfo.getMessageStruct();
+	SOCKET& clientSocket = clientInfo->getClientSocket();
+	MessageStruct& MS = clientInfo->getMessageStruct();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
@@ -183,7 +192,7 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 	char* ptr = strchr(MS.message, '/');
 	if (ptr != nullptr)
 	{
-		commandController.commandHandling(clientInfo, ptr);
+		commandController.commandHandling(shared_clientInfo, ptr);
 		return SUCCES_RECV;
 	}
 #pragma endregion

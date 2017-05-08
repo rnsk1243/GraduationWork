@@ -22,6 +22,7 @@ public:
 	{
 		switch (code)
 		{
+		case ERROR_SHARED_COUNT_ZORO:
 		case ERROR_RECV:
 		case ERROR_SEND:
 			return EndClientThread(code);

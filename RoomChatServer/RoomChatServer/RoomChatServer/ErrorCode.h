@@ -43,6 +43,7 @@ enum EnumErrorCode
 	ERROR_MAKE_ROOM = 95,
 	ERROR_ENTER_ROOM = 97,
 	ERROR_DELETE_SOCKET = 99,
+	ERROR_SHARED_COUNT_ZORO = 101,
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

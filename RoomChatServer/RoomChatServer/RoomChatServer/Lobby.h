@@ -8,14 +8,14 @@ class CLobby
 	CReadHandler ReadHandler;
 	CWriteHandler WriteHandler;
 	MessageStruct MS;
-	CLobby(const CLobby&);
-	CLobby& operator=(const CLobby&);
 	int Login(SOCKET& clientSocket, CActionNetWork& actionNetWork);
 	int JoinMember(SOCKET& clientSocket, CActionNetWork& actionNetWork);
 	int ChooseMenu(char* message, SOCKET & clientSocket, CActionNetWork & actionNetWork);
 	int SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork);
 public:
 	CLobby(){}
+	CLobby(const CLobby&) = delete;
+	CLobby& operator=(const CLobby&) = delete;
 	~CLobby(){}
 	MessageStruct& getMessageStruct() { return MS; }	
 	int ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWork);

@@ -36,24 +36,31 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 			//_endthreadex(0);
 		}
 	}
-
-	CLink clientInfo(clientSocket, lobby.getMessageStruct().message);
-	cout << "clientInfo 주소 = " << &clientInfo << endl;
+	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, lobby.getMessageStruct().message));
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// EnterChannelNum 채널에 입장
-	if (!commandController.getChannelHandler().enterChannel(&clientInfo, channelManager, EnterChannelNum))
+	if (!commandController.getChannelHandler().enterChannel(shared_clientInfo, channelManager, EnterChannelNum))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 	}
+	CLink* clientInfo = nullptr;
+	if (0 < shared_clientInfo.use_count())
+	{
+		clientInfo = shared_clientInfo.get();
+	}
+	else
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+	}
 	while (true)
 	{
-		int isRecvSuccesResultValue = actionNetWork.recvn(clientInfo, commandController);
+		int isRecvSuccesResultValue = actionNetWork.recvn(shared_clientInfo, commandController);
 		if (SUCCES_RECV == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
-			if (ERROR_SEND == actionNetWork.sendn(clientInfo, roomManager, channelManager))
+			if (ERROR_SEND == actionNetWork.sendn(*clientInfo, roomManager, channelManager))
 			{
-				if (!commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+				if (!commandController.deleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 				{
 					return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
 					//_endthreadex(0);
@@ -63,7 +70,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		else if (ERROR_RECV == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
-			if (!commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+			if (!commandController.deleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 			{
 				return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
 				//_endthreadex(0);

@@ -46,10 +46,10 @@ class CLink
 	// 클라이언트 소켓
 	SOCKET& ClientSocket;
 	MessageStruct MS;
-	CLink(const CLink&);
-	CLink& operator=(const CLink&);
 public:
 	CLink(SOCKET& clientSocket, char* name_);
+	CLink(const CLink&) = delete;
+	CLink& operator=(const CLink&) = delete;
 	~CLink();
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }

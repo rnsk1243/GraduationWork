@@ -12,13 +12,22 @@ CCommandController::~CCommandController()
 }
 
 
-int CCommandController::commandHandling(CLink& clientInfo, char * command)
+int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, char * command)
 {
+	CLink* clientInfo = nullptr;
+	if (0 < shared_clientInfo.use_count())
+	{
+		clientInfo = shared_clientInfo.get();
+	}
+	else
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+	}
 	if (command == nullptr)
 		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
 	cout << "명령 처리 시작" << endl;
-	int channelNum = clientInfo.getMyChannelNum();
-	int roomNum = clientInfo.getMyRoomNum();
+	int channelNum = clientInfo->getMyChannelNum();
+	int roomNum = clientInfo->getMyRoomNum();
 	command++;
 #pragma region 명령처리
 	if (*command == 'e') // 방에 입장
@@ -37,12 +46,12 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 				if (room->getAmountPeople() < EnterRoomPeopleLimit)
 				{
 					cout << "방에 입장" << endl;
-					if (!RoomHandler.enterRoom(&clientInfo, &RoomManager, room->getRoomNum()))
+					if (!RoomHandler.enterRoom(shared_clientInfo, &RoomManager, room->getRoomNum()))
 					{
 						return CErrorHandler::ErrorHandler(ERROR_ENTER_ROOM);
 					}
 					// 채널에서는 나가기
-					if(!ChannelHandler.exitChannel(clientInfo, ChannelManager))
+					if(!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
 						return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 					isEnterSucces = true;
 					break;
@@ -55,13 +64,13 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	}
 	else if (*command == 'c')
 	{
-		if(NoneRoom != clientInfo.getMyRoomNum())
+		if(NoneRoom != clientInfo->getMyRoomNum())
 			return CErrorHandler::ErrorHandler(ERROR_COMMAND);
-		if (!ChannelHandler.exitChannel(clientInfo, ChannelManager))
+		if (!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
 			return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 		if (channelNum == MaxChannelNum)
 		{
-			if (!ChannelHandler.enterChannel(&clientInfo, ChannelManager, EnterChannelNum))
+			if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, EnterChannelNum))
 			{
 				return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 			}
@@ -75,7 +84,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 			{
 				++channelBegin;
 				int moveChannelNum = (*channelBegin)->getChannelNum();
-				if (!ChannelHandler.enterChannel(&clientInfo, ChannelManager, moveChannelNum))
+				if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, moveChannelNum))
 				{
 					return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 				}
@@ -88,23 +97,23 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	{
 		cout << "방 만들기" << endl;
 		char* roomName = RoomHandler.returnRoomName(command);
-		if (!RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName))
+		if (!RoomHandler.makeRoom(shared_clientInfo, &RoomManager, roomName))
 		{
 			return CErrorHandler::ErrorHandler(ERROR_MAKE_ROOM);
 		}
 		//원래 채널에서는 나가기
-		if (!ChannelHandler.exitChannel(clientInfo, ChannelManager))
+		if (!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
 			return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 	}
 	else if (*command == 'o')
 	{
 		// 다시 채널로 돌아가고
-		if (!ChannelHandler.enterChannel(&clientInfo, ChannelManager, channelNum))
+		if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, channelNum))
 		{
 			return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 		}
 		cout << "방에서 나가기" << endl;
-		if (!RoomHandler.exitRoom(&clientInfo, &RoomManager))
+		if (!RoomHandler.exitRoom(clientInfo, &RoomManager))
 			return CErrorHandler::ErrorHandler(ERROR_EXIT_ROOM);
 
 	}
@@ -128,11 +137,14 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 			}
 			if ((*roomListBegin)->getAmountPeople() <= limitToPeopleNum)
 			{
+				if (0 >= (*roomListBegin).use_count())
+				{
+					return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+				}
 				CRoom* targetRoom = (*roomListBegin).get();
 				if (myRoom->mergeRoom(targetRoom))
 				{
 					RoomManager.eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
-					delete targetRoom; // 방 제거
 				}
 				cout << "방 합체 완료" << endl; isMergeSucces = true;
 				break; // 가장 먼저 검색되는 아무 방과 병합 후 빠져나옴
@@ -144,8 +156,8 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	else if (*command == 'n')
 	{
 		// 기존 이름 변경
-		clientInfo.changeName(command, 1);
-		cout << clientInfo.getMyName() << " 으로 이름 변경 됨" << endl;
+		clientInfo->changeName(command, 1);
+		cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
 	}
 #pragma endregion
 	return SUCCES_COMMAND;

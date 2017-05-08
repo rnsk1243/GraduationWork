@@ -21,20 +21,17 @@ class CRoom
 	//CRITICALSECTION CT;
 	void increasePeople() { AmountPeople++; }
 	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
-	CRoom(const CRoom&);
-	CRoom& operator=(const CRoom&);
 public:
+	CRoom(const CRoom&) = delete;
+	CRoom& operator=(const CRoom&) = delete;
 	CRoom(int roomNum,int channelNum, char* roomName);
 	~CRoom();
 #pragma region push, erase 함수
-	void pushClient(CLink* client)
+	void pushClient(shared_ptr<CLink> shared_client)
 	{
-		{
-			ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
-			shared_ptr<CLink> pushObj(client); // 메모리관리객체 넘김
-			ClientInfos.push_back(pushObj);
-			increasePeople();
-		}
+		ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
+		ClientInfos.push_back(shared_client);
+		increasePeople();
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)
 	{
@@ -72,8 +69,8 @@ public:
 					increasePeople(); // 방 인원수 갱신
 				}
 #pragma endregion 
-				ClientInfos.sort();
-				targetRoom->ClientInfos.sort();
+//				ClientInfos.sort();
+//				targetRoom->ClientInfos.sort();
 				ClientInfos.merge(targetRoom->ClientInfos); // 실제 옮김
 			} // rock1 unlock
 		} // rock0 unlock

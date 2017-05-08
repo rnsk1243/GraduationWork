@@ -2,7 +2,7 @@
 #include<list>
 #include<iostream>
 #include"Room.h"
-
+#include"ErrorHandler.h"
 class CLink;
 class CRoom;
 using namespace std;
@@ -17,28 +17,29 @@ class CRoomManager
 #pragma region 크리티컬 섹션
 //	CRITICAL_SECTION CS_Room;
 	MUTEX RAII_RoomManagerMUTEX;
-	CRoomManager(const CRoomManager&);
-	CRoomManager& operator=(const CRoomManager&);
 #pragma endregion
 public:
 	CRoomManager();
+	CRoomManager(const CRoomManager&) = delete;
+	CRoomManager& operator=(const CRoomManager&) = delete;
 	~CRoomManager();
 #pragma region push, erase 메소드
 
-	void pushRoom(shared_ptr<CRoom> newRoom)
+	void pushRoom(shared_ptr<CRoom> shared_newRoom)
 	{
+		if (0 >= shared_newRoom.use_count())
 		{
-			ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
-			Rooms.push_back(newRoom);
+			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+			return;
 		}
+		ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
+		Rooms.push_back(shared_newRoom);
 	}
 	RoomListIt eraseRoom(RoomListIt delRoom)
 	{
+		ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
 		RoomListIt temp;
-		{
-			ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
-			temp = Rooms.erase(delRoom);
-		}
+		temp = Rooms.erase(delRoom);
 		return temp;
 	}
 #pragma endregion

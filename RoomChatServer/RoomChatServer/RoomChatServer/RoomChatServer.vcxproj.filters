@@ -152,5 +152,8 @@
     <ClInclude Include="RAII.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ErrorCode.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,13 +21,19 @@ public:
 	CChannelManager(const CChannelManager&) = delete;
 	ChannelListIt getIterChannelBegin() { return Channels.begin(); }
 	ChannelListIt getIterChannelEnd() { return Channels.end(); }
-	void pushChannel(shared_ptr<CChannel> newChannel)
+	void pushChannel(shared_ptr<CChannel> shared_newChannel)
 	{
+		if (0 >= shared_newChannel.use_count())
+		{
+			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+			return;
+		}
 		//{
+		// 채널이 삭제 되거나 하지 않으므로 lock 걸필요는 없다.
 			//ScopeLock<MUTEX> MU(RAII_ChannelManagerMUTEX); // lock
 			//Channels.push_back(newChannel);
 		//}// unlock
-		Channels.push_back(newChannel);
+		Channels.push_back(shared_newChannel);
 	}
 	CChannel * getMyChannel(int ChannelNum);
 };
