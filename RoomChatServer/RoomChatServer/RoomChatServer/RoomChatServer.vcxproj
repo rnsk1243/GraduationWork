@@ -154,6 +154,7 @@
     <ClInclude Include="ConstEnumInfo.h" />
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="Lobby.h" />
+    <ClInclude Include="RAII.h" />
     <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="ReadyNetWork.h" />

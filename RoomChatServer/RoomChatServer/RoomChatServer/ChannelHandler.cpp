@@ -22,7 +22,8 @@ bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelMa
 		if (targetChannelNo == (*iterBegin)->getChannelNum())
 		{
 			cout << targetChannelNo << "번 채널로 이동 합니다." << endl;
-			(*iterBegin)->pushClient(clientInfo); // 채널에 넣어주기
+			shared_ptr<CLink> pushObj(clientInfo); // 메모리 관리객체에게 넘기고
+			(*iterBegin)->pushClient(pushObj); // 채널에 넣어주기
 			clientInfo->setMyChannelNum(targetChannelNo);
 			return true; // 더 이상 볼일 없으므로 함수를 끝냄
 		}
@@ -41,8 +42,9 @@ bool CChannelHandler::exitChannel(CLink& clientInfo, CChannelManager& channelMan
 		LinkListIt iterEnd = myChannel->getIterMyInfoEnd();
 		for (; iterBegin != iterEnd; ++iterBegin)
 		{
-			if ((*iterBegin) == &clientInfo)
+			if ((*iterBegin).get() == &clientInfo)
 			{
+				cout << "채널 count = " << (*iterBegin).use_count() << endl;
 				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 채널에서 빼기
 				break;
 			}

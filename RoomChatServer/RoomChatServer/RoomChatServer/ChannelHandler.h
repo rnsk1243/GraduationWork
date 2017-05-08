@@ -9,11 +9,11 @@ using namespace std;
 
 class CChannelHandler
 {
-	CChannelHandler(const CChannelHandler&);
-	CChannelHandler& operator=(const CChannelHandler&);
 public:
 	CChannelHandler();
 	~CChannelHandler();
+	CChannelHandler(const CChannelHandler&) = delete;
+	CChannelHandler& operator=(const CChannelHandler&) = delete;
 
 	// 채널옮김 함수(옮기는 소켓, 옮기고싶은 채널 번호)
 	bool enterChannel(CLink* clientInfo, CChannelManager& channelManager, int targetChannelNo);

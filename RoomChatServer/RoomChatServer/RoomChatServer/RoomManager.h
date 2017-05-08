@@ -7,7 +7,7 @@ class CLink;
 class CRoom;
 using namespace std;
 #pragma region 타입재정의
-typedef list<CRoom*> RoomList;
+typedef list<shared_ptr<CRoom>> RoomList;
 typedef RoomList::iterator RoomListIt;
 #pragma endregion
 
@@ -25,7 +25,7 @@ public:
 	~CRoomManager();
 #pragma region push, erase 메소드
 
-	void pushRoom(CRoom* newRoom)
+	void pushRoom(shared_ptr<CRoom> newRoom)
 	{
 		{
 			ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);

@@ -9,13 +9,13 @@ CRoomManager::CRoomManager()
 
 CRoomManager::~CRoomManager()
 {
-	RoomListIt begin = getIterRoomBegin();
-	RoomListIt end = getIterRoomEnd();
-	for (; begin != end; ++begin)
-	{
-		delete(*begin);
-	}
-	Rooms.clear();
+	//RoomListIt begin = getIterRoomBegin();
+	//RoomListIt end = getIterRoomEnd();
+	//for (; begin != end; ++begin)
+	//{
+	//	delete(*begin);
+	//}
+	//Rooms.clear();
 	//DeleteCriticalSection(&CS_Room);
 }
 

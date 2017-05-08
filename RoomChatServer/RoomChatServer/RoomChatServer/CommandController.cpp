@@ -31,7 +31,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 #pragma region 내가 입장 할 수 있는 방 찾기
 		for (; roomBegin != roomEnd; ++roomBegin)
 		{
-			CRoom* room = *roomBegin;
+			CRoom* room = (*roomBegin).get();
 			if (room->getChannelNum() == channelNum)
 			{
 				if (room->getAmountPeople() < EnterRoomPeopleLimit)
@@ -86,15 +86,15 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	}
 	else if (*command == 'm')
 	{
-		//원래 채널에서는 나가기
-		if (!ChannelHandler.exitChannel(clientInfo, ChannelManager))
-			return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 		cout << "방 만들기" << endl;
 		char* roomName = RoomHandler.returnRoomName(command);
 		if (!RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName))
 		{
 			return CErrorHandler::ErrorHandler(ERROR_MAKE_ROOM);
 		}
+		//원래 채널에서는 나가기
+		if (!ChannelHandler.exitChannel(clientInfo, ChannelManager))
+			return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 	}
 	else if (*command == 'o')
 	{
@@ -111,7 +111,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	else if (*command == 'i')
 	{
 #pragma region 풀방까지 몇명 필요?
-		CRoom* myRoom = *RoomManager.getMyRoomIter(channelNum, roomNum);
+		CRoom* myRoom = (*RoomManager.getMyRoomIter(channelNum, roomNum)).get();
 		// 풀방까지 몇명 필요한가? (제한인원 - 현재 방 인원)
 		int limitToPeopleNum = EnterRoomPeopleLimit - (myRoom->getAmountPeople());
 #pragma endregion
@@ -128,7 +128,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 			}
 			if ((*roomListBegin)->getAmountPeople() <= limitToPeopleNum)
 			{
-				CRoom* targetRoom = (*roomListBegin);
+				CRoom* targetRoom = (*roomListBegin).get();
 				if (myRoom->mergeRoom(targetRoom))
 				{
 					RoomManager.eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거

@@ -31,6 +31,7 @@ CReadyNetWork::CReadyNetWork():
 CReadyNetWork::~CReadyNetWork()
 {
 	closesocket(*hServSock);
+	delete hServSock;
 }
 
 void CReadyNetWork::Accept(SOCKET& hClientSock)

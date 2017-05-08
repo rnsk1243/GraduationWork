@@ -31,7 +31,8 @@ public:
 	{
 		{
 			ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
-			ClientInfos.push_back(client);
+			shared_ptr<CLink> pushObj(client); // 메모리관리객체 넘김
+			ClientInfos.push_back(pushObj);
 			increasePeople();
 		}
 	}
@@ -66,11 +67,13 @@ public:
 				LinkListIt linkEnd = targetRoom->getIterMyInfoEnd();
 				for (; linkBegin != linkEnd; ++linkBegin)
 				{
-					CLink* targetClient = (*linkBegin);
+					CLink* targetClient = (*linkBegin).get();
 					targetClient->setMyRoomNum(RoomNum);
 					increasePeople(); // 방 인원수 갱신
 				}
 #pragma endregion 
+				ClientInfos.sort();
+				targetRoom->ClientInfos.sort();
 				ClientInfos.merge(targetRoom->ClientInfos); // 실제 옮김
 			} // rock1 unlock
 		} // rock0 unlock

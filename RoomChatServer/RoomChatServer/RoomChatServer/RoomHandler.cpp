@@ -24,14 +24,14 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	// 만약 없는 방이면
 	if (myRoomIter == roomManager->getIterRoomEnd())
 		return false;
-	CRoom* currentRoom = *myRoomIter;
+	CRoom* currentRoom = (*myRoomIter).get();
 	cout << currentRoom->getRoomName() << " 방을 나갑니다." << endl;
 #pragma region 방안에 클라이언트 찾아서 erase시키기
 	LinkListIt iterBegin = currentRoom->getIterMyInfoBegin();
 	LinkListIt iterEnd = currentRoom->getIterMyInfoEnd();
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		CLink* client = (*iterBegin);
+		CLink* client = (*iterBegin).get();
 		if (client == clientInfo)
 		{
 			client->setMyRoomNum(NoneRoom);
@@ -59,7 +59,6 @@ bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomManager* roomManager, char* 
 		return false;
 	}
 	int myChannelNum = clientInfo->getMyChannelNum();
-	CRoom* newRoom = nullptr;
 	int roomNum = 0;
 
 	if (roomManager->isRoomListEmpty())
@@ -70,7 +69,7 @@ bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomManager* roomManager, char* 
 	{
 		roomNum = roomManager->getEmptyRoomNum();
 	}
-	newRoom = new CRoom(roomNum, myChannelNum, roomName);
+	shared_ptr<CRoom> newRoom(new CRoom(roomNum, myChannelNum, roomName));
 	cout << roomNum << " 번으로 방 만듬" << endl;
 	// 새로운 room 만듬
 	roomManager->pushRoom(newRoom);
@@ -88,7 +87,7 @@ bool CRoomHandler::enterRoom(CLink* clientInfo, CRoomManager* roomManager, int t
 	// 들어가고자 하는 번호의 room이 있나?
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		CRoom* curRoom = (*iterBegin);
+		CRoom* curRoom = (*iterBegin).get();
 		if (targetRoomNo == curRoom->getRoomNum())
 		{
 			curRoom->pushClient(clientInfo);// 방에 넣어주기
@@ -104,7 +103,7 @@ char * CRoomHandler::returnRoomName(char * message)
 {
 	*message++; // 'm' or 'ㅣ' or 'c' 다음 포인터로 옮김
 	int i = 0;
-	char* roomName = new char[30]; //return할 방 이름
+	char* roomName = new char[NameSize]; //return할 방 이름
 	while (*message != '\0') // null 아닐때까지
 	{
 		roomName[i] = *message;

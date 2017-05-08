@@ -6,7 +6,8 @@
 #include"RAII.h"
 using namespace std;
 class CLink;
-typedef list<CLink*> LinkList;
+//typedef list<CLink*> LinkList;
+typedef list<shared_ptr<CLink>> LinkList;
 typedef LinkList::iterator LinkListIt;
 
 class CChannel
@@ -14,13 +15,13 @@ class CChannel
 	int ChannelNum;
 	LinkList ClientInfos;
 	//CRITICAL_SECTION CS_MyInfoList;
-	CChannel(const CChannel&);
-	CChannel& operator=(const CChannel&);
 	MUTEX RAII_ChannelMUTEX;
 	//CRITICALSECTION CS;
 public:
 	CChannel(int channelNum);
 	~CChannel();
+	CChannel(const CChannel&) = delete;
+	CChannel& operator=(const CChannel&) = delete;
 #pragma region get,set 함수
 	int getChannelNum() { return ChannelNum; }
 	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
@@ -28,7 +29,7 @@ public:
 #pragma endregion
 
 #pragma region push,erase 함수
-	void pushClient(CLink* client)
+	void pushClient(shared_ptr<CLink> client)
 	{
 		{
 			ScopeLock<MUTEX> MU(RAII_ChannelMUTEX);

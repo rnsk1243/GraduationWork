@@ -83,7 +83,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	}
 	else
 	{
-		CRoom* myRoom = *(roomManager.getMyRoomIter(channelNum, roomNum));
+		CRoom* myRoom = (*(roomManager.getMyRoomIter(channelNum, roomNum))).get();
 		// 방 소켓 리스트 iter
 		if (myRoom == nullptr)
 		{
@@ -101,10 +101,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	{
 		size_t temp = 0;
 		// 메시지 보낸 자신이면
-		cout << "(*iterBegin) = " << (*iterBegin) << (*iterBegin)->getMyName() << endl;
-		cout << "&clientInfo = " << &clientInfo << (&clientInfo)->getMyName() << endl;
-		cout << "(*iterBegin) == &clientInfo 값 = " << ((*iterBegin) == &clientInfo) << endl;
-		if ((*iterBegin) == &clientInfo)
+		if ((*iterBegin).get() == &clientInfo)
 		{
 			continue; // 보내지 않고 통과
 		}
@@ -201,12 +198,6 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 		cout << "이름 없음" << endl;
 		clientInfo.setDefaultName();
 	}
-	//MessageStruct& myName = clientInfo.getMyNameMessageStruct();
-	//myName.message = clientInfo.getMyName();
-	//myName.sendRecvSize = strlen(myName.message);
-
-	//cout << "보낼 메세지 = " << myName.message << endl;
-	//cout << "보낼 사이즈 = " << myName.sendRecvSize << endl;
 
 	size_t sendRecvSize = strlen(clientInfo.getMyName());
 	char* name = clientInfo.getMyName();

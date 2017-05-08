@@ -6,10 +6,10 @@
 
 class CActionNetWork
 {
-	CActionNetWork(const CActionNetWork&);
-	CActionNetWork& operator=(const CActionNetWork&);
 public:
 	CActionNetWork();
+	CActionNetWork(const CActionNetWork&) = delete;
+	CActionNetWork& operator=(const CActionNetWork&) = delete;
 	~CActionNetWork();
 	// room에서 메시지 보내기
 	int sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags = 0);

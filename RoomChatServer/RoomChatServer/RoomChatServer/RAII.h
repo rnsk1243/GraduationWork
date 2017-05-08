@@ -15,7 +15,7 @@ public:
 	}
 	~MUTEX()
 	{
-
+		cout << "mutex ¼Ò¸êÀÚ È£Ãâ" << endl;
 	}
 	void lock()
 	{

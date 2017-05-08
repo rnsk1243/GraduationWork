@@ -7,9 +7,9 @@ using namespace std;
 
 class CRoomHandler
 {
-	CRoomHandler(const CRoomHandler&);
-	CRoomHandler& operator=(const CRoomHandler&);
 public:
+	CRoomHandler(const CRoomHandler&) = delete;
+	CRoomHandler& operator=(const CRoomHandler&) = delete;
 	CRoomHandler();
 	~CRoomHandler();
 	// room에서 나가기 (나가고자하는 소켓)
