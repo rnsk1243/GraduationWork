@@ -1,3 +1,4 @@
+#pragma comment(lib,"version.lib")
 #include<iostream>
 #include"ReadyNetWork.h"
 #include"CommandController.h"
@@ -13,8 +14,48 @@
 #include<process.h>
 #include<thread>
 #include"ErrorHandler.h"
+#include"resource.h"
+#include<Windows.h>
 using namespace std;
 
+void printVersionInfo()
+{
+	// 버전정보를 담을 버퍼
+	char* buffer = NULL;
+	// 버전을 확인할 파일
+	char* name = "RoomChatServer.exe";
+
+	DWORD infoSize = 0;
+
+	// 파일로부터 버전정보데이터의 크기가 얼마인지를 구합니다.
+	infoSize = GetFileVersionInfoSize(name, 0);
+	if (infoSize == 0) return;
+
+	// 버퍼할당
+	buffer = new char[infoSize];
+	if (buffer)
+	{
+		// 버전정보데이터를 가져옵니다.
+		if (GetFileVersionInfo(name, 0, infoSize, buffer) != 0)
+		{
+			VS_FIXEDFILEINFO* pFineInfo = NULL;
+			UINT bufLen = 0;
+			// buffer로 부터 VS_FIXEDFILEINFO 정보를 가져옵니다.
+			if (VerQueryValue(buffer, "\\", (LPVOID*)&pFineInfo, &bufLen) != 0)
+			{
+				WORD majorVer, minorVer, buildNum, revisionNum;
+				majorVer = HIWORD(pFineInfo->dwFileVersionMS);
+				minorVer = LOWORD(pFineInfo->dwFileVersionMS);
+				buildNum = HIWORD(pFineInfo->dwFileVersionLS);
+				revisionNum = LOWORD(pFineInfo->dwFileVersionLS);
+
+				// 파일버전 출력
+				printf("version : %d,%d,%d,%d\n", majorVer, minorVer, buildNum, revisionNum);
+			}
+		}
+		delete[] buffer;
+	}
+}
 
 //thSendRecv(SOCKET& clientSocket, CCommandController& commandController, CActionNetWork& actionNetWork)
 
@@ -82,6 +123,10 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 
 void main()
 {
+	/////////// 버전 정보 출력 ///////////
+	printVersionInfo();
+	//////////////////////////////////////
+
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 	CActionNetWork actionNetWork;
