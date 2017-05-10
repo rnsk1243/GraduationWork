@@ -1,5 +1,5 @@
 #include "ChannelHandler.h"
-#include"ErrorHandler.h"
+
 
 CChannelHandler::CChannelHandler()
 {
@@ -10,18 +10,8 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(shared_ptr<CLink> shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
+bool CChannelHandler::enterChannel(CLink* clientInfo, CChannelManager& channelManager, int targetChannelNo)
 {
-	CLink* clientInfo = nullptr;
-	if (0 < shared_clientInfo.use_count())
-	{
-		clientInfo = shared_clientInfo.get();
-	}
-	else
-	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-		return false;
-	}
 	// channel리스트 iterator
 	ChannelListIt iterBegin = channelManager.getIterChannelBegin();
 	ChannelListIt iterEnd = channelManager.getIterChannelEnd();
@@ -32,7 +22,7 @@ bool CChannelHandler::enterChannel(shared_ptr<CLink> shared_clientInfo, CChannel
 		if (targetChannelNo == (*iterBegin)->getChannelNum())
 		{
 			cout << targetChannelNo << "번 채널로 이동 합니다." << endl;
-			(*iterBegin)->pushClient(shared_clientInfo); // 채널에 넣어주기
+			(*iterBegin)->pushClient(clientInfo); // 채널에 넣어주기
 			clientInfo->setMyChannelNum(targetChannelNo);
 			return true; // 더 이상 볼일 없으므로 함수를 끝냄
 		}
@@ -44,17 +34,17 @@ bool CChannelHandler::enterChannel(shared_ptr<CLink> shared_clientInfo, CChannel
 bool CChannelHandler::exitChannel(CLink& clientInfo, CChannelManager& channelManager)
 {
 	CChannel* myChannel = channelManager.getMyChannel(clientInfo.getMyChannelNum());
+	cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
+
 	if (myChannel != nullptr)
 	{
-		cout << myChannel->getChannelNum() << "번 채널을 나갑니다." << endl;
 		LinkListIt iterBegin = myChannel->getIterMyInfoBegin();
 		LinkListIt iterEnd = myChannel->getIterMyInfoEnd();
 		for (; iterBegin != iterEnd; ++iterBegin)
 		{
-			if ((*iterBegin).get() == &clientInfo)
+			if ((*iterBegin) == &clientInfo)
 			{
-				cout << "채널 count = " << (*iterBegin).use_count() << endl;
-				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 채널에서 빼기
+				iterBegin = myChannel->eraseClient(iterBegin); // 원래 있던 방에서 빼기
 				break;
 			}
 		}

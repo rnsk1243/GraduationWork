@@ -4,21 +4,19 @@
 #include"ChannelManager.h"
 #include"RoomManager.h"
 
-
-
 class CCommandController
 {
 	CChannelManager ChannelManager;
 	CRoomManager RoomManager;
 	CChannelHandler ChannelHandler;
 	CRoomHandler RoomHandler;
+	CCommandController(const CCommandController&);
+	CCommandController& operator=(const CCommandController&);
 public:
 	CCommandController();
-	CCommandController(const CCommandController&) = delete;
-	CCommandController& operator=(const CCommandController&) = delete;
 	~CCommandController();
 	// 명령 처리 함수(방 만들기 등)
-	int commandHandling(shared_ptr<CLink> shared_clientInfo, char* command);
+	int commandHandling(CLink& clientInfo, char* command);
 #pragma region get 함수
 	//CRoomHandlere* getRoomHandlere() { return RoomHandlere; }
 	CChannelHandler& getChannelHandler() { return ChannelHandler; }

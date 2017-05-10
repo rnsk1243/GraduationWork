@@ -10,8 +10,6 @@ class CReadHandler
 {
 public:
 	CReadHandler();
-	CReadHandler(const CReadHandler&) = delete;
-	CReadHandler& operator=(const CReadHandler&) = delete;
 	~CReadHandler();
 	// 파일명, 전부 일치?, 인자몇개, 스트링
 	bool Search(const char* textFileName, bool isFullMatch, int count, ...);

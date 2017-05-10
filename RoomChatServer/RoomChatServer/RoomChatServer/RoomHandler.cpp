@@ -2,7 +2,6 @@
 #include"Link.h"
 #include"Room.h"
 #include"ConstEnumInfo.h"
-#include"ErrorHandler.h"
 
 CRoomHandler::CRoomHandler()
 {
@@ -23,21 +22,16 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	RoomListIt myRoomIter = roomManager->getMyRoomIter(channelNum, roomNum); // 나가고자하는 방 전달자
 #pragma endregion
 	// 만약 없는 방이면
-	if (myRoomIter == roomManager->getIterRoomEnd())
+	if (&myRoomIter == nullptr)
 		return false;
-	if (0 >= (*myRoomIter).use_count())
-	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-		return false;
-	}
-	CRoom* currentRoom = (*myRoomIter).get();
+	CRoom* currentRoom = *myRoomIter;
 	cout << currentRoom->getRoomName() << " 방을 나갑니다." << endl;
 #pragma region 방안에 클라이언트 찾아서 erase시키기
 	LinkListIt iterBegin = currentRoom->getIterMyInfoBegin();
 	LinkListIt iterEnd = currentRoom->getIterMyInfoEnd();
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		CLink* client = (*iterBegin).get();
+		CLink* client = (*iterBegin);
 		if (client == clientInfo)
 		{
 			client->setMyRoomNum(NoneRoom);
@@ -47,34 +41,25 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 				cout << currentRoom->getRoomName() << " 방에 아무도 없습니다." << endl;
 				// 방 리스트에서 삭제 시키고
 				roomManager->eraseRoom(myRoomIter);
+				delete currentRoom;
 			}
-			return true;
+			break;
 		}
 	}
 #pragma endregion
 
-	return false;
+	return true;
 }
 
-bool CRoomHandler::makeRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, char* roomName)
+bool CRoomHandler::makeRoom(CLink* clientInfo, CRoomManager* roomManager, char* roomName)
 {
-	CLink* clientInfo = nullptr;
-	if (0 < shared_clientInfo.use_count())
-	{
-		clientInfo = shared_clientInfo.get();
-	}
-	else
-	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-		return false;
-	}
-
 	if (clientInfo->getMyRoomNum() != NoneRoom)
 	{
 		cout << "방에 들어와 있음" << endl;
 		return false;
 	}
 	int myChannelNum = clientInfo->getMyChannelNum();
+	CRoom* newRoom = nullptr;
 	int roomNum = 0;
 
 	if (roomManager->isRoomListEmpty())
@@ -85,44 +70,28 @@ bool CRoomHandler::makeRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* r
 	{
 		roomNum = roomManager->getEmptyRoomNum();
 	}
-	// 새로운 room 만듬
-	shared_ptr<CRoom> newRoom(new CRoom(roomNum, myChannelNum, roomName));
+	newRoom = new CRoom(roomNum, myChannelNum, roomName);
 	cout << roomNum << " 번으로 방 만듬" << endl;
+	// 새로운 room 만듬
 	roomManager->pushRoom(newRoom);
 	// 새로운 room에 소켓 넣어줌
-	newRoom.get()->pushClient(shared_clientInfo);
+	newRoom->pushClient(clientInfo);
 	clientInfo->setMyRoomNum(roomNum);
 	cout << "방 만들기 성공" << endl;
 	return true;
 }
 
-bool CRoomHandler::enterRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, int targetRoomNo)
+bool CRoomHandler::enterRoom(CLink* clientInfo, CRoomManager* roomManager, int targetRoomNo)
 {
-	CLink* clientInfo = nullptr;
-	if (0 < shared_clientInfo.use_count())
-	{
-		clientInfo = shared_clientInfo.get();
-	}
-	else
-	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-		return false;
-	}
-
 	RoomListIt iterBegin = roomManager->getIterRoomBegin();
 	RoomListIt iterEnd = roomManager->getIterRoomEnd();
 	// 들어가고자 하는 번호의 room이 있나?
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		if ((*iterBegin).use_count() < 0)
-		{
-			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-			continue;
-		}
-		CRoom* curRoom = (*iterBegin).get();
+		CRoom* curRoom = (*iterBegin);
 		if (targetRoomNo == curRoom->getRoomNum())
 		{
-			curRoom->pushClient(shared_clientInfo);// 방에 넣어주기
+			curRoom->pushClient(clientInfo);// 방에 넣어주기
 			clientInfo->setMyRoomNum(targetRoomNo);
 			return true; // 더 이상 볼일 없으므로 함수를 끝냄
 		}
@@ -135,7 +104,7 @@ char * CRoomHandler::returnRoomName(char * message)
 {
 	*message++; // 'm' or 'ㅣ' or 'c' 다음 포인터로 옮김
 	int i = 0;
-	char* roomName = new char[NameSize]; //return할 방 이름
+	char* roomName = new char[30]; //return할 방 이름
 	while (*message != '\0') // null 아닐때까지
 	{
 		roomName[i] = *message;
