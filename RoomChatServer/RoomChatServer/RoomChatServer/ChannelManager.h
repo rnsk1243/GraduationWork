@@ -5,25 +5,35 @@
 using namespace std;
 class CChannel;
 class CLink;
-typedef list<CChannel*> ChannelList;
+//typedef list<CChannel*> ChannelList;
+typedef list<shared_ptr<CChannel>> ChannelList;
 typedef ChannelList::iterator ChannelListIt;
 
 class CChannelManager
 {
-	ChannelList* Channels;
-	CRITICAL_SECTION* CS_Channel;
-	CChannelManager(const CChannelManager&);
-	CChannelManager& operator=(const CChannelManager&);
+	ChannelList Channels;
+	MUTEX RAII_ChannelManagerMUTEX;
+	//CRITICAL_SECTION CS_Channel;
 public:
-	CChannelManager(int channelAmount);
+	CChannelManager();
 	~CChannelManager();
-	ChannelListIt getIterChannelBegin() { return Channels->begin(); }
-	ChannelListIt getIterChannelEnd() { return Channels->end(); }
-	void pushChannel(CChannel* newChannel)
+	CChannelManager& operator=(const CChannelManager&) = delete;
+	CChannelManager(const CChannelManager&) = delete;
+	ChannelListIt getIterChannelBegin() { return Channels.begin(); }
+	ChannelListIt getIterChannelEnd() { return Channels.end(); }
+	void pushChannel(shared_ptr<CChannel> shared_newChannel)
 	{
-		EnterCriticalSection(CS_Channel);
-		Channels->push_back(newChannel);
-		LeaveCriticalSection(CS_Channel);
+		if (0 >= shared_newChannel.use_count())
+		{
+			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+			return;
+		}
+		//{
+		// 채널이 삭제 되거나 하지 않으므로 lock 걸필요는 없다.
+			//ScopeLock<MUTEX> MU(RAII_ChannelManagerMUTEX); // lock
+			//Channels.push_back(newChannel);
+		//}// unlock
+		Channels.push_back(shared_newChannel);
 	}
 	CChannel * getMyChannel(int ChannelNum);
 };

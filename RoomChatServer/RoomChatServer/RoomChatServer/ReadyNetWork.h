@@ -3,15 +3,15 @@
 #include<iostream>
 using namespace std;
 
-const int Port = 9000;
+
 
 class CReadyNetWork
 {
 	SOCKET* hServSock;
-	CReadyNetWork(const CReadyNetWork&);
-	CReadyNetWork&  operator=(const CReadyNetWork&);
 public:
 	CReadyNetWork();
+	CReadyNetWork(const CReadyNetWork&) = delete;
+	CReadyNetWork&  operator=(const CReadyNetWork&) = delete;
 	~CReadyNetWork();
 	void Accept(SOCKET& hClientSock);
 };

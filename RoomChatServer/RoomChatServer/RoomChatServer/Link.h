@@ -3,15 +3,14 @@
 #include<WinSock2.h>
 #include<iostream>
 using namespace std;
-const int BufSize = 1024;
-const int NameSize = 30;
+#include"ConstEnumInfo.h"
 
 // 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
 struct MessageStruct
 {
 	char* message;
 	size_t sendRecvSize;
-	MessageStruct():message(new char[BufSize]){}
+	MessageStruct() :message(new char[BufSize]) { cout << "메시지 생성자 호출 주소 = " << &message << endl; }
 	MessageStruct& operator=(const MessageStruct& copyMS)
 	{
 		if (this == &copyMS)
@@ -31,7 +30,7 @@ struct MessageStruct
 	}
 	~MessageStruct()
 	{
-		cout << "메시지 소멸자 호출" << endl;
+		cout << " 메시지 소멸자 호출 소멸될 메시지 주소 = " << &message << "// 값 = " << message << endl;
 		delete[] message;
 		message = nullptr;
 	}
@@ -46,20 +45,19 @@ class CLink
 	int MyChannelNum;
 	// 클라이언트 소켓
 	SOCKET& ClientSocket;
-	MessageStruct& MS;
-	MessageStruct* NameMS;
-	CLink(const CLink&);
-	CLink& operator=(const CLink&);
+	MessageStruct MS;
 public:
-	CLink(SOCKET& clientSocket, MessageStruct& ms);
+	CLink(SOCKET& clientSocket, char* name_);
+	CLink(const CLink&) = delete;
+	CLink& operator=(const CLink&) = delete;
 	~CLink();
 #pragma region get, set 함수
 	MessageStruct& getMessageStruct() { return MS; }
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
 	int getMyChannelNum() { return MyChannelNum; }
-	MessageStruct* getMyNameMessageStruct() { return NameMS; }
 	char* getMyName() { return Name; }
+	void setDefaultName() { if (nullptr == Name) { Name = "이름없음"; } }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 #pragma endregion
@@ -67,7 +65,7 @@ public:
 	{
 		//Name = '\0';
 		size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
-		for (int i = 0; i < char_size; i++)
+		for (size_t i = 0; i < char_size; i++)
 		{
 			Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사
 		}

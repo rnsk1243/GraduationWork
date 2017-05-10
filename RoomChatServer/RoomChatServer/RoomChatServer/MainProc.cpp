@@ -1,3 +1,4 @@
+#pragma comment(lib,"version.lib")
 #include<iostream>
 #include"ReadyNetWork.h"
 #include"CommandController.h"
@@ -8,56 +9,113 @@
 #include"ChannelManager.h"
 #include"Channel.h"
 #include"ActionNetWork.h"
+#include"Lobby.h"
+#include"ConstEnumInfo.h"
 #include<process.h>
+#include<thread>
+#include"ErrorHandler.h"
+#include"resource.h"
+#include<Windows.h>
 using namespace std;
 
-
-const int MakeThreadNum = 3;
-const int ChannelAmount = 5;
-
-struct SendRecvParam
+void printVersionInfo()
 {
-	SOCKET& clientSocket;
-	CRoomManager& roomManager;
-	CChannelManager& channelManager;
-	CCommandController& commandController;
-	CActionNetWork& actionNetWork;
-	SendRecvParam(SOCKET& clientSocket_, CRoomManager& roomManager_, CChannelManager& channelManager_, CCommandController& commandController_, CActionNetWork& actionNetWork_) :
-		clientSocket(clientSocket_), roomManager(roomManager_), channelManager(channelManager_), commandController(commandController_), actionNetWork(actionNetWork_) {}
-};
+	// 버전정보를 담을 버퍼
+	char* buffer = NULL;
+	// 버전을 확인할 파일
+	char* name = "RoomChatServer.exe";
 
-unsigned int __stdcall thSendRecv(PVOID pvParam)
+	DWORD infoSize = 0;
+
+	// 파일로부터 버전정보데이터의 크기가 얼마인지를 구합니다.
+	infoSize = GetFileVersionInfoSize(name, 0);
+	if (infoSize == 0) return;
+
+	// 버퍼할당
+	buffer = new char[infoSize];
+	if (buffer)
+	{
+		// 버전정보데이터를 가져옵니다.
+		if (GetFileVersionInfo(name, 0, infoSize, buffer) != 0)
+		{
+			VS_FIXEDFILEINFO* pFineInfo = NULL;
+			UINT bufLen = 0;
+			// buffer로 부터 VS_FIXEDFILEINFO 정보를 가져옵니다.
+			if (VerQueryValue(buffer, "\\", (LPVOID*)&pFineInfo, &bufLen) != 0)
+			{
+				WORD majorVer, minorVer, buildNum, revisionNum;
+				majorVer = HIWORD(pFineInfo->dwFileVersionMS);
+				minorVer = LOWORD(pFineInfo->dwFileVersionMS);
+				buildNum = HIWORD(pFineInfo->dwFileVersionLS);
+				revisionNum = LOWORD(pFineInfo->dwFileVersionLS);
+
+				// 파일버전 출력
+				printf("version : %d,%d,%d,%d\n", majorVer, minorVer, buildNum, revisionNum);
+			}
+		}
+		delete[] buffer;
+	}
+}
+
+//thSendRecv(SOCKET& clientSocket, CCommandController& commandController, CActionNetWork& actionNetWork)
+
+int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNetWork, void* v_lobby)
 {
-	SendRecvParam* SRParam = (SendRecvParam*)pvParam;
-	SOCKET& clientSocket = SRParam->clientSocket;
-	CRoomManager& roomManager = SRParam->roomManager;
-	CChannelManager& channelManager = SRParam->channelManager;
-	CCommandController& commandController = SRParam->commandController;
-	CActionNetWork& actionNetWork = SRParam->actionNetWork;
-
-	MessageStruct MS;
-	CLink clientInfo(clientSocket, MS);
-	// StartChannelNum 채널에 입장
-	commandController.getChannelHandler().enterChannel(&clientInfo, &channelManager, EnterChannelNum);
-
+	SOCKET& clientSocket = (*(SOCKET*)v_clientSocket);
+	CCommandController& commandController = (*(CCommandController*)v_commandController);
+	CActionNetWork& actionNetWork = (*(CActionNetWork*)v_actionNetWork);
+	CLobby& lobby = (*(CLobby*)v_lobby);
+	//CLobby lobby;
+	int isLogin = 0;
+	while (SUCCES_LOGIN != isLogin)
+	{
+		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork);
+		CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
+		if (ERROR_RECV == isLogin || ERROR_SEND == isLogin)
+		{
+			return CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
+			//_endthreadex(0);
+		}
+	}
+	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, lobby.getMessageStruct().message));
+	CChannelManager& channelManager = commandController.getChannelManager();
+	CRoomManager& roomManager = commandController.getRoomManager();
+	// EnterChannelNum 채널에 입장
+	if (!commandController.getChannelHandler().enterChannel(shared_clientInfo, channelManager, EnterChannelNum))
+	{
+		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
+	}
+	CLink* clientInfo = nullptr;
+	if (0 < shared_clientInfo.use_count())
+	{
+		clientInfo = shared_clientInfo.get();
+	}
+	else
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+	}
 	while (true)
 	{
-		int isRecvSuccesResultValue = actionNetWork.recvn(clientInfo, commandController);
-		if (SuccesRecv == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
+		int isRecvSuccesResultValue = actionNetWork.recvn(shared_clientInfo, commandController);
+		if (SUCCES_RECV == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
-			// 받은 메시지 내용 임시 복사
-			//MessageStruct message(*clientInfo->getMessageStruct());
-
-			actionNetWork.sendn(clientInfo, roomManager, channelManager);
+			if (ERROR_SEND == actionNetWork.sendn(*clientInfo, roomManager, channelManager))
+			{
+				if (!commandController.deleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+				{
+					return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+					//_endthreadex(0);
+				}
+			}
 		}
-		else if (OccuredError == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
+		else if (ERROR_RECV == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
-			if (commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+			if (!commandController.deleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 			{
-				_endthreadex(0);
+				return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+				//_endthreadex(0);
 			}
-			// 스레드 반환
 			return 0;
 		}
 	}
@@ -65,20 +123,22 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 
 void main()
 {
-	CActionNetWork actionNetWork;
+	/////////// 버전 정보 출력 ///////////
+	printVersionInfo();
+	//////////////////////////////////////
+
 	CReadyNetWork readyNetWork;
-	CChannelHandler channelHandler;
-	CRoomHandler roomHandler;
-	CChannelManager channelManager(ChannelAmount);
-	CRoomManager roomManager;
-	CCommandController commandController(channelManager, roomManager, channelHandler, roomHandler);
+	CCommandController commandController;
+	CActionNetWork actionNetWork;
+	CLobby lobby;
 
 	while (true)
 	{
 		SOCKET* clientSocket = new SOCKET();
 		readyNetWork.Accept(*clientSocket);
-		SendRecvParam SRParam(*clientSocket, roomManager, channelManager, commandController, actionNetWork);
-		_beginthreadex(NULL, NULL, thSendRecv, &SRParam, 0, NULL);
+		
+		thread clientThread(thSendRecv, clientSocket, &commandController, &actionNetWork, &lobby);
+		clientThread.detach();
 	}
 	
 	getchar();
