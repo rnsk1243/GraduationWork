@@ -18,14 +18,14 @@
 // @@protoc_insertion_point(includes)
 
 namespace graduationWork {
-class Vector3DefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Vector3> {
-} _Vector3_default_instance_;
-class TransformDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Transform> {
-} _Transform_default_instance_;
-class MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<Message> {
-} _Message_default_instance_;
-class DataSizeDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<DataSize> {
-} _DataSize_default_instance_;
+class g_Vector3DefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<g_Vector3> {
+} _g_Vector3_default_instance_;
+class g_TransformDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<g_Transform> {
+} _g_Transform_default_instance_;
+class g_MessageDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<g_Message> {
+} _g_Message_default_instance_;
+class g_DataSizeDefaultTypeInternal : public ::google::protobuf::internal::ExplicitlyConstructed<g_DataSize> {
+} _g_DataSize_default_instance_;
 
 namespace protobuf_graduationWork_2eproto {
 
@@ -38,46 +38,56 @@ const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 }  // namespace
 
 const ::google::protobuf::uint32 TableStruct::offsets[] = {
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vector3, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Vector3, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Vector3, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vector3, x_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vector3, y_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vector3, z_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transform, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Vector3, x_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Vector3, y_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Vector3, z_),
+  0,
+  1,
+  2,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transform, packetnum_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transform, position_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transform, rotation_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Transform, scale_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, packetnum_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, position_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, rotation_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Transform, scale_),
+  3,
+  0,
+  1,
+  2,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Message, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Message, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Message, message_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_Message, message_),
+  0,
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, _has_bits_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, type_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DataSize, size_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, type_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, size_),
+  0,
+  1,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
-  { 0, -1, sizeof(Vector3)},
-  { 7, -1, sizeof(Transform)},
-  { 15, -1, sizeof(Message)},
-  { 20, -1, sizeof(DataSize)},
+  { 0, 7, sizeof(g_Vector3)},
+  { 10, 18, sizeof(g_Transform)},
+  { 22, 27, sizeof(g_Message)},
+  { 28, 34, sizeof(g_DataSize)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&_Vector3_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_Transform_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_Message_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&_DataSize_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_g_Vector3_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_g_Transform_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_g_Message_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_g_DataSize_default_instance_),
 };
 
 namespace {
@@ -104,13 +114,13 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void TableStruct::Shutdown() {
-  _Vector3_default_instance_.Shutdown();
+  _g_Vector3_default_instance_.Shutdown();
   delete file_level_metadata[0].reflection;
-  _Transform_default_instance_.Shutdown();
+  _g_Transform_default_instance_.Shutdown();
   delete file_level_metadata[1].reflection;
-  _Message_default_instance_.Shutdown();
+  _g_Message_default_instance_.Shutdown();
   delete file_level_metadata[2].reflection;
-  _DataSize_default_instance_.Shutdown();
+  _g_DataSize_default_instance_.Shutdown();
   delete file_level_metadata[3].reflection;
 }
 
@@ -118,16 +128,16 @@ void TableStruct::InitDefaultsImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::internal::InitProtobufDefaults();
-  _Vector3_default_instance_.DefaultConstruct();
-  _Transform_default_instance_.DefaultConstruct();
-  _Message_default_instance_.DefaultConstruct();
-  _DataSize_default_instance_.DefaultConstruct();
-  _Transform_default_instance_.get_mutable()->position_ = const_cast< ::graduationWork::Vector3*>(
-      ::graduationWork::Vector3::internal_default_instance());
-  _Transform_default_instance_.get_mutable()->rotation_ = const_cast< ::graduationWork::Vector3*>(
-      ::graduationWork::Vector3::internal_default_instance());
-  _Transform_default_instance_.get_mutable()->scale_ = const_cast< ::graduationWork::Vector3*>(
-      ::graduationWork::Vector3::internal_default_instance());
+  _g_Vector3_default_instance_.DefaultConstruct();
+  _g_Transform_default_instance_.DefaultConstruct();
+  _g_Message_default_instance_.DefaultConstruct();
+  _g_DataSize_default_instance_.DefaultConstruct();
+  _g_Transform_default_instance_.get_mutable()->position_ = const_cast< ::graduationWork::g_Vector3*>(
+      ::graduationWork::g_Vector3::internal_default_instance());
+  _g_Transform_default_instance_.get_mutable()->rotation_ = const_cast< ::graduationWork::g_Vector3*>(
+      ::graduationWork::g_Vector3::internal_default_instance());
+  _g_Transform_default_instance_.get_mutable()->scale_ = const_cast< ::graduationWork::g_Vector3*>(
+      ::graduationWork::g_Vector3::internal_default_instance());
 }
 
 void InitDefaults() {
@@ -137,20 +147,19 @@ void InitDefaults() {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] = {
-      "\n\024graduationWork.proto\022\016graduationWork\"*"
-      "\n\007Vector3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001"
-      "(\002\"\234\001\n\tTransform\022\021\n\tpacketNum\030\001 \001(\005\022)\n\010p"
-      "osition\030\002 \001(\0132\027.graduationWork.Vector3\022)"
-      "\n\010rotation\030\003 \001(\0132\027.graduationWork.Vector"
-      "3\022&\n\005scale\030\004 \001(\0132\027.graduationWork.Vector"
-      "3\"\032\n\007Message\022\017\n\007message\030\001 \001(\014\"@\n\010DataSiz"
-      "e\022&\n\004type\030\001 \001(\0162\030.graduationWork.DataTyp"
-      "e\022\014\n\004size\030\002 \001(\005*&\n\010DataType\022\013\n\007MESSAGE\020\000"
-      "\022\r\n\tTRANSFORM\020\001B+\252\002(Google.Protobuf.Grad"
-      "uationWork.Transformb\006proto3"
+      "\n\024graduationWork.proto\022\016graduationWork\","
+      "\n\tg_Vector3\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003"
+      " \002(\002\"\244\001\n\013g_Transform\022\021\n\tpacketNum\030\001 \002(\005\022"
+      "+\n\010position\030\002 \002(\0132\031.graduationWork.g_Vec"
+      "tor3\022+\n\010rotation\030\003 \002(\0132\031.graduationWork."
+      "g_Vector3\022(\n\005scale\030\004 \002(\0132\031.graduationWor"
+      "k.g_Vector3\"\034\n\tg_Message\022\017\n\007message\030\001 \002("
+      "\014\"D\n\ng_DataSize\022(\n\004type\030\001 \002(\0162\032.graduati"
+      "onWork.g_DataType\022\014\n\004size\030\002 \002(\005*(\n\ng_Dat"
+      "aType\022\013\n\007MESSAGE\020\000\022\r\n\tTRANSFORM\020\001"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 428);
+      descriptor, 393);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "graduationWork.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -169,11 +178,11 @@ struct StaticDescriptorInitializer {
 
 }  // namespace protobuf_graduationWork_2eproto
 
-const ::google::protobuf::EnumDescriptor* DataType_descriptor() {
+const ::google::protobuf::EnumDescriptor* g_DataType_descriptor() {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_enum_descriptors[0];
 }
-bool DataType_IsValid(int value) {
+bool g_DataType_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:
@@ -187,87 +196,92 @@ bool DataType_IsValid(int value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Vector3::kXFieldNumber;
-const int Vector3::kYFieldNumber;
-const int Vector3::kZFieldNumber;
+const int g_Vector3::kXFieldNumber;
+const int g_Vector3::kYFieldNumber;
+const int g_Vector3::kZFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Vector3::Vector3()
+g_Vector3::g_Vector3()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_graduationWork_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:graduationWork.Vector3)
+  // @@protoc_insertion_point(constructor:graduationWork.g_Vector3)
 }
-Vector3::Vector3(const Vector3& from)
+g_Vector3::g_Vector3(const g_Vector3& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
     reinterpret_cast<char*>(&z_) -
     reinterpret_cast<char*>(&x_) + sizeof(z_));
-  // @@protoc_insertion_point(copy_constructor:graduationWork.Vector3)
+  // @@protoc_insertion_point(copy_constructor:graduationWork.g_Vector3)
 }
 
-void Vector3::SharedCtor() {
+void g_Vector3::SharedCtor() {
+  _cached_size_ = 0;
   ::memset(&x_, 0, reinterpret_cast<char*>(&z_) -
     reinterpret_cast<char*>(&x_) + sizeof(z_));
-  _cached_size_ = 0;
 }
 
-Vector3::~Vector3() {
-  // @@protoc_insertion_point(destructor:graduationWork.Vector3)
+g_Vector3::~g_Vector3() {
+  // @@protoc_insertion_point(destructor:graduationWork.g_Vector3)
   SharedDtor();
 }
 
-void Vector3::SharedDtor() {
+void g_Vector3::SharedDtor() {
 }
 
-void Vector3::SetCachedSize(int size) const {
+void g_Vector3::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Vector3::descriptor() {
+const ::google::protobuf::Descriptor* g_Vector3::descriptor() {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[0].descriptor;
 }
 
-const Vector3& Vector3::default_instance() {
+const g_Vector3& g_Vector3::default_instance() {
   protobuf_graduationWork_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-Vector3* Vector3::New(::google::protobuf::Arena* arena) const {
-  Vector3* n = new Vector3;
+g_Vector3* g_Vector3::New(::google::protobuf::Arena* arena) const {
+  g_Vector3* n = new g_Vector3;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void Vector3::Clear() {
-// @@protoc_insertion_point(message_clear_start:graduationWork.Vector3)
-  ::memset(&x_, 0, reinterpret_cast<char*>(&z_) -
-    reinterpret_cast<char*>(&x_) + sizeof(z_));
+void g_Vector3::Clear() {
+// @@protoc_insertion_point(message_clear_start:graduationWork.g_Vector3)
+  if (_has_bits_[0 / 32] & 7u) {
+    ::memset(&x_, 0, reinterpret_cast<char*>(&z_) -
+      reinterpret_cast<char*>(&x_) + sizeof(z_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
-bool Vector3::MergePartialFromCodedStream(
+bool g_Vector3::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:graduationWork.Vector3)
+  // @@protoc_insertion_point(parse_start:graduationWork.g_Vector3)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // float x = 1;
+      // required float x = 1;
       case 1: {
         if (tag == 13u) {
-
+          set_has_x();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &x_)));
@@ -277,10 +291,10 @@ bool Vector3::MergePartialFromCodedStream(
         break;
       }
 
-      // float y = 2;
+      // required float y = 2;
       case 2: {
         if (tag == 21u) {
-
+          set_has_y();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &y_)));
@@ -290,10 +304,10 @@ bool Vector3::MergePartialFromCodedStream(
         break;
       }
 
-      // float z = 3;
+      // required float z = 3;
       case 3: {
         if (tag == 29u) {
-
+          set_has_z();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
                  input, &z_)));
@@ -310,83 +324,116 @@ bool Vector3::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:graduationWork.Vector3)
+  // @@protoc_insertion_point(parse_success:graduationWork.g_Vector3)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:graduationWork.Vector3)
+  // @@protoc_insertion_point(parse_failure:graduationWork.g_Vector3)
   return false;
 #undef DO_
 }
 
-void Vector3::SerializeWithCachedSizes(
+void g_Vector3::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:graduationWork.Vector3)
-  // float x = 1;
-  if (this->x() != 0) {
+  // @@protoc_insertion_point(serialize_start:graduationWork.g_Vector3)
+  // required float x = 1;
+  if (has_x()) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->x(), output);
   }
 
-  // float y = 2;
-  if (this->y() != 0) {
+  // required float y = 2;
+  if (has_y()) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->y(), output);
   }
 
-  // float z = 3;
-  if (this->z() != 0) {
+  // required float z = 3;
+  if (has_z()) {
     ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->z(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:graduationWork.Vector3)
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:graduationWork.g_Vector3)
 }
 
-::google::protobuf::uint8* Vector3::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* g_Vector3::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.Vector3)
-  // float x = 1;
-  if (this->x() != 0) {
+  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_Vector3)
+  // required float x = 1;
+  if (has_x()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->x(), target);
   }
 
-  // float y = 2;
-  if (this->y() != 0) {
+  // required float y = 2;
+  if (has_y()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->y(), target);
   }
 
-  // float z = 3;
-  if (this->z() != 0) {
+  // required float z = 3;
+  if (has_z()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->z(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.Vector3)
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.g_Vector3)
   return target;
 }
 
-size_t Vector3::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:graduationWork.Vector3)
+size_t g_Vector3::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:graduationWork.g_Vector3)
   size_t total_size = 0;
 
-  // float x = 1;
-  if (this->x() != 0) {
+  if (has_x()) {
+    // required float x = 1;
     total_size += 1 + 4;
   }
 
-  // float y = 2;
-  if (this->y() != 0) {
+  if (has_y()) {
+    // required float y = 2;
     total_size += 1 + 4;
   }
 
-  // float z = 3;
-  if (this->z() != 0) {
+  if (has_z()) {
+    // required float z = 3;
     total_size += 1 + 4;
   }
 
+  return total_size;
+}
+size_t g_Vector3::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:graduationWork.g_Vector3)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required float x = 1;
+    total_size += 1 + 4;
+
+    // required float y = 2;
+    total_size += 1 + 4;
+
+    // required float z = 3;
+    total_size += 1 + 4;
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -394,113 +441,148 @@ size_t Vector3::ByteSizeLong() const {
   return total_size;
 }
 
-void Vector3::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.Vector3)
+void g_Vector3::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.g_Vector3)
   GOOGLE_DCHECK_NE(&from, this);
-  const Vector3* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Vector3>(
+  const g_Vector3* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const g_Vector3>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.Vector3)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.g_Vector3)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.Vector3)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.g_Vector3)
     MergeFrom(*source);
   }
 }
 
-void Vector3::MergeFrom(const Vector3& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.Vector3)
+void g_Vector3::MergeFrom(const g_Vector3& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.g_Vector3)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.x() != 0) {
-    set_x(from.x());
-  }
-  if (from.y() != 0) {
-    set_y(from.y());
-  }
-  if (from.z() != 0) {
-    set_z(from.z());
+  if (from._has_bits_[0 / 32] & 7u) {
+    if (from.has_x()) {
+      set_x(from.x());
+    }
+    if (from.has_y()) {
+      set_y(from.y());
+    }
+    if (from.has_z()) {
+      set_z(from.z());
+    }
   }
 }
 
-void Vector3::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.Vector3)
+void g_Vector3::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.g_Vector3)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Vector3::CopyFrom(const Vector3& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.Vector3)
+void g_Vector3::CopyFrom(const g_Vector3& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.g_Vector3)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Vector3::IsInitialized() const {
+bool g_Vector3::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   return true;
 }
 
-void Vector3::Swap(Vector3* other) {
+void g_Vector3::Swap(g_Vector3* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Vector3::InternalSwap(Vector3* other) {
+void g_Vector3::InternalSwap(g_Vector3* other) {
   std::swap(x_, other->x_);
   std::swap(y_, other->y_);
   std::swap(z_, other->z_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata Vector3::GetMetadata() const {
+::google::protobuf::Metadata g_Vector3::GetMetadata() const {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[0];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// Vector3
+// g_Vector3
 
-// float x = 1;
-void Vector3::clear_x() {
-  x_ = 0;
+// required float x = 1;
+bool g_Vector3::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-float Vector3::x() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.x)
+void g_Vector3::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void g_Vector3::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void g_Vector3::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+float g_Vector3::x() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.x)
   return x_;
 }
-void Vector3::set_x(float value) {
-  
+void g_Vector3::set_x(float value) {
+  set_has_x();
   x_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.x)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.x)
 }
 
-// float y = 2;
-void Vector3::clear_y() {
-  y_ = 0;
+// required float y = 2;
+bool g_Vector3::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-float Vector3::y() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.y)
+void g_Vector3::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void g_Vector3::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void g_Vector3::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+float g_Vector3::y() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.y)
   return y_;
 }
-void Vector3::set_y(float value) {
-  
+void g_Vector3::set_y(float value) {
+  set_has_y();
   y_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.y)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.y)
 }
 
-// float z = 3;
-void Vector3::clear_z() {
-  z_ = 0;
+// required float z = 3;
+bool g_Vector3::has_z() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-float Vector3::z() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.z)
+void g_Vector3::set_has_z() {
+  _has_bits_[0] |= 0x00000004u;
+}
+void g_Vector3::clear_has_z() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+void g_Vector3::clear_z() {
+  z_ = 0;
+  clear_has_z();
+}
+float g_Vector3::z() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.z)
   return z_;
 }
-void Vector3::set_z(float value) {
-  
+void g_Vector3::set_z(float value) {
+  set_has_z();
   z_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.z)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.z)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -508,56 +590,57 @@ void Vector3::set_z(float value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Transform::kPacketNumFieldNumber;
-const int Transform::kPositionFieldNumber;
-const int Transform::kRotationFieldNumber;
-const int Transform::kScaleFieldNumber;
+const int g_Transform::kPacketNumFieldNumber;
+const int g_Transform::kPositionFieldNumber;
+const int g_Transform::kRotationFieldNumber;
+const int g_Transform::kScaleFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Transform::Transform()
+g_Transform::g_Transform()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_graduationWork_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:graduationWork.Transform)
+  // @@protoc_insertion_point(constructor:graduationWork.g_Transform)
 }
-Transform::Transform(const Transform& from)
+g_Transform::g_Transform(const g_Transform& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_position()) {
-    position_ = new ::graduationWork::Vector3(*from.position_);
+    position_ = new ::graduationWork::g_Vector3(*from.position_);
   } else {
     position_ = NULL;
   }
   if (from.has_rotation()) {
-    rotation_ = new ::graduationWork::Vector3(*from.rotation_);
+    rotation_ = new ::graduationWork::g_Vector3(*from.rotation_);
   } else {
     rotation_ = NULL;
   }
   if (from.has_scale()) {
-    scale_ = new ::graduationWork::Vector3(*from.scale_);
+    scale_ = new ::graduationWork::g_Vector3(*from.scale_);
   } else {
     scale_ = NULL;
   }
   packetnum_ = from.packetnum_;
-  // @@protoc_insertion_point(copy_constructor:graduationWork.Transform)
+  // @@protoc_insertion_point(copy_constructor:graduationWork.g_Transform)
 }
 
-void Transform::SharedCtor() {
+void g_Transform::SharedCtor() {
+  _cached_size_ = 0;
   ::memset(&position_, 0, reinterpret_cast<char*>(&packetnum_) -
     reinterpret_cast<char*>(&position_) + sizeof(packetnum_));
-  _cached_size_ = 0;
 }
 
-Transform::~Transform() {
-  // @@protoc_insertion_point(destructor:graduationWork.Transform)
+g_Transform::~g_Transform() {
+  // @@protoc_insertion_point(destructor:graduationWork.g_Transform)
   SharedDtor();
 }
 
-void Transform::SharedDtor() {
+void g_Transform::SharedDtor() {
   if (this != internal_default_instance()) {
     delete position_;
   }
@@ -569,60 +652,64 @@ void Transform::SharedDtor() {
   }
 }
 
-void Transform::SetCachedSize(int size) const {
+void g_Transform::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Transform::descriptor() {
+const ::google::protobuf::Descriptor* g_Transform::descriptor() {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[1].descriptor;
 }
 
-const Transform& Transform::default_instance() {
+const g_Transform& g_Transform::default_instance() {
   protobuf_graduationWork_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-Transform* Transform::New(::google::protobuf::Arena* arena) const {
-  Transform* n = new Transform;
+g_Transform* g_Transform::New(::google::protobuf::Arena* arena) const {
+  g_Transform* n = new g_Transform;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void Transform::Clear() {
-// @@protoc_insertion_point(message_clear_start:graduationWork.Transform)
-  if (GetArenaNoVirtual() == NULL && position_ != NULL) {
-    delete position_;
+void g_Transform::Clear() {
+// @@protoc_insertion_point(message_clear_start:graduationWork.g_Transform)
+  if (_has_bits_[0 / 32] & 7u) {
+    if (has_position()) {
+      GOOGLE_DCHECK(position_ != NULL);
+      position_->::graduationWork::g_Vector3::Clear();
+    }
+    if (has_rotation()) {
+      GOOGLE_DCHECK(rotation_ != NULL);
+      rotation_->::graduationWork::g_Vector3::Clear();
+    }
+    if (has_scale()) {
+      GOOGLE_DCHECK(scale_ != NULL);
+      scale_->::graduationWork::g_Vector3::Clear();
+    }
   }
-  position_ = NULL;
-  if (GetArenaNoVirtual() == NULL && rotation_ != NULL) {
-    delete rotation_;
-  }
-  rotation_ = NULL;
-  if (GetArenaNoVirtual() == NULL && scale_ != NULL) {
-    delete scale_;
-  }
-  scale_ = NULL;
   packetnum_ = 0;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
-bool Transform::MergePartialFromCodedStream(
+bool g_Transform::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:graduationWork.Transform)
+  // @@protoc_insertion_point(parse_start:graduationWork.g_Transform)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 packetNum = 1;
+      // required int32 packetNum = 1;
       case 1: {
         if (tag == 8u) {
-
+          set_has_packetnum();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &packetnum_)));
@@ -632,7 +719,7 @@ bool Transform::MergePartialFromCodedStream(
         break;
       }
 
-      // .graduationWork.Vector3 position = 2;
+      // required .graduationWork.g_Vector3 position = 2;
       case 2: {
         if (tag == 18u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
@@ -643,7 +730,7 @@ bool Transform::MergePartialFromCodedStream(
         break;
       }
 
-      // .graduationWork.Vector3 rotation = 3;
+      // required .graduationWork.g_Vector3 rotation = 3;
       case 3: {
         if (tag == 26u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
@@ -654,7 +741,7 @@ bool Transform::MergePartialFromCodedStream(
         break;
       }
 
-      // .graduationWork.Vector3 scale = 4;
+      // required .graduationWork.g_Vector3 scale = 4;
       case 4: {
         if (tag == 34u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
@@ -672,115 +759,159 @@ bool Transform::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:graduationWork.Transform)
+  // @@protoc_insertion_point(parse_success:graduationWork.g_Transform)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:graduationWork.Transform)
+  // @@protoc_insertion_point(parse_failure:graduationWork.g_Transform)
   return false;
 #undef DO_
 }
 
-void Transform::SerializeWithCachedSizes(
+void g_Transform::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:graduationWork.Transform)
-  // int32 packetNum = 1;
-  if (this->packetnum() != 0) {
+  // @@protoc_insertion_point(serialize_start:graduationWork.g_Transform)
+  // required int32 packetNum = 1;
+  if (has_packetnum()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->packetnum(), output);
   }
 
-  // .graduationWork.Vector3 position = 2;
-  if (this->has_position()) {
+  // required .graduationWork.g_Vector3 position = 2;
+  if (has_position()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, *this->position_, output);
   }
 
-  // .graduationWork.Vector3 rotation = 3;
-  if (this->has_rotation()) {
+  // required .graduationWork.g_Vector3 rotation = 3;
+  if (has_rotation()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, *this->rotation_, output);
   }
 
-  // .graduationWork.Vector3 scale = 4;
-  if (this->has_scale()) {
+  // required .graduationWork.g_Vector3 scale = 4;
+  if (has_scale()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       4, *this->scale_, output);
   }
 
-  // @@protoc_insertion_point(serialize_end:graduationWork.Transform)
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:graduationWork.g_Transform)
 }
 
-::google::protobuf::uint8* Transform::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* g_Transform::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.Transform)
-  // int32 packetNum = 1;
-  if (this->packetnum() != 0) {
+  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_Transform)
+  // required int32 packetNum = 1;
+  if (has_packetnum()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->packetnum(), target);
   }
 
-  // .graduationWork.Vector3 position = 2;
-  if (this->has_position()) {
+  // required .graduationWork.g_Vector3 position = 2;
+  if (has_position()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         2, *this->position_, false, target);
   }
 
-  // .graduationWork.Vector3 rotation = 3;
-  if (this->has_rotation()) {
+  // required .graduationWork.g_Vector3 rotation = 3;
+  if (has_rotation()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         3, *this->rotation_, false, target);
   }
 
-  // .graduationWork.Vector3 scale = 4;
-  if (this->has_scale()) {
+  // required .graduationWork.g_Vector3 scale = 4;
+  if (has_scale()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         4, *this->scale_, false, target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.Transform)
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.g_Transform)
   return target;
 }
 
-size_t Transform::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:graduationWork.Transform)
+size_t g_Transform::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:graduationWork.g_Transform)
   size_t total_size = 0;
 
-  // .graduationWork.Vector3 position = 2;
-  if (this->has_position()) {
+  if (has_position()) {
+    // required .graduationWork.g_Vector3 position = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->position_);
   }
 
-  // .graduationWork.Vector3 rotation = 3;
-  if (this->has_rotation()) {
+  if (has_rotation()) {
+    // required .graduationWork.g_Vector3 rotation = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->rotation_);
   }
 
-  // .graduationWork.Vector3 scale = 4;
-  if (this->has_scale()) {
+  if (has_scale()) {
+    // required .graduationWork.g_Vector3 scale = 4;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         *this->scale_);
   }
 
-  // int32 packetNum = 1;
-  if (this->packetnum() != 0) {
+  if (has_packetnum()) {
+    // required int32 packetNum = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->packetnum());
   }
 
+  return total_size;
+}
+size_t g_Transform::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:graduationWork.g_Transform)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
+    // required .graduationWork.g_Vector3 position = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->position_);
+
+    // required .graduationWork.g_Vector3 rotation = 3;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->rotation_);
+
+    // required .graduationWork.g_Vector3 scale = 4;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->scale_);
+
+    // required int32 packetNum = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->packetnum());
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -788,206 +919,248 @@ size_t Transform::ByteSizeLong() const {
   return total_size;
 }
 
-void Transform::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.Transform)
+void g_Transform::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.g_Transform)
   GOOGLE_DCHECK_NE(&from, this);
-  const Transform* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Transform>(
+  const g_Transform* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const g_Transform>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.Transform)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.g_Transform)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.Transform)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.g_Transform)
     MergeFrom(*source);
   }
 }
 
-void Transform::MergeFrom(const Transform& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.Transform)
+void g_Transform::MergeFrom(const g_Transform& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.g_Transform)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.has_position()) {
-    mutable_position()->::graduationWork::Vector3::MergeFrom(from.position());
-  }
-  if (from.has_rotation()) {
-    mutable_rotation()->::graduationWork::Vector3::MergeFrom(from.rotation());
-  }
-  if (from.has_scale()) {
-    mutable_scale()->::graduationWork::Vector3::MergeFrom(from.scale());
-  }
-  if (from.packetnum() != 0) {
-    set_packetnum(from.packetnum());
+  if (from._has_bits_[0 / 32] & 15u) {
+    if (from.has_position()) {
+      mutable_position()->::graduationWork::g_Vector3::MergeFrom(from.position());
+    }
+    if (from.has_rotation()) {
+      mutable_rotation()->::graduationWork::g_Vector3::MergeFrom(from.rotation());
+    }
+    if (from.has_scale()) {
+      mutable_scale()->::graduationWork::g_Vector3::MergeFrom(from.scale());
+    }
+    if (from.has_packetnum()) {
+      set_packetnum(from.packetnum());
+    }
   }
 }
 
-void Transform::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.Transform)
+void g_Transform::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.g_Transform)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Transform::CopyFrom(const Transform& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.Transform)
+void g_Transform::CopyFrom(const g_Transform& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.g_Transform)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Transform::IsInitialized() const {
+bool g_Transform::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if (has_position()) {
+    if (!this->position_->IsInitialized()) return false;
+  }
+  if (has_rotation()) {
+    if (!this->rotation_->IsInitialized()) return false;
+  }
+  if (has_scale()) {
+    if (!this->scale_->IsInitialized()) return false;
+  }
   return true;
 }
 
-void Transform::Swap(Transform* other) {
+void g_Transform::Swap(g_Transform* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Transform::InternalSwap(Transform* other) {
+void g_Transform::InternalSwap(g_Transform* other) {
   std::swap(position_, other->position_);
   std::swap(rotation_, other->rotation_);
   std::swap(scale_, other->scale_);
   std::swap(packetnum_, other->packetnum_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata Transform::GetMetadata() const {
+::google::protobuf::Metadata g_Transform::GetMetadata() const {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[1];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// Transform
+// g_Transform
 
-// int32 packetNum = 1;
-void Transform::clear_packetnum() {
-  packetnum_ = 0;
+// required int32 packetNum = 1;
+bool g_Transform::has_packetnum() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
-::google::protobuf::int32 Transform::packetnum() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.packetNum)
+void g_Transform::set_has_packetnum() {
+  _has_bits_[0] |= 0x00000008u;
+}
+void g_Transform::clear_has_packetnum() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+void g_Transform::clear_packetnum() {
+  packetnum_ = 0;
+  clear_has_packetnum();
+}
+::google::protobuf::int32 g_Transform::packetnum() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.packetNum)
   return packetnum_;
 }
-void Transform::set_packetnum(::google::protobuf::int32 value) {
-  
+void g_Transform::set_packetnum(::google::protobuf::int32 value) {
+  set_has_packetnum();
   packetnum_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Transform.packetNum)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Transform.packetNum)
 }
 
-// .graduationWork.Vector3 position = 2;
-bool Transform::has_position() const {
-  return this != internal_default_instance() && position_ != NULL;
+// required .graduationWork.g_Vector3 position = 2;
+bool g_Transform::has_position() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-void Transform::clear_position() {
-  if (GetArenaNoVirtual() == NULL && position_ != NULL) delete position_;
-  position_ = NULL;
+void g_Transform::set_has_position() {
+  _has_bits_[0] |= 0x00000001u;
 }
-const ::graduationWork::Vector3& Transform::position() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.position)
+void g_Transform::clear_has_position() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void g_Transform::clear_position() {
+  if (position_ != NULL) position_->::graduationWork::g_Vector3::Clear();
+  clear_has_position();
+}
+const ::graduationWork::g_Vector3& g_Transform::position() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.position)
   return position_ != NULL ? *position_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-::graduationWork::Vector3* Transform::mutable_position() {
-  
+::graduationWork::g_Vector3* g_Transform::mutable_position() {
+  set_has_position();
   if (position_ == NULL) {
-    position_ = new ::graduationWork::Vector3;
+    position_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.position)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.position)
   return position_;
 }
-::graduationWork::Vector3* Transform::release_position() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.position)
-  
-  ::graduationWork::Vector3* temp = position_;
+::graduationWork::g_Vector3* g_Transform::release_position() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.position)
+  clear_has_position();
+  ::graduationWork::g_Vector3* temp = position_;
   position_ = NULL;
   return temp;
 }
-void Transform::set_allocated_position(::graduationWork::Vector3* position) {
+void g_Transform::set_allocated_position(::graduationWork::g_Vector3* position) {
   delete position_;
   position_ = position;
   if (position) {
-    
+    set_has_position();
   } else {
-    
+    clear_has_position();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.position)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.position)
 }
 
-// .graduationWork.Vector3 rotation = 3;
-bool Transform::has_rotation() const {
-  return this != internal_default_instance() && rotation_ != NULL;
+// required .graduationWork.g_Vector3 rotation = 3;
+bool g_Transform::has_rotation() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-void Transform::clear_rotation() {
-  if (GetArenaNoVirtual() == NULL && rotation_ != NULL) delete rotation_;
-  rotation_ = NULL;
+void g_Transform::set_has_rotation() {
+  _has_bits_[0] |= 0x00000002u;
 }
-const ::graduationWork::Vector3& Transform::rotation() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.rotation)
+void g_Transform::clear_has_rotation() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void g_Transform::clear_rotation() {
+  if (rotation_ != NULL) rotation_->::graduationWork::g_Vector3::Clear();
+  clear_has_rotation();
+}
+const ::graduationWork::g_Vector3& g_Transform::rotation() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.rotation)
   return rotation_ != NULL ? *rotation_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-::graduationWork::Vector3* Transform::mutable_rotation() {
-  
+::graduationWork::g_Vector3* g_Transform::mutable_rotation() {
+  set_has_rotation();
   if (rotation_ == NULL) {
-    rotation_ = new ::graduationWork::Vector3;
+    rotation_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.rotation)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.rotation)
   return rotation_;
 }
-::graduationWork::Vector3* Transform::release_rotation() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.rotation)
-  
-  ::graduationWork::Vector3* temp = rotation_;
+::graduationWork::g_Vector3* g_Transform::release_rotation() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.rotation)
+  clear_has_rotation();
+  ::graduationWork::g_Vector3* temp = rotation_;
   rotation_ = NULL;
   return temp;
 }
-void Transform::set_allocated_rotation(::graduationWork::Vector3* rotation) {
+void g_Transform::set_allocated_rotation(::graduationWork::g_Vector3* rotation) {
   delete rotation_;
   rotation_ = rotation;
   if (rotation) {
-    
+    set_has_rotation();
   } else {
-    
+    clear_has_rotation();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.rotation)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.rotation)
 }
 
-// .graduationWork.Vector3 scale = 4;
-bool Transform::has_scale() const {
-  return this != internal_default_instance() && scale_ != NULL;
+// required .graduationWork.g_Vector3 scale = 4;
+bool g_Transform::has_scale() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-void Transform::clear_scale() {
-  if (GetArenaNoVirtual() == NULL && scale_ != NULL) delete scale_;
-  scale_ = NULL;
+void g_Transform::set_has_scale() {
+  _has_bits_[0] |= 0x00000004u;
 }
-const ::graduationWork::Vector3& Transform::scale() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.scale)
+void g_Transform::clear_has_scale() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+void g_Transform::clear_scale() {
+  if (scale_ != NULL) scale_->::graduationWork::g_Vector3::Clear();
+  clear_has_scale();
+}
+const ::graduationWork::g_Vector3& g_Transform::scale() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.scale)
   return scale_ != NULL ? *scale_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-::graduationWork::Vector3* Transform::mutable_scale() {
-  
+::graduationWork::g_Vector3* g_Transform::mutable_scale() {
+  set_has_scale();
   if (scale_ == NULL) {
-    scale_ = new ::graduationWork::Vector3;
+    scale_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.scale)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.scale)
   return scale_;
 }
-::graduationWork::Vector3* Transform::release_scale() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.scale)
-  
-  ::graduationWork::Vector3* temp = scale_;
+::graduationWork::g_Vector3* g_Transform::release_scale() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.scale)
+  clear_has_scale();
+  ::graduationWork::g_Vector3* temp = scale_;
   scale_ = NULL;
   return temp;
 }
-void Transform::set_allocated_scale(::graduationWork::Vector3* scale) {
+void g_Transform::set_allocated_scale(::graduationWork::g_Vector3* scale) {
   delete scale_;
   scale_ = scale;
   if (scale) {
-    
+    set_has_scale();
   } else {
-    
+    clear_has_scale();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.scale)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.scale)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -995,87 +1168,88 @@ void Transform::set_allocated_scale(::graduationWork::Vector3* scale) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int Message::kMessageFieldNumber;
+const int g_Message::kMessageFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Message::Message()
+g_Message::g_Message()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_graduationWork_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:graduationWork.Message)
+  // @@protoc_insertion_point(constructor:graduationWork.g_Message)
 }
-Message::Message(const Message& from)
+g_Message::g_Message(const g_Message& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.message().size() > 0) {
+  if (from.has_message()) {
     message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
   }
-  // @@protoc_insertion_point(copy_constructor:graduationWork.Message)
+  // @@protoc_insertion_point(copy_constructor:graduationWork.g_Message)
 }
 
-Message::Message(string & str)
-{
-	set_message(str);
-}
-
-void Message::SharedCtor() {
-  message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void g_Message::SharedCtor() {
   _cached_size_ = 0;
+  message_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-Message::~Message() {
-  // @@protoc_insertion_point(destructor:graduationWork.Message)
+g_Message::~g_Message() {
+  // @@protoc_insertion_point(destructor:graduationWork.g_Message)
   SharedDtor();
 }
 
-void Message::SharedDtor() {
+void g_Message::SharedDtor() {
   message_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
-void Message::SetCachedSize(int size) const {
+void g_Message::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Message::descriptor() {
+const ::google::protobuf::Descriptor* g_Message::descriptor() {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[2].descriptor;
 }
 
-const Message& Message::default_instance() {
+const g_Message& g_Message::default_instance() {
   protobuf_graduationWork_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-Message* Message::New(::google::protobuf::Arena* arena) const {
-  Message* n = new Message;
+g_Message* g_Message::New(::google::protobuf::Arena* arena) const {
+  g_Message* n = new g_Message;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void Message::Clear() {
-// @@protoc_insertion_point(message_clear_start:graduationWork.Message)
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void g_Message::Clear() {
+// @@protoc_insertion_point(message_clear_start:graduationWork.g_Message)
+  if (has_message()) {
+    GOOGLE_DCHECK(!message_.IsDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited()));
+    (*message_.UnsafeRawStringPointer())->clear();
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
-bool Message::MergePartialFromCodedStream(
+bool g_Message::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:graduationWork.Message)
+  // @@protoc_insertion_point(parse_start:graduationWork.g_Message)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes message = 1;
+      // required bytes message = 1;
       case 1: {
         if (tag == 10u) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
@@ -1093,58 +1267,71 @@ bool Message::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:graduationWork.Message)
+  // @@protoc_insertion_point(parse_success:graduationWork.g_Message)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:graduationWork.Message)
+  // @@protoc_insertion_point(parse_failure:graduationWork.g_Message)
   return false;
 #undef DO_
 }
 
-void Message::SerializeWithCachedSizes(
+void g_Message::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:graduationWork.Message)
-  // bytes message = 1;
-  if (this->message().size() > 0) {
+  // @@protoc_insertion_point(serialize_start:graduationWork.g_Message)
+  // required bytes message = 1;
+  if (has_message()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       1, this->message(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:graduationWork.Message)
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:graduationWork.g_Message)
 }
 
-::google::protobuf::uint8* Message::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* g_Message::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.Message)
-  // bytes message = 1;
-  if (this->message().size() > 0) {
+  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_Message)
+  // required bytes message = 1;
+  if (has_message()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->message(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.Message)
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.g_Message)
   return target;
 }
 
-size_t Message::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:graduationWork.Message)
+size_t g_Message::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:graduationWork.g_Message)
   size_t total_size = 0;
 
-  // bytes message = 1;
-  if (this->message().size() > 0) {
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  // required bytes message = 1;
+  if (has_message()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->message());
   }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -1152,116 +1339,129 @@ size_t Message::ByteSizeLong() const {
   return total_size;
 }
 
-void Message::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.Message)
+void g_Message::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.g_Message)
   GOOGLE_DCHECK_NE(&from, this);
-  const Message* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const Message>(
+  const g_Message* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const g_Message>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.Message)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.g_Message)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.Message)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.g_Message)
     MergeFrom(*source);
   }
 }
 
-void Message::MergeFrom(const Message& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.Message)
+void g_Message::MergeFrom(const g_Message& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.g_Message)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.message().size() > 0) {
-
+  if (from.has_message()) {
+    set_has_message();
     message_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.message_);
   }
 }
 
-void Message::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.Message)
+void g_Message::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.g_Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Message::CopyFrom(const Message& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.Message)
+void g_Message::CopyFrom(const g_Message& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.g_Message)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Message::IsInitialized() const {
+bool g_Message::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   return true;
 }
 
-void Message::Swap(Message* other) {
+void g_Message::Swap(g_Message* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void Message::InternalSwap(Message* other) {
+void g_Message::InternalSwap(g_Message* other) {
   message_.Swap(&other->message_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata Message::GetMetadata() const {
+::google::protobuf::Metadata g_Message::GetMetadata() const {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[2];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// Message
+// g_Message
 
-// bytes message = 1;
-void Message::clear_message() {
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// required bytes message = 1;
+bool g_Message::has_message() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-const ::std::string& Message::message() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Message.message)
+void g_Message::set_has_message() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void g_Message::clear_has_message() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void g_Message::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_message();
+}
+const ::std::string& g_Message::message() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Message.message)
   return message_.GetNoArena();
 }
-void Message::set_message(const ::std::string& value) {
-  
+void g_Message::set_message(const ::std::string& value) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Message.message)
 }
 #if LANG_CXX11
-void Message::set_message(::std::string&& value) {
-  
+void g_Message::set_message(::std::string&& value) {
+  set_has_message();
   message_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_rvalue:graduationWork.g_Message.message)
 }
 #endif
-void Message::set_message(const char* value) {
-  
+void g_Message::set_message(const char* value) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_char:graduationWork.g_Message.message)
 }
-void Message::set_message(const void* value, size_t size) {
-  
+void g_Message::set_message(const void* value, size_t size) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_pointer:graduationWork.g_Message.message)
 }
-::std::string* Message::mutable_message() {
-  
-  // @@protoc_insertion_point(field_mutable:graduationWork.Message.message)
+::std::string* g_Message::mutable_message() {
+  set_has_message();
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Message.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-::std::string* Message::release_message() {
-  // @@protoc_insertion_point(field_release:graduationWork.Message.message)
-  
+::std::string* g_Message::release_message() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Message.message)
+  clear_has_message();
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-void Message::set_allocated_message(::std::string* message) {
+void g_Message::set_allocated_message(::std::string* message) {
   if (message != NULL) {
-    
+    set_has_message();
   } else {
-    
+    clear_has_message();
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Message.message)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -1269,106 +1469,109 @@ void Message::set_allocated_message(::std::string* message) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int DataSize::kTypeFieldNumber;
-const int DataSize::kSizeFieldNumber;
+const int g_DataSize::kTypeFieldNumber;
+const int g_DataSize::kSizeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-DataSize::DataSize()
+g_DataSize::g_DataSize()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
     protobuf_graduationWork_2eproto::InitDefaults();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:graduationWork.DataSize)
+  // @@protoc_insertion_point(constructor:graduationWork.g_DataSize)
 }
-DataSize::DataSize(const DataSize& from)
+g_DataSize::g_DataSize(const g_DataSize& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&type_, &from.type_,
     reinterpret_cast<char*>(&size_) -
     reinterpret_cast<char*>(&type_) + sizeof(size_));
-  // @@protoc_insertion_point(copy_constructor:graduationWork.DataSize)
+  // @@protoc_insertion_point(copy_constructor:graduationWork.g_DataSize)
 }
 
-void DataSize::SharedCtor() {
+void g_DataSize::SharedCtor() {
+  _cached_size_ = 0;
   ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
     reinterpret_cast<char*>(&type_) + sizeof(size_));
-  _cached_size_ = 0;
 }
 
-DataSize::~DataSize() {
-  // @@protoc_insertion_point(destructor:graduationWork.DataSize)
+g_DataSize::~g_DataSize() {
+  // @@protoc_insertion_point(destructor:graduationWork.g_DataSize)
   SharedDtor();
 }
 
-DataSize::DataSize(int size, DataType type)
-{
-	size_ = size;
-	type_ = type;
+void g_DataSize::SharedDtor() {
 }
 
-void DataSize::SharedDtor() {
-}
-
-void DataSize::SetCachedSize(int size) const {
+void g_DataSize::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* DataSize::descriptor() {
+const ::google::protobuf::Descriptor* g_DataSize::descriptor() {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[3].descriptor;
 }
 
-const DataSize& DataSize::default_instance() {
+const g_DataSize& g_DataSize::default_instance() {
   protobuf_graduationWork_2eproto::InitDefaults();
   return *internal_default_instance();
 }
 
-DataSize* DataSize::New(::google::protobuf::Arena* arena) const {
-  DataSize* n = new DataSize;
+g_DataSize* g_DataSize::New(::google::protobuf::Arena* arena) const {
+  g_DataSize* n = new g_DataSize;
   if (arena != NULL) {
     arena->Own(n);
   }
   return n;
 }
 
-void DataSize::Clear() {
-// @@protoc_insertion_point(message_clear_start:graduationWork.DataSize)
-  ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
-    reinterpret_cast<char*>(&type_) + sizeof(size_));
+void g_DataSize::Clear() {
+// @@protoc_insertion_point(message_clear_start:graduationWork.g_DataSize)
+  if (_has_bits_[0 / 32] & 3u) {
+    ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
+      reinterpret_cast<char*>(&type_) + sizeof(size_));
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
-bool DataSize::MergePartialFromCodedStream(
+bool g_DataSize::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:graduationWork.DataSize)
+  // @@protoc_insertion_point(parse_start:graduationWork.g_DataSize)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // .graduationWork.DataType type = 1;
+      // required .graduationWork.g_DataType type = 1;
       case 1: {
         if (tag == 8u) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          set_type(static_cast< ::graduationWork::DataType >(value));
+          if (::graduationWork::g_DataType_IsValid(value)) {
+            set_type(static_cast< ::graduationWork::g_DataType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 size = 2;
+      // required int32 size = 2;
       case 2: {
         if (tag == 16u) {
-
+          set_has_size();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &size_)));
@@ -1385,73 +1588,106 @@ bool DataSize::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
           goto success;
         }
-        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
         break;
       }
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:graduationWork.DataSize)
+  // @@protoc_insertion_point(parse_success:graduationWork.g_DataSize)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:graduationWork.DataSize)
+  // @@protoc_insertion_point(parse_failure:graduationWork.g_DataSize)
   return false;
 #undef DO_
 }
 
-void DataSize::SerializeWithCachedSizes(
+void g_DataSize::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:graduationWork.DataSize)
-  // .graduationWork.DataType type = 1;
-  if (this->type() != 0) {
+  // @@protoc_insertion_point(serialize_start:graduationWork.g_DataSize)
+  // required .graduationWork.g_DataType type = 1;
+  if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
   }
 
-  // int32 size = 2;
-  if (this->size() != 0) {
+  // required int32 size = 2;
+  if (has_size()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->size(), output);
   }
 
-  // @@protoc_insertion_point(serialize_end:graduationWork.DataSize)
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:graduationWork.g_DataSize)
 }
 
-::google::protobuf::uint8* DataSize::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* g_DataSize::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.DataSize)
-  // .graduationWork.DataType type = 1;
-  if (this->type() != 0) {
+  // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_DataSize)
+  // required .graduationWork.g_DataType type = 1;
+  if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
   }
 
-  // int32 size = 2;
-  if (this->size() != 0) {
+  // required int32 size = 2;
+  if (has_size()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->size(), target);
   }
 
-  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.DataSize)
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:graduationWork.g_DataSize)
   return target;
 }
 
-size_t DataSize::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:graduationWork.DataSize)
+size_t g_DataSize::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:graduationWork.g_DataSize)
   size_t total_size = 0;
 
-  // .graduationWork.DataType type = 1;
-  if (this->type() != 0) {
+  if (has_type()) {
+    // required .graduationWork.g_DataType type = 1;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
   }
 
-  // int32 size = 2;
-  if (this->size() != 0) {
+  if (has_size()) {
+    // required int32 size = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->size());
   }
 
+  return total_size;
+}
+size_t g_DataSize::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:graduationWork.g_DataSize)
+  size_t total_size = 0;
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
+    // required .graduationWork.g_DataType type = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+
+    // required int32 size = 2;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->size());
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -1459,95 +1695,121 @@ size_t DataSize::ByteSizeLong() const {
   return total_size;
 }
 
-void DataSize::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.DataSize)
+void g_DataSize::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:graduationWork.g_DataSize)
   GOOGLE_DCHECK_NE(&from, this);
-  const DataSize* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const DataSize>(
+  const g_DataSize* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const g_DataSize>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.DataSize)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:graduationWork.g_DataSize)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.DataSize)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:graduationWork.g_DataSize)
     MergeFrom(*source);
   }
 }
 
-void DataSize::MergeFrom(const DataSize& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.DataSize)
+void g_DataSize::MergeFrom(const g_DataSize& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.g_DataSize)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from.type() != 0) {
-    set_type(from.type());
-  }
-  if (from.size() != 0) {
-    set_size(from.size());
+  if (from._has_bits_[0 / 32] & 3u) {
+    if (from.has_type()) {
+      set_type(from.type());
+    }
+    if (from.has_size()) {
+      set_size(from.size());
+    }
   }
 }
 
-void DataSize::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.DataSize)
+void g_DataSize::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:graduationWork.g_DataSize)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void DataSize::CopyFrom(const DataSize& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.DataSize)
+void g_DataSize::CopyFrom(const g_DataSize& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:graduationWork.g_DataSize)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool DataSize::IsInitialized() const {
+bool g_DataSize::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   return true;
 }
 
-void DataSize::Swap(DataSize* other) {
+void g_DataSize::Swap(g_DataSize* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void DataSize::InternalSwap(DataSize* other) {
+void g_DataSize::InternalSwap(g_DataSize* other) {
   std::swap(type_, other->type_);
   std::swap(size_, other->size_);
+  std::swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata DataSize::GetMetadata() const {
+::google::protobuf::Metadata g_DataSize::GetMetadata() const {
   protobuf_graduationWork_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_graduationWork_2eproto::file_level_metadata[3];
 }
 
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
-// DataSize
+// g_DataSize
 
-// .graduationWork.DataType type = 1;
-void DataSize::clear_type() {
+// required .graduationWork.g_DataType type = 1;
+bool g_DataSize::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+void g_DataSize::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+void g_DataSize::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+void g_DataSize::clear_type() {
   type_ = 0;
+  clear_has_type();
 }
-::graduationWork::DataType DataSize::type() const {
-  // @@protoc_insertion_point(field_get:graduationWork.DataSize.type)
-  return static_cast< ::graduationWork::DataType >(type_);
+::graduationWork::g_DataType g_DataSize::type() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.type)
+  return static_cast< ::graduationWork::g_DataType >(type_);
 }
-void DataSize::set_type(::graduationWork::DataType value) {
-  
+void g_DataSize::set_type(::graduationWork::g_DataType value) {
+  assert(::graduationWork::g_DataType_IsValid(value));
+  set_has_type();
   type_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.DataSize.type)
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.type)
 }
 
-// int32 size = 2;
-void DataSize::clear_size() {
-  size_ = 0;
+// required int32 size = 2;
+bool g_DataSize::has_size() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-::google::protobuf::int32 DataSize::size() const {
-  // @@protoc_insertion_point(field_get:graduationWork.DataSize.size)
+void g_DataSize::set_has_size() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void g_DataSize::clear_has_size() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+void g_DataSize::clear_size() {
+  size_ = 0;
+  clear_has_size();
+}
+::google::protobuf::int32 g_DataSize::size() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.size)
   return size_;
 }
-void DataSize::set_size(::google::protobuf::int32 value) {
-  
+void g_DataSize::set_size(::google::protobuf::int32 value) {
+  set_has_size();
   size_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.DataSize.size)
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.size)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

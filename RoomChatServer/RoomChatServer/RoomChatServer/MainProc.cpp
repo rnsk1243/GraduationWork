@@ -32,7 +32,7 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	CActionNetWork& actionNetWork = SRParam->actionNetWork;
 
 	CLobby lobby;
-	bool isLogin = false;
+	/*bool isLogin = false;
 	while (!isLogin)
 	{
 		lobby.SendMenuInfo(clientSocket, actionNetWork);
@@ -56,9 +56,10 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 		default:
 			break;
 		}
-	}
+	}*/
 
-	CLink clientInfo(clientSocket, lobby.getMessageStruct().message());
+	//CLink clientInfo(clientSocket, lobby.getMessageStruct().message());
+	CLink clientInfo(clientSocket, "우희");
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// StartChannelNum 채널에 입장
@@ -67,23 +68,25 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	while (true)
 	{
 		int isRecvSuccesResultValue = actionNetWork.recvn(clientInfo, commandController);
-		if (SuccesRecv == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
-		{
-			// 받은 메시지 내용 임시 복사
-			//MessageStruct message(*clientInfo->getMessageStruct());
-
-			actionNetWork.sendn(clientInfo, roomManager, channelManager);
-		}
-		else if (OccuredError == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
-		{
-			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
-			if (commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
-			{
-				_endthreadex(0);
-			}
-			// 스레드 반환
+		if (SOCKET_ERROR == isRecvSuccesResultValue)
 			return 0;
-		}
+		//if (SuccesRecv == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
+		//{
+		//	// 받은 메시지 내용 임시 복사
+		//	//MessageStruct message(*clientInfo->getMessageStruct());
+
+		//	actionNetWork.sendn(clientInfo, roomManager, channelManager);
+		//}
+		//else if (OccuredError == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
+		//{
+		//	cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
+		//	if (commandController.deleteClientSocket(clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
+		//	{
+		//		_endthreadex(0);
+		//	}
+		//	// 스레드 반환
+		//	return 0;
+		//}
 	}
 }
 

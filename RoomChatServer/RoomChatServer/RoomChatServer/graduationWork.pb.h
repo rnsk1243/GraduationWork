@@ -5,8 +5,7 @@
 #define PROTOBUF_graduationWork_2eproto__INCLUDED
 
 #include <string>
-#include<istream>
-using namespace std;
+
 #include <google/protobuf/stubs/common.h>
 
 #if GOOGLE_PROTOBUF_VERSION < 3002000
@@ -32,18 +31,18 @@ using namespace std;
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 namespace graduationWork {
-class DataSize;
-class DataSizeDefaultTypeInternal;
-extern DataSizeDefaultTypeInternal _DataSize_default_instance_;
-class Message;
-class MessageDefaultTypeInternal;
-extern MessageDefaultTypeInternal _Message_default_instance_;
-class Transform;
-class TransformDefaultTypeInternal;
-extern TransformDefaultTypeInternal _Transform_default_instance_;
-class Vector3;
-class Vector3DefaultTypeInternal;
-extern Vector3DefaultTypeInternal _Vector3_default_instance_;
+class g_DataSize;
+class g_DataSizeDefaultTypeInternal;
+extern g_DataSizeDefaultTypeInternal _g_DataSize_default_instance_;
+class g_Message;
+class g_MessageDefaultTypeInternal;
+extern g_MessageDefaultTypeInternal _g_Message_default_instance_;
+class g_Transform;
+class g_TransformDefaultTypeInternal;
+extern g_TransformDefaultTypeInternal _g_Transform_default_instance_;
+class g_Vector3;
+class g_Vector3DefaultTypeInternal;
+extern g_Vector3DefaultTypeInternal _g_Vector3_default_instance_;
 }  // namespace graduationWork
 
 namespace graduationWork {
@@ -59,60 +58,66 @@ void AddDescriptors();
 void InitDefaults();
 }  // namespace protobuf_graduationWork_2eproto
 
-enum DataType {
+enum g_DataType {
   MESSAGE = 0,
-  TRANSFORM = 1,
-  DataType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
-  DataType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+  TRANSFORM = 1
 };
-bool DataType_IsValid(int value);
-const DataType DataType_MIN = MESSAGE;
-const DataType DataType_MAX = TRANSFORM;
-const int DataType_ARRAYSIZE = DataType_MAX + 1;
+bool g_DataType_IsValid(int value);
+const g_DataType g_DataType_MIN = MESSAGE;
+const g_DataType g_DataType_MAX = TRANSFORM;
+const int g_DataType_ARRAYSIZE = g_DataType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* DataType_descriptor();
-inline const ::std::string& DataType_Name(DataType value) {
+const ::google::protobuf::EnumDescriptor* g_DataType_descriptor();
+inline const ::std::string& g_DataType_Name(g_DataType value) {
   return ::google::protobuf::internal::NameOfEnum(
-    DataType_descriptor(), value);
+    g_DataType_descriptor(), value);
 }
-inline bool DataType_Parse(
-    const ::std::string& name, DataType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<DataType>(
-    DataType_descriptor(), name, value);
+inline bool g_DataType_Parse(
+    const ::std::string& name, g_DataType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<g_DataType>(
+    g_DataType_descriptor(), name, value);
 }
 // ===================================================================
 
-class Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.Vector3) */ {
+class g_Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.g_Vector3) */ {
  public:
-  Vector3();
-  virtual ~Vector3();
+  g_Vector3();
+  virtual ~g_Vector3();
 
-  Vector3(const Vector3& from);
+  g_Vector3(const g_Vector3& from);
 
-  inline Vector3& operator=(const Vector3& from) {
+  inline g_Vector3& operator=(const g_Vector3& from) {
     CopyFrom(from);
     return *this;
   }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Vector3& default_instance();
-
-  static inline const Vector3* internal_default_instance() {
-    return reinterpret_cast<const Vector3*>(
-               &_Vector3_default_instance_);
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
   }
 
-  void Swap(Vector3* other);
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const g_Vector3& default_instance();
+
+  static inline const g_Vector3* internal_default_instance() {
+    return reinterpret_cast<const g_Vector3*>(
+               &_g_Vector3_default_instance_);
+  }
+
+  void Swap(g_Vector3* other);
 
   // implements Message ----------------------------------------------
 
-  inline Vector3* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline g_Vector3* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  Vector3* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  g_Vector3* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const Vector3& from);
-  void MergeFrom(const Vector3& from);
+  void CopyFrom(const g_Vector3& from);
+  void MergeFrom(const g_Vector3& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -133,7 +138,7 @@ class Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(Vector3* other);
+  void InternalSwap(g_Vector3* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -149,67 +154,88 @@ class Vector3 : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // float x = 1;
+  // required float x = 1;
+  bool has_x() const;
   void clear_x();
   static const int kXFieldNumber = 1;
   float x() const;
   void set_x(float value);
 
-  // float y = 2;
+  // required float y = 2;
+  bool has_y() const;
   void clear_y();
   static const int kYFieldNumber = 2;
   float y() const;
   void set_y(float value);
 
-  // float z = 3;
+  // required float z = 3;
+  bool has_z() const;
   void clear_z();
   static const int kZFieldNumber = 3;
   float z() const;
   void set_z(float value);
 
-  // @@protoc_insertion_point(class_scope:graduationWork.Vector3)
+  // @@protoc_insertion_point(class_scope:graduationWork.g_Vector3)
  private:
+  void set_has_x();
+  void clear_has_x();
+  void set_has_y();
+  void clear_has_y();
+  void set_has_z();
+  void clear_has_z();
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
   float x_;
   float y_;
   float z_;
-  mutable int _cached_size_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class Transform : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.Transform) */ {
+class g_Transform : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.g_Transform) */ {
  public:
-  Transform();
-  virtual ~Transform();
+  g_Transform();
+  virtual ~g_Transform();
 
-  Transform(const Transform& from);
+  g_Transform(const g_Transform& from);
 
-  inline Transform& operator=(const Transform& from) {
+  inline g_Transform& operator=(const g_Transform& from) {
     CopyFrom(from);
     return *this;
   }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Transform& default_instance();
-
-  static inline const Transform* internal_default_instance() {
-    return reinterpret_cast<const Transform*>(
-               &_Transform_default_instance_);
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
   }
 
-  void Swap(Transform* other);
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const g_Transform& default_instance();
+
+  static inline const g_Transform* internal_default_instance() {
+    return reinterpret_cast<const g_Transform*>(
+               &_g_Transform_default_instance_);
+  }
+
+  void Swap(g_Transform* other);
 
   // implements Message ----------------------------------------------
 
-  inline Transform* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline g_Transform* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  Transform* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  g_Transform* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const Transform& from);
-  void MergeFrom(const Transform& from);
+  void CopyFrom(const g_Transform& from);
+  void MergeFrom(const g_Transform& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -230,7 +256,7 @@ class Transform : public ::google::protobuf::Message /* @@protoc_insertion_point
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(Transform* other);
+  void InternalSwap(g_Transform* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -246,83 +272,104 @@ class Transform : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // .graduationWork.Vector3 position = 2;
+  // required .graduationWork.g_Vector3 position = 2;
   bool has_position() const;
   void clear_position();
   static const int kPositionFieldNumber = 2;
-  const ::graduationWork::Vector3& position() const;
-  ::graduationWork::Vector3* mutable_position();
-  ::graduationWork::Vector3* release_position();
-  void set_allocated_position(::graduationWork::Vector3* position);
+  const ::graduationWork::g_Vector3& position() const;
+  ::graduationWork::g_Vector3* mutable_position();
+  ::graduationWork::g_Vector3* release_position();
+  void set_allocated_position(::graduationWork::g_Vector3* position);
 
-  // .graduationWork.Vector3 rotation = 3;
+  // required .graduationWork.g_Vector3 rotation = 3;
   bool has_rotation() const;
   void clear_rotation();
   static const int kRotationFieldNumber = 3;
-  const ::graduationWork::Vector3& rotation() const;
-  ::graduationWork::Vector3* mutable_rotation();
-  ::graduationWork::Vector3* release_rotation();
-  void set_allocated_rotation(::graduationWork::Vector3* rotation);
+  const ::graduationWork::g_Vector3& rotation() const;
+  ::graduationWork::g_Vector3* mutable_rotation();
+  ::graduationWork::g_Vector3* release_rotation();
+  void set_allocated_rotation(::graduationWork::g_Vector3* rotation);
 
-  // .graduationWork.Vector3 scale = 4;
+  // required .graduationWork.g_Vector3 scale = 4;
   bool has_scale() const;
   void clear_scale();
   static const int kScaleFieldNumber = 4;
-  const ::graduationWork::Vector3& scale() const;
-  ::graduationWork::Vector3* mutable_scale();
-  ::graduationWork::Vector3* release_scale();
-  void set_allocated_scale(::graduationWork::Vector3* scale);
+  const ::graduationWork::g_Vector3& scale() const;
+  ::graduationWork::g_Vector3* mutable_scale();
+  ::graduationWork::g_Vector3* release_scale();
+  void set_allocated_scale(::graduationWork::g_Vector3* scale);
 
-  // int32 packetNum = 1;
+  // required int32 packetNum = 1;
+  bool has_packetnum() const;
   void clear_packetnum();
   static const int kPacketNumFieldNumber = 1;
   ::google::protobuf::int32 packetnum() const;
   void set_packetnum(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:graduationWork.Transform)
+  // @@protoc_insertion_point(class_scope:graduationWork.g_Transform)
  private:
+  void set_has_packetnum();
+  void clear_has_packetnum();
+  void set_has_position();
+  void clear_has_position();
+  void set_has_rotation();
+  void clear_has_rotation();
+  void set_has_scale();
+  void clear_has_scale();
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::graduationWork::Vector3* position_;
-  ::graduationWork::Vector3* rotation_;
-  ::graduationWork::Vector3* scale_;
-  ::google::protobuf::int32 packetnum_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
+  ::graduationWork::g_Vector3* position_;
+  ::graduationWork::g_Vector3* rotation_;
+  ::graduationWork::g_Vector3* scale_;
+  ::google::protobuf::int32 packetnum_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.Message) */ {
+class g_Message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.g_Message) */ {
  public:
-  Message();
-  virtual ~Message();
+  g_Message();
+  virtual ~g_Message();
 
-  Message(const Message& from);
-  Message(string& str);
-  inline Message& operator=(const Message& from) {
+  g_Message(const g_Message& from);
+
+  inline g_Message& operator=(const g_Message& from) {
     CopyFrom(from);
     return *this;
   }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Message& default_instance();
-
-  static inline const Message* internal_default_instance() {
-    return reinterpret_cast<const Message*>(
-               &_Message_default_instance_);
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
   }
 
-  void Swap(Message* other);
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const g_Message& default_instance();
+
+  static inline const g_Message* internal_default_instance() {
+    return reinterpret_cast<const g_Message*>(
+               &_g_Message_default_instance_);
+  }
+
+  void Swap(g_Message* other);
 
   // implements Message ----------------------------------------------
 
-  inline Message* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline g_Message* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  Message* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  g_Message* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const Message& from);
-  void MergeFrom(const Message& from);
+  void CopyFrom(const g_Message& from);
+  void MergeFrom(const g_Message& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -343,7 +390,7 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(Message* other);
+  void InternalSwap(g_Message* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -359,7 +406,8 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // bytes message = 1;
+  // required bytes message = 1;
+  bool has_message() const;
   void clear_message();
   static const int kMessageFieldNumber = 1;
   const ::std::string& message() const;
@@ -373,47 +421,63 @@ class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
 
-  // @@protoc_insertion_point(class_scope:graduationWork.Message)
+  // @@protoc_insertion_point(class_scope:graduationWork.g_Message)
  private:
+  void set_has_message();
+  void clear_has_message();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr message_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr message_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.DataSize) */ {
+class g_DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.g_DataSize) */ {
  public:
-  DataSize();
-  virtual ~DataSize();
-  DataSize(int size, DataType type);
-  DataSize(const DataSize& from);
+  g_DataSize();
+  g_DataSize(int size, g_DataType type)
+  {
+	  set_size(size);
+	  set_type(type);
+  }
+  virtual ~g_DataSize();
 
-  inline DataSize& operator=(const DataSize& from) {
+  g_DataSize(const g_DataSize& from);
+
+  inline g_DataSize& operator=(const g_DataSize& from) {
     CopyFrom(from);
     return *this;
   }
 
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const DataSize& default_instance();
-
-  static inline const DataSize* internal_default_instance() {
-    return reinterpret_cast<const DataSize*>(
-               &_DataSize_default_instance_);
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
   }
 
-  void Swap(DataSize* other);
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const g_DataSize& default_instance();
+
+  static inline const g_DataSize* internal_default_instance() {
+    return reinterpret_cast<const g_DataSize*>(
+               &_g_DataSize_default_instance_);
+  }
+
+  void Swap(g_DataSize* other);
 
   // implements Message ----------------------------------------------
 
-  inline DataSize* New() const PROTOBUF_FINAL { return New(NULL); }
+  inline g_DataSize* New() const PROTOBUF_FINAL { return New(NULL); }
 
-  DataSize* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  g_DataSize* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const DataSize& from);
-  void MergeFrom(const DataSize& from);
+  void CopyFrom(const g_DataSize& from);
+  void MergeFrom(const g_DataSize& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -434,7 +498,7 @@ class DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(DataSize* other);
+  void InternalSwap(g_DataSize* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -450,25 +514,35 @@ class DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(
 
   // accessors -------------------------------------------------------
 
-  // .graduationWork.DataType type = 1;
+  // required .graduationWork.g_DataType type = 1;
+  bool has_type() const;
   void clear_type();
   static const int kTypeFieldNumber = 1;
-  ::graduationWork::DataType type() const;
-  void set_type(::graduationWork::DataType value);
+  ::graduationWork::g_DataType type() const;
+  void set_type(::graduationWork::g_DataType value);
 
-  // int32 size = 2;
+  // required int32 size = 2;
+  bool has_size() const;
   void clear_size();
   static const int kSizeFieldNumber = 2;
   ::google::protobuf::int32 size() const;
   void set_size(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:graduationWork.DataSize)
+  // @@protoc_insertion_point(class_scope:graduationWork.g_DataSize)
  private:
+  void set_has_type();
+  void clear_has_type();
+  void set_has_size();
+  void clear_has_size();
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::HasBits<1> _has_bits_;
+  mutable int _cached_size_;
   int type_;
   ::google::protobuf::int32 size_;
-  mutable int _cached_size_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
 };
 // ===================================================================
@@ -477,271 +551,360 @@ class DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(
 // ===================================================================
 
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
-// Vector3
+// g_Vector3
 
-// float x = 1;
-inline void Vector3::clear_x() {
-  x_ = 0;
+// required float x = 1;
+inline bool g_Vector3::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline float Vector3::x() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.x)
+inline void g_Vector3::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void g_Vector3::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void g_Vector3::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline float g_Vector3::x() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.x)
   return x_;
 }
-inline void Vector3::set_x(float value) {
-  
+inline void g_Vector3::set_x(float value) {
+  set_has_x();
   x_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.x)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.x)
 }
 
-// float y = 2;
-inline void Vector3::clear_y() {
-  y_ = 0;
+// required float y = 2;
+inline bool g_Vector3::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline float Vector3::y() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.y)
+inline void g_Vector3::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void g_Vector3::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void g_Vector3::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline float g_Vector3::y() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.y)
   return y_;
 }
-inline void Vector3::set_y(float value) {
-  
+inline void g_Vector3::set_y(float value) {
+  set_has_y();
   y_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.y)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.y)
 }
 
-// float z = 3;
-inline void Vector3::clear_z() {
-  z_ = 0;
+// required float z = 3;
+inline bool g_Vector3::has_z() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline float Vector3::z() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Vector3.z)
+inline void g_Vector3::set_has_z() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void g_Vector3::clear_has_z() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void g_Vector3::clear_z() {
+  z_ = 0;
+  clear_has_z();
+}
+inline float g_Vector3::z() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Vector3.z)
   return z_;
 }
-inline void Vector3::set_z(float value) {
-  
+inline void g_Vector3::set_z(float value) {
+  set_has_z();
   z_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Vector3.z)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Vector3.z)
 }
 
 // -------------------------------------------------------------------
 
-// Transform
+// g_Transform
 
-// int32 packetNum = 1;
-inline void Transform::clear_packetnum() {
-  packetnum_ = 0;
+// required int32 packetNum = 1;
+inline bool g_Transform::has_packetnum() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline ::google::protobuf::int32 Transform::packetnum() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.packetNum)
+inline void g_Transform::set_has_packetnum() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void g_Transform::clear_has_packetnum() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void g_Transform::clear_packetnum() {
+  packetnum_ = 0;
+  clear_has_packetnum();
+}
+inline ::google::protobuf::int32 g_Transform::packetnum() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.packetNum)
   return packetnum_;
 }
-inline void Transform::set_packetnum(::google::protobuf::int32 value) {
-  
+inline void g_Transform::set_packetnum(::google::protobuf::int32 value) {
+  set_has_packetnum();
   packetnum_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.Transform.packetNum)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Transform.packetNum)
 }
 
-// .graduationWork.Vector3 position = 2;
-inline bool Transform::has_position() const {
-  return this != internal_default_instance() && position_ != NULL;
+// required .graduationWork.g_Vector3 position = 2;
+inline bool g_Transform::has_position() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Transform::clear_position() {
-  if (GetArenaNoVirtual() == NULL && position_ != NULL) delete position_;
-  position_ = NULL;
+inline void g_Transform::set_has_position() {
+  _has_bits_[0] |= 0x00000001u;
 }
-inline const ::graduationWork::Vector3& Transform::position() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.position)
+inline void g_Transform::clear_has_position() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void g_Transform::clear_position() {
+  if (position_ != NULL) position_->::graduationWork::g_Vector3::Clear();
+  clear_has_position();
+}
+inline const ::graduationWork::g_Vector3& g_Transform::position() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.position)
   return position_ != NULL ? *position_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-inline ::graduationWork::Vector3* Transform::mutable_position() {
-  
+inline ::graduationWork::g_Vector3* g_Transform::mutable_position() {
+  set_has_position();
   if (position_ == NULL) {
-    position_ = new ::graduationWork::Vector3;
+    position_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.position)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.position)
   return position_;
 }
-inline ::graduationWork::Vector3* Transform::release_position() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.position)
-  
-  ::graduationWork::Vector3* temp = position_;
+inline ::graduationWork::g_Vector3* g_Transform::release_position() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.position)
+  clear_has_position();
+  ::graduationWork::g_Vector3* temp = position_;
   position_ = NULL;
   return temp;
 }
-inline void Transform::set_allocated_position(::graduationWork::Vector3* position) {
+inline void g_Transform::set_allocated_position(::graduationWork::g_Vector3* position) {
   delete position_;
   position_ = position;
   if (position) {
-    
+    set_has_position();
   } else {
-    
+    clear_has_position();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.position)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.position)
 }
 
-// .graduationWork.Vector3 rotation = 3;
-inline bool Transform::has_rotation() const {
-  return this != internal_default_instance() && rotation_ != NULL;
+// required .graduationWork.g_Vector3 rotation = 3;
+inline bool g_Transform::has_rotation() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void Transform::clear_rotation() {
-  if (GetArenaNoVirtual() == NULL && rotation_ != NULL) delete rotation_;
-  rotation_ = NULL;
+inline void g_Transform::set_has_rotation() {
+  _has_bits_[0] |= 0x00000002u;
 }
-inline const ::graduationWork::Vector3& Transform::rotation() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.rotation)
+inline void g_Transform::clear_has_rotation() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void g_Transform::clear_rotation() {
+  if (rotation_ != NULL) rotation_->::graduationWork::g_Vector3::Clear();
+  clear_has_rotation();
+}
+inline const ::graduationWork::g_Vector3& g_Transform::rotation() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.rotation)
   return rotation_ != NULL ? *rotation_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-inline ::graduationWork::Vector3* Transform::mutable_rotation() {
-  
+inline ::graduationWork::g_Vector3* g_Transform::mutable_rotation() {
+  set_has_rotation();
   if (rotation_ == NULL) {
-    rotation_ = new ::graduationWork::Vector3;
+    rotation_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.rotation)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.rotation)
   return rotation_;
 }
-inline ::graduationWork::Vector3* Transform::release_rotation() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.rotation)
-  
-  ::graduationWork::Vector3* temp = rotation_;
+inline ::graduationWork::g_Vector3* g_Transform::release_rotation() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.rotation)
+  clear_has_rotation();
+  ::graduationWork::g_Vector3* temp = rotation_;
   rotation_ = NULL;
   return temp;
 }
-inline void Transform::set_allocated_rotation(::graduationWork::Vector3* rotation) {
+inline void g_Transform::set_allocated_rotation(::graduationWork::g_Vector3* rotation) {
   delete rotation_;
   rotation_ = rotation;
   if (rotation) {
-    
+    set_has_rotation();
   } else {
-    
+    clear_has_rotation();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.rotation)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.rotation)
 }
 
-// .graduationWork.Vector3 scale = 4;
-inline bool Transform::has_scale() const {
-  return this != internal_default_instance() && scale_ != NULL;
+// required .graduationWork.g_Vector3 scale = 4;
+inline bool g_Transform::has_scale() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Transform::clear_scale() {
-  if (GetArenaNoVirtual() == NULL && scale_ != NULL) delete scale_;
-  scale_ = NULL;
+inline void g_Transform::set_has_scale() {
+  _has_bits_[0] |= 0x00000004u;
 }
-inline const ::graduationWork::Vector3& Transform::scale() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Transform.scale)
+inline void g_Transform::clear_has_scale() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void g_Transform::clear_scale() {
+  if (scale_ != NULL) scale_->::graduationWork::g_Vector3::Clear();
+  clear_has_scale();
+}
+inline const ::graduationWork::g_Vector3& g_Transform::scale() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Transform.scale)
   return scale_ != NULL ? *scale_
-                         : *::graduationWork::Vector3::internal_default_instance();
+                         : *::graduationWork::g_Vector3::internal_default_instance();
 }
-inline ::graduationWork::Vector3* Transform::mutable_scale() {
-  
+inline ::graduationWork::g_Vector3* g_Transform::mutable_scale() {
+  set_has_scale();
   if (scale_ == NULL) {
-    scale_ = new ::graduationWork::Vector3;
+    scale_ = new ::graduationWork::g_Vector3;
   }
-  // @@protoc_insertion_point(field_mutable:graduationWork.Transform.scale)
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Transform.scale)
   return scale_;
 }
-inline ::graduationWork::Vector3* Transform::release_scale() {
-  // @@protoc_insertion_point(field_release:graduationWork.Transform.scale)
-  
-  ::graduationWork::Vector3* temp = scale_;
+inline ::graduationWork::g_Vector3* g_Transform::release_scale() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Transform.scale)
+  clear_has_scale();
+  ::graduationWork::g_Vector3* temp = scale_;
   scale_ = NULL;
   return temp;
 }
-inline void Transform::set_allocated_scale(::graduationWork::Vector3* scale) {
+inline void g_Transform::set_allocated_scale(::graduationWork::g_Vector3* scale) {
   delete scale_;
   scale_ = scale;
   if (scale) {
-    
+    set_has_scale();
   } else {
-    
+    clear_has_scale();
   }
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Transform.scale)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Transform.scale)
 }
 
 // -------------------------------------------------------------------
 
-// Message
+// g_Message
 
-// bytes message = 1;
-inline void Message::clear_message() {
-  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// required bytes message = 1;
+inline bool g_Message::has_message() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline const ::std::string& Message::message() const {
-  // @@protoc_insertion_point(field_get:graduationWork.Message.message)
+inline void g_Message::set_has_message() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void g_Message::clear_has_message() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void g_Message::clear_message() {
+  message_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  clear_has_message();
+}
+inline const ::std::string& g_Message::message() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_Message.message)
   return message_.GetNoArena();
 }
-inline void Message::set_message(const ::std::string& value) {
-  
+inline void g_Message::set_message(const ::std::string& value) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set:graduationWork.g_Message.message)
 }
 #if LANG_CXX11
-inline void Message::set_message(::std::string&& value) {
-  
+inline void g_Message::set_message(::std::string&& value) {
+  set_has_message();
   message_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_rvalue:graduationWork.g_Message.message)
 }
 #endif
-inline void Message::set_message(const char* value) {
-  
+inline void g_Message::set_message(const char* value) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_char:graduationWork.g_Message.message)
 }
-inline void Message::set_message(const void* value, size_t size) {
-  
+inline void g_Message::set_message(const void* value, size_t size) {
+  set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_pointer:graduationWork.g_Message.message)
 }
-inline ::std::string* Message::mutable_message() {
-  
-  // @@protoc_insertion_point(field_mutable:graduationWork.Message.message)
+inline ::std::string* g_Message::mutable_message() {
+  set_has_message();
+  // @@protoc_insertion_point(field_mutable:graduationWork.g_Message.message)
   return message_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* Message::release_message() {
-  // @@protoc_insertion_point(field_release:graduationWork.Message.message)
-  
+inline ::std::string* g_Message::release_message() {
+  // @@protoc_insertion_point(field_release:graduationWork.g_Message.message)
+  clear_has_message();
   return message_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void Message::set_allocated_message(::std::string* message) {
+inline void g_Message::set_allocated_message(::std::string* message) {
   if (message != NULL) {
-    
+    set_has_message();
   } else {
-    
+    clear_has_message();
   }
   message_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), message);
-  // @@protoc_insertion_point(field_set_allocated:graduationWork.Message.message)
+  // @@protoc_insertion_point(field_set_allocated:graduationWork.g_Message.message)
 }
 
 // -------------------------------------------------------------------
 
-// DataSize
+// g_DataSize
 
-// .graduationWork.DataType type = 1;
-inline void DataSize::clear_type() {
+// required .graduationWork.g_DataType type = 1;
+inline bool g_DataSize::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void g_DataSize::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void g_DataSize::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void g_DataSize::clear_type() {
   type_ = 0;
+  clear_has_type();
 }
-inline ::graduationWork::DataType DataSize::type() const {
-  // @@protoc_insertion_point(field_get:graduationWork.DataSize.type)
-  return static_cast< ::graduationWork::DataType >(type_);
+inline ::graduationWork::g_DataType g_DataSize::type() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.type)
+  return static_cast< ::graduationWork::g_DataType >(type_);
 }
-inline void DataSize::set_type(::graduationWork::DataType value) {
-  
+inline void g_DataSize::set_type(::graduationWork::g_DataType value) {
+  assert(::graduationWork::g_DataType_IsValid(value));
+  set_has_type();
   type_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.DataSize.type)
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.type)
 }
 
-// int32 size = 2;
-inline void DataSize::clear_size() {
-  size_ = 0;
+// required int32 size = 2;
+inline bool g_DataSize::has_size() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline ::google::protobuf::int32 DataSize::size() const {
-  // @@protoc_insertion_point(field_get:graduationWork.DataSize.size)
+inline void g_DataSize::set_has_size() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void g_DataSize::clear_has_size() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void g_DataSize::clear_size() {
+  size_ = 0;
+  clear_has_size();
+}
+inline ::google::protobuf::int32 g_DataSize::size() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.size)
   return size_;
 }
-inline void DataSize::set_size(::google::protobuf::int32 value) {
-  
+inline void g_DataSize::set_size(::google::protobuf::int32 value) {
+  set_has_size();
   size_ = value;
-  // @@protoc_insertion_point(field_set:graduationWork.DataSize.size)
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.size)
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -761,10 +924,10 @@ inline void DataSize::set_size(::google::protobuf::int32 value) {
 namespace google {
 namespace protobuf {
 
-template <> struct is_proto_enum< ::graduationWork::DataType> : ::google::protobuf::internal::true_type {};
+template <> struct is_proto_enum< ::graduationWork::g_DataType> : ::google::protobuf::internal::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::graduationWork::DataType>() {
-  return ::graduationWork::DataType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::graduationWork::g_DataType>() {
+  return ::graduationWork::g_DataType_descriptor();
 }
 
 }  // namespace protobuf

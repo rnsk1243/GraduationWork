@@ -7,7 +7,7 @@ class CLobby
 {
 	CReadHandler ReadHandler;
 	CWriteHandler WriteHandler;
-	Message g_MS;
+	g_Message g_MS;
 	CLobby(const CLobby&);
 	CLobby& operator=(const CLobby&);
 public:
@@ -17,6 +17,6 @@ public:
 	bool JoinMember(SOCKET& clientSocket, CActionNetWork& actionNetWork);
 	int ChooseMenu(string message, SOCKET & clientSocket, CActionNetWork & actionNetWork);
 	void SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork);
-	Message& getMessageStruct() { return g_MS; }
+	g_Message& getMessageStruct() { return g_MS; }
 };
 

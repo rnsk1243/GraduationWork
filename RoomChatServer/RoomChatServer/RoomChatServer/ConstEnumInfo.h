@@ -22,3 +22,4 @@ const int ChannelAmount = 5;
 const int Port = 9000;
 const int NoneRoom = -1;
 const int MakeThreadNum = 3;
+const int ERROR_RECV_ZERO = 41;

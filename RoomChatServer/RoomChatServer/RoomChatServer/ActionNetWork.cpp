@@ -16,9 +16,9 @@ CActionNetWork::~CActionNetWork()
 	
 }
 
-int CActionNetWork::sendSize(SOCKET & sock, int size, DataType type, int flags)
+int CActionNetWork::sendSize(SOCKET & sock, int size, g_DataType type, int flags)
 {
-	DataSize g_size(size, type);
+	g_DataSize g_size(size, type);
 	char temp[BufSize];
 	int byteSize = g_size.ByteSize();
 	cout << "DataSize 크기 = " << byteSize << endl;
@@ -38,7 +38,7 @@ int CActionNetWork::sendSize(SOCKET & sock, int size, DataType type, int flags)
 	return sendSize;
 }
 
-int CActionNetWork::recvSize(SOCKET & sock, DataSize& g_size, int flags)
+int CActionNetWork::recvSize(SOCKET & sock, g_DataSize& g_size, int flags)
 {
 	// DataSize 초기화
 	g_size.Clear();
@@ -50,18 +50,29 @@ int CActionNetWork::recvSize(SOCKET & sock, DataSize& g_size, int flags)
 		cout << "1recvn ERROR" << endl;
 		return SOCKET_ERROR;
 	}
-
-	bool isParse = g_size.ParseFromArray(temp, size);
-	if (!isParse)
-		return ParseFail;
+bool isParseSucces = false;
+	if (size > 0)
+	{
+		isParseSucces = g_size.ParseFromArray(temp, size);
+		if (!isParseSucces)
+		{
+			cout << "parse 실패	" << endl;
+			return ParseFail;
+		}
+	}
+	else if(0 == size)
+	{
+		cout << "받은 크기가 없다" << endl;
+		return SOCKET_ERROR;
+	}
 
 	return g_size.size();
 }
 
-int CActionNetWork::recvn(SOCKET & socket, Message& g_MS, int flags)
+int CActionNetWork::recvn(SOCKET & socket, g_Message& g_MS, int flags)
 {
 	char tempMessage[BufSize];
-	DataSize g_size;
+	g_DataSize g_size;
 	int left = recvSize(socket, g_size);
 #pragma endregion
 #pragma region 메세지 받기
@@ -78,9 +89,24 @@ int CActionNetWork::recvn(SOCKET & socket, Message& g_MS, int flags)
 		else if (isSuccess >= left)
 			break;
 	}
-	bool isParseSucces = g_MS.ParseFromArray(tempMessage, isSuccess);
-	if (!isParseSucces)
-		return ParseFail;
+	cout << "---IsInitialized? = " << g_MS.IsInitialized() << endl;
+	cout << "받은 크기 = " << isSuccess << endl;
+	bool isParseSucces = false;
+	if (isSuccess > 0)
+	{
+		isParseSucces = g_MS.ParseFromArray(tempMessage, isSuccess);
+		if (!isParseSucces)
+		{
+			cout << "parse 실패	" << endl;
+			return ParseFail;
+		}
+	}
+	else if(0 == isSuccess)
+	{
+		cout << "받은 크기 = " << isSuccess << endl;
+		return ERROR_RECV_ZERO;
+	}
+	
 #pragma endregion
 	cout << "받은 idPw메시지 = " << g_MS.message() << endl;
 //	g_MS.set_messagesize(isSuccess);
@@ -91,7 +117,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 {
 	char temp[BufSize];
 #pragma region 보낼메시지, 채널&방 번호 가져옴
-	Message& g_MS = clientInfo.getMessage();
+	g_Message& g_MS = clientInfo.getMessage();
 	if (&g_MS.message() == nullptr)
 		return OccuredError;
 	
@@ -150,7 +176,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 
 		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
 		sendMyName(clientSocket, clientInfo); // 이름 보내기
-		sendSize(clientSocket, size, DataType::MESSAGE);
+		sendSize(clientSocket, size, g_DataType::MESSAGE);
 		while (true)
 		{
 			curDataSize += send(clientSocket, temp, size, flags);
@@ -163,12 +189,12 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	return SuccesSend;
 }
 
-int CActionNetWork::sendn(SOCKET & socket, Message& g_MS, int flags)
+int CActionNetWork::sendn(SOCKET & socket, g_Message& g_MS, int flags)
 {
 	char message[BufSize];
 	int size = g_MS.ByteSize();
 	g_MS.SerializeToArray(message, size);
-	sendSize(socket, size, DataType::MESSAGE);// 사이즈 보내기
+	sendSize(socket, size, g_DataType::MESSAGE);// 사이즈 보내기
 	size_t temp = 0;
 	while (true)
 	{
@@ -182,28 +208,30 @@ int CActionNetWork::sendn(SOCKET & socket, Message& g_MS, int flags)
 int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandController, int flags)
 {
 #pragma region 받을 데이터 크기 가져오기
-	char message[BufSize];
+	
 	SOCKET& clientSocket = clientInfo.getClientSocket();
-	Message& g_MS = clientInfo.getMessage();
+	g_Message& g_MS = clientInfo.getMessage();
 
-	DataSize g_dataSize;
+	g_DataSize g_dataSize;
 	int left = recvSize(clientSocket, g_dataSize);
+	if(SOCKET_ERROR == left)
+		return SOCKET_ERROR;
+
+	switch (g_dataSize.type())
+	{
+	case g_DataType::TRANSFORM:
+		recvnTransform(clientSocket, clientInfo, left);
+		break;
+	case g_DataType::MESSAGE:
+
+		break;
+	default:
+		break;
+	}
+
 #pragma endregion
 #pragma region 메세지 받기
-	int isSuccess = 0;
-	while (left > 0)
-	{
-		isSuccess += recv(clientSocket, message, left, flags);
-		//cout << "success = " << isSuccess << endl;
-		if (isSuccess == SOCKET_ERROR)
-		{
-			cout << "2recvn ERROR" << endl;
-			return SOCKET_ERROR;
-		}
-		else if (isSuccess >= left)
-			break;
-	}
-	g_MS.ParseFromArray(message, left);
+	
 //	char* charMessage = g_MS.message().c_str();
 #pragma endregion
 //#pragma region 명령메시지 이면 처리
@@ -213,17 +241,92 @@ int CActionNetWork::recvn(CLink& clientInfo, CCommandController& commandControll
 //		return commandController.commandHandling(clientInfo, ptr);
 //	}
 //#pragma endregion
-	cout << "받은 메시지 = " << g_MS.message() << endl;
+	//cout << "받은 메시지 = " << g_MS.message() << endl;
 	return SuccesRecv;
+}
+int CActionNetWork::recvnTransform(SOCKET & clientSocket, CLink & clientInfo, int recvSize, int flags)
+{
+	int isSuccess = 0;
+	char recvBuffer[BufSize];
+	g_Transform& mTransform = clientInfo.getTransform();
+	const int resultRecvSize = recvSize; // 받아야만 하는 크기
+	while (resultRecvSize > 0)
+	{
+		isSuccess += recv(clientSocket, recvBuffer, resultRecvSize, flags);
+		//cout << "success = " << isSuccess << endl;
+		if (isSuccess == SOCKET_ERROR)
+		{
+			cout << "2recvn ERROR" << endl;
+			return SOCKET_ERROR;
+		}
+		else if (isSuccess >= resultRecvSize)
+			break;
+	}
+	//cout << "IsInitialized? = " << mTransform.IsInitialized() << endl;
+	bool isParseSucces = false;
+	if (isSuccess > 0)
+	{
+		isParseSucces = mTransform.ParseFromArray(recvBuffer, isSuccess);
+		if (!isParseSucces)
+		{
+			cout << "parse 실패	" << endl;
+			return ParseFail;
+		}
+	}
+	else if (0 == isSuccess)
+	{
+		cout << "받은 크기가 0 이다. " << endl;
+		return ERROR_RECV_ZERO;
+	}
+	cout << "패킷 번호 = " << mTransform.packetnum() << "번 // ";
+	cout << "Transform.position = ( " << 
+		mTransform.position().x() << " , " <<
+		mTransform.position().y() << " , " <<
+		mTransform.position().z() << " , " <<
+		" )" << endl;
+	return isSuccess;
+}
+int CActionNetWork::recvnMessage(SOCKET & clientSocket, CLink & clientInfo, int recvSize, int flags)
+{
+	//int isSuccess = 0;
+	//while (recvSize > 0)
+	//{
+	//	isSuccess += recv(clientSocket, message, left, flags);
+	//	//cout << "success = " << isSuccess << endl;
+	//	if (isSuccess == SOCKET_ERROR)
+	//	{
+	//		cout << "2recvn ERROR" << endl;
+	//		return SOCKET_ERROR;
+	//	}
+	//	else if (isSuccess >= left)
+	//		break;
+	//}
+	//cout << "IsInitialized? = " << g_MS.IsInitialized() << endl;
+	//bool isParseSucces = false;
+	//if (isSuccess > 0)
+	//{
+	//	isParseSucces = g_MS.ParseFromArray(message, isSuccess);
+	//	if (!isParseSucces)
+	//	{
+	//		cout << "parse 실패	" << endl;
+	//		return ParseFail;
+	//	}
+	//}
+	//else if (0 == isSuccess)
+	//{
+	//	cout << "받은 크기 = " << isSuccess << endl;
+	//	return ERROR_RECV_ZERO;
+	//}
+	return 0;
 }
 
 int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
 {
 
-	Message& myName = clientInfo.getMyNameMessage();
+	g_Message& myName = clientInfo.getMyNameMessage();
 	int sendRecvSize = myName.ByteSize();
 	
-	sendSize(clientSocket, sendRecvSize, DataType::MESSAGE);
+	sendSize(clientSocket, sendRecvSize, g_DataType::MESSAGE);
 
 	char myNameMessage[NameSize];
 	myName.SerializeToArray(myNameMessage, sendRecvSize);
@@ -236,3 +339,5 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 	}
 	return temp;
 }
+
+

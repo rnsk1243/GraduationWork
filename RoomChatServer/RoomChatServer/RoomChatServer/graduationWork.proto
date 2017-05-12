@@ -7,39 +7,39 @@
 // https://developers.google.com/protocol-buffers/docs/tutorials
 
 // [START declaration]
-syntax = "proto3";
+syntax = "proto2";
 package graduationWork;
 // [END declaration]
 
 // [START csharp_declaration]
-option csharp_namespace = "Google.Protobuf.GraduationWork.Transform";
+// option csharp_namespace = "Google.Protobuf.GraduationWork.Transform";
 // [END csharp_declaration]
 
 // [START messages]
-message Vector3 {
-    float x = 1;
-	float y = 2;
-	float z = 3;
+message g_Vector3 {
+	required float x = 1;
+	required float y = 2;
+	required float z = 3;
   }
-message Transform {
-  int32 packetNum = 1;
-  Vector3 position = 2;
-  Vector3 rotation = 3;
-  Vector3 scale = 4;
+message g_Transform {
+  required int32 packetNum = 1; // 중간에 빼먹은 패킷이 있나 확인용.
+  required g_Vector3 position = 2;
+  required g_Vector3 rotation = 3;
+  required g_Vector3 scale = 4;
 }
 
-message Message {
-	bytes message = 1;
+message g_Message {
+	required bytes message = 1;
 }
 
-enum DataType {
+enum g_DataType {
 	MESSAGE = 0;
 	TRANSFORM = 1;
 }
 
-message DataSize {
-	DataType type = 1;
-	int32 size = 2;
+message g_DataSize {
+	required g_DataType type = 1;
+	required int32 size = 2;
 }
 
 // [END messages]
