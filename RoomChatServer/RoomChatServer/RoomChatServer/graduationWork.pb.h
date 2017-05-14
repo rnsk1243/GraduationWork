@@ -437,11 +437,6 @@ class g_Message : public ::google::protobuf::Message /* @@protoc_insertion_point
 class g_DataSize : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:graduationWork.g_DataSize) */ {
  public:
   g_DataSize();
-  g_DataSize(int size, g_DataType type)
-  {
-	  set_size(size);
-	  set_type(type);
-  }
   virtual ~g_DataSize();
 
   g_DataSize(const g_DataSize& from);
@@ -514,22 +509,31 @@ class g_DataSize : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // required .graduationWork.g_DataType type = 1;
+  // required int32 clientNum = 1;
+  bool has_clientnum() const;
+  void clear_clientnum();
+  static const int kClientNumFieldNumber = 1;
+  ::google::protobuf::int32 clientnum() const;
+  void set_clientnum(::google::protobuf::int32 value);
+
+  // required .graduationWork.g_DataType type = 2;
   bool has_type() const;
   void clear_type();
-  static const int kTypeFieldNumber = 1;
+  static const int kTypeFieldNumber = 2;
   ::graduationWork::g_DataType type() const;
   void set_type(::graduationWork::g_DataType value);
 
-  // required int32 size = 2;
+  // required int32 size = 3;
   bool has_size() const;
   void clear_size();
-  static const int kSizeFieldNumber = 2;
+  static const int kSizeFieldNumber = 3;
   ::google::protobuf::int32 size() const;
   void set_size(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:graduationWork.g_DataSize)
  private:
+  void set_has_clientnum();
+  void clear_has_clientnum();
   void set_has_type();
   void clear_has_type();
   void set_has_size();
@@ -541,6 +545,7 @@ class g_DataSize : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::HasBits<1> _has_bits_;
   mutable int _cached_size_;
+  ::google::protobuf::int32 clientnum_;
   int type_;
   ::google::protobuf::int32 size_;
   friend struct  protobuf_graduationWork_2eproto::TableStruct;
@@ -858,15 +863,39 @@ inline void g_Message::set_allocated_message(::std::string* message) {
 
 // g_DataSize
 
-// required .graduationWork.g_DataType type = 1;
-inline bool g_DataSize::has_type() const {
+// required int32 clientNum = 1;
+inline bool g_DataSize::has_clientnum() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void g_DataSize::set_has_type() {
+inline void g_DataSize::set_has_clientnum() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void g_DataSize::clear_has_type() {
+inline void g_DataSize::clear_has_clientnum() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void g_DataSize::clear_clientnum() {
+  clientnum_ = 0;
+  clear_has_clientnum();
+}
+inline ::google::protobuf::int32 g_DataSize::clientnum() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.clientNum)
+  return clientnum_;
+}
+inline void g_DataSize::set_clientnum(::google::protobuf::int32 value) {
+  set_has_clientnum();
+  clientnum_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.clientNum)
+}
+
+// required .graduationWork.g_DataType type = 2;
+inline bool g_DataSize::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void g_DataSize::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void g_DataSize::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void g_DataSize::clear_type() {
   type_ = 0;
@@ -883,15 +912,15 @@ inline void g_DataSize::set_type(::graduationWork::g_DataType value) {
   // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.type)
 }
 
-// required int32 size = 2;
+// required int32 size = 3;
 inline bool g_DataSize::has_size() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void g_DataSize::set_has_size() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void g_DataSize::clear_has_size() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void g_DataSize::clear_size() {
   size_ = 0;

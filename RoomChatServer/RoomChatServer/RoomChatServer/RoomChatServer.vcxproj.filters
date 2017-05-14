@@ -108,6 +108,9 @@
     <ClCompile Include="graduationWork.pb.cc">
       <Filter>GoogleProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="ErrorHandler.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Room.h">
@@ -154,6 +157,12 @@
     </ClInclude>
     <ClInclude Include="graduationWork.pb.h">
       <Filter>GoogleProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandler.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorCode.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

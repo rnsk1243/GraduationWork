@@ -70,17 +70,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] = {
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, clientnum_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, type_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(g_DataSize, size_),
   0,
   1,
+  2,
 };
 
 static const ::google::protobuf::internal::MigrationSchema schemas[] = {
   { 0, 7, sizeof(g_Vector3)},
   { 10, 18, sizeof(g_Transform)},
   { 22, 27, sizeof(g_Message)},
-  { 28, 34, sizeof(g_DataSize)},
+  { 28, 35, sizeof(g_DataSize)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -154,12 +156,13 @@ void AddDescriptorsImpl() {
       "tor3\022+\n\010rotation\030\003 \002(\0132\031.graduationWork."
       "g_Vector3\022(\n\005scale\030\004 \002(\0132\031.graduationWor"
       "k.g_Vector3\"\034\n\tg_Message\022\017\n\007message\030\001 \002("
-      "\014\"D\n\ng_DataSize\022(\n\004type\030\001 \002(\0162\032.graduati"
-      "onWork.g_DataType\022\014\n\004size\030\002 \002(\005*(\n\ng_Dat"
-      "aType\022\013\n\007MESSAGE\020\000\022\r\n\tTRANSFORM\020\001"
+      "\014\"W\n\ng_DataSize\022\021\n\tclientNum\030\001 \002(\005\022(\n\004ty"
+      "pe\030\002 \002(\0162\032.graduationWork.g_DataType\022\014\n\004"
+      "size\030\003 \002(\005*(\n\ng_DataType\022\013\n\007MESSAGE\020\000\022\r\n"
+      "\tTRANSFORM\020\001"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 393);
+      descriptor, 412);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "graduationWork.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -1469,6 +1472,7 @@ void g_Message::set_allocated_message(::std::string* message) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int g_DataSize::kClientNumFieldNumber;
 const int g_DataSize::kTypeFieldNumber;
 const int g_DataSize::kSizeFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -1487,16 +1491,16 @@ g_DataSize::g_DataSize(const g_DataSize& from)
       _has_bits_(from._has_bits_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::memcpy(&type_, &from.type_,
+  ::memcpy(&clientnum_, &from.clientnum_,
     reinterpret_cast<char*>(&size_) -
-    reinterpret_cast<char*>(&type_) + sizeof(size_));
+    reinterpret_cast<char*>(&clientnum_) + sizeof(size_));
   // @@protoc_insertion_point(copy_constructor:graduationWork.g_DataSize)
 }
 
 void g_DataSize::SharedCtor() {
   _cached_size_ = 0;
-  ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
-    reinterpret_cast<char*>(&type_) + sizeof(size_));
+  ::memset(&clientnum_, 0, reinterpret_cast<char*>(&size_) -
+    reinterpret_cast<char*>(&clientnum_) + sizeof(size_));
 }
 
 g_DataSize::~g_DataSize() {
@@ -1532,9 +1536,9 @@ g_DataSize* g_DataSize::New(::google::protobuf::Arena* arena) const {
 
 void g_DataSize::Clear() {
 // @@protoc_insertion_point(message_clear_start:graduationWork.g_DataSize)
-  if (_has_bits_[0 / 32] & 3u) {
-    ::memset(&type_, 0, reinterpret_cast<char*>(&size_) -
-      reinterpret_cast<char*>(&type_) + sizeof(size_));
+  if (_has_bits_[0 / 32] & 7u) {
+    ::memset(&clientnum_, 0, reinterpret_cast<char*>(&size_) -
+      reinterpret_cast<char*>(&clientnum_) + sizeof(size_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -1550,9 +1554,22 @@ bool g_DataSize::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .graduationWork.g_DataType type = 1;
+      // required int32 clientNum = 1;
       case 1: {
         if (tag == 8u) {
+          set_has_clientnum();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &clientnum_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // required .graduationWork.g_DataType type = 2;
+      case 2: {
+        if (tag == 16u) {
           int value;
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
@@ -1560,7 +1577,7 @@ bool g_DataSize::MergePartialFromCodedStream(
           if (::graduationWork::g_DataType_IsValid(value)) {
             set_type(static_cast< ::graduationWork::g_DataType >(value));
           } else {
-            mutable_unknown_fields()->AddVarint(1, value);
+            mutable_unknown_fields()->AddVarint(2, value);
           }
         } else {
           goto handle_unusual;
@@ -1568,9 +1585,9 @@ bool g_DataSize::MergePartialFromCodedStream(
         break;
       }
 
-      // required int32 size = 2;
-      case 2: {
-        if (tag == 16u) {
+      // required int32 size = 3;
+      case 3: {
+        if (tag == 24u) {
           set_has_size();
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -1606,15 +1623,20 @@ failure:
 void g_DataSize::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:graduationWork.g_DataSize)
-  // required .graduationWork.g_DataType type = 1;
-  if (has_type()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      1, this->type(), output);
+  // required int32 clientNum = 1;
+  if (has_clientnum()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->clientnum(), output);
   }
 
-  // required int32 size = 2;
+  // required .graduationWork.g_DataType type = 2;
+  if (has_type()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->type(), output);
+  }
+
+  // required int32 size = 3;
   if (has_size()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->size(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->size(), output);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1628,15 +1650,20 @@ void g_DataSize::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_DataSize)
-  // required .graduationWork.g_DataType type = 1;
-  if (has_type()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      1, this->type(), target);
+  // required int32 clientNum = 1;
+  if (has_clientnum()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->clientnum(), target);
   }
 
-  // required int32 size = 2;
+  // required .graduationWork.g_DataType type = 2;
+  if (has_type()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->type(), target);
+  }
+
+  // required int32 size = 3;
   if (has_size()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->size(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->size(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -1651,14 +1678,21 @@ size_t g_DataSize::RequiredFieldsByteSizeFallback() const {
 // @@protoc_insertion_point(required_fields_byte_size_fallback_start:graduationWork.g_DataSize)
   size_t total_size = 0;
 
+  if (has_clientnum()) {
+    // required int32 clientNum = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->clientnum());
+  }
+
   if (has_type()) {
-    // required .graduationWork.g_DataType type = 1;
+    // required .graduationWork.g_DataType type = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
   }
 
   if (has_size()) {
-    // required int32 size = 2;
+    // required int32 size = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->size());
@@ -1675,12 +1709,17 @@ size_t g_DataSize::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
-    // required .graduationWork.g_DataType type = 1;
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required int32 clientNum = 1;
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->clientnum());
+
+    // required .graduationWork.g_DataType type = 2;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
 
-    // required int32 size = 2;
+    // required int32 size = 3;
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->size());
@@ -1714,7 +1753,10 @@ void g_DataSize::MergeFrom(const g_DataSize& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:graduationWork.g_DataSize)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  if (from._has_bits_[0 / 32] & 3u) {
+  if (from._has_bits_[0 / 32] & 7u) {
+    if (from.has_clientnum()) {
+      set_clientnum(from.clientnum());
+    }
     if (from.has_type()) {
       set_type(from.type());
     }
@@ -1739,7 +1781,7 @@ void g_DataSize::CopyFrom(const g_DataSize& from) {
 }
 
 bool g_DataSize::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   return true;
 }
 
@@ -1748,6 +1790,7 @@ void g_DataSize::Swap(g_DataSize* other) {
   InternalSwap(other);
 }
 void g_DataSize::InternalSwap(g_DataSize* other) {
+  std::swap(clientnum_, other->clientnum_);
   std::swap(type_, other->type_);
   std::swap(size_, other->size_);
   std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -1763,15 +1806,39 @@ void g_DataSize::InternalSwap(g_DataSize* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // g_DataSize
 
-// required .graduationWork.g_DataType type = 1;
-bool g_DataSize::has_type() const {
+// required int32 clientNum = 1;
+bool g_DataSize::has_clientnum() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-void g_DataSize::set_has_type() {
+void g_DataSize::set_has_clientnum() {
   _has_bits_[0] |= 0x00000001u;
 }
-void g_DataSize::clear_has_type() {
+void g_DataSize::clear_has_clientnum() {
   _has_bits_[0] &= ~0x00000001u;
+}
+void g_DataSize::clear_clientnum() {
+  clientnum_ = 0;
+  clear_has_clientnum();
+}
+::google::protobuf::int32 g_DataSize::clientnum() const {
+  // @@protoc_insertion_point(field_get:graduationWork.g_DataSize.clientNum)
+  return clientnum_;
+}
+void g_DataSize::set_clientnum(::google::protobuf::int32 value) {
+  set_has_clientnum();
+  clientnum_ = value;
+  // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.clientNum)
+}
+
+// required .graduationWork.g_DataType type = 2;
+bool g_DataSize::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+void g_DataSize::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+void g_DataSize::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 void g_DataSize::clear_type() {
   type_ = 0;
@@ -1788,15 +1855,15 @@ void g_DataSize::set_type(::graduationWork::g_DataType value) {
   // @@protoc_insertion_point(field_set:graduationWork.g_DataSize.type)
 }
 
-// required int32 size = 2;
+// required int32 size = 3;
 bool g_DataSize::has_size() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 void g_DataSize::set_has_size() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 void g_DataSize::clear_has_size() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 void g_DataSize::clear_size() {
   size_ = 0;

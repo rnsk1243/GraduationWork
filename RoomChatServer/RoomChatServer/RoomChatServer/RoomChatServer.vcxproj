@@ -74,8 +74,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\googleProtocolBuffer\protobuf-cpp-3.2.0\protobuf-3.2.0\src;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\googleProtocolBuffer\protobuf-cpp-3.2.0\protobuf-3.2.0\cmake\debugMode\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\googleProtocolBuffer\protobuf-cpp-3.2.0\protobuf-3.2.0\src;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\googleProtocolBuffer\protobuf-cpp-3.2.0\protobuf-3.2.0\cmake\debugMode\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -154,6 +154,8 @@
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="ConstEnumInfo.h" />
+    <ClInclude Include="ErrorCode.h" />
+    <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="graduationWork.pb.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="ReadHandler.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelHandler.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
+    <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="graduationWork.pb.cc" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="ReadHandler.cpp" />

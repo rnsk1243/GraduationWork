@@ -3,7 +3,7 @@
 
 bool CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	string id, pw;
+	/*string id, pw;
 	g_MS.set_message("ID : ");
 	int sendRecvSize = g_MS.ByteSize();
 	actionNetWork.sendn(clientSocket, g_MS);
@@ -30,14 +30,14 @@ bool CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 	cout << "로그인 실패" << endl;
 	g_MS.set_message("ID or PW 오류 입니다.");
 	sendRecvSize = g_MS.ByteSize();
-	actionNetWork.sendn(clientSocket, g_MS);
+	actionNetWork.sendn(clientSocket, g_MS);*/
 	
 	return false;
 }
 
 bool CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	string id, pw;
+	/*string id, pw;
 	g_MS.set_message("원하는 ID : ");
 	actionNetWork.sendn(clientSocket, g_MS);
 	actionNetWork.recvn(clientSocket, g_MS);
@@ -70,13 +70,13 @@ bool CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 		g_MS.set_message("회원가입 실패 입니다.");
 		actionNetWork.sendn(clientSocket, g_MS);
 		return false;
-	}
+	}*/
 	return false;
 }
 
 int CLobby::ChooseMenu(string message, SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	switch (message[0])
+	/*switch (message[0])
 	{
 	case '1':
 		cout << "로그인" << endl;
@@ -94,12 +94,12 @@ int CLobby::ChooseMenu(string message, SOCKET & clientSocket, CActionNetWork & a
 		return -1;
 	default:
 		return -1;
-	}
+	}*/
 	return -1;
 }
 
 void CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	g_MS.set_message("Welcome: Enter 1: Login / Enter 2: Join / Enter 9: Cancel");
-	actionNetWork.sendn(clientSocket, g_MS);
+	/*g_MS.set_message("Welcome: Enter 1: Login / Enter 2: Join / Enter 9: Cancel");
+	actionNetWork.sendn(clientSocket, g_MS);*/
 }

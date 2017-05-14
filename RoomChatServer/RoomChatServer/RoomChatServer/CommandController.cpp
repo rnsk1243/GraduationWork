@@ -15,7 +15,7 @@ CCommandController::~CCommandController()
 int CCommandController::commandHandling(CLink& clientInfo, char * command)
 {
 	if (command == nullptr)
-		return OccuredError;
+		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
 	cout << "명령 처리 시작" << endl;
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
@@ -52,12 +52,12 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	else if (*command == 'c')
 	{
 		if(NoneRoom != clientInfo.getMyRoomNum())
-			return SuccesCommand;
+			return SUCCES_COMMAND;
 		ChannelHandler.exitChannel(clientInfo, ChannelManager);
 		if (channelNum == MaxChannelNum)
 		{
 			ChannelHandler.enterChannel(&clientInfo, ChannelManager, EnterChannelNum);
-			return SuccesCommand;
+			return SUCCES_COMMAND;
 		}
 		ChannelListIt channelBegin = ChannelManager.getIterChannelBegin(); // const iterator로 바꿈
 		ChannelListIt channelEnd = ChannelManager.getIterChannelEnd();
@@ -129,7 +129,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 	//	cout << clientInfo.getMyName() << " 으로 이름 변경 됨" << endl;
 	//}
 #pragma endregion
-	return SuccesCommand;
+	return SUCCES_COMMAND;
 }
 
 bool CCommandController::deleteClientSocket(CLink& clientInfo)

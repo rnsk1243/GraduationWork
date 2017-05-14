@@ -104,7 +104,8 @@ char * CRoomHandler::returnRoomName(char * message)
 {
 	*message++; // 'm' or 'ㅣ' or 'c' 다음 포인터로 옮김
 	int i = 0;
-	char* roomName = new char[30]; //return할 방 이름
+	char* roomName = new char[30]; //return할 방 
+
 	while (*message != '\0') // null 아닐때까지
 	{
 		roomName[i] = *message;

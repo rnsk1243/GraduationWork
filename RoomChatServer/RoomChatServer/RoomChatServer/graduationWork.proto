@@ -38,8 +38,9 @@ enum g_DataType {
 }
 
 message g_DataSize {
-	required g_DataType type = 1;
-	required int32 size = 2;
+	required int32 clientNum = 1;
+	required g_DataType type = 2;
+	required int32 size = 3;
 }
 
 // [END messages]

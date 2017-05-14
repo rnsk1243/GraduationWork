@@ -5,6 +5,7 @@
 using namespace std;
 #include"ConstEnumInfo.h"
 #include"graduationWork.pb.h"
+#include"ErrorHandler.h"
 using namespace graduationWork;
 
 // 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
@@ -38,6 +39,46 @@ using namespace graduationWork;
 //	}
 //};
 
+struct LinkInfo
+{
+	// 현재 내가 속한 방 번호
+	int myRoomNum;
+	// 현재 내가 속한 채널 번호
+	int myChannelNum;
+	// 보낼 정보
+	char sendData[BufSize];
+	// 보낼 크기
+	int size;
+	LinkInfo(int myRoomNum, int myChannelNum, const g_Message& gMessage) :
+		myRoomNum(myRoomNum),
+		myChannelNum(myChannelNum),
+		size(gMessage.ByteSize())
+	{
+		if (!gMessage.SerializeToArray(sendData, size))
+		{
+			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+		}
+	}
+	LinkInfo(int myRoomNum, int myChannelNum, const g_Transform& gTransform) :
+		myRoomNum(myRoomNum),
+		myChannelNum(myChannelNum),
+		size(gTransform.ByteSize())
+	{
+		if (!gTransform.SerializeToArray(sendData, size))
+		{
+			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+		}
+	}
+	LinkInfo(const LinkInfo& copy): // 복사 생성자
+		myRoomNum(copy.myRoomNum),
+		myChannelNum(copy.myChannelNum),
+		size(copy.size)
+	{
+		strcpy_s(sendData, strlen(copy.sendData) + 1, copy.sendData);
+	}
+	LinkInfo& operator=(const LinkInfo&) = delete;
+};
+
 class CLink
 {
 	// 현재 내가 속한 방 번호
@@ -49,10 +90,12 @@ class CLink
 	g_Message g_MS;
 	g_Message g_NameMS;
 	g_Transform mTransform;
+	char* mNameSerialize;
+	g_DataSize mNameData;
 public:
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
-	CLink(SOCKET& clientSocket, string name_);
+	CLink(SOCKET& clientSocket, string name_, int clientNum);
 	~CLink();
 #pragma region get, set 함수
 	g_Message& getMessage() { return g_MS; }
@@ -63,6 +106,16 @@ public:
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 	g_Message& getMyNameMessage() { return g_NameMS; }
+	LinkInfo getMyLinkInfoStruct(const g_Message& message)
+	{
+		return LinkInfo(MyRoomNum, MyChannelNum, message);
+	}
+	LinkInfo getMyLinkInfoStruct(const g_Transform& transform)
+	{
+		return LinkInfo(MyRoomNum, MyChannelNum, transform);
+	}
+	g_DataSize* getMyNameDataSizeType() { return &mNameData; }
+	char* getMyNameSerializeData() { return mNameSerialize; }
 #pragma endregion
 	//void changeName(const char* name, int start)
 	//{
