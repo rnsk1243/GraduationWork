@@ -32,14 +32,17 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	SOCKET& clientSocket = SRParam->clientSocket;
 	CCommandController& commandController = SRParam->commandController;
 	CActionNetWork& actionNetWork = SRParam->actionNetWork;
-	g_DataSize g_data;
-	g_data.set_clientnum(SRParam->getClientNum());
-	g_data.set_size(0);
-	g_data.set_type(g_DataType::MESSAGE);
+	//g_DataSize g_dataRecv;
+	g_DataSize g_dataSize;
+	g_dataSize.set_clientnum(SRParam->getClientNum());
+	g_dataSize.set_size(6);
+	g_dataSize.set_type(g_DataType::MESSAGE);
 	CLobby lobby;
 
+	CLink clientInfo(clientSocket, "우희", g_dataSize.clientnum());
 	// 구별 번호 보내기
-	actionNetWork.sendn(g_data, clientSocket);
+	actionNetWork.sendn(g_dataSize, clientSocket);
+	
 
 	/*bool isLogin = false;
 	while (!isLogin)
@@ -68,18 +71,19 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	}*/
 
 	//CLink clientInfo(clientSocket, lobby.getMessageStruct().message());
-	CLink clientInfo(clientSocket, "우희", g_data.clientnum());
+//	CLink clientInfo(clientSocket, "우희", g_data.clientnum());
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// StartChannelNum 채널에 입장
 	commandController.getChannelHandler().enterChannel(&clientInfo, channelManager, EnterChannelNum);
-	actionNetWork.sendn(g_data, clientInfo, roomManager, channelManager); // 내가 생성되었다고 전원에게 알림
+	actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager); // 내가 생성되었다고 전원에게 알림
 	while (true)
 	{
-		int isRecvSuccesResultValue = actionNetWork.recvnData(clientInfo, g_data);
-		if (SUCCES_RECV == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
+		//g_dataRecv.Clear();
+		int isRecvSuccesResultValue = actionNetWork.recvnData(clientInfo, g_dataSize);
+		if (SUCCES_RECV == isRecvSuccesResultValue)
 		{
-			if (ERROR_SEND == actionNetWork.sendn(g_data, clientInfo, roomManager, channelManager))
+			if(ERROR_SEND == actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager))
 			{
 				CErrorHandler::ErrorHandler(ERROR_SEND);
 			}

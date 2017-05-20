@@ -12,7 +12,7 @@ const int EnterRoomPeopleLimit = 2;
 const int MaxChannelNum = 5;
 const int ChannelAmount = 5;
 const int NoneRoom = -1;
-const int RecvSizeByteSize = 10;
+const int RecvSizeByteSize = 6;
 
 //const int NullNameError = -1;
 //const int BufSize = 1024;

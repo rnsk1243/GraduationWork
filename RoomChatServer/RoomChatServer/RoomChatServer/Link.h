@@ -68,6 +68,9 @@ struct LinkInfo
 		{
 			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
 		}
+		g_Transform g;
+		g.ParseFromArray(sendData, size);
+		cout << "gg???????? = " << g.position().x() << endl;
 	}
 	LinkInfo(const LinkInfo& copy): // 복사 생성자
 		myRoomNum(copy.myRoomNum),
@@ -99,6 +102,7 @@ public:
 	~CLink();
 #pragma region get, set 함수
 	g_Message& getMessage() { return g_MS; }
+	//void setMessage(g_Message& message) { g_MS = message; }
 	g_Transform& getTransform() { return mTransform; }
 	SOCKET& getClientSocket() { return ClientSocket; }
 	int getMyRoomNum() { return MyRoomNum; }
