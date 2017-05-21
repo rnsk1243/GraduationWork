@@ -13,5 +13,10 @@ const int EnterRoomPeopleLimit = 2;
 const int MaxChannelNum = 5;
 const int ChannelAmount = 5;
 const int NoneRoom = -1;
+const int CardNumCols = 0; // 액셀파일 카드 번호 열번호
+const int CardNameCols = 1; 
+const int CardProbCols = 2;
+const int CardStatCols = 3;
+const int CardCost = 20;
 
 

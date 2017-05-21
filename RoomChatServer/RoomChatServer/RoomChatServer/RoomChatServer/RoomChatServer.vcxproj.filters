@@ -55,6 +55,15 @@
     <Filter Include="Lobby\IOHandler\hWrite">
       <UniqueIdentifier>{10e60441-2645-4db2-81f8-b5f2ef7434c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ErrorHandler">
+      <UniqueIdentifier>{6c5b7516-5d53-41a7-9a9e-faff03e57905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ExcelReadWrite">
+      <UniqueIdentifier>{8e984079-fbf4-4db2-a5a9-e1a07d8142fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GaCharSystem">
+      <UniqueIdentifier>{484d45d2-3bc4-4083-a60d-f088f447b849}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -100,7 +109,13 @@
       <Filter>Lobby</Filter>
     </ClCompile>
     <ClCompile Include="ErrorHandler.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>ErrorHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicExcel.cpp">
+      <Filter>ExcelReadWrite</Filter>
+    </ClCompile>
+    <ClCompile Include="GaChar.cpp">
+      <Filter>GaCharSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,17 +161,23 @@
     <ClInclude Include="ConstEnumInfo.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorHandler.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="RAII.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorCode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorCode.h">
+      <Filter>ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandler.h">
+      <Filter>ErrorHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicExcel.hpp">
+      <Filter>ExcelReadWrite</Filter>
+    </ClInclude>
+    <ClInclude Include="GaChar.h">
+      <Filter>GaCharSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

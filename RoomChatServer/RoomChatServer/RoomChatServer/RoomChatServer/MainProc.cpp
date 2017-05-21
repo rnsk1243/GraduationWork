@@ -15,8 +15,10 @@
 #include<thread>
 #include"ErrorHandler.h"
 #include"resource.h"
+#include"BasicExcel.hpp"
 #include<Windows.h>
 using namespace std;
+using namespace YExcel;
 
 void printVersionInfo()
 {
@@ -126,6 +128,8 @@ void main()
 	/////////// 버전 정보 출력 ///////////
 	printVersionInfo();
 	//////////////////////////////////////
+	BasicExcel excel;
+	excel.ReadExcel("cardInfo.xls");
 
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;

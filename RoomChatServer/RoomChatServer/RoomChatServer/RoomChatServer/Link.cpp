@@ -1,10 +1,11 @@
 #include"Link.h"
 #include"RoomHandler.h"
-
-CLink::CLink(SOCKET& clientSocket, char* name_):
+#include"GaChar.h"
+CLink::CLink(SOCKET& clientSocket, char* name_) :
 	ClientSocket(clientSocket),
-	MyChannelNum(0), 
-	MyRoomNum(NoneRoom)
+	MyChannelNum(0),
+	MyRoomNum(NoneRoom),
+	MyMoney(100)
 {
 	size_t length = strlen(name_) + 1;
 	Name = new char[length];
@@ -18,4 +19,10 @@ CLink::~CLink()
 	delete[] Name;
 	closesocket(ClientSocket);
 	cout << "클라이언트 삭제 완료" << endl;
+}
+
+void CLink::pushCard(shared_ptr<Card>& card)
+{
+	mMyCards.push_back(card);
+	MyMoney -= CardCost;
 }

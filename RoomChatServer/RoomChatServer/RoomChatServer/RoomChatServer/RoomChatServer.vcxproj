@@ -87,7 +87,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -151,12 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BasicExcel.hpp" />
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="ConstEnumInfo.h" />
     <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="ErrorHandler.h" />
+    <ClInclude Include="GaChar.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="RAII.h" />
     <ClInclude Include="ReadHandler.h" />
@@ -171,10 +173,12 @@
     <ClInclude Include="WriteHandler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasicExcel.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelHandler.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
     <ClCompile Include="ErrorHandler.cpp" />
+    <ClCompile Include="GaChar.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="ReadHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />

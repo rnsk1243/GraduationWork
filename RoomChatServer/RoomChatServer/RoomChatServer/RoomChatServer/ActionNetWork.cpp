@@ -192,7 +192,12 @@ int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 	char* ptr = strchr(MS.message, '/');
 	if (ptr != nullptr)
 	{
-		commandController.commandHandling(shared_clientInfo, ptr);
+		MessageStruct sendClientMessage;
+		int commandResult = commandController.commandHandling(shared_clientInfo, ptr, &sendClientMessage);
+		if (SUCCES_COMMAND_MESSAGE == commandResult)
+		{
+			sendn(clientSocket, sendClientMessage);
+		}
 		return SUCCES_RECV;
 	}
 #pragma endregion
