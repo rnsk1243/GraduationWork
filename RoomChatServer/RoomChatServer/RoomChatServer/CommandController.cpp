@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "CommandController.h"
 #include"ConstEnumInfo.h"
 
@@ -12,16 +13,15 @@ CCommandController::~CCommandController()
 }
 
 
-int CCommandController::commandHandling(CLink& clientInfo, char * command)
+int CCommandController::commandHandling(CLink& clientInfo,const string& command, g_Message& sendServerMessage)
 {
-	if (command == nullptr)
+	if (&command == nullptr)
 		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
 	cout << "명령 처리 시작" << endl;
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
-	command++;
 #pragma region 명령처리
-	if (*command == 'e') // 방에 입장
+	if (0 == command.compare("EnterRoom")) // 방에 입장
 	{
 		bool isEnterSucces = false;
 #pragma region 개설된 모든 방
@@ -41,15 +41,41 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 					// 채널에서는 나가기
 					ChannelHandler.exitChannel(clientInfo, ChannelManager);
 					isEnterSucces = true;
+					string roomName = room->getRoomName();
+					int amount = room->getAmountPeople();
+					char amoutChar[10];
+					_itoa(amount, amoutChar, 10);
+					string roomAountPeople = amoutChar;
+					if (EnterRoomPeopleLimit > amount)
+					{
+						sendServerMessage.set_message(roomName + " 방 입장 성공 하셨습니다. // 현재 방 인원 수 = " + roomAountPeople);
+					}
+					else if (EnterRoomPeopleLimit == amount)
+					{
+						sendServerMessage.set_message("Start");
+						return SUCCES_RECV_EVERY_SEND;
+					}
+					
+					
 					break;
 				}
 			}
 		}
 #pragma endregion
-		if(!isEnterSucces)
+		if (!isEnterSucces)
+		{
 			cout << "입장 할 수 있는 방이 없습니다." << endl;
+			ChannelHandler.exitChannel(clientInfo, ChannelManager);
+			cout << "방 만들기" << endl;
+			char roomName[RoomNameSize];
+			const string roomNameStr = "room";
+			strcpy_s(roomName, RoomNameSize, roomNameStr.c_str());
+			cout << "만들고자 하는 방 이름 = " << roomName << endl;
+			RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName);
+			sendServerMessage.set_message("입장할 수 있는 방이 없어서 " + roomNameStr + "으로 방 만들기 성공 하셨습니다.");
+		}
 	}
-	else if (*command == 'c')
+	else if (0 == command.compare("NextChannel"))
 	{
 		if(NoneRoom != clientInfo.getMyRoomNum())
 			return SUCCES_COMMAND;
@@ -69,27 +95,33 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 				int moveChannelNum = (*channelBegin)->getChannelNum();
 				ChannelHandler.enterChannel(&clientInfo, ChannelManager, moveChannelNum);
 				cout << moveChannelNum << "번 채널 변경" << endl;
+				sendServerMessage.set_message(moveChannelNum + " 채널 입장 성공 하셨습니다.");
 				break;
 			}
 		}
+		
 	}
-	else if (*command == 'm')
+	else if (0 == command.compare("MakeRoom"))
 	{
 		//원래 채널에서는 나가기
 		ChannelHandler.exitChannel(clientInfo, ChannelManager);
 		cout << "방 만들기" << endl;
-		char* roomName = RoomHandler.returnRoomName(command);
+		char roomName[RoomNameSize];
+		strcpy_s(roomName, RoomNameSize, command.c_str());
+		cout << "만들고자 하는 방 이름 = " << roomName << endl;
 		RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName);
+		string name = roomName;
+		sendServerMessage.set_message(name + "으로 방 만들기 성공 하셨습니다.");
 	}
-	else if (*command == 'o')
+	else if (0 == command.compare("OutRoom"))
 	{
 		// 다시 채널로 돌아가고
 		ChannelHandler.enterChannel(&clientInfo, ChannelManager, channelNum);
 		cout << "방에서 나가기" << endl;
 		RoomHandler.exitRoom(&clientInfo, &RoomManager);
-
+		sendServerMessage.set_message("방에서 나왔습니다.");
 	}
-	else if (*command == 'i')
+	else if (0 == command.compare("MergeRoom"))
 	{
 #pragma region 풀방까지 몇명 필요?
 		CRoom* myRoom = *RoomManager.getMyRoomIter(channelNum, roomNum);
@@ -116,6 +148,7 @@ int CCommandController::commandHandling(CLink& clientInfo, char * command)
 					delete targetRoom; // 방 제거
 				}
 				cout << "방 합체 완료" << endl; isMergeSucces = true;
+				sendServerMessage.set_message("방 합체 완료");
 				break; // 가장 먼저 검색되는 아무 방과 병합 후 빠져나옴
 			}
 		}

@@ -49,33 +49,69 @@ struct LinkInfo
 	char sendData[BufSize];
 	// 보낼 크기
 	int size;
+	// serialize성공?
+	bool isSerialize;
 	LinkInfo(int myRoomNum, int myChannelNum, const g_Message& gMessage) :
 		myRoomNum(myRoomNum),
 		myChannelNum(myChannelNum),
-		size(gMessage.ByteSize())
+		size(gMessage.ByteSize()),
+		isSerialize(false)
 	{
 		if (!gMessage.SerializeToArray(sendData, size))
 		{
 			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
 		}
+		else
+		{
+			isSerialize = true;
+		}
 	}
+	// data까지 가져오기
+	LinkInfo(int myRoomNum, int myChannelNum, const g_Message& gMessage, g_DataSize& data, int clientNum = ClientNumNone) :
+		myRoomNum(myRoomNum),
+		myChannelNum(myChannelNum),
+		size(gMessage.ByteSize()),
+		isSerialize(false)
+	{
+		cout << "LinkInfo 생성자 = " << gMessage.message() << endl;
+		if (!gMessage.SerializeToArray(sendData, size))
+		{
+			cout << "LinkInfo 생성 실패" << endl;
+			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+		}
+		else
+		{
+			isSerialize = true;
+		}
+		cout << "size ------ = " << size << endl;
+		data.set_clientnum(clientNum);
+		data.set_size(size);
+		data.set_type(g_DataType::MESSAGE);
+	}
+
 	LinkInfo(int myRoomNum, int myChannelNum, const g_Transform& gTransform) :
 		myRoomNum(myRoomNum),
 		myChannelNum(myChannelNum),
-		size(gTransform.ByteSize())
+		size(gTransform.ByteSize()),
+		isSerialize(false)
 	{
 		if (!gTransform.SerializeToArray(sendData, size))
 		{
 			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
 		}
+		else
+		{
+			isSerialize = true;
+		}
 		g_Transform g;
 		g.ParseFromArray(sendData, size);
-		cout << "gg???????? = " << g.position().x() << endl;
+		//cout << "gg???????? = " << g.position().x() << endl;
 	}
 	LinkInfo(const LinkInfo& copy): // 복사 생성자
 		myRoomNum(copy.myRoomNum),
 		myChannelNum(copy.myChannelNum),
-		size(copy.size)
+		size(copy.size),
+		isSerialize(copy.isSerialize)
 	{
 		strcpy_s(sendData, strlen(copy.sendData) + 1, copy.sendData);
 	}
@@ -95,6 +131,7 @@ class CLink
 	g_Transform mTransform;
 	char* mNameSerialize;
 	g_DataSize mNameData;
+	int mMyPKNumber;
 public:
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
@@ -120,6 +157,7 @@ public:
 	}
 	g_DataSize* getMyNameDataSizeType() { return &mNameData; }
 	char* getMyNameSerializeData() { return mNameSerialize; }
+	int getMyPKNumber() { return mMyPKNumber; }
 #pragma endregion
 	//void changeName(const char* name, int start)
 	//{

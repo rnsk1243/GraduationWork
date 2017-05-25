@@ -4,15 +4,16 @@
 CLink::CLink(SOCKET& clientSocket, string name_, int clientNum):
 	ClientSocket(clientSocket),
 	MyChannelNum(0), 
-	MyRoomNum(NoneRoom)
+	MyRoomNum(NoneRoom),
+	mMyPKNumber(clientNum)
 {
 	g_MS.set_message("New");
 	g_NameMS.set_message(name_);
 	int nameSize = g_NameMS.ByteSize();
 	mNameSerialize = new char[nameSize];
 	g_NameMS.SerializeToArray(mNameSerialize, nameSize);
-
-	mNameData.set_clientnum(clientNum);
+	
+	mNameData.set_clientnum(mMyPKNumber);
 	mNameData.set_size(nameSize);
 	mNameData.set_type(g_DataType::MESSAGE);
 }

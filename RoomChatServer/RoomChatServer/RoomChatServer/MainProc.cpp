@@ -74,16 +74,25 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 //	CLink clientInfo(clientSocket, "우희", g_data.clientnum());
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
+	g_Message recvResultMessage; 
+	recvResultMessage.set_message("null");
 	// StartChannelNum 채널에 입장
 	commandController.getChannelHandler().enterChannel(&clientInfo, channelManager, EnterChannelNum);
 	actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager); // 내가 생성되었다고 전원에게 알림
 	while (true)
 	{
 		//g_dataRecv.Clear();
-		int isRecvSuccesResultValue = actionNetWork.recvnData(clientInfo, g_dataSize);
+		int isRecvSuccesResultValue = actionNetWork.recvnData(clientInfo, g_dataSize, commandController, recvResultMessage);
 		if (SUCCES_RECV == isRecvSuccesResultValue)
 		{
 			if(ERROR_SEND == actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager))
+			{
+				CErrorHandler::ErrorHandler(ERROR_SEND);
+			}
+		}
+		else if (SUCCES_RECV_EVERY_SEND == isRecvSuccesResultValue)
+		{
+			if (ERROR_SEND == actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager, true))
 			{
 				CErrorHandler::ErrorHandler(ERROR_SEND);
 			}

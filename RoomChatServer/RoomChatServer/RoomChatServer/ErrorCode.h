@@ -9,6 +9,7 @@ enum EnumErrorCode
 	SUCCES_RECV = 10,
 	// recv 에러
 	ERROR_RECV = 11,
+	SUCCES_RECV_EVERY_SEND = 12, // recv받은결과 모든 클라이언트에게 알려야할 경우
 
 	// enum으로 만들어라
 
@@ -50,6 +51,7 @@ enum EnumErrorCode
 	ERROR_RECV_ZERO = 107,
 	ERROR_PARSE = 109,
 	ERROR_LINKINFO_NULL = 111,
+	SUCCES_SINGLE_SENDN = 112,
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

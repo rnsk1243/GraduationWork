@@ -30,6 +30,7 @@ public:
 		EnterCriticalSection(&CS_MyInfoList);
 		ClientInfos.push_back(client);
 		increasePeople();
+		cout << "방 입장 성공 // 현재 방 인원 수 = " << AmountPeople << endl;
 		LeaveCriticalSection(&CS_MyInfoList);
 	}
 	LinkListIt eraseClient(LinkListIt myInfoListIt)

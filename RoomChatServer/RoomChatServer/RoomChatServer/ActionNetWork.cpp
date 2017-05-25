@@ -13,7 +13,7 @@ int CActionNetWork::recvDataSource(SOCKET & recvOwnSocket, g_DataSize& g_dataSiz
 	{
 		return ERROR_PARSE;
 	}
-	cout << "resultRecvSize = " << resultRecvSize << endl;
+	//cout << "resultRecvSize = " << resultRecvSize << endl;
 	while (resultRecvSize > 0)
 	{
 		isSuccess += recv(recvOwnSocket, destination, resultRecvSize, flags);
@@ -84,31 +84,74 @@ int CActionNetWork::sendSize(SOCKET & sock, g_DataSize& g_data, int flags)
 		if (sendSize >= byteSize)
 			break;
 	}
-	//cout << "sendSize 보냈다" << sendSize << endl;
+	cout << "sendSize 보냈다" << sendSize << endl;
 	return sendSize;
 }
 
-int CActionNetWork::multiSendn(g_DataSize& g_data, LinkListIt iterBegin, LinkListIt iterEnd, CLink & sendOwnLink, LinkInfo* linkInfo, int flags)
+int CActionNetWork::sendnSingle(CLink & sendOwnLink, g_Message& g_MS, int flags)
 {
+	g_DataSize g_data;
+	int myRoomNum = sendOwnLink.getMyRoomNum();
+	int myChannelNum = sendOwnLink.getMyChannelNum();
+	LinkInfo linkInfo(myRoomNum, myChannelNum, g_MS, g_data);
+	if (!linkInfo.isSerialize)
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+	}
+	int size = linkInfo.size;
+	char* sendData = linkInfo.sendData;
+
+	size_t curDataSize = 0;
+
+	SOCKET& clientSocket = sendOwnLink.getClientSocket();
+	//sendMyName(clientSocket, sendOwnLink); // 이름 보내기
+	sendSize(clientSocket, g_data);
+	//cout << "보낼 데이터의 position.x ============== " << tt.position().x() << endl;
+
+	g_Message m;
+	m.ParseFromArray(sendData, size);
+	cout << "g_data = " << g_data.size() << "//" << g_data.type() << endl;
+	cout << "size = " << size << "  // mmmmmmmmmmmm = " << m.message() << endl;
+
+	while (true)
+	{
+		curDataSize += send(clientSocket, sendData, size, flags);
+		if (curDataSize >= size)
+			break;
+	}
+	cout << "내 메시지 보내기 성공" << endl;
+	return SUCCES_SINGLE_SENDN;
+}
+
+
+
+int CActionNetWork::multiSendn(g_DataSize& g_data, LinkListIt iterBegin, LinkListIt iterEnd, CLink & sendOwnLink, LinkInfo* linkInfo, bool isSelf, int flags)
+{
+	if (!linkInfo->isSerialize)
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+	}
 	int size = linkInfo->size;
 	char* sendData = linkInfo->sendData;
 	// 방에 있는 모든 사람에게 보내기
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		// 메시지 보낸 자신이면
-		if ((*iterBegin) == &sendOwnLink)
+		if (!isSelf) // 자신에게 안보낼거니?
 		{
-			//cout << "통과" << endl;
-			continue; // 보내지 않고 통과
+			// 메시지 보낸 자신이면
+			if ((*iterBegin) == &sendOwnLink)
+			{
+				//cout << "통과" << endl;
+				continue; // 보내지 않고 통과
+			}
 		}
+		
 		size_t curDataSize = 0;
 
 		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
 		//sendMyName(clientSocket, sendOwnLink); // 이름 보내기
 		sendSize(clientSocket, g_data);
-		g_Transform tt;
-		tt.ParseFromArray(sendData, size);
-		cout << "보낼 데이터의 position.x ============== " << tt.position().x() << endl;
+		//cout << "보낼 데이터의 position.x ============== " << tt.position().x() << endl;
 
 		while (true)
 		{
@@ -174,7 +217,7 @@ int CActionNetWork::recvn(SOCKET & clientSocket, g_Message& g_MS, g_DataSize& g_
 	return SUCCES_RECV;
 }
 
-int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, int flags)
+int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CCommandController& commandController, g_Message& recvResultMessage, int flags)
 {
 	char recvBuffer[BufSize];
 	SOCKET& clientSocket = clientInfo.getClientSocket();
@@ -186,12 +229,20 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, int fl
 	bool isParseSucces = false;
 	int recvedSize = g_dataSize.size(); 
 	g_DataType type = g_dataSize.type();
+	bool isEverySend = false;
+	int commandResult = 0;
 	if (recvedSize > 0)
 	{
 		switch (type)
 		{
 		case graduationWork::MESSAGE:
 			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
+			commandResult = commandController.commandHandling(clientInfo ,clientInfo.getMessage().message(), recvResultMessage);
+			if (SUCCES_RECV_EVERY_SEND == commandResult)
+			{
+				isEverySend = true;
+			}
+			sendnSingle(clientInfo, recvResultMessage);
 			break;
 		case graduationWork::TRANSFORM:
 			isParseSucces = clientInfo.getTransform().ParseFromArray(recvBuffer, recvedSize);
@@ -211,9 +262,15 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, int fl
 		return CErrorHandler::ErrorHandler(ERROR_RECV_ZERO);
 	}
 
-	cout << "받은 = (" << clientInfo.getTransform().position().x() << ", " << clientInfo.getTransform().position().y() << ", " << clientInfo.getTransform().position().z() << ")" << endl;
-
-	return SUCCES_RECV;
+	//cout << "받은 = (" << clientInfo.getTransform().position().x() << ", " << clientInfo.getTransform().position().y() << ", " << clientInfo.getTransform().position().z() << ")" << endl;
+	if (isEverySend)
+	{
+		return SUCCES_RECV_EVERY_SEND;
+	}
+	else
+	{
+		return SUCCES_RECV;
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,13 +279,13 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, int fl
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
+int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, bool isSelf, int flags)
 {
 	LinkInfo* linkInfo = nullptr;
 	switch (g_data.type())
 	{
 	case g_DataType::TRANSFORM:
-		cout << "TRANSFORM ---- x = " << clientInfo.getTransform().position().x() << endl;
+	//	cout << "TRANSFORM ---- x = " << clientInfo.getTransform().position().x() << endl;
 		linkInfo = &clientInfo.getMyLinkInfoStruct(clientInfo.getTransform());
 		break;
 	case g_DataType::MESSAGE:
@@ -236,6 +293,10 @@ int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& r
 		break;
 	default:
 		break;
+	}
+	if (!linkInfo->isSerialize)
+	{
+		return CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
 	}
 	LinkListIt iterBegin, iterEnd;
 	if (linkInfo == nullptr)
@@ -255,7 +316,7 @@ int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& r
 		iterEnd = myRoom->getIterMyInfoEnd();
 	}
 //내가 속한 채널 or 방에게 보내기
-	int code = multiSendn(g_data, iterBegin, iterEnd, clientInfo, linkInfo);
+	int code = multiSendn(g_data, iterBegin, iterEnd, clientInfo, linkInfo, isSelf);
 	return code;
 }
 // 서버가 담당 클라이언트에게 보내기
