@@ -4,6 +4,7 @@
 // 값
 const int Port = 9000;
 const int BufSize = 1024;
+const int ExcelBufSize = 4096;
 const int NameSize = 30;
 const int IdPwSize = 256;
 const int IntSize = 4;
@@ -18,5 +19,7 @@ const int CardNameCols = 1;
 const int CardProbCols = 2;
 const int CardStatCols = 3;
 const int CardCost = 20;
+const int StartMoney = 100; // 시작 머니
+const int ErrorCardNum = 999;
 
 

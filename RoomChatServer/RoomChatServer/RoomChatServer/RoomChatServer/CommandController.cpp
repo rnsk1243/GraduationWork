@@ -74,7 +74,7 @@ int CCommandController::changeChannel(shared_ptr<CLink> shared_clientInfo)
 		return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 	if (channelNum == MaxChannelNum)
 	{
-		if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, EnterChannelNum))
+		if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, EnterChannelNum))
 		{
 			return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 		}
@@ -88,7 +88,7 @@ int CCommandController::changeChannel(shared_ptr<CLink> shared_clientInfo)
 		{
 			++channelBegin;
 			int moveChannelNum = (*channelBegin)->getChannelNum();
-			if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, moveChannelNum))
+			if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, moveChannelNum))
 			{
 				return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 			}
@@ -122,7 +122,7 @@ int CCommandController::outRoom(shared_ptr<CLink> shared_clientInfo)
 	int channelNum = 0;
 	readyCommand(shared_clientInfo, clientInfo, channelNum);
 	// 다시 채널로 돌아가고
-	if (!ChannelHandler.enterChannel(shared_clientInfo, ChannelManager, channelNum))
+	if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, channelNum))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 	}
@@ -182,18 +182,27 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 	int channelNum = 0;
 	readyCommand(shared_clientInfo, clientInfo, channelNum);
 
-	if (!clientInfo->isOKGaChar())
+	if (!clientInfo->isMoneyOKGaChar())
 	{
+		sendClientMessage->message = "카드를 뽑기에 돈이 부족 합니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		return CErrorHandler::ErrorHandler(ERROR_MONEY_FAIL);
 	}
 
 	int randNum = GaCharStatic->randNumber();
 	Card* gaCharResult = GaCharStatic->gaCharResult(randNum);
-	shared_ptr<Card> sharedPushCard(gaCharResult);
-	clientInfo->pushCard(sharedPushCard);
+	if (nullptr == gaCharResult)
+	{
+		sendClientMessage->message = "카드 뽑기 오류.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		return CErrorHandler::ErrorHandler(ERROR_GACHAR);
+	}
 	sendClientMessage->message = gaCharResult->name;
 	sendClientMessage->sendRecvSize = strlen(gaCharResult->name);
-	return 0;
+
+	clientInfo->pushCard(gaCharResult);
+
+	return SUCCES_COMMAND_MESSAGE;
 }
 
 
@@ -207,22 +216,32 @@ int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, cha
 	if (*command == 'e') // 방에 입장
 	{
 		enterRoom(shared_clientInfo);
+		sendClientMessage->message = "방에 입장 하셨습니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'c')
 	{
 		changeChannel(shared_clientInfo);
+		sendClientMessage->message = "채널을 변경 했습니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'm')
 	{
 		makeRoom(command, shared_clientInfo);
+		sendClientMessage->message = "방을 만들었습니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'o')
 	{
 		outRoom(shared_clientInfo);
+		sendClientMessage->message = "방에서 나왔습니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'i')
 	{
 		mergeRoom(shared_clientInfo);
+		sendClientMessage->message = "방 병합 완료";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'n')
 	{
@@ -232,11 +251,13 @@ int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, cha
 		// 기존 이름 변경
 		clientInfo->changeName(command, 1);
 		cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
+		sendClientMessage->message = "이름 변경 되었습니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	}
 	else if (*command == 'g')
 	{
-		cardSelect(shared_clientInfo, sendClientMessage);
-		return SUCCES_COMMAND_MESSAGE;
+		return cardSelect(shared_clientInfo, sendClientMessage);
+		//return SUCCES_COMMAND_MESSAGE;
 	}
 #pragma endregion
 	return SUCCES_COMMAND;

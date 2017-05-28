@@ -192,12 +192,8 @@ int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 	char* ptr = strchr(MS.message, '/');
 	if (ptr != nullptr)
 	{
-		MessageStruct sendClientMessage;
 		int commandResult = commandController.commandHandling(shared_clientInfo, ptr, &sendClientMessage);
-		if (SUCCES_COMMAND_MESSAGE == commandResult)
-		{
-			sendn(clientSocket, sendClientMessage);
-		}
+		sendn(clientSocket, sendClientMessage);
 		return SUCCES_RECV;
 	}
 #pragma endregion
@@ -246,7 +242,7 @@ int CActionNetWork::askClient(SOCKET & clientSocket, MessageStruct& MS, char * q
 	sendn(clientSocket, MS);
 	if(ERROR_RECV == recvn(clientSocket, MS))
 		return CErrorHandler::ErrorHandler(ERROR_RECV);
-	return CErrorHandler::ErrorHandler(SUCCES_ASKCLIENT);
+	return SUCCES_ASKCLIENT;
 }
 
 int CActionNetWork::notificationClient(SOCKET & clientSocket, MessageStruct & MS, char * notification)
@@ -254,5 +250,5 @@ int CActionNetWork::notificationClient(SOCKET & clientSocket, MessageStruct & MS
 	strcpy(MS.message, notification);
 	MS.sendRecvSize = strlen(MS.message);
 	sendn(clientSocket, MS);
-	return CErrorHandler::ErrorHandler(SUCCES_NOTIFICATION);
+	return SUCCES_NOTIFICATION;
 }

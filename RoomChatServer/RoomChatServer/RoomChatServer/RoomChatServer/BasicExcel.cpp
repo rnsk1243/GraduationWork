@@ -4862,10 +4862,10 @@ bool BasicExcel::RenameWorksheet(const wchar_t* from, const wchar_t* to)
 
 char * BasicExcel::CharToMultiByte(BasicExcelCell * cell)
 {
-	wchar_t strUnicode[256] = { 0, };
-	char* strMultibyte = new char[256];
+	wchar_t strUnicode[BufferSize] = { 0, };
+	char* strMultibyte = new char[BufferSize];
 	//char	strMultibyte[256] = { 0, };
-	wcscpy_s(strUnicode, 256, cell->GetWString());
+	wcscpy_s(strUnicode, BufferSize, cell->GetWString());
 	int len = WideCharToMultiByte(CP_ACP, 0, strUnicode, -1, NULL, 0, NULL, NULL);
 	WideCharToMultiByte(CP_ACP, 0, strUnicode, -1, strMultibyte, len, NULL, NULL);
 	strMultibyte[len + 1] = '\0';

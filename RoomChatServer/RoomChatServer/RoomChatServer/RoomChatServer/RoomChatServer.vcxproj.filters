@@ -46,15 +46,6 @@
     <Filter Include="Lobby">
       <UniqueIdentifier>{e40ff6c1-4241-4165-9ba1-646ae3b15440}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Lobby\IOHandler">
-      <UniqueIdentifier>{32d9f017-df9b-4311-8a96-a86d25e0eb5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lobby\IOHandler\hRead">
-      <UniqueIdentifier>{98d0897c-2b6d-4804-8a04-aef003b74b83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Lobby\IOHandler\hWrite">
-      <UniqueIdentifier>{10e60441-2645-4db2-81f8-b5f2ef7434c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ErrorHandler">
       <UniqueIdentifier>{6c5b7516-5d53-41a7-9a9e-faff03e57905}</UniqueIdentifier>
     </Filter>
@@ -63,6 +54,18 @@
     </Filter>
     <Filter Include="GaCharSystem">
       <UniqueIdentifier>{484d45d2-3bc4-4083-a60d-f088f447b849}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MinidumpHelp">
+      <UniqueIdentifier>{fbbea6df-ee9b-4470-87e5-d64a9793dfa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IOHandler">
+      <UniqueIdentifier>{32d9f017-df9b-4311-8a96-a86d25e0eb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IOHandler\hRead">
+      <UniqueIdentifier>{98d0897c-2b6d-4804-8a04-aef003b74b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IOHandler\hWrite">
+      <UniqueIdentifier>{10e60441-2645-4db2-81f8-b5f2ef7434c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +103,10 @@
       <Filter>ReadyNetWork</Filter>
     </ClCompile>
     <ClCompile Include="WriteHandler.cpp">
-      <Filter>Lobby\IOHandler\hWrite</Filter>
+      <Filter>IOHandler\hWrite</Filter>
     </ClCompile>
     <ClCompile Include="ReadHandler.cpp">
-      <Filter>Lobby\IOHandler\hRead</Filter>
+      <Filter>IOHandler\hRead</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="GaChar.cpp">
       <Filter>GaCharSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MinidumpHelp.cpp">
+      <Filter>MinidumpHelp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,10 +153,10 @@
       <Filter>ReadyNetWork</Filter>
     </ClInclude>
     <ClInclude Include="WriteHandler.h">
-      <Filter>Lobby\IOHandler\hWrite</Filter>
+      <Filter>IOHandler\hWrite</Filter>
     </ClInclude>
     <ClInclude Include="ReadHandler.h">
-      <Filter>Lobby\IOHandler\hRead</Filter>
+      <Filter>IOHandler\hRead</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="GaChar.h">
       <Filter>GaCharSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MinidumpHelp.h">
+      <Filter>MinidumpHelp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

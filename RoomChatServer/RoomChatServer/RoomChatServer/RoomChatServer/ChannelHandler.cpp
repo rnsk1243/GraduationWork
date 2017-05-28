@@ -10,7 +10,7 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::enterChannel(shared_ptr<CLink> shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
+bool CChannelHandler::moveNextChannel(shared_ptr<CLink> shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())

@@ -49,7 +49,7 @@ class CLink
 	MessageStruct MS;
 	// 나의 골드
 	int MyMoney;
-	list<shared_ptr<Card>> mMyCards;
+	list<Card*> mMyCards;
 public:
 	CLink(SOCKET& clientSocket, char* name_);
 	CLink(const CLink&) = delete;
@@ -64,9 +64,9 @@ public:
 	void setDefaultName() { if (nullptr == Name) { Name = "이름없음"; } }
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
-	bool isOKGaChar() { return MyMoney >= CardCost; }
+	bool isMoneyOKGaChar() { return MyMoney >= CardCost; } // 가챠 할 수 있나?
 #pragma endregion
-	void pushCard(shared_ptr<Card>& card);
+	void pushCard(Card* card);
 	void changeName(const char* name, int start)
 	{
 		//Name = '\0';

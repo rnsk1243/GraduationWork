@@ -11,12 +11,12 @@ using namespace std;
 
 class CRoom
 {
+	LinkList ClientInfos;
 	char* RoomName;
 	int ChannelNum;
 	int RoomNum;
 	// 현재 들어있는 방 인원
 	int AmountPeople;
-	LinkList ClientInfos;
 	MUTEX RAII_RoomMUTEX;
 	//CRITICALSECTION CT;
 	void increasePeople() { AmountPeople++; }

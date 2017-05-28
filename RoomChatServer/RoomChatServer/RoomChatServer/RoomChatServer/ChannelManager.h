@@ -14,13 +14,6 @@ class CChannelManager
 	ChannelList Channels;
 	MUTEX RAII_ChannelManagerMUTEX;
 	//CRITICAL_SECTION CS_Channel;
-public:
-	CChannelManager();
-	~CChannelManager();
-	CChannelManager& operator=(const CChannelManager&) = delete;
-	CChannelManager(const CChannelManager&) = delete;
-	ChannelListIt getIterChannelBegin() { return Channels.begin(); }
-	ChannelListIt getIterChannelEnd() { return Channels.end(); }
 	void pushChannel(shared_ptr<CChannel> shared_newChannel)
 	{
 		if (0 >= shared_newChannel.use_count())
@@ -35,6 +28,13 @@ public:
 		//}// unlock
 		Channels.push_back(shared_newChannel);
 	}
+public:
+	CChannelManager();
+	~CChannelManager();
+	CChannelManager& operator=(const CChannelManager&) = delete;
+	CChannelManager(const CChannelManager&) = delete;
+	ChannelListIt getIterChannelBegin() { return Channels.begin(); }
+	ChannelListIt getIterChannelEnd() { return Channels.end(); }
 	CChannel * getMyChannel(int ChannelNum);
 };
 

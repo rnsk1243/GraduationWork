@@ -15,12 +15,8 @@ CGaChar * CGaChar::getInstance()
 	if (nullptr == GaCharStatic)
 	{
 		GaCharStatic = new CGaChar();
-		return GaCharStatic;
 	}
-	else
-	{
-		return GaCharStatic;
-	}
+	return GaCharStatic;
 }
 
 void CGaChar::pushCard(shared_ptr<Card> card)
@@ -47,7 +43,7 @@ Card* CGaChar::gaCharResult(int range)
 		maxRange += (*iterBegin).get()->prob;
 		if (range < maxRange)
 		{
-			return (*iterBegin).get();
+			return ((*iterBegin).get());
 		}
 	}
 	return nullptr;

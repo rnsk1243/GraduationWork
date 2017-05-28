@@ -1,9 +1,18 @@
 #include "WriteHandler.h"
-
+#include"ReadHandler.h"
 
 
 CWriteHandler::CWriteHandler()
 {
+}
+
+CWriteHandler * CWriteHandler::getInstance()
+{
+	if (nullptr == WriteHandlerStatic)
+	{
+		WriteHandlerStatic = new CWriteHandler();
+	}
+	return WriteHandlerStatic;
 }
 
 
@@ -31,3 +40,14 @@ bool CWriteHandler::write(const char * textFileName, int count, ...)
 	va_end(Marker);
 	return true;
 }
+
+//int CWriteHandler::writeGacharResult(const char * textFileName, const char * userName)
+//{
+//	string userNameString = userName;
+//	// 찾는 아이디 라인 취득
+//	int targetLine = ReadHandlerStatic->Search(textFileName, false, 1, userNameString);
+//
+//
+//
+//	return 0;
+//}

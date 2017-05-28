@@ -6,18 +6,27 @@ CReadHandler::CReadHandler()
 {
 }
 
+CReadHandler * CReadHandler::getInstance()
+{
+	if (nullptr == ReadHandlerStatic)
+	{
+		ReadHandlerStatic = new CReadHandler();
+	}
+	return ReadHandlerStatic;
+}
+
 
 CReadHandler::~CReadHandler()
 {
 }
 
-bool CReadHandler::Search(const char * textFileName, bool isFullMatch, int count, ...)
+int CReadHandler::Search(const char * textFileName, bool isFullMatch, int count, ...)
 {
 	ifstream inFile(textFileName);
 	if (!inFile)
 	{
 		cout << "파일이 없습니다." << endl;
-		return false;
+		return 0;
 	}
 	va_list Marker;
 	va_start(Marker, count);
@@ -29,8 +38,10 @@ bool CReadHandler::Search(const char * textFileName, bool isFullMatch, int count
 	}
 
 	int sameAmount = 0;
+	int line = 0;
 	while (!inFile.eof())
 	{
+		line++;
 		sameAmount = 0;
 		char temp[IdPwSize];
 		inFile.getline(temp, IdPwSize);
@@ -42,7 +53,7 @@ bool CReadHandler::Search(const char * textFileName, bool isFullMatch, int count
 			if (searchTarget.size() != tempVec.size())
 			{
 				cout << "갯수가 일치하지 않습니다." << endl;
-				return false;
+				return 0;
 			}
 		}
 
@@ -69,9 +80,9 @@ bool CReadHandler::Search(const char * textFileName, bool isFullMatch, int count
 	inFile.close();
 	if (sameAmount == count)
 	{
-		return true;
+		return line;
 	}
-	return false;
+	return 0;
 }
 
 vector<string> CReadHandler::Parse(const string & str, const char & ch)

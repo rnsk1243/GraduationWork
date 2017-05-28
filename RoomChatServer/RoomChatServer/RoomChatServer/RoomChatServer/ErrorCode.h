@@ -46,6 +46,8 @@ enum EnumErrorCode
 	ERROR_SHARED_COUNT_ZORO = 101,
 	ERROR_MONEY_FAIL = 103,
 	SUCCES_COMMAND_MESSAGE = 104,
+	ERROR_GACHAR = 105,
+	SUCCES_GACHAR = 106,
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

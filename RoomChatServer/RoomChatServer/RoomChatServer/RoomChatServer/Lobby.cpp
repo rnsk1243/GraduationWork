@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Lobby.h"
 #include"ErrorHandler.h"
+#include"ReadHandler.h"
+#include"WriteHandler.h"
 
 int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
@@ -16,7 +18,7 @@ int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 	pw = MS.message;
 	if (0 == pw.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
-	if (ReadHandler.CheckIDandPassWord(id, pw))
+	if (ReadHandlerStatic->Search("MemberInfo.txt", false, 2, id, pw))
 	{
 		cout << "로그인 성공" << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
@@ -46,14 +48,14 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 	if (0 == pw.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
 
-	if (!ReadHandler.CheckOverlapID(id))
+	if (ReadHandlerStatic->Search("MemberInfo.txt", false, 1, id))
 	{
 		cout << "id 중복 입니다." << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "id 중복 입니다.");
 		return CErrorHandler::ErrorHandler(OVERLAPID);
 	}
 
-	if (WriteHandler.write("test.txt", 2, id, pw))
+	if (WriteHandlerStatic->write("MemberInfo.txt", 2, id, pw) && WriteHandlerStatic->write("MemberCardInfo.txt", 1, id))
 	{
 		cout << "회원가입 성공" << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");

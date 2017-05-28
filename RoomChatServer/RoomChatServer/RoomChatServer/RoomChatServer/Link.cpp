@@ -5,7 +5,7 @@ CLink::CLink(SOCKET& clientSocket, char* name_) :
 	ClientSocket(clientSocket),
 	MyChannelNum(0),
 	MyRoomNum(NoneRoom),
-	MyMoney(100)
+	MyMoney(StartMoney)
 {
 	size_t length = strlen(name_) + 1;
 	Name = new char[length];
@@ -21,7 +21,7 @@ CLink::~CLink()
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
-void CLink::pushCard(shared_ptr<Card>& card)
+void CLink::pushCard(Card* card)
 {
 	mMyCards.push_back(card);
 	MyMoney -= CardCost;

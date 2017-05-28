@@ -71,6 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>..\RoomChatServer\dll;$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -93,7 +95,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -160,6 +162,7 @@
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="GaChar.h" />
     <ClInclude Include="Lobby.h" />
+    <ClInclude Include="MinidumpHelp.h" />
     <ClInclude Include="RAII.h" />
     <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="resource.h" />
@@ -180,6 +183,7 @@
     <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="GaChar.cpp" />
     <ClCompile Include="Lobby.cpp" />
+    <ClCompile Include="MinidumpHelp.cpp" />
     <ClCompile Include="ReadHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="MainProc.cpp" />

@@ -17,6 +17,7 @@
 #include"resource.h"
 #include"BasicExcel.hpp"
 #include<Windows.h>
+#include"MinidumpHelp.h"
 using namespace std;
 using namespace YExcel;
 
@@ -83,7 +84,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// EnterChannelNum 채널에 입장
-	if (!commandController.getChannelHandler().enterChannel(shared_clientInfo, channelManager, EnterChannelNum))
+	if (!commandController.getChannelHandler().moveNextChannel(shared_clientInfo, channelManager, EnterChannelNum))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 	}
@@ -125,6 +126,8 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 
 void main()
 {
+	MinidumpHelp dump;
+	dump.install_self_mini_dump();
 	/////////// 버전 정보 출력 ///////////
 	printVersionInfo();
 	//////////////////////////////////////
