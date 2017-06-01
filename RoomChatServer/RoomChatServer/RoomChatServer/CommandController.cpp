@@ -18,6 +18,7 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 	if (&command == nullptr)
 		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
 	cout << "명령 처리 시작" << endl;
+	cout << "받은 메시지 = " << command << endl;
 	int channelNum = clientInfo.getMyChannelNum();
 	int roomNum = clientInfo.getMyRoomNum();
 #pragma region 명령처리
@@ -48,15 +49,13 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 					string roomAountPeople = amoutChar;
 					if (EnterRoomPeopleLimit > amount)
 					{
-						sendServerMessage.set_message(roomName + " 방 입장 성공 하셨습니다. // 현재 방 인원 수 = " + roomAountPeople);
+						sendServerMessage.set_message(roomName + " Romm In // current room amount = " + roomAountPeople);
 					}
 					else if (EnterRoomPeopleLimit == amount)
 					{
-						sendServerMessage.set_message("Start");
-						return SUCCES_RECV_EVERY_SEND;
+						sendServerMessage.set_message("all Player!");
+						return SUCCES_PLAYER_AMOUNT;
 					}
-					
-					
 					break;
 				}
 			}
@@ -95,7 +94,7 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 				int moveChannelNum = (*channelBegin)->getChannelNum();
 				ChannelHandler.enterChannel(&clientInfo, ChannelManager, moveChannelNum);
 				cout << moveChannelNum << "번 채널 변경" << endl;
-				sendServerMessage.set_message(moveChannelNum + " 채널 입장 성공 하셨습니다.");
+				sendServerMessage.set_message(moveChannelNum + " Channel In!");
 				break;
 			}
 		}
@@ -111,7 +110,7 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 		cout << "만들고자 하는 방 이름 = " << roomName << endl;
 		RoomHandler.makeRoom(&clientInfo, &RoomManager, roomName);
 		string name = roomName;
-		sendServerMessage.set_message(name + "으로 방 만들기 성공 하셨습니다.");
+		sendServerMessage.set_message(name + " room Create!");
 	}
 	else if (0 == command.compare("OutRoom"))
 	{
@@ -119,7 +118,7 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 		ChannelHandler.enterChannel(&clientInfo, ChannelManager, channelNum);
 		cout << "방에서 나가기" << endl;
 		RoomHandler.exitRoom(&clientInfo, &RoomManager);
-		sendServerMessage.set_message("방에서 나왔습니다.");
+		sendServerMessage.set_message("Out Room!");
 	}
 	else if (0 == command.compare("MergeRoom"))
 	{
@@ -154,6 +153,64 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 		}
 		if (!isMergeSucces)
 			cout << "방 merge 실패" << endl;
+	}
+	else if (0 == command.compare("servantTofu"))
+	{
+		clientInfo.setMyServentNumber(servantTofu);
+		cout << "이 클라이언트의 서번트 = 두부" << endl;
+		sendServerMessage.set_message("My Servant Tofu");
+	}
+	else if (0 == command.compare("servantMandu"))
+	{
+		clientInfo.setMyServentNumber(servantMando);
+		
+		cout << "이 클라이언트의 서번트 = 만두" << endl;
+		sendServerMessage.set_message("My Servant Mandu");
+	}
+	else if (0 == command.compare("teamRed"))
+	{
+		clientInfo.setMyTeam(RedTeam);
+
+		cout << "이 클라이언트의 팀 = 레드" << endl;
+		sendServerMessage.set_message("My Team Red");
+	}
+	else if (0 == command.compare("teamBlue"))
+	{
+		clientInfo.setMyTeam(BlueTeam);
+
+		sendServerMessage.set_message("My Team Blue");
+	}
+	else if (0 == command.compare("start"))
+	{
+		CRoom* myRoom = *(RoomManager.getMyRoomIter(channelNum, roomNum));
+		if (myRoom == nullptr)
+		{
+			sendServerMessage.set_message("My Room None");
+			return CErrorHandler::ErrorHandler(ERROR_ROOM_NONE);
+		}
+		bool isTeamValance = false;
+		bool isPlayerInfoLack = true;
+		if (myRoom->isTeamBalance())
+		{
+			isTeamValance = true;
+		}
+		if (myRoom->updatePlayerReadyInfo())
+		{
+			isPlayerInfoLack = false;
+		}
+		if (isTeamValance && !isPlayerInfoLack)
+		{
+			sendServerMessage.set_message("Game Set All Ready! Start!");
+			return SUCCES_PLAYER_INFO_LACK;
+		}
+
+		if (!isTeamValance)
+		{
+			sendServerMessage.set_message("Team Valance No Ready");
+			return ERROR_TEAM_VALANCE;
+		}
+		sendServerMessage.set_message("Player Info Lack!");
+		return ERROR_PLAYER_INFO_LACK;
 	}
 	//else if (*command == 'n')
 	//{

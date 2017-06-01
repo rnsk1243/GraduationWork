@@ -14,8 +14,13 @@ const int ChannelAmount = 5;
 const int NoneRoom = -1;
 const int RecvSizeByteSize = 6;
 const int RoomNameSize = 256;
-const int ClientNumNone = 4; // 메세지를 보낸 클라이언트에게 보낼때 g_DataSize.clientNum 프로퍼티 값
-
+//const int ClientNumNone = 4; // 메세지를 보낸 클라이언트에게 보낼때 g_DataSize.clientNum 프로퍼티 값
+const int servantTofu = 1;
+const int servantMando = 2;
+const int servantNone = 0;
+const int RedTeam = 1;
+const int BlueTeam = 2;
+const int NoneTeam = 0;
 //const int NullNameError = -1;
 //const int BufSize = 1024;
 //const int NameSize = 30;

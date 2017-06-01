@@ -5,7 +5,9 @@ CLink::CLink(SOCKET& clientSocket, string name_, int clientNum):
 	ClientSocket(clientSocket),
 	MyChannelNum(0), 
 	MyRoomNum(NoneRoom),
-	mMyPKNumber(clientNum)
+	mMyPKNumber(clientNum),
+	mMyServentNumber(servantNone),
+	mMyTeam(NoneTeam)
 {
 	g_MS.set_message("New");
 	g_NameMS.set_message(name_);

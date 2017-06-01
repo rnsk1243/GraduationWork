@@ -19,8 +19,11 @@ class CRoom
 	CRITICAL_SECTION CS_MyInfoList;
 	void increasePeople() { AmountPeople++; }
 	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
-	CRoom(const CRoom&);
-	CRoom& operator=(const CRoom&);
+	CRoom(const CRoom&) = delete;
+	CRoom& operator=(const CRoom&) = delete;
+	g_ReadySet mReadySet;
+	g_CreateCharaterInfo* newCharaterInfo(CLink* client);
+	void setReadyPlayerInfo(CLink* client);
 public:
 	CRoom(int roomNum,int channelNum, char* roomName);
 	~CRoom();
@@ -30,6 +33,7 @@ public:
 		EnterCriticalSection(&CS_MyInfoList);
 		ClientInfos.push_back(client);
 		increasePeople();
+		setReadyPlayerInfo(client);
 		cout << "방 입장 성공 // 현재 방 인원 수 = " << AmountPeople << endl;
 		LeaveCriticalSection(&CS_MyInfoList);
 	}
@@ -50,6 +54,8 @@ public:
 	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
 	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
 	int getAmountPeople() { return AmountPeople; }
+	g_ReadySet* getReadySet() { return &mReadySet; }
+	bool updatePlayerReadyInfo();
 #pragma endregion
 	bool mergeRoom(CRoom* targetRoom)
 	{
@@ -72,5 +78,6 @@ public:
 		LeaveCriticalSection(&CS_MyInfoList);
 		return true;
 	}
+	bool isTeamBalance();
 };
 

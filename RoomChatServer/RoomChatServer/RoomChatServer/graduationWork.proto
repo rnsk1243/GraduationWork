@@ -16,6 +16,19 @@ package graduationWork;
 // [END csharp_declaration]
 
 // [START messages]
+message g_CreateCharaterInfo {
+	required int32 servant = 1;
+	required int32 pkNum = 2;
+	required int32 team = 3;
+}
+
+message g_ReadySet {
+	required g_CreateCharaterInfo player1 = 1;
+	required g_CreateCharaterInfo player2 = 2;
+	required g_CreateCharaterInfo player3 = 3;
+	required g_CreateCharaterInfo player4 = 4;
+}
+
 message g_Vector3 {
 	required float x = 1;
 	required float y = 2;
@@ -33,8 +46,11 @@ message g_Message {
 }
 
 enum g_DataType {
-	MESSAGE = 0;
-	TRANSFORM = 1;
+	PROTOCOL = 0;
+	COMMAND = 1;
+	MESSAGE = 2;
+	TRANSFORM = 3;
+	READYSET = 4;
 }
 
 message g_DataSize {

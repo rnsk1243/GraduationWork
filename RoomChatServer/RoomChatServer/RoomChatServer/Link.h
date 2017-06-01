@@ -66,8 +66,8 @@ struct LinkInfo
 			isSerialize = true;
 		}
 	}
-	// data까지 가져오기
-	LinkInfo(int myRoomNum, int myChannelNum, const g_Message& gMessage, g_DataSize& data, int clientNum = ClientNumNone) :
+	// data까지 가져오기 (반드시 g_Message일 경우 사용할 것)
+	LinkInfo(int myRoomNum, int myChannelNum, const g_Message& gMessage, g_DataSize& data, g_DataType type, int pkClientNum) :
 		myRoomNum(myRoomNum),
 		myChannelNum(myChannelNum),
 		size(gMessage.ByteSize()),
@@ -84,9 +84,9 @@ struct LinkInfo
 			isSerialize = true;
 		}
 		cout << "size ------ = " << size << endl;
-		data.set_clientnum(clientNum);
+		data.set_clientnum(pkClientNum);
 		data.set_size(size);
-		data.set_type(g_DataType::MESSAGE);
+		data.set_type(type);
 	}
 
 	LinkInfo(int myRoomNum, int myChannelNum, const g_Transform& gTransform) :
@@ -103,10 +103,30 @@ struct LinkInfo
 		{
 			isSerialize = true;
 		}
-		g_Transform g;
-		g.ParseFromArray(sendData, size);
+		//g_Transform g;
+		//g.ParseFromArray(sendData, size);
 		//cout << "gg???????? = " << g.position().x() << endl;
 	}
+
+	LinkInfo(int myRoomNum, int myChannelNum, const g_ReadySet& gReadySet, g_DataSize& data, int pkClientNum) :
+		myRoomNum(myRoomNum),
+		myChannelNum(myChannelNum),
+		size(gReadySet.ByteSize()),
+		isSerialize(false)
+	{
+		if (!gReadySet.SerializeToArray(sendData, size))
+		{
+			CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
+		}
+		else
+		{
+			isSerialize = true;
+		}
+		data.set_clientnum(pkClientNum);
+		data.set_size(size);
+		data.set_type(g_DataType::READYSET);
+	}
+
 	LinkInfo(const LinkInfo& copy): // 복사 생성자
 		myRoomNum(copy.myRoomNum),
 		myChannelNum(copy.myChannelNum),
@@ -132,6 +152,8 @@ class CLink
 	char* mNameSerialize;
 	g_DataSize mNameData;
 	int mMyPKNumber;
+	int mMyServentNumber; // 종족 번호
+	int mMyTeam;
 public:
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
@@ -158,6 +180,10 @@ public:
 	g_DataSize* getMyNameDataSizeType() { return &mNameData; }
 	char* getMyNameSerializeData() { return mNameSerialize; }
 	int getMyPKNumber() { return mMyPKNumber; }
+	int getMyServentNumber() { return mMyServentNumber; }
+	void setMyServentNumber(int servant) { mMyServentNumber = servant; }
+	int getMyTeam() { return mMyTeam; }
+	void setMyTeam(int newTeam) { mMyTeam = newTeam; }
 #pragma endregion
 	//void changeName(const char* name, int start)
 	//{

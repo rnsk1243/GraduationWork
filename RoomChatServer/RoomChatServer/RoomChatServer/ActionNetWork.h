@@ -3,6 +3,8 @@
 #include"CommandController.h"
 //#include"graduationWork.pb.h"
 
+
+
 class CActionNetWork
 {
 	CActionNetWork(const CActionNetWork&);
@@ -11,7 +13,6 @@ class CActionNetWork
 	int recvDataSource(SOCKET& recvOwnSocket, g_DataSize& g_dataSize, char* destination, int flags = 0); // 시리얼라이즈된 정보 받기, 받아야하는 크기
 	int recvSize(SOCKET& sock, g_DataSize& g_data, int flags = 0);
 	int sendSize(SOCKET& sock, g_DataSize& g_data, int flags = 0);
-	int sendnSingle(CLink & sendOwnLink, g_Message& g_MS, int flags = 0);
 	//int multiSendn(g_DataSize&  g_data, LinkListIt iterBegin, LinkListIt iterEnd, CLink& sendOwnLink, LinkInfo* linkInfo, int flags = 0);
 	int multiSendn(g_DataSize&  g_data, LinkListIt iterBegin, LinkListIt iterEnd, CLink& sendOwnLink, LinkInfo* linkInfo, bool isSelf = false, int flags = 0);
 	// 내 이름 보내기
@@ -22,8 +23,9 @@ public:
 	int recvn(SOCKET& socket, g_Message& g_MS, g_DataSize& g_data, int flags = 0); // 자신에게만 답장 받기
 	// 모든 형태 받기
 	int recvnData(CLink& clientInfo, g_DataSize& g_dataSize, CCommandController& commandController, g_Message& recvResultMessage, int flags = 0);
-	// 모든 형태 보내기
+	// 모든 형태 보내기 (메세지 트랜스폼) 주로 CLink안에 있는 데이터 보내기
 	int sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, bool isSelf = false, int flags = 0);
-	int sendn(g_DataSize& g_data, SOCKET & socket, int flags = 0); // 자신에게만 보내기
+	int sendnSingle(CLink & sendOwnLink, g_Message& g_MS, g_DataType type, int flags = 0);
+	//int sendn(g_DataSize& g_data, SOCKET & socket, int flags = 0); // 자신에게만 보내기
 };
 

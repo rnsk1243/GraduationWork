@@ -32,10 +32,10 @@ int CActionNetWork::recvSize(SOCKET & sock, g_DataSize& g_data, int flags)
 	// DataSize 초기화
 	char temp[BufSize];
 	int size = 0;
-	int t = 0;
+	//int t = 0;
 	while (true)
 	{
-	//	cout << "ㅋsize = "<< size << "] " << t << endl;
+		//cout << "ㅋsize = "<< size << "] " << t << endl;
 		size += recv(sock, temp, RecvSizeByteSize, flags);
 		if (size == SOCKET_ERROR)
 		{
@@ -45,7 +45,7 @@ int CActionNetWork::recvSize(SOCKET & sock, g_DataSize& g_data, int flags)
 		{
 			break;
 		}
-		t++;
+		//t++;
 	}
 	
 	bool isParseSucces = false;
@@ -88,40 +88,7 @@ int CActionNetWork::sendSize(SOCKET & sock, g_DataSize& g_data, int flags)
 	return sendSize;
 }
 
-int CActionNetWork::sendnSingle(CLink & sendOwnLink, g_Message& g_MS, int flags)
-{
-	g_DataSize g_data;
-	int myRoomNum = sendOwnLink.getMyRoomNum();
-	int myChannelNum = sendOwnLink.getMyChannelNum();
-	LinkInfo linkInfo(myRoomNum, myChannelNum, g_MS, g_data);
-	if (!linkInfo.isSerialize)
-	{
-		return CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
-	}
-	int size = linkInfo.size;
-	char* sendData = linkInfo.sendData;
 
-	size_t curDataSize = 0;
-
-	SOCKET& clientSocket = sendOwnLink.getClientSocket();
-	//sendMyName(clientSocket, sendOwnLink); // 이름 보내기
-	sendSize(clientSocket, g_data);
-	//cout << "보낼 데이터의 position.x ============== " << tt.position().x() << endl;
-
-	g_Message m;
-	m.ParseFromArray(sendData, size);
-	cout << "g_data = " << g_data.size() << "//" << g_data.type() << endl;
-	cout << "size = " << size << "  // mmmmmmmmmmmm = " << m.message() << endl;
-
-	while (true)
-	{
-		curDataSize += send(clientSocket, sendData, size, flags);
-		if (curDataSize >= size)
-			break;
-	}
-	cout << "내 메시지 보내기 성공" << endl;
-	return SUCCES_SINGLE_SENDN;
-}
 
 
 
@@ -233,16 +200,21 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CComma
 	int commandResult = 0;
 	if (recvedSize > 0)
 	{
-		switch (type)
+		switch (type) // type에 따른 Parse
 		{
-		case graduationWork::MESSAGE:
+		case graduationWork::COMMAND:
 			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
 			commandResult = commandController.commandHandling(clientInfo ,clientInfo.getMessage().message(), recvResultMessage);
-			if (SUCCES_RECV_EVERY_SEND == commandResult)
+			if (SUCCES_PLAYER_INFO_LACK == commandResult) // 방 인원수 다 모임. 그리고 준비도 다 됨.
 			{
 				isEverySend = true;
+				g_DataSize g_data;
+				g_data.set_type(g_DataType::READYSET);
+				sendn(g_data, clientInfo, commandController.getRoomManager(), commandController.getChannelManager(), isEverySend);
 			}
-			sendnSingle(clientInfo, recvResultMessage);
+			sendnSingle(clientInfo, recvResultMessage, g_DataType::MESSAGE);
+		case graduationWork::MESSAGE:
+			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
 			break;
 		case graduationWork::TRANSFORM:
 			isParseSucces = clientInfo.getTransform().ParseFromArray(recvBuffer, recvedSize);
@@ -282,6 +254,10 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CComma
 int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, bool isSelf, int flags)
 {
 	LinkInfo* linkInfo = nullptr;
+	int myRoomNum;
+	int myChannelNum;
+	int pkClientNum;
+	CRoom* myRoom = nullptr;
 	switch (g_data.type())
 	{
 	case g_DataType::TRANSFORM:
@@ -291,8 +267,19 @@ int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& r
 	case g_DataType::MESSAGE:
 		linkInfo = &clientInfo.getMyLinkInfoStruct(clientInfo.getMessage());
 		break;
-	default:
+	case g_DataType::COMMAND:
+		return SUCCES_COMMAND;
+	case g_DataType::READYSET:
+		myRoomNum = clientInfo.getMyRoomNum();
+		myChannelNum = clientInfo.getMyChannelNum();
+		myRoom = *roomManager.getMyRoomIter(myChannelNum, myRoomNum);
+		
+		pkClientNum = clientInfo.getMyPKNumber();
+
+		linkInfo = &LinkInfo(myRoomNum, myChannelNum, *myRoom->getReadySet(), g_data, pkClientNum);
 		break;
+	default:
+		return CErrorHandler::ErrorHandler(ERROR_DATA_TYPE_EXCEPTION);
 	}
 	if (!linkInfo->isSerialize)
 	{
@@ -320,32 +307,67 @@ int CActionNetWork::sendn(g_DataSize& g_data, CLink& clientInfo, CRoomManager& r
 	return code;
 }
 // 서버가 담당 클라이언트에게 보내기
-int CActionNetWork::sendn(g_DataSize& g_data, SOCKET & socket, int flags)
-{
-	
-	return sendSize(socket, g_data);
+//int CActionNetWork::sendn(g_DataSize& g_data, SOCKET & socket, int flags)
+//{
+//	
+//	return sendSize(socket, g_data);
+//
+//	/*switch (g_data.type())
+//	{
+//	case g_DataType::TRANSFORM:
+//		g_Transform tr;
+//		break;
+//	case g_DataType::MESSAGE:
+//		
+//		break;
+//	default:
+//		break;
+//	}
+//	
+//	int sendSize = 0;
+//	while (true)
+//	{
+//		sendSize += send(socket, temp, byteSize, flags);
+//		if (sendSize >= byteSize)
+//			break;
+//	}
+//	return sendSize;*/
+//}
 
-	/*switch (g_data.type())
+
+int CActionNetWork::sendnSingle(CLink & sendOwnLink, g_Message& g_MS, g_DataType type, int flags)
+{
+	g_DataSize g_data;
+	int myRoomNum = sendOwnLink.getMyRoomNum();
+	int myChannelNum = sendOwnLink.getMyChannelNum();
+	LinkInfo linkInfo(myRoomNum, myChannelNum, g_MS, g_data, type, sendOwnLink.getMyPKNumber());
+	if (!linkInfo.isSerialize)
 	{
-	case g_DataType::TRANSFORM:
-		g_Transform tr;
-		break;
-	case g_DataType::MESSAGE:
-		
-		break;
-	default:
-		break;
+		return CErrorHandler::ErrorHandler(ERROR_SERIALIZE_TO_ARRAY);
 	}
-	
-	int sendSize = 0;
+	int size = linkInfo.size;
+	char* sendData = linkInfo.sendData;
+
+	size_t curDataSize = 0;
+
+	SOCKET& clientSocket = sendOwnLink.getClientSocket();
+	//sendMyName(clientSocket, sendOwnLink); // 이름 보내기
+	sendSize(clientSocket, g_data);
+	//cout << "보낼 데이터의 position.x ============== " << tt.position().x() << endl;
+
+	g_Message m;
+	m.ParseFromArray(sendData, size);
+	cout << "g_dataSize = " << g_data.size() << "// 타입 = " << g_data.type() << endl;
+	cout << "size = " << size << "  // 보낸 메시지 = " << m.message() << endl;
+
 	while (true)
 	{
-		sendSize += send(socket, temp, byteSize, flags);
-		if (sendSize >= byteSize)
+		curDataSize += send(clientSocket, sendData, size, flags);
+		if (curDataSize >= size)
 			break;
 	}
-	return sendSize;*/
+	cout << "내 메시지 보내기 성공" << endl;
+	return SUCCES_SINGLE_SENDN;
 }
-
 
 

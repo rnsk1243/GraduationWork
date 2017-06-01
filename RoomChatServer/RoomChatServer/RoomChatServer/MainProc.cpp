@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include"ReadyNetWork.h"
 #include"CommandController.h"
@@ -32,16 +33,27 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 	SOCKET& clientSocket = SRParam->clientSocket;
 	CCommandController& commandController = SRParam->commandController;
 	CActionNetWork& actionNetWork = SRParam->actionNetWork;
+	int clientNum = SRParam->getClientNum();
 	//g_DataSize g_dataRecv;
 	g_DataSize g_dataSize;
 	g_dataSize.set_clientnum(SRParam->getClientNum());
 	g_dataSize.set_size(6);
 	g_dataSize.set_type(g_DataType::MESSAGE);
-	CLobby lobby;
+	//CLobby lobby;
+	CChannelManager& channelManager = commandController.getChannelManager();
+	CRoomManager& roomManager = commandController.getRoomManager();
 
-	CLink clientInfo(clientSocket, "우희", g_dataSize.clientnum());
+	CLink clientInfo(clientSocket, "우희", clientNum);
+
+	char chClientNum[10];
+	_itoa(clientNum, chClientNum, 10);
+
+	g_Message recvResultMessage;
+	recvResultMessage.set_message(chClientNum);
+	cout << "clientNum = " << recvResultMessage.message() << endl;
 	// 구별 번호 보내기
-	actionNetWork.sendn(g_dataSize, clientSocket);
+	actionNetWork.sendnSingle(clientInfo, recvResultMessage, g_DataType::PROTOCOL);
+	//actionNetWork.sendn(g_dataSize, clientSocket);
 	
 
 	/*bool isLogin = false;
@@ -72,13 +84,11 @@ unsigned int __stdcall thSendRecv(PVOID pvParam)
 
 	//CLink clientInfo(clientSocket, lobby.getMessageStruct().message());
 //	CLink clientInfo(clientSocket, "우희", g_data.clientnum());
-	CChannelManager& channelManager = commandController.getChannelManager();
-	CRoomManager& roomManager = commandController.getRoomManager();
-	g_Message recvResultMessage; 
+	
 	recvResultMessage.set_message("null");
 	// StartChannelNum 채널에 입장
 	commandController.getChannelHandler().enterChannel(&clientInfo, channelManager, EnterChannelNum);
-	actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager); // 내가 생성되었다고 전원에게 알림
+//	actionNetWork.sendn(g_dataSize, clientInfo, roomManager, channelManager); // 내가 생성되었다고 전원에게 알림
 	while (true)
 	{
 		//g_dataRecv.Clear();
@@ -116,7 +126,7 @@ void main()
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 
-	int clientNum = 0; // 구별 번호.
+	int clientNum = 1; // 구별 번호.
 
 	while (true)
 	{

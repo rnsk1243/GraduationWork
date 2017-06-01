@@ -4,7 +4,7 @@ enum EnumErrorCode
 {
 	// 취소
 	Cancel = 4444,
-
+	SUCCES_PLAYER_AMOUNT = 8,
 	// recv관련 10~19 return
 	SUCCES_RECV = 10,
 	// recv 에러
@@ -52,6 +52,12 @@ enum EnumErrorCode
 	ERROR_PARSE = 109,
 	ERROR_LINKINFO_NULL = 111,
 	SUCCES_SINGLE_SENDN = 112,
+	ERROR_DATA_TYPE_EXCEPTION = 113,
+	SUCCES_TEAM_VALANCE = 114,
+	ERROR_TEAM_VALANCE = 115,
+	SUCCES_PLAYER_INFO_LACK = 116, // 플레이어 정보 완료(팀,종족)
+	ERROR_PLAYER_INFO_LACK = 117,
+	ERROR_ROOM_NONE = 119, // 방에 들어있지 않음.
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876
