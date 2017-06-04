@@ -92,18 +92,19 @@ bool CRoom::isTeamBalance()
 
 void CRoom::setReadyPlayerInfo(CLink * client)
 {
-	switch (client->getMyPKNumber())
+	int num = client->getMyPKNumber() % 4;
+	switch (num)
 	{
-	case 1:
+	case 0:
 		mReadySet.set_allocated_player1(newCharaterInfo(client));
 		break;
-	case 2:
+	case 1:
 		mReadySet.set_allocated_player2(newCharaterInfo(client));
 		break;
-	case 3:
+	case 2:
 		mReadySet.set_allocated_player3(newCharaterInfo(client));
 		break;
-	case 4:
+	case 3:
 		mReadySet.set_allocated_player4(newCharaterInfo(client));
 		break;
 	default:

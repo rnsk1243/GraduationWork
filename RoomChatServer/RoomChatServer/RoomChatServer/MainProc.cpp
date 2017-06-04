@@ -126,7 +126,7 @@ void main()
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 
-	int clientNum = 1; // 구별 번호.
+	int clientNum = 0; // 구별 번호.
 
 	while (true)
 	{
