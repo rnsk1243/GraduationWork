@@ -135,6 +135,10 @@ void main()
 		SendRecvParam SRParam(*clientSocket, commandController, actionNetWork, clientNum);
 		_beginthreadex(NULL, NULL, thSendRecv, &SRParam, 0, NULL);
 		clientNum++; // 구별번호 증가
+		if (clientNum > 3)
+		{
+			clientNum = 0;
+		}
 	}
 	
 	getchar();

@@ -84,7 +84,7 @@ int CActionNetWork::sendSize(SOCKET & sock, g_DataSize& g_data, int flags)
 		if (sendSize >= byteSize)
 			break;
 	}
-	cout << "sendSize 보냈다" << sendSize << endl;
+	//cout << g_data.clientnum() << " sendSize 보냈다" << sendSize << endl;
 	return sendSize;
 }
 
@@ -215,6 +215,7 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CComma
 			sendnSingle(clientInfo, recvResultMessage, g_DataType::MESSAGE);
 		case graduationWork::MESSAGE:
 			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
+			cout << "받은 메세지 = " << clientInfo.getMessage().message() << endl;
 			break;
 		case graduationWork::TRANSFORM:
 			isParseSucces = clientInfo.getTransform().ParseFromArray(recvBuffer, recvedSize);
