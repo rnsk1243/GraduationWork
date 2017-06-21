@@ -16,7 +16,7 @@ public:
 	CCommandController();
 	~CCommandController();
 	// 명령 처리 함수(방 만들기 등)
-	int commandHandling(CLink& clientInfo,const string& command, g_Message& sendServerMessage);
+	int commandHandling(CLink& clientInfo,const string& command, g_Message& sendServerMessage, g_DataType& type);
 #pragma region get 함수
 	//CRoomHandlere* getRoomHandlere() { return RoomHandlere; }
 	CChannelHandler& getChannelHandler() { return ChannelHandler; }

@@ -13,7 +13,7 @@ CCommandController::~CCommandController()
 }
 
 
-int CCommandController::commandHandling(CLink& clientInfo,const string& command, g_Message& sendServerMessage)
+int CCommandController::commandHandling(CLink& clientInfo,const string& command, g_Message& sendServerMessage, g_DataType& type)
 {
 	if (&command == nullptr)
 		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
@@ -163,7 +163,6 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 	else if (0 == command.compare("servantMandu"))
 	{
 		clientInfo.setMyServentNumber(servantMando);
-		
 		cout << "이 클라이언트의 서번트 = 만두" << endl;
 		sendServerMessage.set_message("My Servant Mandu");
 	}
@@ -177,7 +176,6 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 	else if (0 == command.compare("teamBlue"))
 	{
 		clientInfo.setMyTeam(BlueTeam);
-
 		sendServerMessage.set_message("My Team Blue");
 	}
 	else if (0 == command.compare("start"))
@@ -201,6 +199,7 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 		if (isTeamValance && !isPlayerInfoLack)
 		{
 			sendServerMessage.set_message("Game Set All Ready! Start!");
+			type = g_DataType::READYSET;
 			return SUCCES_PLAYER_INFO_LACK;
 		}
 
@@ -211,6 +210,13 @@ int CCommandController::commandHandling(CLink& clientInfo,const string& command,
 		}
 		sendServerMessage.set_message("Player Info Lack!");
 		return ERROR_PLAYER_INFO_LACK;
+	}
+	else if (0 == command.compare("requestDistinguishCode"))
+	{
+		char m[64];
+		_itoa(clientInfo.getMyPKNumber(), m, 10);
+		sendServerMessage.set_message(m);
+		type = g_DataType::COMMAND;
 	}
 	//else if (*command == 'n')
 	//{

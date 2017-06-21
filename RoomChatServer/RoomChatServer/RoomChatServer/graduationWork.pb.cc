@@ -6,7 +6,9 @@
 
 #include <algorithm>
 
-#include <google/protobuf/stubs/common.h>
+
+
+#include <stubs/common.h>
 #include <google/protobuf/stubs/port.h>
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
@@ -207,14 +209,15 @@ void AddDescriptorsImpl() {
       "(\0132\031.graduationWork.g_Vector3\022+\n\010rotatio"
       "n\030\003 \002(\0132\031.graduationWork.g_Vector3\022(\n\005sc"
       "ale\030\004 \002(\0132\031.graduationWork.g_Vector3\"\034\n\t"
-      "g_Message\022\017\n\007message\030\001 \002(\014\"W\n\ng_DataSize"
+      "g_Message\022\017\n\007message\030\001 \002(\t\"W\n\ng_DataSize"
       "\022\021\n\tclientNum\030\001 \002(\005\022(\n\004type\030\002 \002(\0162\032.grad"
-      "uationWork.g_DataType\022\014\n\004size\030\003 \002(\005*Q\n\ng"
-      "_DataType\022\014\n\010PROTOCOL\020\000\022\013\n\007COMMAND\020\001\022\013\n\007"
-      "MESSAGE\020\002\022\r\n\tTRANSFORM\020\003\022\014\n\010READYSET\020\004"
+      "uationWork.g_DataType\022\014\n\004size\030\003 \002(\005*_\n\ng"
+      "_DataType\022\014\n\010NULLDATA\020\000\022\014\n\010PROTOCOL\020\001\022\013\n"
+      "\007COMMAND\020\002\022\013\n\007MESSAGE\020\003\022\r\n\tTRANSFORM\020\004\022\014"
+      "\n\010READYSET\020\005"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 758);
+      descriptor, 772);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "graduationWork.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&TableStruct::Shutdown);
@@ -244,6 +247,7 @@ bool g_DataType_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;
@@ -2326,11 +2330,15 @@ bool g_Message::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required bytes message = 1;
+      // required string message = 1;
       case 1: {
         if (tag == 10u) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_message()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->message().data(), this->message().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "graduationWork.g_Message.message");
         } else {
           goto handle_unusual;
         }
@@ -2362,9 +2370,13 @@ failure:
 void g_Message::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:graduationWork.g_Message)
-  // required bytes message = 1;
+  // required string message = 1;
   if (has_message()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->message().data(), this->message().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "graduationWork.g_Message.message");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       1, this->message(), output);
   }
 
@@ -2379,10 +2391,14 @@ void g_Message::SerializeWithCachedSizes(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic;  // Unused
   // @@protoc_insertion_point(serialize_to_array_start:graduationWork.g_Message)
-  // required bytes message = 1;
+  // required string message = 1;
   if (has_message()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->message().data(), this->message().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "graduationWork.g_Message.message");
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         1, this->message(), target);
   }
 
@@ -2403,10 +2419,10 @@ size_t g_Message::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         unknown_fields());
   }
-  // required bytes message = 1;
+  // required string message = 1;
   if (has_message()) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
+      ::google::protobuf::internal::WireFormatLite::StringSize(
         this->message());
   }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2479,7 +2495,7 @@ void g_Message::InternalSwap(g_Message* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // g_Message
 
-// required bytes message = 1;
+// required string message = 1;
 bool g_Message::has_message() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2515,7 +2531,7 @@ void g_Message::set_message(const char* value) {
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:graduationWork.g_Message.message)
 }
-void g_Message::set_message(const void* value, size_t size) {
+void g_Message::set_message(const char* value, size_t size) {
   set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

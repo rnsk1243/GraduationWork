@@ -1,0 +1,24 @@
+﻿  Channel.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  ChannelHandler.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  ChannelManager.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  graduationWork.pb.cc
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  Lobby.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  RoomManager.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  MainProc.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  Link.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  CommandController.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  Room.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  RoomHandler.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory
+  ActionNetWork.cpp
+d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\graduationWork.pb.h(9): fatal error C1083: 포함 파일을 열 수 없습니다. 'google/protobuf/stubs/common.h': No such file or directory

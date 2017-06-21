@@ -65,14 +65,15 @@ void InitDefaults();
 }  // namespace protobuf_graduationWork_2eproto
 
 enum g_DataType {
-  PROTOCOL = 0,
-  COMMAND = 1,
-  MESSAGE = 2,
-  TRANSFORM = 3,
-  READYSET = 4
+  NULLDATA = 0,
+  PROTOCOL = 1,
+  COMMAND = 2,
+  MESSAGE = 3,
+  TRANSFORM = 4,
+  READYSET = 5
 };
 bool g_DataType_IsValid(int value);
-const g_DataType g_DataType_MIN = PROTOCOL;
+const g_DataType g_DataType_MIN = NULLDATA;
 const g_DataType g_DataType_MAX = READYSET;
 const int g_DataType_ARRAYSIZE = g_DataType_MAX + 1;
 
@@ -669,7 +670,7 @@ class g_Message : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // required bytes message = 1;
+  // required string message = 1;
   bool has_message() const;
   void clear_message();
   static const int kMessageFieldNumber = 1;
@@ -679,7 +680,7 @@ class g_Message : public ::google::protobuf::Message /* @@protoc_insertion_point
   void set_message(::std::string&& value);
   #endif
   void set_message(const char* value);
-  void set_message(const void* value, size_t size);
+  void set_message(const char* value, size_t size);
   ::std::string* mutable_message();
   ::std::string* release_message();
   void set_allocated_message(::std::string* message);
@@ -1320,7 +1321,7 @@ inline void g_Transform::set_allocated_scale(::graduationWork::g_Vector3* scale)
 
 // g_Message
 
-// required bytes message = 1;
+// required string message = 1;
 inline bool g_Message::has_message() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1356,7 +1357,7 @@ inline void g_Message::set_message(const char* value) {
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:graduationWork.g_Message.message)
 }
-inline void g_Message::set_message(const void* value, size_t size) {
+inline void g_Message::set_message(const char* value, size_t size) {
   set_has_message();
   message_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

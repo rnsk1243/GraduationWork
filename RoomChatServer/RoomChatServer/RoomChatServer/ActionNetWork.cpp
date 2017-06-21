@@ -195,6 +195,7 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CComma
 	}
 	bool isParseSucces = false;
 	int recvedSize = g_dataSize.size(); 
+	//cout << "받아야하는 크기 값 = " << recvedSize << endl;
 	g_DataType type = g_dataSize.type();
 	bool isEverySend = false;
 	int commandResult = 0;
@@ -204,29 +205,29 @@ int CActionNetWork::recvnData(CLink & clientInfo, g_DataSize& g_dataSize, CComma
 		{
 		case graduationWork::COMMAND:
 			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
-			commandResult = commandController.commandHandling(clientInfo ,clientInfo.getMessage().message(), recvResultMessage);
+			commandResult = commandController.commandHandling(clientInfo ,clientInfo.getMessage().message(), recvResultMessage, type);
 			if (SUCCES_PLAYER_INFO_LACK == commandResult) // 방 인원수 다 모임. 그리고 준비도 다 됨.
 			{
 				isEverySend = true;
 				g_DataSize g_data;
-				g_data.set_type(g_DataType::READYSET);
+				g_data.set_type(type);
 				sendn(g_data, clientInfo, commandController.getRoomManager(), commandController.getChannelManager(), isEverySend);
 			}
-			sendnSingle(clientInfo, recvResultMessage, g_DataType::MESSAGE);
+			sendnSingle(clientInfo, recvResultMessage, type);
 		case graduationWork::MESSAGE:
 			isParseSucces = clientInfo.getMessage().ParseFromArray(recvBuffer, recvedSize);
 			cout << "받은 메세지 = " << clientInfo.getMessage().message() << endl;
 			break;
 		case graduationWork::TRANSFORM:
 			isParseSucces = clientInfo.getTransform().ParseFromArray(recvBuffer, recvedSize);
-			//cout << "값 수정 되었나? ====================== " << clientInfo.getTransform().position().x() << endl;
+			//cout << clientInfo.getMyPKNumber() << "번 위치 ====================== " << clientInfo.getTransform().rotation().y() << endl;
 			break;
 		default:
 			break;
 		}
 		if (!isParseSucces)
 		{
-			cout << "여기3?" << endl;
+			cout << "여기?" << endl;
 			return CErrorHandler::ErrorHandler(ERROR_PARSE);
 		}
 	}
