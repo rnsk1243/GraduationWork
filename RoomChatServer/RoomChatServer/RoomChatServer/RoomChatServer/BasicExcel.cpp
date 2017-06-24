@@ -1,7 +1,7 @@
 #define _SCL_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #include "BasicExcel.hpp"
-#include"GaChar.h"
+#include"Card.h"
 
 namespace YCompoundFiles
 {
@@ -4862,10 +4862,10 @@ bool BasicExcel::RenameWorksheet(const wchar_t* from, const wchar_t* to)
 
 char * BasicExcel::CharToMultiByte(BasicExcelCell * cell)
 {
-	wchar_t strUnicode[BufferSize] = { 0, };
-	char* strMultibyte = new char[BufferSize];
+	wchar_t strUnicode[CardNameBuf] = { 0, };
+	char* strMultibyte = new char[CardNameBuf];
 	//char	strMultibyte[256] = { 0, };
-	wcscpy_s(strUnicode, BufferSize, cell->GetWString());
+	wcscpy_s(strUnicode, CardNameBuf, cell->GetWString());
 	int len = WideCharToMultiByte(CP_ACP, 0, strUnicode, -1, NULL, 0, NULL, NULL);
 	WideCharToMultiByte(CP_ACP, 0, strUnicode, -1, strMultibyte, len, NULL, NULL);
 	strMultibyte[len + 1] = '\0';
@@ -4925,7 +4925,7 @@ bool BasicExcel::ReadExcel(char * excelName)
 			{
 				Card* card = new Card(cardNum, name, prob, stat);
 				shared_ptr<Card> shardCard(card);
-				GaCharStatic->pushCard(shardCard);
+				CardStatic->pushCard(shardCard);
 			}
 			else { cout << "excel 읽기 실패" << endl; return false; }
 		}

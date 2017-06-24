@@ -10,20 +10,6 @@ CGaChar::~CGaChar()
 {
 }
 
-CGaChar * CGaChar::getInstance()
-{
-	if (nullptr == GaCharStatic)
-	{
-		GaCharStatic = new CGaChar();
-	}
-	return GaCharStatic;
-}
-
-void CGaChar::pushCard(shared_ptr<Card> card)
-{
-	mCards.push_back(card);
-}
-
 int CGaChar::randNumber(int max)
 {
 	random_device rn;
@@ -35,12 +21,12 @@ int CGaChar::randNumber(int max)
 
 Card* CGaChar::gaCharResult(int range)
 {
-	list<shared_ptr<Card>>::iterator iterBegin = mCards.begin();
-	list<shared_ptr<Card>>::iterator iterEnd = mCards.end();
+	CardListIt iterBegin = CardStatic->getCardListIterBegin();
+	CardListIt iterEnd = CardStatic->getCardListIterEnd();
 	int maxRange = 1;
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		maxRange += (*iterBegin).get()->prob;
+		maxRange += ((*iterBegin).get())->prob;
 		if (range < maxRange)
 		{
 			return ((*iterBegin).get());

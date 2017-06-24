@@ -1,7 +1,7 @@
 #include "RoomHandler.h"
 #include"Link.h"
 #include"Room.h"
-#include"ConstEnumInfo.h"
+//#include"ConstEnumInfo.h"
 #include"ErrorHandler.h"
 
 CRoomHandler::CRoomHandler()

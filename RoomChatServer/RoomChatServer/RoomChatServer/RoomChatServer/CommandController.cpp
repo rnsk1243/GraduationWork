@@ -1,5 +1,6 @@
 #include "CommandController.h"
 #include"ErrorHandler.h"
+//#include"ConstEnumInfo.h"
 //#include"GaChar.h"
 
 CCommandController::CCommandController()
@@ -189,8 +190,8 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 		return CErrorHandler::ErrorHandler(ERROR_MONEY_FAIL);
 	}
 
-	int randNum = GaCharStatic->randNumber();
-	Card* gaCharResult = GaCharStatic->gaCharResult(randNum);
+	int randNum = mGacharHandler.randNumber();
+	Card* gaCharResult = mGacharHandler.gaCharResult(randNum);
 	if (nullptr == gaCharResult)
 	{
 		sendClientMessage->message = "카드 뽑기 오류.";
@@ -201,7 +202,7 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 	sendClientMessage->sendRecvSize = strlen(gaCharResult->name);
 
 	clientInfo->pushCard(gaCharResult);
-
+	mCardManager.ChangeUserCardAmount(NameMemberCardInfoTxt.c_str(), clientInfo->getMyName(), gaCharResult->cardNum, true);
 	return SUCCES_COMMAND_MESSAGE;
 }
 

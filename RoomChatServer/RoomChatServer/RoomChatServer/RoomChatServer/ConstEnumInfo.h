@@ -1,9 +1,16 @@
 #pragma once
+#include<string>
+#include<iostream>
+using namespace std;
 
-
+const string StartCardInventory("01/00|02/00|03/00|04/00|05/00|06/00|07/00|08/00|09/00|10/00|11/00"); // 카드번호/카드갯수
+const string NameMemberInfoTxt = "MemberInfo.txt";
+const string NameMemberCardInfoTxt = "MemberCardInfo.txt";
+const string CardEmpty = "00";
 // 값
 const int Port = 9000;
 const int BufSize = 1024;
+const int CardNameBuf = 64;
 const int ExcelBufSize = 4096;
 const int NameSize = 30;
 const int IdPwSize = 256;

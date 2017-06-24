@@ -21,8 +21,48 @@ CLink::~CLink()
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
+void CLink::EmptyCard()
+{
+	ScopeLock<MUTEX> MU(RAII_LinkMUTEX);
+	mMyCards.clear();
+}
+
+bool CLink::isHaveCard(int cardNum, MyCardListIt& cardIter)
+{
+	MyCardListIt begin = GetIterMyCardBegin();
+	MyCardListIt end = GetIterMyCardEnd();
+	for (; begin != end; ++begin)
+	{
+		if ((*begin).get()->getAmount() == cardNum)
+		{
+			cardIter = begin;
+			return true;
+		}
+	}
+	return false;
+}
+
+void CLink::initCard(Card * card, int amount, float exp)
+{
+	ScopeLock<MUTEX> MU(RAII_LinkMUTEX);
+	shared_ptr<Card> newCard_(card);
+	MyCardInfo* cardInfo = new MyCardInfo(newCard_, amount, exp);
+	shared_ptr<MyCardInfo> newCard(cardInfo);
+	mMyCards.push_back(newCard);
+}
+
 void CLink::pushCard(Card* card)
 {
-	mMyCards.push_back(card);
 	MyMoney -= CardCost;
+	MyCardListIt cardIter;
+	if (isHaveCard(card->cardNum, cardIter))
+	{
+		((*cardIter).get())->increaseCard();
+		return;
+	}
+	ScopeLock<MUTEX> MU(RAII_LinkMUTEX);
+	shared_ptr<Card> newCard_(card);
+	MyCardInfo* cardInfo = new MyCardInfo(newCard_, 1, 0.0f);
+	shared_ptr<MyCardInfo> newCard(cardInfo);
+	mMyCards.push_back(newCard);
 }

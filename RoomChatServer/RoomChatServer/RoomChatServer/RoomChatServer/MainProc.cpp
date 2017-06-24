@@ -10,7 +10,6 @@
 #include"Channel.h"
 #include"ActionNetWork.h"
 #include"Lobby.h"
-#include"ConstEnumInfo.h"
 #include<process.h>
 #include<thread>
 #include"ErrorHandler.h"
@@ -18,6 +17,8 @@
 #include"BasicExcel.hpp"
 #include<Windows.h>
 #include"MinidumpHelp.h"
+#include"ReadHandler.h"
+#include"ConstEnumInfo.h"
 using namespace std;
 using namespace YExcel;
 
@@ -97,6 +98,20 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	{
 		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
 	}
+
+	ReadHandlerStatic->ReadUserCard(clientInfo, NameMemberCardInfoTxt);
+
+	cout << "========== 보유 카드 =============" << endl;
+
+	MyCardListIt cardBegin = clientInfo->GetIterMyCardBegin();
+	MyCardListIt cardEnd = clientInfo->GetIterMyCardEnd();
+	for (; cardBegin != cardEnd; ++cardBegin)
+	{
+		cout << (*cardBegin).get()->getCardName() << endl;
+		cout << (*cardBegin).get()->getAmount() << endl;
+	}
+	cout << "==================================" << endl;
+
 	while (true)
 	{
 		int isRecvSuccesResultValue = actionNetWork.recvn(shared_clientInfo, commandController);
@@ -126,8 +141,8 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 
 void main()
 {
-	MinidumpHelp dump;
-	dump.install_self_mini_dump();
+	//MinidumpHelp dump;
+	//dump.install_self_mini_dump();
 	/////////// 버전 정보 출력 ///////////
 	printVersionInfo();
 	//////////////////////////////////////

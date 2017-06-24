@@ -3,13 +3,15 @@
 #include"RoomHandler.h"
 #include"ChannelManager.h"
 #include"RoomManager.h"
-
+#include"CardManager.h"
 class CCommandController
 {
 	CChannelManager ChannelManager;
 	CRoomManager RoomManager;
 	CChannelHandler ChannelHandler;
 	CRoomHandler RoomHandler;
+	CCardManager mCardManager;
+	CGaChar mGacharHandler;
 	int cardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
 	int readyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum);
 	int enterRoom(shared_ptr<CLink> shared_clientInfo);

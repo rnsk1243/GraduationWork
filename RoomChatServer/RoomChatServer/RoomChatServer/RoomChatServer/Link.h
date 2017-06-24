@@ -4,8 +4,9 @@
 #include<iostream>
 using namespace std;
 #include"ConstEnumInfo.h"
-
+#include"RAII.h"
 #include"GaChar.h"
+
 // 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
 struct MessageStruct
 {
@@ -37,6 +38,27 @@ struct MessageStruct
 	}
 };
 
+class MyCardInfo
+{
+private:
+	shared_ptr<Card> card;
+	int amount;
+	float exp;
+public:
+	MyCardInfo(const shared_ptr<Card>& card_, int amount_ = 1, float exp_ = 0.0f):
+		card(card_), amount(amount_), exp(exp_)
+	{
+	}
+	void increaseCard() { ++amount; }
+	int getAmount() { return amount; }
+	char* getCardName() { return card.get()->name; }
+	MyCardInfo(const MyCardInfo& copy) = delete;
+	MyCardInfo& operator=(const MyCardInfo& copy) = delete;
+};
+
+typedef list<shared_ptr<MyCardInfo>> MyCardList;
+typedef MyCardList::iterator MyCardListIt;
+
 class CLink
 {
 	char* Name;
@@ -49,7 +71,8 @@ class CLink
 	MessageStruct MS;
 	// 나의 골드
 	int MyMoney;
-	list<Card*> mMyCards;
+	MyCardList mMyCards;
+	MUTEX RAII_LinkMUTEX;
 public:
 	CLink(SOCKET& clientSocket, char* name_);
 	CLink(const CLink&) = delete;
@@ -65,8 +88,14 @@ public:
 	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
 	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
 	bool isMoneyOKGaChar() { return MyMoney >= CardCost; } // 가챠 할 수 있나?
+	MyCardListIt GetIterMyCardBegin() { return mMyCards.begin(); }
+	MyCardListIt GetIterMyCardEnd() { return mMyCards.end(); }
+	bool isEmptyCard() { return mMyCards.empty(); }
+	void EmptyCard();
+	bool isHaveCard(int cardNum, MyCardListIt& cardIter);
 #pragma endregion
 	void pushCard(Card* card);
+	void initCard(Card* card, int amount = 1, float exp = 0.0f);
 	void changeName(const char* name, int start)
 	{
 		//Name = '\0';

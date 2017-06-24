@@ -18,7 +18,7 @@ int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 	pw = MS.message;
 	if (0 == pw.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
-	if (ReadHandlerStatic->Search("MemberInfo.txt", false, 2, id, pw))
+	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), false, 2, id, pw))
 	{
 		cout << "로그인 성공" << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
@@ -48,14 +48,14 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 	if (0 == pw.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
 
-	if (ReadHandlerStatic->Search("MemberInfo.txt", false, 1, id))
+	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), false, 1, id))
 	{
 		cout << "id 중복 입니다." << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "id 중복 입니다.");
 		return CErrorHandler::ErrorHandler(OVERLAPID);
 	}
 
-	if (WriteHandlerStatic->write("MemberInfo.txt", 2, id, pw) && WriteHandlerStatic->write("MemberCardInfo.txt", 1, id))
+	if (WriteHandlerStatic->write(NameMemberInfoTxt.c_str(), 2, id, pw) && WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, id, StartCardInventory))
 	{
 		cout << "회원가입 성공" << endl;
 		actionNetWork.notificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");

@@ -2,7 +2,7 @@
 #include<iostream>
 #include<process.h>
 using namespace std;
-#include"ConstEnumInfo.h"
+//#include"ConstEnumInfo.h"
 #include"ErrorCode.h"
 
 class CErrorHandler
