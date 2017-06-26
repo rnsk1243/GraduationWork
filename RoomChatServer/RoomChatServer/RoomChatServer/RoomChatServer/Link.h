@@ -42,8 +42,8 @@ class MyCardInfo
 {
 private:
 	shared_ptr<Card> card;
-	int amount;
-	float exp;
+	int amount; // 이 카드에 대한 보유 갯수
+	float exp; // 이 카드에 대한 경험치
 public:
 	MyCardInfo(const shared_ptr<Card>& card_, int amount_ = 1, float exp_ = 0.0f):
 		card(card_), amount(amount_), exp(exp_)
