@@ -7,7 +7,7 @@ using namespace std;
 #include"RAII.h"
 #include"GaChar.h"
 
-// 클라이언트가 개인적으로 가지고 있는 구조체 (개인적인 것들이 선언되어 있다...)
+// 클라이언트가 개인적으로 가지고 있는 구조체
 struct MessageStruct
 {
 	char* message;
@@ -45,13 +45,14 @@ private:
 	int amount; // 이 카드에 대한 보유 갯수
 	float exp; // 이 카드에 대한 경험치
 public:
-	MyCardInfo(const shared_ptr<Card>& card_, int amount_ = 1, float exp_ = 0.0f):
+	MyCardInfo(const shared_ptr<Card>& card_, int amount_ =1, float exp_ = 0.0f):
 		card(card_), amount(amount_), exp(exp_)
 	{
 	}
 	void increaseCard() { ++amount; }
 	int getAmount() { return amount; }
 	char* getCardName() { return card.get()->name; }
+	const int getCardNumber() { return card.get()->cardNum; }
 	MyCardInfo(const MyCardInfo& copy) = delete;
 	MyCardInfo& operator=(const MyCardInfo& copy) = delete;
 };
@@ -73,8 +74,10 @@ class CLink
 	int MyMoney;
 	MyCardList mMyCards;
 	MUTEX RAII_LinkMUTEX;
+	// 내 회원번호
+	const int MyPKNumber;
 public:
-	CLink(SOCKET& clientSocket, char* name_);
+	CLink(SOCKET& clientSocket, string strPKNumber, char* name_);
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
 	~CLink();
@@ -93,6 +96,7 @@ public:
 	bool isEmptyCard() { return mMyCards.empty(); }
 	void EmptyCard();
 	bool isHaveCard(int cardNum, MyCardListIt& cardIter);
+	const int GetMyPKNumber()const { return MyPKNumber; }
 #pragma endregion
 	void pushCard(Card* card);
 	void initCard(Card* card, int amount = 1, float exp = 0.0f);

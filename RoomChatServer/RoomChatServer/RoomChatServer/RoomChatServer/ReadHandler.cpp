@@ -1,6 +1,7 @@
 #include "ReadHandler.h"
 //#include"ConstEnumInfo.h"
 #include"ActionNetWork.h"
+#include"Util.h"
 
 CReadHandler::CReadHandler()
 {
@@ -20,7 +21,7 @@ CReadHandler::~CReadHandler()
 {
 }
 
-int CReadHandler::Search(const char * textFileName, bool isFullMatch, int count, ...)
+int CReadHandler::Search(const char * textFileName, vector<string>& tempUserInfo, int count, ...)
 {
 	ifstream inFile(textFileName);
 	if (!inFile)
@@ -46,33 +47,25 @@ int CReadHandler::Search(const char * textFileName, bool isFullMatch, int count,
 		char temp[IdPwSize];
 		inFile.getline(temp, IdPwSize);
 		string tempString = temp;
-		vector<string> tempVec = Parse(tempString, '|');
+		vector<string> userInfoVec = Parse(tempString, '|');
 
-		if (isFullMatch)
+		vector<string>::iterator iterUserInfoBegin = userInfoVec.begin();
+		vector<string>::iterator iterTargetBegin = searchTarget.begin();
+		for (; iterUserInfoBegin != userInfoVec.end(); ++iterUserInfoBegin)
 		{
-			if (searchTarget.size() != tempVec.size())
+			for (; iterTargetBegin != searchTarget.end(); ++iterTargetBegin)
 			{
-				cout << "갯수가 일치하지 않습니다." << endl;
-				return 0;
+				int compareResult = iterTargetBegin->compare(*iterUserInfoBegin);
+				if (0 == compareResult)
+				{
+					sameAmount++;
+				}
 			}
-		}
-
-		for (int i = 0; i < count; i++)
-		{
-			if (count > (int)tempVec.size()) // tempVec 범위 벗어나는것 방지
-				break;
-			int compareResult = searchTarget[i].compare(tempVec[i]);
-			if (0 == compareResult)
-			{
-				sameAmount++;
-			}
-			else
-			{
-				break;
-			}
+			iterTargetBegin = searchTarget.begin();
 		}
 		if (sameAmount == count)
 		{
+			tempUserInfo = userInfoVec;
 			break;
 		}
 	}
@@ -110,10 +103,33 @@ vector<string> CReadHandler::Parse(const string & str, const char & ch)
 	return result;
 }
 
-
-bool CReadHandler::ReadUserCardLine(const string textFileName, const char * userName, vector<string>& targetTemp)
+const string CReadHandler::GetLastLine(const string & textFileName)
 {
-	string strUserName = userName;
+	ifstream inFile(textFileName);
+	if (!inFile)
+	{
+		cout << "파일이 없습니다." << endl;
+	}
+	inFile.seekg(-2, ios::end);
+	char checkLine = ' ';
+	while (checkLine != '\n')
+	{
+		inFile.seekg(-1, ios::cur);
+		checkLine = (char)inFile.peek();
+		//		cout << checkLine << endl;
+	}
+	inFile.seekg(2, ios::cur);
+	string lastLine;
+	getline(inFile, lastLine);
+
+	inFile.close();
+	return lastLine;
+}
+
+
+bool CReadHandler::ReadUserCardLine(const string& textFileName, const int& userPKNum, vector<string>& targetTemp)
+{
+	string strUserName = IntToString(userPKNum);
 	ifstream inFile(textFileName);
 	if (!inFile)
 	{
@@ -147,11 +163,11 @@ bool CReadHandler::ReadUserCardLine(const string textFileName, const char * user
 }
 
 
-bool CReadHandler::ReadUserCard(CLink* client, const string textFileName)
+bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 {
 	vector<string> userCardInfo;
 	Card* pushCard;
-	if (!ReadUserCardLine(textFileName, client->getMyName(), userCardInfo))
+	if (!ReadUserCardLine(textFileName, client->GetMyPKNumber(), userCardInfo))
 	{
 		CErrorHandler::ErrorHandler(ERROR_INIT_USER_CARD);
 		return false;
@@ -171,8 +187,8 @@ bool CReadHandler::ReadUserCard(CLink* client, const string textFileName)
 	{
 		// (카드번호/카드갯수)을 '/'을 기준으로 자름
 		vector<string> invenBox = ReadHandlerStatic->Parse((*userCardInfoIterBegin), '/');
-		cout << "카드번호 = " << invenBox[0].c_str() << endl;
-		cout << "카드갯수 = " << invenBox[1].c_str() << endl;
+		//cout << "카드번호 = " << invenBox[0].c_str() << endl;
+		//cout << "카드갯수 = " << invenBox[1].c_str() << endl;
 		if (0 == invenBox[1].compare(CardEmpty))
 		{
 			cout << "넘김!!!!!!!!!!!!!!!!!!!!" << endl;
@@ -196,4 +212,21 @@ bool CReadHandler::ReadUserCard(CLink* client, const string textFileName)
 		}
 	}
 	return true;
+}
+
+const string CReadHandler::GetNextUserNum(const string & textFileName)
+{
+	//string lastLine = GetLastLine(textFileName);
+	//vector<string> parseStr = Parse(lastLine, '|');
+	//return parseStr[0];
+	cout << "=============userNumFile Read!===========" << endl;
+	ifstream inFile(textFileName);
+	if (!inFile)
+	{
+		cout << "파일이 없습니다." << endl;
+	}
+	string nextUserNum;
+	getline(inFile, nextUserNum);
+	inFile.close();
+	return nextUserNum;
 }

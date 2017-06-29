@@ -20,3 +20,40 @@ static void IntToAlphabet(const int num, char* chResult)
 		chResult[2] = '\0';
 	}
 }
+
+static const string IntToString(const int& targetInt)
+{
+	string result;
+	char tempUserNum[NameSize];
+	_itoa_s(targetInt, tempUserNum, 10);
+	result = tempUserNum;
+	return result;
+}
+
+// 자릿수 누적
+static const int AddCipHer(const int Number)
+{
+	if (Number < 1)
+		return -1;
+	int result = 0;
+	int curNumber = 0;
+	int objLine = Number;
+	while (curNumber != objLine)
+	{
+		curNumber++;
+		if (curNumber < 10)
+		{
+			++result;
+		}
+		else if (curNumber >= 10 && curNumber < 100)
+		{
+			result += 2;
+		}
+		else if (curNumber >= 100 && curNumber < 1000)
+		{
+			result += 3;
+		}
+	}
+	return result;
+}
+

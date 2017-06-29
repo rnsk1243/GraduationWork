@@ -49,9 +49,8 @@ enum EnumErrorCode
 	ERROR_GACHAR = 105,
 	SUCCES_GACHAR = 106,
 	ERROR_NEWCARD = 107, // 서버 .txt 파일에 저장 할 준비가 되어있지 않음
-	ERROR_INCREASE_CARD = 109, // 유저 보유 카드 갯수 증가 에러
-	ERROR_DECREASE_CARD = 111, // 유저 보유 카드 갯수 감소 에러
-	ERROR_INIT_USER_CARD = 113, // 유저 로그인시 보유 카드정보 불러오기 실패
+	ERROR_SAVE_CARD = 109, // 유저 보유 카드 저장 에러
+	ERROR_INIT_USER_CARD = 111, // 유저 로그인시 보유 카드정보 불러오기 실패
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

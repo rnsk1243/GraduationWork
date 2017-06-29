@@ -1,11 +1,12 @@
 #include"Link.h"
 #include"RoomHandler.h"
 #include"GaChar.h"
-CLink::CLink(SOCKET& clientSocket, char* name_) :
+CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name_) :
 	ClientSocket(clientSocket),
 	MyChannelNum(0),
 	MyRoomNum(NoneRoom),
-	MyMoney(StartMoney)
+	MyMoney(StartMoney),
+	MyPKNumber(stoi(strPKNumber))
 {
 	size_t length = strlen(name_) + 1;
 	Name = new char[length];
@@ -33,7 +34,7 @@ bool CLink::isHaveCard(int cardNum, MyCardListIt& cardIter)
 	MyCardListIt end = GetIterMyCardEnd();
 	for (; begin != end; ++begin)
 	{
-		if ((*begin).get()->getAmount() == cardNum)
+		if ((*begin).get()->getCardNumber() == cardNum)
 		{
 			cardIter = begin;
 			return true;

@@ -202,7 +202,11 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 	sendClientMessage->sendRecvSize = strlen(gaCharResult->name);
 
 	clientInfo->pushCard(gaCharResult);
-	mCardManager.ChangeUserCardAmount(NameMemberCardInfoTxt.c_str(), clientInfo->getMyName(), gaCharResult->cardNum, true);
+	// ±â·Ï
+	MyCardListIt myCardListIt;
+	clientInfo->isHaveCard(gaCharResult->cardNum, myCardListIt);
+	int curCardAmount = (*myCardListIt)->getAmount();
+	mCardManager.ChangeUserCardAmount(NameMemberCardInfoTxt.c_str(), curCardAmount, clientInfo->GetMyPKNumber(), gaCharResult->cardNum);
 	return SUCCES_COMMAND_MESSAGE;
 }
 

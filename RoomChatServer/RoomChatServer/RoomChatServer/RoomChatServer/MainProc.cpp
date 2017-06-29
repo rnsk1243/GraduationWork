@@ -71,9 +71,10 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	CLobby& lobby = (*(CLobby*)v_lobby);
 	//CLobby lobby;
 	int isLogin = 0;
+	vector<string> userInfo;
 	while (SUCCES_LOGIN != isLogin)
 	{
-		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork);
+		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork, userInfo);
 		CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
 		if (ERROR_RECV == isLogin || ERROR_SEND == isLogin)
 		{
@@ -81,7 +82,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 			//_endthreadex(0);
 		}
 	}
-	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, lobby.getMessageStruct().message));
+	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], lobby.getMessageStruct().message));
 	CChannelManager& channelManager = commandController.getChannelManager();
 	CRoomManager& roomManager = commandController.getRoomManager();
 	// EnterChannelNum 채널에 입장
@@ -152,7 +153,9 @@ void main()
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 	CActionNetWork actionNetWork;
-	CLobby lobby;
+	string strNextUserNum = ReadHandlerStatic->GetNextUserNum(MakeNextJoinNumberTxt);
+	int nextUserNum = stoi(strNextUserNum);
+	CLobby lobby(nextUserNum);
 
 	while (true)
 	{
