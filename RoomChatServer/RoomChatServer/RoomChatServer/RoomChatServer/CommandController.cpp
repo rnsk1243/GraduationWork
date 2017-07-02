@@ -13,12 +13,12 @@ CCommandController::~CCommandController()
 	cout << "CNetWork 객체 소멸자 호출" << endl;
 }
 
-int CCommandController::readyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum)
+int CCommandController::ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum)
 {
 	if (0 < shared_clientInfo.use_count())
 	{
 		clientInfo = shared_clientInfo.get();
-		channelNum = clientInfo->getMyChannelNum();
+		channelNum = clientInfo->GetMyChannelNum();
 	}
 	else
 	{
@@ -27,31 +27,31 @@ int CCommandController::readyCommand(shared_ptr<CLink> shared_clientInfo, CLink*
 	return 0;
 }
 
-int CCommandController::enterRoom(shared_ptr<CLink> shared_clientInfo)
+int CCommandController::EnterRoom(shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr; 
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 	bool isEnterSucces = false;
 #pragma region 개설된 모든 방
-	RoomListIt roomBegin = RoomManager.getIterRoomBegin();
-	RoomListIt roomEnd = RoomManager.getIterRoomEnd();
+	RoomListIt roomBegin = mRoomManager.GetIterRoomBegin();
+	RoomListIt roomEnd = mRoomManager.GetIterRoomEnd();
 #pragma endregion
 #pragma region 내가 입장 할 수 있는 방 찾기
 	for (; roomBegin != roomEnd; ++roomBegin)
 	{
 		CRoom* room = (*roomBegin).get();
-		if (room->getChannelNum() == channelNum)
+		if (room->GetChannelNum() == channelNum)
 		{
-			if (room->getAmountPeople() < EnterRoomPeopleLimit)
+			if (room->GetAmountPeople() < EnterRoomPeopleLimit)
 			{
 				cout << "방에 입장" << endl;
-				if (!RoomHandler.enterRoom(shared_clientInfo, &RoomManager, room->getRoomNum()))
+				if (!mRoomHandler.EnterRoom(shared_clientInfo, &mRoomManager, room->GetRoomNum()))
 				{
 					return CErrorHandler::ErrorHandler(ERROR_ENTER_ROOM);
 				}
 				// 채널에서는 나가기
-				if (!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
+				if (!mChannelHandler.ExitChannel(*clientInfo, mChannelManager))
 					return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 				isEnterSucces = true;
 				break;
@@ -64,32 +64,32 @@ int CCommandController::enterRoom(shared_ptr<CLink> shared_clientInfo)
 	return 0;
 }
 
-int CCommandController::changeChannel(shared_ptr<CLink> shared_clientInfo)
+int CCommandController::ChangeChannel(shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
-	if (NoneRoom != clientInfo->getMyRoomNum())
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
+	if (NoneRoom != clientInfo->GetMyRoomNum())
 		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
-	if (!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
+	if (!mChannelHandler.ExitChannel(*clientInfo, mChannelManager))
 		return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 	if (channelNum == MaxChannelNum)
 	{
-		if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, EnterChannelNum))
+		if (!mChannelHandler.MoveNextChannel(shared_clientInfo, mChannelManager, EnterChannelNum))
 		{
 			return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 		}
 		return SUCCES_COMMAND;
 	}
-	ChannelListIt channelBegin = ChannelManager.getIterChannelBegin(); // const iterator로 바꿈
-	ChannelListIt channelEnd = ChannelManager.getIterChannelEnd();
+	ChannelListIt channelBegin = mChannelManager.GetIterChannelBegin(); // const iterator로 바꿈
+	ChannelListIt channelEnd = mChannelManager.GetIterChannelEnd();
 	for (; channelBegin != channelEnd; ++channelBegin)
 	{
-		if ((*channelBegin)->getChannelNum() == channelNum)
+		if ((*channelBegin)->GetChannelNum() == channelNum)
 		{
 			++channelBegin;
-			int moveChannelNum = (*channelBegin)->getChannelNum();
-			if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, moveChannelNum))
+			int moveChannelNum = (*channelBegin)->GetChannelNum();
+			if (!mChannelHandler.MoveNextChannel(shared_clientInfo, mChannelManager, moveChannelNum))
 			{
 				return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 			}
@@ -100,71 +100,71 @@ int CCommandController::changeChannel(shared_ptr<CLink> shared_clientInfo)
 	return 0;
 }
 
-int CCommandController::makeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo)
+int CCommandController::MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 	cout << "방 만들기" << endl;
-	if (!RoomHandler.makeRoom(shared_clientInfo, &RoomManager, roomName))
+	if (!mRoomHandler.MakeRoom(shared_clientInfo, &mRoomManager, roomName))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_MAKE_ROOM);
 	}
 	//원래 채널에서는 나가기
-	if (!ChannelHandler.exitChannel(*clientInfo, ChannelManager))
+	if (!mChannelHandler.ExitChannel(*clientInfo, mChannelManager))
 		return CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 	return 0;
 }
 
-int CCommandController::outRoom(shared_ptr<CLink> shared_clientInfo)
+int CCommandController::OutRoom(shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 	// 다시 채널로 돌아가고
-	if (!ChannelHandler.moveNextChannel(shared_clientInfo, ChannelManager, channelNum))
+	if (!mChannelHandler.MoveNextChannel(shared_clientInfo, mChannelManager, channelNum))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
 	}
 	cout << "방에서 나가기" << endl;
-	if (!RoomHandler.exitRoom(clientInfo, &RoomManager))
+	if (!mRoomHandler.ExitRoom(clientInfo, &mRoomManager))
 		return CErrorHandler::ErrorHandler(ERROR_EXIT_ROOM);
 	return 0;
 }
 
-int CCommandController::mergeRoom(shared_ptr<CLink> shared_clientInfo)
+int CCommandController::MergeRoom(shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 
-	int roomNum = clientInfo->getMyRoomNum();
+	int roomNum = clientInfo->GetMyRoomNum();
 #pragma region 풀방까지 몇명 필요?
-	CRoom* myRoom = (*RoomManager.getMyRoomIter(channelNum, roomNum)).get();
+	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 	// 풀방까지 몇명 필요한가? (제한인원 - 현재 방 인원)
-	int limitToPeopleNum = EnterRoomPeopleLimit - (myRoom->getAmountPeople());
+	int limitToPeopleNum = EnterRoomPeopleLimit - (myRoom->GetAmountPeople());
 #pragma endregion
 	// 합칠 대상 방 검색
-	RoomListIt roomListBegin = RoomManager.getIterRoomBegin();
-	RoomListIt roomListEnd = RoomManager.getIterRoomEnd();
+	RoomListIt roomListBegin = mRoomManager.GetIterRoomBegin();
+	RoomListIt roomListEnd = mRoomManager.GetIterRoomEnd();
 	bool isMergeSucces = false;
 	for (; roomListBegin != roomListEnd; ++roomListBegin)
 	{
-		if (roomNum == (*roomListBegin)->getRoomNum())
+		if (roomNum == (*roomListBegin)->GetRoomNum())
 		{
 			cout << "나 자신 방" << endl;
 			continue;
 		}
-		if ((*roomListBegin)->getAmountPeople() <= limitToPeopleNum)
+		if ((*roomListBegin)->GetAmountPeople() <= limitToPeopleNum)
 		{
 			if (0 >= (*roomListBegin).use_count())
 			{
 				return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
 			}
 			CRoom* targetRoom = (*roomListBegin).get();
-			if (myRoom->mergeRoom(targetRoom))
+			if (myRoom->MergeRoom(targetRoom))
 			{
-				RoomManager.eraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
+				mRoomManager.EraseRoom(roomListBegin); // 합칠 대상 방 리스트에서 제거
 			}
 			cout << "방 합체 완료" << endl; isMergeSucces = true;
 			break; // 가장 먼저 검색되는 아무 방과 병합 후 빠져나옴
@@ -175,18 +175,18 @@ int CCommandController::mergeRoom(shared_ptr<CLink> shared_clientInfo)
 	return 0;
 }
 
-int CCommandController::cardCompose(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, const string& sourceCardNum, MessageStruct* sendClientMessage)
+int CCommandController::CardCompose(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, const string& sourceCardNum, MessageStruct* sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 
 	int targetCardNumInt = stoi(targetCardNum);
 	int sourceCardNumInt = stoi(sourceCardNum);
 	int resultCompose = mCardManager.ComposeCard(*clientInfo, targetCardNumInt, sourceCardNumInt);
 	if (ERROR_COMPOSE_EVOUTION_CARD == resultCompose)
 	{
-		sendClientMessage->message = "이 카드는 각성 해야 합성 할 수 있습니다.";
+		sendClientMessage->message = "이 카드는 진화 해야 합성 할 수 있습니다.";
 	}
 	else if(ERROR_COMPOSE_NULL_CARD == resultCompose)
 	{
@@ -194,7 +194,7 @@ int CCommandController::cardCompose(shared_ptr<CLink> shared_clientInfo, const s
 	}
 	else if(INFO_NEW_EVOLUTION == resultCompose)
 	{
-		sendClientMessage->message = "이제 각성 가능한 카드가 되었습니다.";
+		sendClientMessage->message = "이제 진화 가능한 카드가 되었습니다.";
 	}
 	else
 	{
@@ -206,40 +206,40 @@ int CCommandController::cardCompose(shared_ptr<CLink> shared_clientInfo, const s
 	return 0;
 }
 
-int CCommandController::cardAwake(shared_ptr<CLink> shared_clientInfo, const string & targetCardNum, MessageStruct * sendClientMessage)
+int CCommandController::CardEvolution(shared_ptr<CLink> shared_clientInfo, const string & targetCardNum, MessageStruct * sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 	int targetCardNumInt = stoi(targetCardNum);
 
-	int resultAwake = mCardManager.AwakeCard(*clientInfo, targetCardNumInt);
+	int resultEvolution = mCardManager.EvolutionCard(*clientInfo, targetCardNumInt);
 
-	if (ERROR_NULL_CARD_ITERATOR == resultAwake)
+	if (ERROR_NULL_CARD_ITERATOR == resultEvolution)
 	{
-		sendClientMessage->message = "각성 실패.. 카드가 없습니다.";
+		sendClientMessage->message = "진화 실패.. 카드가 없습니다.";
 	}
-	else if (ERROR_COMPOSE_NO_EVOUTION_CARD == resultAwake)
+	else if (ERROR_COMPOSE_NO_EVOUTION_CARD == resultEvolution)
 	{
-		sendClientMessage->message = "아직 각성 할 수 있는 카드가 아닙니다.";
+		sendClientMessage->message = "아직 진화 할 수 있는 카드가 아닙니다.";
 	}
 	else
 	{
-		sendClientMessage->message = "각성 완료";
+		sendClientMessage->message = "진화 완료";
 	}
 	sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	return 0;
 }
 
-int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage)
+int CCommandController::CardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage)
 {
 	
 	CLink* clientInfo = nullptr;
 	char* resultCardName = nullptr;
 	int channelNum = 0;
-	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 
-	if (!clientInfo->isMoneyOKGaChar())
+	if (!clientInfo->IsMoneyOKGaChar())
 	{
 		sendClientMessage->message = "카드를 뽑기에 돈이 부족 합니다.";
 		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
@@ -260,7 +260,7 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 }
 
 
-int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, MessageStruct* sendClientMessage)
+int CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, MessageStruct* sendClientMessage)
 {
 	try
 	{
@@ -274,31 +274,31 @@ int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, vec
 #pragma region 명령처리
 		if (0 == commandString.at(0).compare(CommandEnter)) // 방에 입장
 		{
-			enterRoom(shared_clientInfo);
+			EnterRoom(shared_clientInfo);
 			sendClientMessage->message = "방에 입장 하셨습니다.";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
 		else if (0 == commandString.at(0).compare(CommandChannal))
 		{
-			changeChannel(shared_clientInfo);
+			ChangeChannel(shared_clientInfo);
 			sendClientMessage->message = "채널을 변경 했습니다.";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
 		else if (0 == commandString.at(0).compare(CommandMakeRoom))
 		{
-			makeRoom(commandString.at(1).c_str(), shared_clientInfo);
+			MakeRoom(commandString.at(1).c_str(), shared_clientInfo);
 			sendClientMessage->message = "방을 만들었습니다.";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
 		else if (0 == commandString.at(0).compare(CommandOutRoom))
 		{
-			outRoom(shared_clientInfo);
+			OutRoom(shared_clientInfo);
 			sendClientMessage->message = "방에서 나왔습니다.";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
 		else if (0 == commandString.at(0).compare(CommandMergeRoom))
 		{
-			mergeRoom(shared_clientInfo);
+			MergeRoom(shared_clientInfo);
 			sendClientMessage->message = "방 병합 완료";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
@@ -306,25 +306,25 @@ int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, vec
 		{
 			CLink* clientInfo = nullptr;
 			int channelNum = 0;
-			readyCommand(shared_clientInfo, clientInfo, channelNum);
+			ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 			// 기존 이름 변경
-			clientInfo->changeName(commandString.at(1));
-			cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
+			clientInfo->ChangeName(commandString.at(1));
+			cout << clientInfo->GetMyName() << " 으로 이름 변경 됨" << endl;
 			sendClientMessage->message = "이름 변경 되었습니다.";
 			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		}
 		else if (0 == commandString.at(0).compare(CommandGachar))
 		{
-			return cardSelect(shared_clientInfo, sendClientMessage);
+			return CardSelect(shared_clientInfo, sendClientMessage);
 			//return SUCCES_COMMAND_MESSAGE;
 		}
 		else if (0 == commandString.at(0).compare(CommandCompose))
 		{
-			cardCompose(shared_clientInfo, commandString.at(1), commandString.at(2), sendClientMessage);
+			CardCompose(shared_clientInfo, commandString.at(1), commandString.at(2), sendClientMessage);
 		}
-		else if (0 == commandString.at(0).compare(CommandAwake))
+		else if (0 == commandString.at(0).compare(CommandEvolution))
 		{
-			cardAwake(shared_clientInfo, commandString.at(1), sendClientMessage);
+			CardEvolution(shared_clientInfo, commandString.at(1), sendClientMessage);
 		}
 		else
 		{
@@ -346,16 +346,16 @@ int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, vec
 	
 }
 
-bool CCommandController::deleteClientSocket(CLink& clientInfo)
+bool CCommandController::DeleteClientSocket(CLink& clientInfo)
 {
-	cout << "지울 소켓 이름 = " << clientInfo.getMyName() << endl;
-	int myChannelNum = clientInfo.getMyChannelNum();
-	int myRoomNum = clientInfo.getMyRoomNum();
+	cout << "지울 소켓 이름 = " << clientInfo.GetMyName() << endl;
+	int myChannelNum = clientInfo.GetMyChannelNum();
+	int myRoomNum = clientInfo.GetMyRoomNum();
 	//방에 있나 채널에 있나 확인
 	if (NoneRoom == myRoomNum)
 	{
 		// 채널일때
-		if (!ChannelHandler.exitChannel(clientInfo, ChannelManager))
+		if (!mChannelHandler.ExitChannel(clientInfo, mChannelManager))
 		{
 			CErrorHandler::ErrorHandler(ERROR_EXIT_CHANNEL);
 			return false;
@@ -368,7 +368,7 @@ bool CCommandController::deleteClientSocket(CLink& clientInfo)
 	else
 	{
 		// 방일때
-		if (!RoomHandler.exitRoom(&clientInfo, &RoomManager))
+		if (!mRoomHandler.ExitRoom(&clientInfo, &mRoomManager))
 		{
 			CErrorHandler::ErrorHandler(ERROR_EXIT_ROOM);
 			return false;

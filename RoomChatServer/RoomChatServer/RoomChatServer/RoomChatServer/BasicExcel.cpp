@@ -4929,7 +4929,7 @@ bool BasicExcel::ReadExcel(char * excelName)
 			{
 				Card* card = new Card(cardNum, name, prob, stat, giveExp);
 				shared_ptr<Card> shardCard(card);
-				CardStatic->pushCard(shardCard);
+				CardStatic->PushCard(shardCard);
 			}
 			else { cout << "excel 읽기 실패" << endl; return false; }
 		}

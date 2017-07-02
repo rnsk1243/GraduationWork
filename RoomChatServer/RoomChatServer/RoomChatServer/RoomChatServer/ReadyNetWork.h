@@ -3,11 +3,9 @@
 #include<iostream>
 using namespace std;
 
-
-
 class CReadyNetWork
 {
-	SOCKET* hServSock;
+	SOCKET* mServSock;
 public:
 	CReadyNetWork();
 	CReadyNetWork(const CReadyNetWork&) = delete;

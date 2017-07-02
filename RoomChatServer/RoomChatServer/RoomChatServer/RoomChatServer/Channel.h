@@ -13,10 +13,10 @@ typedef LinkList::iterator LinkListIt;
 
 class CChannel
 {
-	int ChannelNum;
-	LinkList ClientInfos;
+	int mChannelNum;
+	LinkList mClientInfos;
 	//CRITICAL_SECTION CS_MyInfoList;
-	MUTEX RAII_ChannelMUTEX;
+	MUTEX mRAII_ChannelMUTEX;
 	//CRITICALSECTION CS;
 public:
 	CChannel(int channelNum);
@@ -24,28 +24,28 @@ public:
 	CChannel(const CChannel&) = delete;
 	CChannel& operator=(const CChannel&) = delete;
 #pragma region get,set 함수
-	int getChannelNum() { return ChannelNum; }
-	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
-	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
+	int GetChannelNum() { return mChannelNum; }
+	LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
+	LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
 #pragma endregion
 
 #pragma region push,erase 함수
-	void pushClient(shared_ptr<CLink> shared_client)
+	void PushClient(shared_ptr<CLink> shared_client)
 	{
 		if (0 >= shared_client.use_count())
 		{
 			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
 			return;
 		}
-		ScopeLock<MUTEX> MU(RAII_ChannelMUTEX);
-		ClientInfos.push_back(shared_client);
+		ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
+		mClientInfos.push_back(shared_client);
 	}
-	LinkListIt eraseClient(LinkListIt myInfoListIt)
+	LinkListIt EraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
 		{
-			ScopeLock<MUTEX> MU(RAII_ChannelMUTEX);
-			temp = ClientInfos.erase(myInfoListIt);
+			ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
+			temp = mClientInfos.erase(myInfoListIt);
 		}
 		return temp;
 	}

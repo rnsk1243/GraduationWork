@@ -7,7 +7,7 @@ using namespace std;
 class MUTEX
 {
 private:
-	mutex m;
+	mutex mMutex;
 public:
 	MUTEX()
 	{
@@ -19,12 +19,12 @@ public:
 	}
 	void lock()
 	{
-		m.lock();
+		mMutex.lock();
 		cout << "mutex lock 완료" << endl;
 	}
 	void unlock()
 	{
-		m.unlock();
+		mMutex.unlock();
 		cout << "mutex nulock 완료" << endl;
 	}
 
@@ -33,25 +33,25 @@ public:
 class CRITICALSECTION
 {
 private:
-	CRITICAL_SECTION CS;
+	CRITICAL_SECTION mCS;
 public:
 	CRITICALSECTION()
 	{
-		InitializeCriticalSection(&CS);
+		InitializeCriticalSection(&mCS);
 	}
 	~CRITICALSECTION()
 	{
-		DeleteCriticalSection(&CS);
+		DeleteCriticalSection(&mCS);
 		cout << "critical 객체 해제" << endl;
 	}
 	void lock()
 	{
-		EnterCriticalSection(&CS);
+		EnterCriticalSection(&mCS);
 		cout << "critical lock 완료" << endl;
 	}
 	void unlock()
 	{
-		LeaveCriticalSection(&CS);
+		LeaveCriticalSection(&mCS);
 		cout << "critical unlock 완료" << endl;
 	}
 };

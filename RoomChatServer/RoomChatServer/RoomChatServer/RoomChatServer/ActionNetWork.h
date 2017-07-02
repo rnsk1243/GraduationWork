@@ -2,8 +2,6 @@
 #include"Link.h"
 #include"CommandController.h"
 
-
-
 class CActionNetWork
 {
 	MessageStruct mSendClientMessage; // 명령 처리 결과를 클라이언트에게 보내기 위한 메세지를 담을 공간

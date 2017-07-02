@@ -12,5 +12,5 @@ public:
 	CGaChar(const CGaChar& copy) = delete;
 	CGaChar& operator=(const CGaChar& copy) = delete;
 	~CGaChar();
-	Card* gaCharResult(int range);
+	Card* GaCharResult(int range);
 };

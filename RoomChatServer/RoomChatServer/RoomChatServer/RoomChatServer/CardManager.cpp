@@ -63,7 +63,7 @@ CCardManager::~CCardManager()
 //	return cardAmount;
 //}
 
-int CCardManager::isHaveCard(int cardNum, MyCardVectorIt& cardIter, CLink& targetClient)
+int CCardManager::IsHaveCard(int cardNum, MyCardVectorIt& cardIter, CLink& targetClient)
 {
 	MyCardVectorIt begin = targetClient.GetIterMyCardBegin();
 	MyCardVectorIt end = targetClient.GetIterMyCardEnd();
@@ -85,10 +85,10 @@ int CCardManager::isHaveCard(int cardNum, MyCardVectorIt& cardIter, CLink& targe
 	return amount;
 }
 
-int CCardManager::increaseCardAmount(int cardNum, CLink& targetClient)
+int CCardManager::IncreaseCardAmount(int cardNum, CLink& targetClient)
 {
 	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != isHaveCard(cardNum, cardIter, targetClient))
+	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
 	{
 		(*cardIter)->increaseCard();
 		int curCardAmount = (*cardIter)->getAmount();
@@ -100,10 +100,10 @@ int CCardManager::increaseCardAmount(int cardNum, CLink& targetClient)
 	return CErrorHandler::ErrorHandler(ERROR_INCREACE_CARD);
 }
 
-int CCardManager::decreaseCardAmount(int cardNum, CLink& targetClient)
+int CCardManager::DecreaseCardAmount(int cardNum, CLink& targetClient)
 {
 	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != isHaveCard(cardNum, cardIter, targetClient))
+	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
 	{
 		(*cardIter)->decreaseCard();
 		int curCardAmount = (*cardIter)->getAmount();
@@ -115,10 +115,10 @@ int CCardManager::decreaseCardAmount(int cardNum, CLink& targetClient)
 	return CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
 }
 
-int CCardManager::increaseCardStar(int cardNum, CLink & targetClient)
+int CCardManager::IncreaseCardStar(int cardNum, CLink & targetClient)
 {
 	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != isHaveCard(cardNum, cardIter, targetClient))
+	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
 	{
 		(*cardIter)->increaseStar();
 		int curCardStar = (*cardIter)->getStar();
@@ -127,7 +127,7 @@ int CCardManager::increaseCardStar(int cardNum, CLink & targetClient)
 			return (*cardIter)->getStar();
 		}
 	}
-	return CErrorHandler::ErrorHandler(ERROR_AWAKE_CARD);
+	return CErrorHandler::ErrorHandler(ERROR_EVOLUTION_CARD);
 }
 
 bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum)
@@ -176,12 +176,12 @@ bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, con
 	}
 }
 
-bool CCardManager::SaveUserCardAwake(const bool & isAwake, const int & userPKnum, const int & cardNum)
+bool CCardManager::SaveUserCardEvolution(const bool & isEvolution, const int & userPKnum, const int & cardNum)
 {
 	try
 	{
 		int recordedNum = 0;
-		if (isAwake)
+		if (isEvolution)
 		{
 			recordedNum = 1;
 		}
@@ -218,8 +218,8 @@ int CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceCa
 	MyCardVectorIt sourceCardIter;
 	const int userPk = targetClient.GetMyPKNumber();
 	//이터레이터 없애기
-	const int targetCardAmount = isHaveCard(targetCard, targetCardIter, targetClient);
-	const int sourceCardAmount = isHaveCard(sourceCard, sourceCardIter, targetClient);
+	const int targetCardAmount = IsHaveCard(targetCard, targetCardIter, targetClient);
+	const int sourceCardAmount = IsHaveCard(sourceCard, sourceCardIter, targetClient);
 	if (ERROR_NULL_CARD_ITERATOR != targetCardAmount && ERROR_NULL_CARD_ITERATOR != sourceCardAmount)
 	{
 		if ((targetCardAmount > 0) && (sourceCardAmount > 0))
@@ -234,11 +234,11 @@ int CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceCa
 			if ((*targetCardIter).get()->isEvoution())
 			{
 				// 진화 가능 기록 함수 호출
-				SaveUserCardAwake(true, userPk, targetCard);
+				SaveUserCardEvolution(true, userPk, targetCard);
 				resultExp = 0;
 			}
 			SaveUserCardExp(resultExp, userPk, targetCard);
-			decreaseCardAmount(sourceCard, targetClient);
+			DecreaseCardAmount(sourceCard, targetClient);
 			return resultExp;
 		}
 	}
@@ -248,21 +248,21 @@ int CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceCa
 
 int CCardManager::GacharCard(CLink & targetClient, char*& resultCardName)
 {
-	Card* resultCard = mGacharHandler.gaCharResult(RandNumber());
+	Card* resultCard = mGacharHandler.GaCharResult(RandNumber());
 	if (nullptr == resultCard)
 	{
 		return CErrorHandler::ErrorHandler(ERROR_GACHAR);
 	}
-	resultCardName = resultCard->name;
-	int curCardAmount = increaseCardAmount(resultCard->cardNum, targetClient);
-	return resultCard->cardNum;
+	resultCardName = resultCard->mName;
+	int curCardAmount = IncreaseCardAmount(resultCard->mCardNum, targetClient);
+	return resultCard->mCardNum;
 }
 
-int CCardManager::AwakeCard(CLink & targetClient, int targetCard)
+int CCardManager::EvolutionCard(CLink & targetClient, int targetCard)
 {
 	MyCardVectorIt targetCardIter;
 	const int userPk = targetClient.GetMyPKNumber();
-	const int cardAmount = isHaveCard(targetCard, targetCardIter, targetClient);
+	const int cardAmount = IsHaveCard(targetCard, targetCardIter, targetClient);
 	if (ERROR_NULL_CARD_ITERATOR != cardAmount)
 	{
 		if (1 < cardAmount)
@@ -271,10 +271,10 @@ int CCardManager::AwakeCard(CLink & targetClient, int targetCard)
 			{
 				return CErrorHandler::ErrorHandler(ERROR_COMPOSE_NO_EVOUTION_CARD);
 			}
-			const int curSatr = increaseCardStar(targetCard, targetClient);
+			const int curSatr = IncreaseCardStar(targetCard, targetClient);
 			SaveUserCardStar(curSatr, userPk, targetCard);
-			SaveUserCardAwake(false, userPk, targetCard);
-			decreaseCardAmount(targetCard, targetClient);
+			SaveUserCardEvolution(false, userPk, targetCard);
+			DecreaseCardAmount(targetCard, targetClient);
 			return curSatr;
 		}
 	}

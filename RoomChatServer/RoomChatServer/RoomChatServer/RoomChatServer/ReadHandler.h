@@ -15,7 +15,7 @@ class CReadHandler
 	// 마지막 라인 가져오기
 	const string GetLastLine(const string& textFileName);
 public:
-	static CReadHandler* getInstance();
+	static CReadHandler* GetInstance();
 	CReadHandler(const CReadHandler&) = delete;
 	CReadHandler& operator=(const CReadHandler&) = delete;
 	~CReadHandler();
@@ -55,4 +55,4 @@ public:
 	//}
 	
 };
-static CReadHandler* ReadHandlerStatic = CReadHandler::getInstance();
+static CReadHandler* ReadHandlerStatic = CReadHandler::GetInstance();

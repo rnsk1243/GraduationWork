@@ -12,7 +12,7 @@ CCard::~CCard()
 {
 }
 
-CCard * CCard::getInstance()
+CCard * CCard::GetInstance()
 {
 	if (nullptr == CardStatic)
 	{
@@ -21,8 +21,8 @@ CCard * CCard::getInstance()
 	return CardStatic;
 }
 
-void CCard::pushCard(shared_ptr<Card> card)
+void CCard::PushCard(shared_ptr<Card> card)
 {
-	cout << "pushCard = " << card.get()->name << endl;
+	cout << "pushCard = " << card.get()->mName << endl;
 	mCards.push_back(card);
 }

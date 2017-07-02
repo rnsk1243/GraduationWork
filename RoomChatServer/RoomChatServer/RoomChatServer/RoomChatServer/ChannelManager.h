@@ -11,10 +11,10 @@ typedef ChannelList::iterator ChannelListIt;
 
 class CChannelManager
 {
-	ChannelList Channels;
-	MUTEX RAII_ChannelManagerMUTEX;
+	ChannelList mChannels;
+	MUTEX mRAII_ChannelManagerMUTEX;
 	//CRITICAL_SECTION CS_Channel;
-	void pushChannel(shared_ptr<CChannel> shared_newChannel)
+	void PushChannel(shared_ptr<CChannel> shared_newChannel)
 	{
 		if (0 >= shared_newChannel.use_count())
 		{
@@ -26,15 +26,15 @@ class CChannelManager
 			//ScopeLock<MUTEX> MU(RAII_ChannelManagerMUTEX); // lock
 			//Channels.push_back(newChannel);
 		//}// unlock
-		Channels.push_back(shared_newChannel);
+		mChannels.push_back(shared_newChannel);
 	}
 public:
 	CChannelManager();
 	~CChannelManager();
 	CChannelManager& operator=(const CChannelManager&) = delete;
 	CChannelManager(const CChannelManager&) = delete;
-	ChannelListIt getIterChannelBegin() { return Channels.begin(); }
-	ChannelListIt getIterChannelEnd() { return Channels.end(); }
-	CChannel * getMyChannel(int ChannelNum);
+	ChannelListIt GetIterChannelBegin() { return mChannels.begin(); }
+	ChannelListIt GetIterChannelEnd() { return mChannels.end(); }
+	CChannel * GetMyChannel(int ChannelNum);
 };
 

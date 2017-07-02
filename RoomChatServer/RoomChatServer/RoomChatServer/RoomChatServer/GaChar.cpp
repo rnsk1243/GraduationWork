@@ -9,14 +9,14 @@ CGaChar::~CGaChar()
 {
 }
 
-Card* CGaChar::gaCharResult(int range)
+Card* CGaChar::GaCharResult(int range)
 {
-	CardVectorIt iterBegin = CardStatic->getCardListIterBegin();
-	CardVectorIt iterEnd = CardStatic->getCardListIterEnd();
+	CardVectorIt iterBegin = CardStatic->GetCardListIterBegin();
+	CardVectorIt iterEnd = CardStatic->GetCardListIterEnd();
 	int maxRange = 1;
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		maxRange += ((*iterBegin).get())->prob;
+		maxRange += ((*iterBegin).get())->mProb;
 		if (range < maxRange)
 		{
 			return ((*iterBegin).get());

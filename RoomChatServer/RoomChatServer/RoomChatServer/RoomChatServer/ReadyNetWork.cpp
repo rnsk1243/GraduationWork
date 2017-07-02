@@ -3,15 +3,15 @@
 
 
 CReadyNetWork::CReadyNetWork():
-	hServSock(new SOCKET())
+	mServSock(new SOCKET())
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAddr;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		cout << "WSAStartup() error!" << endl;
 
-	*hServSock = socket(PF_INET, SOCK_STREAM, 0);
-	if (*hServSock == INVALID_SOCKET)
+	*mServSock = socket(PF_INET, SOCK_STREAM, 0);
+	if (*mServSock == INVALID_SOCKET)
 		cout << "socket() error" << endl;
 
 	memset(&servAddr, 0, sizeof(servAddr));
@@ -19,9 +19,9 @@ CReadyNetWork::CReadyNetWork():
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servAddr.sin_port = htons(Port);
 
-	if (bind(*hServSock, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
+	if (bind(*mServSock, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
 		cout << "bind() error" << endl;
-	if (listen(*hServSock, 5) == SOCKET_ERROR)
+	if (listen(*mServSock, 5) == SOCKET_ERROR)
 		cout << "listen() error" << endl;
 	else
 		cout << "listen..." << endl;
@@ -30,13 +30,13 @@ CReadyNetWork::CReadyNetWork():
 
 CReadyNetWork::~CReadyNetWork()
 {
-	closesocket(*hServSock);
-	delete hServSock;
+	closesocket(*mServSock);
+	delete mServSock;
 }
 
 void CReadyNetWork::Accept(SOCKET& hClientSock)
 {
-	if (hServSock == nullptr)
+	if (mServSock == nullptr)
 	{
 		cout << "Accept Error" << endl;
 		return;
@@ -46,7 +46,7 @@ void CReadyNetWork::Accept(SOCKET& hClientSock)
 	int szClntAddr;
 	// accept
 	szClntAddr = sizeof(*hClntAddr);
-	hClientSock = accept(*hServSock, (SOCKADDR*)hClntAddr, &szClntAddr);// list나 벡터에 저장
+	hClientSock = accept(*mServSock, (SOCKADDR*)hClntAddr, &szClntAddr);// list나 벡터에 저장
 																		 //cout << "accept 에서의 주소 = " << hClntSock << endl;
 	if (hClientSock == INVALID_SOCKET)
 		cout << "accept() error" << endl;

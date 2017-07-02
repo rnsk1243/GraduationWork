@@ -43,45 +43,45 @@ struct MessageStruct
 class MyCardInfo
 {
 private:
-	shared_ptr<Card> card;
-	int amount; // 이 카드에 대한 보유 갯수
-	int exp; // 이 카드에 대한 경험치
-	int isEvolution; // 이 카드 진화 가능?
-	int star; // 몇 성?
+	shared_ptr<Card> mCard;
+	int mAmount; // 이 카드에 대한 보유 갯수
+	int mExp; // 이 카드에 대한 경험치
+	int mIsEvolution; // 이 카드 진화 가능?
+	int mStar; // 몇 성?
 public:
-	MyCardInfo(const shared_ptr<Card>& card_, int amount_ = 0, int exp_ = 0, int isEvolution_ = 0, int star_ = 0):
-		card(card_), amount(amount_), exp(exp_), isEvolution(isEvolution_), star(star_)
+	MyCardInfo(const shared_ptr<Card>& card, int amount = 0, int exp = 0, int isEvolution = 0, int star = 0):
+		mCard(card), mAmount(amount), mExp(exp), mIsEvolution(isEvolution), mStar(star)
 	{
 	}
-	void increaseStar() { ++star; }
-	void increaseCard() { ++amount; }
+	void increaseStar() { ++mStar; }
+	void increaseCard() { ++mAmount; }
 	void decreaseCard() 
 	{ 
-		if (amount > 0) { --amount; } 
+		if (mAmount > 0) { --mAmount; } 
 	}
-	int getAmount() { return amount; }
-	int getStar() { return star; }
+	int getAmount() { return mAmount; }
+	int getStar() { return mStar; }
 	int setExp(int addExp)
 	{
-		if (1 == isEvolution)
+		if (1 == mIsEvolution)
 		{
 			return CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
 		}
-		exp += addExp;
-		if (100 <= exp)
+		mExp += addExp;
+		if (100 <= mExp)
 		{
-			exp = 0;
-			isEvolution = 1;
+			mExp = 0;
+			mIsEvolution = 1;
 			return INFO_NEW_EVOLUTION;
 		}
-		return exp;
+		return mExp;
 	}
-	char* getCardName() { return card.get()->name; }
-	const int getCardNumber() { return card.get()->cardNum; }
-	const int getCardExp() { return card.get()->giveExp; }
+	char* getCardName() { return mCard.get()->mName; }
+	const int getCardNumber() { return mCard.get()->mCardNum; }
+	const int getCardExp() { return mCard.get()->mGiveExp; }
 	bool isEvoution()
 	{
-		if (1 == isEvolution)
+		if (1 == mIsEvolution)
 		{
 			return true;
 		}
@@ -99,48 +99,48 @@ typedef MyCardVector::iterator MyCardVectorIt;
 
 class CLink
 {
-	char* Name;
+	char* mName;
 	// 현재 내가 속한 방 번호
-	int MyRoomNum;
+	int mMyRoomNum;
 	// 현재 내가 속한 채널 번호
-	int MyChannelNum;
+	int mMyChannelNum;
 	// 클라이언트 소켓
-	SOCKET& ClientSocket;
-	MessageStruct MS;
+	SOCKET& mClientSocket;
+	MessageStruct mMS;
 	// 나의 골드
-	int MyMoney;
+	int mMyMoney;
 	MyCardVector mMyCards;
-	MUTEX RAII_LinkMUTEX;
+	MUTEX mRAII_LinkMUTEX;
 	// 내 회원번호
-	const int MyPKNumber;
+	const int mMyPKNumber;
 public:
-	CLink(SOCKET& clientSocket, string strPKNumber, char* name_);
+	CLink(SOCKET& clientSocket, string strPKNumber, char* name);
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
 	~CLink();
 #pragma region get, set 함수
-	MessageStruct& getMessageStruct() { return MS; }
-	SOCKET& getClientSocket() { return ClientSocket; }
-	int getMyRoomNum() { return MyRoomNum; }
-	int getMyChannelNum() { return MyChannelNum; }
-	char* getMyName() { return Name; }
-	void setDefaultName() { if (nullptr == Name) { Name = "이름없음"; } }
-	void setMyRoomNum(int myRoomNum) { MyRoomNum = myRoomNum; }
-	void setMyChannelNum(int myChannelNum) { MyChannelNum = myChannelNum; }
-	bool isMoneyOKGaChar() { return MyMoney >= CardCost; } // 가챠 할 수 있나?
-	void PayCardGachar() { if (isMoneyOKGaChar()) { MyMoney -= CardCost; } }
+	MessageStruct& GetMessageStruct() { return mMS; }
+	SOCKET& GetClientSocket() { return mClientSocket; }
+	int GetMyRoomNum() { return mMyRoomNum; }
+	int GetMyChannelNum() { return mMyChannelNum; }
+	char* GetMyName() { return mName; }
+	void SetDefaultName() { if (nullptr == mName) { mName = "이름없음"; } }
+	void SetMyRoomNum(int myRoomNum) { mMyRoomNum = myRoomNum; }
+	void SetMyChannelNum(int myChannelNum) { mMyChannelNum = myChannelNum; }
+	bool IsMoneyOKGaChar() { return mMyMoney >= CardCost; } // 가챠 할 수 있나?
+	void PayCardGachar() { if (IsMoneyOKGaChar()) { mMyMoney -= CardCost; } }
 	MyCardVectorIt GetIterMyCardBegin() { return mMyCards.begin(); }
 	MyCardVectorIt GetIterMyCardEnd() { return mMyCards.end(); }
-	bool isEmptyCard() { return mMyCards.empty(); }
+	bool IsEmptyCard() { return mMyCards.empty(); }
 	void EmptyCard();
-	const int GetMyPKNumber()const { return MyPKNumber; }
+	const int GetMyPKNumber()const { return mMyPKNumber; }
 #pragma endregion
-	void initCard(Card* card, int amount = 0, int exp = 0, int evol = 0, int star = 0);
-	void changeName(const string& newName)
+	void InitCard(Card* card, int amount = 0, int exp = 0, int evol = 0, int star = 0);
+	void ChangeName(const string& newName)
 	{
 		size_t size = strlen(newName.c_str()) + 1;
-		Name = new char[size];
-		strcpy_s(Name, size, newName.c_str());
+		mName = new char[size];
+		strcpy_s(mName, size, newName.c_str());
 		////Name = '\0';
 		//size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
 		//for (size_t i = 0; i < char_size; i++)

@@ -11,67 +11,67 @@ using namespace std;
 
 class CRoom
 {
-	LinkList ClientInfos;
-	string RoomName;
-	int ChannelNum;
-	int RoomNum;
+	LinkList mClientInfos;
+	string mRoomName;
+	int mChannelNum;
+	int mRoomNum;
 	// 현재 들어있는 방 인원
-	int AmountPeople;
-	MUTEX RAII_RoomMUTEX;
+	int mAmountPeople;
+	MUTEX mRAII_RoomMUTEX;
 	//CRITICALSECTION CT;
-	void increasePeople() { AmountPeople++; }
-	void decreasePeople() { if (AmountPeople > 0) AmountPeople--; }
+	void IncreasePeople() { mAmountPeople++; }
+	void DecreasePeople() { if (mAmountPeople > 0) mAmountPeople--; }
 public:
 	CRoom(const CRoom&) = delete;
 	CRoom& operator=(const CRoom&) = delete;
 	CRoom(int roomNum,int channelNum, const string& roomName);
 	~CRoom();
 #pragma region push, erase 함수
-	void pushClient(shared_ptr<CLink> shared_client)
+	void PushClient(shared_ptr<CLink> shared_client)
 	{
-		ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
-		ClientInfos.push_back(shared_client);
-		increasePeople();
+		ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
+		mClientInfos.push_back(shared_client);
+		IncreasePeople();
 	}
-	LinkListIt eraseClient(LinkListIt myInfoListIt)
+	LinkListIt EraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
 		{
-			ScopeLock<MUTEX> MU(RAII_RoomMUTEX);
-			temp = ClientInfos.erase(myInfoListIt);
-			decreasePeople();
+			ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
+			temp = mClientInfos.erase(myInfoListIt);
+			DecreasePeople();
 		}
 		return temp;
 	}
 #pragma endregion
 #pragma region get,set 함수
-	int getRoomNum() { return RoomNum; }
-	int getChannelNum() { return ChannelNum; }
-	const string getRoomName() { return RoomName; }
-	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
-	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
-	int getAmountPeople() { return AmountPeople; }
+	int GetRoomNum() { return mRoomNum; }
+	int GetChannelNum() { return mChannelNum; }
+	const string GetRoomName() { return mRoomName; }
+	LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
+	LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
+	int GetAmountPeople() { return mAmountPeople; }
 #pragma endregion
-	bool mergeRoom(CRoom* targetRoom)
+	bool MergeRoom(CRoom* targetRoom)
 	{
 		{
-			ScopeLock<MUTEX> MU(RAII_RoomMUTEX); // rock0
+			ScopeLock<MUTEX> MU(mRAII_RoomMUTEX); // rock0
 			{
-				ScopeLock<MUTEX> MU(targetRoom->RAII_RoomMUTEX); // rock1
+				ScopeLock<MUTEX> MU(targetRoom->mRAII_RoomMUTEX); // rock1
 				// 실제 옮기기 전에 준비작업으로 room정보 수정
 #pragma region 옮기는 방안에 있는 클라이언트들의 room정보 수정(방 번호라든지..)
-				LinkListIt linkBegin = targetRoom->getIterMyInfoBegin();
-				LinkListIt linkEnd = targetRoom->getIterMyInfoEnd();
+				LinkListIt linkBegin = targetRoom->GetIterMyInfoBegin();
+				LinkListIt linkEnd = targetRoom->GetIterMyInfoEnd();
 				for (; linkBegin != linkEnd; ++linkBegin)
 				{
 					CLink* targetClient = (*linkBegin).get();
-					targetClient->setMyRoomNum(RoomNum);
-					increasePeople(); // 방 인원수 갱신
+					targetClient->SetMyRoomNum(mRoomNum);
+					IncreasePeople(); // 방 인원수 갱신
 				}
 #pragma endregion 
 //				ClientInfos.sort();
 //				targetRoom->ClientInfos.sort();
-				ClientInfos.merge(targetRoom->ClientInfos); // 실제 옮김
+				mClientInfos.merge(targetRoom->mClientInfos); // 실제 옮김
 			} // rock1 unlock
 		} // rock0 unlock
 		return true;

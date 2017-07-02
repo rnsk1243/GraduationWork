@@ -5,7 +5,7 @@ using namespace std;
 #include <DbgHelp.h>
 
 
-#pragma comment(lib,"dbghelp.lib")
+//#pragma comment(lib,"dbghelp.lib")
 
 MinidumpHelp::MinidumpHelp(void)
 {

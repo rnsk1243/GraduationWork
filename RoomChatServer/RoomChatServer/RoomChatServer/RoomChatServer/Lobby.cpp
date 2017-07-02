@@ -57,14 +57,14 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 		return CErrorHandler::ErrorHandler(OVERLAPID);
 	}
 	
-	if (WriteHandlerStatic->write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) /*&& WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory)*/)
+	if (WriteHandlerStatic->Write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) /*&& WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory)*/)
 	{
 		if (NextUserNum > NameMemberCardInfoTxtCapacity)
 		{
-			WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory);
+			WriteHandlerStatic->Write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory);
 		}
 		cout << "회원가입 성공" << endl;
-		WriteHandlerStatic->writeNextJoinUserNum(MakeNextJoinNumberTxt, NextUserNum);
+		WriteHandlerStatic->WriteNextJoinUserNum(MakeNextJoinNumberTxt, NextUserNum);
 		++NextUserNum;
 		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");
 		return SUCCES_JOIN;

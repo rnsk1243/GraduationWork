@@ -8,7 +8,7 @@ CWriteHandler::CWriteHandler()
 {
 }
 
-CWriteHandler * CWriteHandler::getInstance()
+CWriteHandler * CWriteHandler::GetInstance()
 {
 	if (nullptr == WriteHandlerStatic)
 	{
@@ -22,7 +22,7 @@ CWriteHandler::~CWriteHandler()
 {
 }
 
-bool CWriteHandler::write(const char * textFileName, int count, ...)
+bool CWriteHandler::Write(const char * textFileName, int count, ...)
 {
 	ofstream outFile(textFileName, ios::app);
 	if (!outFile)
@@ -171,7 +171,7 @@ void CWriteHandler::WriteCard(const string& textName, int offset, int recordedNu
 	//}
 }
 
-bool CWriteHandler::writeNextJoinUserNum(const string& textFileName,const int& nextUserNum)
+bool CWriteHandler::WriteNextJoinUserNum(const string& textFileName,const int& nextUserNum)
 {
 	ofstream outFile(textFileName, ios::beg);
 	if (!outFile)

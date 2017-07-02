@@ -3,10 +3,10 @@
 
 
 CRoom::CRoom(int roomNum, int channelNum, const string& roomName) :
-	RoomNum(roomNum),
-	ChannelNum(channelNum),
-	RoomName(roomName),
-	AmountPeople(0)
+	mRoomNum(roomNum),
+	mChannelNum(channelNum),
+	mRoomName(roomName),
+	mAmountPeople(0)
 {
 	
 	//InitializeCriticalSection(&CS_MyInfoList);
@@ -15,7 +15,7 @@ CRoom::CRoom(int roomNum, int channelNum, const string& roomName) :
 
 CRoom::~CRoom()
 {
-	cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
+	cout << mRoomNum << " 번 방이 삭제 됩니다." << endl;
 	//if (ClientInfos.empty())
 	//{
 	//	LinkListIt begin = getIterMyInfoBegin();

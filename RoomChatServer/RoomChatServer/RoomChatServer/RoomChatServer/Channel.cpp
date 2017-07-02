@@ -3,7 +3,7 @@
 
 
 CChannel::CChannel(int channelNum):
-	ChannelNum(channelNum)
+	mChannelNum(channelNum)
 {
 	//InitializeCriticalSection(&CS_MyInfoList);
 }

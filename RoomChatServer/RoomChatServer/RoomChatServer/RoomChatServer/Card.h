@@ -7,27 +7,27 @@ using namespace std;
 
 struct Card
 {
-	int cardNum;
-	char* name;
-	int prob; // 확률
-	int stat; // 스탯
-	int giveExp; // 이 카드를 합성하면 얻는 경험치
-	Card(int num, char* cardName, int prob_, int stat_, int giveExp_) :
-		cardNum(num),
-		prob(prob_),
-		stat(stat_),
+	int mCardNum;
+	char* mName;
+	int mProb; // 확률
+	int mStat; // 스탯
+	int mGiveExp; // 이 카드를 합성하면 얻는 경험치
+	Card(int num, char* cardName, int prob, int stat, int giveExp) :
+		mCardNum(num),
+		mProb(prob),
+		mStat(stat),
 		//name(cardName),
-		giveExp(giveExp_),
-		name(new char[CardNameBuf])
+		mGiveExp(giveExp),
+		mName(new char[CardNameBuf])
 	{
 		size_t size = strlen(cardName) + 1;
-		strcpy_s(name, size, cardName);
-		name[size] = '\0';
+		strcpy_s(mName, size, cardName);
+		mName[size] = '\0';
 	}
 
 	~Card() {
 		cout << "카드 소멸" << endl;
-		delete[] name;
+		delete[] mName;
 	}
 	Card(const Card& copy) = delete;
 	//Card(const Card& copy):
@@ -54,9 +54,9 @@ public:
 	CCard(const CCard& copy) = delete;
 	CCard& operator=(const CCard& copy) = delete;
 	~CCard();
-	static CCard* getInstance();
-	void pushCard(shared_ptr<Card> card);
-	CardVectorIt getCardListIterBegin() { return mCards.begin(); }
-	CardVectorIt getCardListIterEnd() { return mCards.end(); }
+	static CCard* GetInstance();
+	void PushCard(shared_ptr<Card> card);
+	CardVectorIt GetCardListIterBegin() { return mCards.begin(); }
+	CardVectorIt GetCardListIterEnd() { return mCards.end(); }
 };
-static CCard* CardStatic = CCard::getInstance();
+static CCard* CardStatic = CCard::GetInstance();

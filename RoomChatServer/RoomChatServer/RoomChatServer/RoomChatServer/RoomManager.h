@@ -13,10 +13,10 @@ typedef RoomList::iterator RoomListIt;
 
 class CRoomManager
 {
-	RoomList Rooms;
+	RoomList mRooms;
 #pragma region 크리티컬 섹션
 //	CRITICAL_SECTION CS_Room;
-	MUTEX RAII_RoomManagerMUTEX;
+	MUTEX mRAII_RoomManagerMUTEX;
 #pragma endregion
 public:
 	CRoomManager();
@@ -25,31 +25,31 @@ public:
 	~CRoomManager();
 #pragma region push, erase 메소드
 
-	void pushRoom(shared_ptr<CRoom> shared_newRoom)
+	void PushRoom(shared_ptr<CRoom> shared_newRoom)
 	{
 		if (0 >= shared_newRoom.use_count())
 		{
 			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
 			return;
 		}
-		ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
-		Rooms.push_back(shared_newRoom);
+		ScopeLock<MUTEX> MU(mRAII_RoomManagerMUTEX);
+		mRooms.push_back(shared_newRoom);
 	}
-	RoomListIt eraseRoom(RoomListIt delRoom)
+	RoomListIt EraseRoom(RoomListIt delRoom)
 	{
-		ScopeLock<MUTEX> MU(RAII_RoomManagerMUTEX);
+		ScopeLock<MUTEX> MU(mRAII_RoomManagerMUTEX);
 		RoomListIt temp;
-		temp = Rooms.erase(delRoom);
+		temp = mRooms.erase(delRoom);
 		return temp;
 	}
 #pragma endregion
 
 #pragma region get 메소드
-	RoomListIt getMyRoomIter(int ChannelNum, int roomNum);
-	RoomListIt getIterRoomBegin() { return Rooms.begin(); }
-	RoomListIt getIterRoomEnd() { return Rooms.end(); }
-	int getEmptyRoomNum();
+	RoomListIt GetMyRoomIter(int ChannelNum, int roomNum);
+	RoomListIt GetIterRoomBegin() { return mRooms.begin(); }
+	RoomListIt GetIterRoomEnd() { return mRooms.end(); }
+	int GetEmptyRoomNum();
 #pragma endregion
-	bool isRoomListEmpty() { return Rooms.empty(); }
+	bool IsRoomListEmpty() { return mRooms.empty(); }
 };
  

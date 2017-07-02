@@ -9,7 +9,7 @@ CChannelManager::CChannelManager()
 	{
 		shared_ptr<CChannel> newChannel(new CChannel(i));
 		//CChannel* newChannel = new CChannel(i);
-		pushChannel(newChannel);
+		PushChannel(newChannel);
 	}
 }
 
@@ -27,14 +27,14 @@ CChannelManager::~CChannelManager()
 	//DeleteCriticalSection(&CS_Channel);
 }
 
-CChannel * CChannelManager::getMyChannel(int ChannelNum)
+CChannel * CChannelManager::GetMyChannel(int ChannelNum)
 {
-	ChannelListIt iterBegin = Channels.begin();
-	ChannelListIt iterEnd = Channels.end();
+	ChannelListIt iterBegin = mChannels.begin();
+	ChannelListIt iterEnd = mChannels.end();
 
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
-		if ((*iterBegin)->getChannelNum() == ChannelNum)
+		if ((*iterBegin)->GetChannelNum() == ChannelNum)
 			return (*iterBegin).get();
 	}
 	cout << ChannelNum << "번 채널이 없습니다." << endl;

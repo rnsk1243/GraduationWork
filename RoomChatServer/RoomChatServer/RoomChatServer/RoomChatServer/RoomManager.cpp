@@ -19,18 +19,18 @@ CRoomManager::~CRoomManager()
 	//DeleteCriticalSection(&CS_Room);
 }
 
-RoomListIt CRoomManager::getMyRoomIter(int ChannelNum, int roomNum)
+RoomListIt CRoomManager::GetMyRoomIter(int ChannelNum, int roomNum)
 {
-	RoomListIt iterBegin = Rooms.begin();
-	RoomListIt iterEnd = Rooms.end();
+	RoomListIt iterBegin = mRooms.begin();
+	RoomListIt iterEnd =mRooms.end();
 	
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{
 		// 채널이 같은지 확인
-		if (ChannelNum == (*iterBegin)->getChannelNum())
+		if (ChannelNum == (*iterBegin)->GetChannelNum())
 		{
 			// 채널이 같고 룸번호 까지 같은지 확인
-			if (roomNum == (*iterBegin)->getRoomNum())
+			if (roomNum == (*iterBegin)->GetRoomNum())
 			{
 				return iterBegin;
 			}
@@ -41,10 +41,10 @@ RoomListIt CRoomManager::getMyRoomIter(int ChannelNum, int roomNum)
 	return iterBegin; // iterBegin == iterEnd 이면 방이없다.
 }
 
-int CRoomManager::getEmptyRoomNum()
+int CRoomManager::GetEmptyRoomNum()
 {
-	RoomListIt roomEnd = Rooms.end();
+	RoomListIt roomEnd = mRooms.end();
 	--roomEnd;
-	return ((*roomEnd)->getRoomNum() + 1);
+	return ((*roomEnd)->GetRoomNum() + 1);
 }
 

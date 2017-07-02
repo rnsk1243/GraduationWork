@@ -51,11 +51,11 @@ int CActionNetWork::Recvn(SOCKET & socket, MessageStruct& MS, int flags)
 int CActionNetWork::Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
 {
 #pragma region 보낼메시지, 채널&방 번호 가져옴
-	MessageStruct& MS = clientInfo.getMessageStruct();
+	MessageStruct& MS = clientInfo.GetMessageStruct();
 	char* message = MS.message;
 	size_t size = MS.sendRecvSize;
-	int channelNum = clientInfo.getMyChannelNum();
-	int roomNum = clientInfo.getMyRoomNum();
+	int channelNum = clientInfo.GetMyChannelNum();
+	int roomNum = clientInfo.GetMyRoomNum();
 
 	//cout << "보낼 메세지 = " << message << endl;
 	//cout << "보낼 사이즈 = " << size << endl;
@@ -71,27 +71,27 @@ int CActionNetWork::Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 #pragma region 내가 속한 채널 방 가져오기
 	if (roomNum == NoneRoom)
 	{
-		myChannel =  channelManager.getMyChannel(channelNum);
+		myChannel =  channelManager.GetMyChannel(channelNum);
 		if (myChannel == nullptr)
 		{
 			cout << "나의 채널 객체를 찾을 수 없습니다" << endl;
 			return CErrorHandler::ErrorHandler(ERROR_GET_CHANNEL);
 		}
 		// 채널 소켓 리스트 iter
-		iterBegin = myChannel->getIterMyInfoBegin();
-		iterEnd = myChannel->getIterMyInfoEnd();
+		iterBegin = myChannel->GetIterMyInfoBegin();
+		iterEnd = myChannel->GetIterMyInfoEnd();
 	}
 	else
 	{
-		CRoom* myRoom = (*(roomManager.getMyRoomIter(channelNum, roomNum))).get();
+		CRoom* myRoom = (*(roomManager.GetMyRoomIter(channelNum, roomNum))).get();
 		// 방 소켓 리스트 iter
 		if (myRoom == nullptr)
 		{
 			cout << "나의 방객체를 찾을 수 없습니다" << endl;
 			return CErrorHandler::ErrorHandler(ERROR_GET_ROOM);
 		}
-		iterBegin = myRoom->getIterMyInfoBegin();
-		iterEnd = myRoom->getIterMyInfoEnd();
+		iterBegin = myRoom->GetIterMyInfoBegin();
+		iterEnd = myRoom->GetIterMyInfoEnd();
 	}
 #pragma endregion
 #pragma region 내가 속한 채널 or 방에게 보내기
@@ -106,7 +106,7 @@ int CActionNetWork::Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 			continue; // 보내지 않고 통과
 		}
 
-		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
+		SOCKET& clientSocket = (*iterBegin)->GetClientSocket();
 
 		SendMyName(clientSocket, clientInfo); // 이름 보내기
 
@@ -160,8 +160,8 @@ int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 	}
 #pragma region 받을 데이터 크기 가져오기
 	char temp[4];
-	SOCKET& clientSocket = clientInfo->getClientSocket();
-	MessageStruct& MS = clientInfo->getMessageStruct();
+	SOCKET& clientSocket = clientInfo->GetClientSocket();
+	MessageStruct& MS = clientInfo->GetMessageStruct();
 	int isSuccess = recv(clientSocket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
@@ -196,7 +196,7 @@ int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 		string commandString = MS.message;
 		cout << "명령 내용 = " << commandString.c_str() << endl;
 		vector<string> para = ReadHandlerStatic->Parse(commandString, '/');
-		int commandResult = commandController.commandHandling(shared_clientInfo, para, &mSendClientMessage);
+		int commandResult = commandController.CommandHandling(shared_clientInfo, para, &mSendClientMessage);
 		Sendn(clientSocket, mSendClientMessage);
 		return SUCCES_RECV;
 	}
@@ -207,14 +207,14 @@ int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 
 int CActionNetWork::SendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
 {
-	if (nullptr == clientInfo.getMyName())
+	if (nullptr == clientInfo.GetMyName())
 	{
 		cout << "이름 없음" << endl;
-		clientInfo.setDefaultName();
+		clientInfo.SetDefaultName();
 	}
 
-	size_t sendRecvSize = strlen(clientInfo.getMyName());
-	char* name = clientInfo.getMyName();
+	size_t sendRecvSize = strlen(clientInfo.GetMyName());
+	char* name = clientInfo.GetMyName();
 
 	int temp = 0;
 	temp = send(clientSocket, (char*)&sendRecvSize, IntSize, flags); // 사이즈 보내기

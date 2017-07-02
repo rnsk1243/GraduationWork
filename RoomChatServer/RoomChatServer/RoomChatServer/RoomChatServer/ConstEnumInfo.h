@@ -16,7 +16,7 @@ const string CommandMergeRoom = "i"; // 방 병합
 const string CommandChangeName = "n"; // 이름 변경
 const string CommandGachar = "Gachar"; // 카드 뽑기
 const string CommandCompose = "Compose"; // 카드 합성
-const string CommandAwake = "Awake"; // 카드 각성
+const string CommandEvolution = "Evolution"; // 카드 진화
 
 const string StartCardInventory("01/00/00/0/0|02/00/00/0/0|03/00/00/0/0|04/00/00/0/0|05/00/00/0/0|06/00/00/0/0|07/00/00/0/0|08/00/00/0/0|09/00/00/0/0|10/00/00/0/0|11/00/00/0/0"); // 카드번호/카드갯수
 const int NameMemberCardInfoTxtCapacity = 9;

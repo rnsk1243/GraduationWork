@@ -7,7 +7,7 @@ CReadHandler::CReadHandler()
 {
 }
 
-CReadHandler * CReadHandler::getInstance()
+CReadHandler * CReadHandler::GetInstance()
 {
 	if (nullptr == ReadHandlerStatic)
 	{
@@ -172,15 +172,15 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 		CErrorHandler::ErrorHandler(ERROR_INIT_USER_CARD);
 		return false;
 	}
-	if (!client->isEmptyCard())
+	if (!client->IsEmptyCard())
 	{
 		client->EmptyCard();		
 	}
 	vector<string>::iterator userCardInfoIterBegin = userCardInfo.begin();
 	vector<string>::iterator userCardInfoIterEnd = userCardInfo.end();
 	// Card list 가져옴
-	CardVectorIt CardBegin = CardStatic->getCardListIterBegin();
-	CardVectorIt CardEnd = CardStatic->getCardListIterEnd();
+	CardVectorIt CardBegin = CardStatic->GetCardListIterBegin();
+	CardVectorIt CardEnd = CardStatic->GetCardListIterEnd();
 
 	++userCardInfoIterBegin; // 아이디 부분 넘김
 	for (; userCardInfoIterBegin != userCardInfoIterEnd; ++userCardInfoIterBegin)
@@ -209,8 +209,8 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 		if (CardBegin != CardEnd)
 		{
 			pushCard = (*CardBegin).get();
-			cout << "추가 한 카드 = " << pushCard->name << " // 몇장? = " << myCardAmount << " // 경험치 = " << myCardExp << " 진화가능 = " << myCardEvol << " // 몇성 = " << myCardStar << endl;
-			client->initCard(pushCard, myCardAmount, myCardExp, myCardEvol, myCardStar);
+			cout << "추가 한 카드 = " << pushCard->mName << " // 몇장? = " << myCardAmount << " // 경험치 = " << myCardExp << " 진화가능 = " << myCardEvol << " // 몇성 = " << myCardStar << endl;
+			client->InitCard(pushCard, myCardAmount, myCardExp, myCardEvol, myCardStar);
 			++CardBegin;
 		}
 	}

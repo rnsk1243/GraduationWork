@@ -12,14 +12,14 @@ public:
 	CWriteHandler(const CWriteHandler&) = delete;
 	CWriteHandler& operator=(const CWriteHandler&) = delete;
 	~CWriteHandler();
-	static CWriteHandler* getInstance();
+	static CWriteHandler* GetInstance();
 	// 파일명, 몇개, 스트링
-	bool write(const char* textFileName, int count, ...);
+	bool Write(const char* textFileName, int count, ...);
 	//int writeGacharResult(const char* textFileName, const char* userName);
 	//int BeginToTargetUserLineCurserMoveSize(const char * textName, int targetUserLineNum, char * targetLine);
 	//int TargetLineToUserCurserMoveSize(const char * targetSouce, string & searchCardNum, bool & isNewCard, int & cardAmount);
 	void WriteCard(const string& textName, int offset, int recordedNumber, int cipher = 2);
-	bool writeNextJoinUserNum(const string& textFileName,const int& nextUserNum);
+	bool WriteNextJoinUserNum(const string& textFileName,const int& nextUserNum);
 };
-static CWriteHandler* WriteHandlerStatic = CWriteHandler::getInstance();
+static CWriteHandler* WriteHandlerStatic = CWriteHandler::GetInstance();
 
