@@ -9,25 +9,25 @@ int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork, vector<
 {
 	string id, pw;
 	// ID 묻기
-	actionNetWork.askClient(clientSocket, MS, "ID : ");
+	actionNetWork.AskClient(clientSocket, MS, "ID : ");
 	id = MS.message;
 	if (0 == id.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
 
 	// PW 묻기
-	actionNetWork.askClient(clientSocket, MS, "PW : ");
+	actionNetWork.AskClient(clientSocket, MS, "PW : ");
 	pw = MS.message;
 	if (0 == pw.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 2, id, pw))
 	{
 		cout << "로그인 성공" << endl;
-		actionNetWork.notificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
+		actionNetWork.NotificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
 		strcpy(MS.message, id.c_str());
 		return CErrorHandler::ErrorHandler(SUCCES_LOGIN);
 	}
 	cout << "아이디 혹은 비밀번호가 틀립니다." << endl;
-	actionNetWork.notificationClient(clientSocket, MS, "아이디 혹은 비밀번호가 틀립니다.");
+	actionNetWork.NotificationClient(clientSocket, MS, "아이디 혹은 비밀번호가 틀립니다.");
 	strcpy(MS.message, id.c_str());
 	return CErrorHandler::ErrorHandler(ERROR_LOGIN);
 }
@@ -38,13 +38,13 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 	string id, pw, nextUserNum;
 	nextUserNum = IntToString(NextUserNum);
 	// ID 묻기
-	if (SUCCES_ASKCLIENT != actionNetWork.askClient(clientSocket, MS, "원하는 ID : "))
+	if (SUCCES_ASKCLIENT != actionNetWork.AskClient(clientSocket, MS, "원하는 ID : "))
 		return CErrorHandler::ErrorHandler(ERROR_RECV);
 	id = MS.message;
 	if (0 == id.compare("9"))
 		return CErrorHandler::ErrorHandler(Cancel);
 
-	if(SUCCES_ASKCLIENT != actionNetWork.askClient(clientSocket, MS, "PW 입력 : "))
+	if(SUCCES_ASKCLIENT != actionNetWork.AskClient(clientSocket, MS, "PW 입력 : "))
 		return CErrorHandler::ErrorHandler(ERROR_RECV);
 	pw = MS.message;
 	if (0 == pw.compare("9"))
@@ -53,22 +53,26 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 1, id))
 	{
 		cout << "id 중복 입니다." << endl;
-		actionNetWork.notificationClient(clientSocket, MS, "id 중복 입니다.");
+		actionNetWork.NotificationClient(clientSocket, MS, "id 중복 입니다.");
 		return CErrorHandler::ErrorHandler(OVERLAPID);
 	}
 	
-	if (WriteHandlerStatic->write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) && WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory))
+	if (WriteHandlerStatic->write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) /*&& WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory)*/)
 	{
+		if (NextUserNum > NameMemberCardInfoTxtCapacity)
+		{
+			WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory);
+		}
 		cout << "회원가입 성공" << endl;
 		WriteHandlerStatic->writeNextJoinUserNum(MakeNextJoinNumberTxt, NextUserNum);
 		++NextUserNum;
-		actionNetWork.notificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");
+		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 성공 했습니다. 로그인 해주세요.");
 		return SUCCES_JOIN;
 	}
 	else
 	{
 		cout << "회원가입 실패" << endl;
-		actionNetWork.notificationClient(clientSocket, MS, "회원가입 실패 입니다.");
+		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 실패 입니다.");
 		return CErrorHandler::ErrorHandler(ERROR_JOIN);
 	}
 	return CErrorHandler::ErrorHandler(ERROR_EXCEPTION);
@@ -80,11 +84,11 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 	{
 	case '1':
 		cout << "로그인" << endl;
-		actionNetWork.notificationClient(clientSocket, MS, "로그인 화면 입니다. 9번입력 : 취소");
+		actionNetWork.NotificationClient(clientSocket, MS, "로그인 화면 입니다. 9번입력 : 취소");
 		return 1;
 	case '2':
 		cout << "회원가입" << endl;
-		actionNetWork.notificationClient(clientSocket, MS, "회원가입 화면 입니다. 9번입력 : 취소");
+		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 화면 입니다. 9번입력 : 취소");
 		return 2;
 	case '9':
 		cout << "이전 메뉴로 돌아가기" << endl;
@@ -99,14 +103,14 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 
 int CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
 {
-	return actionNetWork.notificationClient(clientSocket, MS, "환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");;
+	return actionNetWork.NotificationClient(clientSocket, MS, "환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");;
 }
 
 int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWork, vector<string>& tempUserInfo)
 {
 	int resultLoginFunc = 0;
 	SendMenuInfo(clientSocket, actionNetWork);
-	actionNetWork.recvn(clientSocket, getMessageStruct());
+	actionNetWork.Recvn(clientSocket, getMessageStruct());
 	int choose = ChooseMenu(getMessageStruct().message, clientSocket, actionNetWork);
 	switch (choose)
 	{

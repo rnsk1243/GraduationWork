@@ -15,7 +15,7 @@ CActionNetWork::~CActionNetWork()
 {
 }
 
-int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
+int CActionNetWork::Recvn(SOCKET & socket, MessageStruct& MS, int flags)
 {
 	char temp[4];
 	size_t isSuccess = recv(socket, temp, IntSize, flags);
@@ -48,7 +48,7 @@ int CActionNetWork::recvn(SOCKET & socket, MessageStruct& MS, int flags)
 	return SUCCES_RECV;
 }
 
-int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
+int CActionNetWork::Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags)
 {
 #pragma region 보낼메시지, 채널&방 번호 가져옴
 	MessageStruct& MS = clientInfo.getMessageStruct();
@@ -108,7 +108,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 
 		SOCKET& clientSocket = (*iterBegin)->getClientSocket();
 
-		sendMyName(clientSocket, clientInfo); // 이름 보내기
+		SendMyName(clientSocket, clientInfo); // 이름 보내기
 
 		isSuccess = send(clientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
 		if (isSuccess == SOCKET_ERROR)
@@ -127,7 +127,7 @@ int CActionNetWork::sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
+int CActionNetWork::Sendn(SOCKET & socket, MessageStruct & MS, int flags)
 {
 	int isSuccess = 0;
 	char* message = MS.message;
@@ -147,7 +147,7 @@ int CActionNetWork::sendn(SOCKET & socket, MessageStruct & MS, int flags)
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandController& commandController, int flags)
+int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandController& commandController, int flags)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())
@@ -189,11 +189,15 @@ int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 	MS.message[left] = '\0';
 #pragma endregion
 #pragma region 명령메시지 이면 처리
+	
 	char* ptr = strchr(MS.message, '/');
 	if (ptr != nullptr)
 	{
-		int commandResult = commandController.commandHandling(shared_clientInfo, ptr, &sendClientMessage);
-		sendn(clientSocket, sendClientMessage);
+		string commandString = MS.message;
+		cout << "명령 내용 = " << commandString.c_str() << endl;
+		vector<string> para = ReadHandlerStatic->Parse(commandString, '/');
+		int commandResult = commandController.commandHandling(shared_clientInfo, para, &mSendClientMessage);
+		Sendn(clientSocket, mSendClientMessage);
 		return SUCCES_RECV;
 	}
 #pragma endregion
@@ -201,7 +205,7 @@ int CActionNetWork::recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 	return SUCCES_RECV;
 }
 
-int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
+int CActionNetWork::SendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags)
 {
 	if (nullptr == clientInfo.getMyName())
 	{
@@ -235,20 +239,20 @@ int CActionNetWork::sendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::askClient(SOCKET & clientSocket, MessageStruct& MS, char * question)
+int CActionNetWork::AskClient(SOCKET & clientSocket, MessageStruct& MS, char * question)
 {
 	strcpy(MS.message, question);
 	MS.sendRecvSize = strlen(MS.message);
-	sendn(clientSocket, MS);
-	if(ERROR_RECV == recvn(clientSocket, MS))
+	Sendn(clientSocket, MS);
+	if(ERROR_RECV == Recvn(clientSocket, MS))
 		return CErrorHandler::ErrorHandler(ERROR_RECV);
 	return SUCCES_ASKCLIENT;
 }
 
-int CActionNetWork::notificationClient(SOCKET & clientSocket, MessageStruct & MS, char * notification)
+int CActionNetWork::NotificationClient(SOCKET & clientSocket, MessageStruct & MS, char * notification)
 {
 	strcpy(MS.message, notification);
 	MS.sendRecvSize = strlen(MS.message);
-	sendn(clientSocket, MS);
+	Sendn(clientSocket, MS);
 	return SUCCES_NOTIFICATION;
 }

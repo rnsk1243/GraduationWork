@@ -2,7 +2,7 @@
 
 
 
-CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
+CRoom::CRoom(int roomNum, int channelNum, const string& roomName) :
 	RoomNum(roomNum),
 	ChannelNum(channelNum),
 	RoomName(roomName),
@@ -16,7 +16,6 @@ CRoom::CRoom(int roomNum, int channelNum, char* roomName) :
 CRoom::~CRoom()
 {
 	cout << RoomNum << " 번 방이 삭제 됩니다." << endl;
-	delete[] RoomName;
 	//if (ClientInfos.empty())
 	//{
 	//	LinkListIt begin = getIterMyInfoBegin();

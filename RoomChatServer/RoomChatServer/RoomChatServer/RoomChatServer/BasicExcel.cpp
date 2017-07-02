@@ -4872,7 +4872,7 @@ char * BasicExcel::CharToMultiByte(BasicExcelCell * cell)
 	return strMultibyte;
 }
 
-void BasicExcel::SelectSaveCols(int objCol, BasicExcelCell * cell, int & cardNum, int & prob, int & stat)
+void BasicExcel::SelectSaveCols(int objCol, BasicExcelCell * cell, int & cardNum, int & prob, int & stat, int & giveExp)
 {
 	switch (objCol)
 	{
@@ -4883,7 +4883,10 @@ void BasicExcel::SelectSaveCols(int objCol, BasicExcelCell * cell, int & cardNum
 		prob = (int)cell->GetDouble();
 		break;
 	case CardStatCols:
-		stat = (int)cell->GetDouble();;
+		stat = (int)cell->GetDouble();
+		break;
+	case CardExpCols:
+		giveExp = (int)cell->GetDouble();
 		break;
 	default:
 		break;
@@ -4910,6 +4913,7 @@ bool BasicExcel::ReadExcel(char * excelName)
 			char* name = nullptr;
 			int prob = 0; // È®·ü
 			int stat = 0; // ½ºÅÈ
+			int giveExp = 0;
 						  //printf("%10d", r+1);
 			for (size_t c = 0; c<maxCols; ++c)
 			{
@@ -4919,11 +4923,11 @@ bool BasicExcel::ReadExcel(char * excelName)
 					name = CharToMultiByte(cell);
 					continue;
 				}
-				SelectSaveCols(c, cell, cardNum, prob, stat);
+				SelectSaveCols(c, cell, cardNum, prob, stat, giveExp);
 			}
 			if (nullptr != name)
 			{
-				Card* card = new Card(cardNum, name, prob, stat);
+				Card* card = new Card(cardNum, name, prob, stat, giveExp);
 				shared_ptr<Card> shardCard(card);
 				CardStatic->pushCard(shardCard);
 			}

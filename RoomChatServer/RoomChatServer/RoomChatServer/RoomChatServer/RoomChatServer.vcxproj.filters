@@ -22,9 +22,6 @@
     <Filter Include="NetWork">
       <UniqueIdentifier>{e56956a5-a7c1-4ec1-ac4a-7f31d2595b0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Channel\ChannelHandlere">
-      <UniqueIdentifier>{e7dea1ce-49c6-45d7-ba07-9b590cfa20dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Room\RoomHandlere">
       <UniqueIdentifier>{bc71e515-45b6-47a5-87da-053d9a81ff3c}</UniqueIdentifier>
     </Filter>
@@ -73,6 +70,9 @@
     <Filter Include="Card\CardManager">
       <UniqueIdentifier>{ef033b01-82d4-467c-919e-6487bcacd7d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Channel\ChannelHandler">
+      <UniqueIdentifier>{e7dea1ce-49c6-45d7-ba07-9b590cfa20dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -94,7 +94,7 @@
       <Filter>Room\RoomHandlere</Filter>
     </ClCompile>
     <ClCompile Include="ChannelHandler.cpp">
-      <Filter>Channel\ChannelHandlere</Filter>
+      <Filter>Channel\ChannelHandler</Filter>
     </ClCompile>
     <ClCompile Include="ChannelManager.cpp">
       <Filter>Channel\ChannelManager</Filter>
@@ -153,7 +153,7 @@
       <Filter>Room\RoomHandlere</Filter>
     </ClInclude>
     <ClInclude Include="ChannelHandler.h">
-      <Filter>Channel\ChannelHandlere</Filter>
+      <Filter>Channel\ChannelHandler</Filter>
     </ClInclude>
     <ClInclude Include="ChannelManager.h">
       <Filter>Channel\ChannelManager</Filter>

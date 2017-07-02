@@ -12,7 +12,7 @@ using namespace std;
 class CRoom
 {
 	LinkList ClientInfos;
-	char* RoomName;
+	string RoomName;
 	int ChannelNum;
 	int RoomNum;
 	// 현재 들어있는 방 인원
@@ -24,7 +24,7 @@ class CRoom
 public:
 	CRoom(const CRoom&) = delete;
 	CRoom& operator=(const CRoom&) = delete;
-	CRoom(int roomNum,int channelNum, char* roomName);
+	CRoom(int roomNum,int channelNum, const string& roomName);
 	~CRoom();
 #pragma region push, erase 함수
 	void pushClient(shared_ptr<CLink> shared_client)
@@ -47,7 +47,7 @@ public:
 #pragma region get,set 함수
 	int getRoomNum() { return RoomNum; }
 	int getChannelNum() { return ChannelNum; }
-	char* getRoomName() { return RoomName; }
+	const string getRoomName() { return RoomName; }
 	LinkListIt getIterMyInfoBegin() { return ClientInfos.begin(); }
 	LinkListIt getIterMyInfoEnd() { return ClientInfos.end(); }
 	int getAmountPeople() { return AmountPeople; }

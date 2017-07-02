@@ -1,7 +1,8 @@
 #pragma once
 #include<iostream>
-#include<list>
+#include<vector>
 #include<memory>
+#include"ConstEnumInfo.h"
 using namespace std;
 
 struct Card
@@ -10,16 +11,18 @@ struct Card
 	char* name;
 	int prob; // 확률
 	int stat; // 스탯
-	Card(int num, char* cardName, int prob_, int stat_) :
+	int giveExp; // 이 카드를 합성하면 얻는 경험치
+	Card(int num, char* cardName, int prob_, int stat_, int giveExp_) :
 		cardNum(num),
 		prob(prob_),
 		stat(stat_),
-		name(cardName)
-		//name(new char[BufferSize])
+		//name(cardName),
+		giveExp(giveExp_),
+		name(new char[CardNameBuf])
 	{
-		//int size = strlen(cardName) + 1;
-		//strcpy_s(name, size, cardName);
-		//name[size] = '\0';
+		size_t size = strlen(cardName) + 1;
+		strcpy_s(name, size, cardName);
+		name[size] = '\0';
 	}
 
 	~Card() {
@@ -40,12 +43,12 @@ struct Card
 	Card& operator=(const Card& copy) = delete;
 };
 
-typedef list<shared_ptr<Card>> CardList;
-typedef CardList::iterator CardListIt;
+typedef vector<shared_ptr<Card>> CardVector;
+typedef CardVector::iterator CardVectorIt;
 
 class CCard
 {
-	CardList mCards;
+	CardVector mCards;
 	CCard();
 public:
 	CCard(const CCard& copy) = delete;
@@ -53,7 +56,7 @@ public:
 	~CCard();
 	static CCard* getInstance();
 	void pushCard(shared_ptr<Card> card);
-	CardListIt getCardListIterBegin() { return mCards.begin(); }
-	CardListIt getCardListIterEnd() { return mCards.end(); }
+	CardVectorIt getCardListIterBegin() { return mCards.begin(); }
+	CardVectorIt getCardListIterEnd() { return mCards.end(); }
 };
 static CCard* CardStatic = CCard::getInstance();

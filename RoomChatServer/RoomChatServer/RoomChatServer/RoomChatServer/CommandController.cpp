@@ -100,13 +100,12 @@ int CCommandController::changeChannel(shared_ptr<CLink> shared_clientInfo)
 	return 0;
 }
 
-int CCommandController::makeRoom(char * command, shared_ptr<CLink> shared_clientInfo)
+int CCommandController::makeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
 	readyCommand(shared_clientInfo, clientInfo, channelNum);
 	cout << "방 만들기" << endl;
-	char* roomName = RoomHandler.returnRoomName(command);
 	if (!RoomHandler.makeRoom(shared_clientInfo, &RoomManager, roomName))
 	{
 		return CErrorHandler::ErrorHandler(ERROR_MAKE_ROOM);
@@ -176,10 +175,67 @@ int CCommandController::mergeRoom(shared_ptr<CLink> shared_clientInfo)
 	return 0;
 }
 
+int CCommandController::cardCompose(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, const string& sourceCardNum, MessageStruct* sendClientMessage)
+{
+	CLink* clientInfo = nullptr;
+	int channelNum = 0;
+	readyCommand(shared_clientInfo, clientInfo, channelNum);
+
+	int targetCardNumInt = stoi(targetCardNum);
+	int sourceCardNumInt = stoi(sourceCardNum);
+	int resultCompose = mCardManager.ComposeCard(*clientInfo, targetCardNumInt, sourceCardNumInt);
+	if (ERROR_COMPOSE_EVOUTION_CARD == resultCompose)
+	{
+		sendClientMessage->message = "이 카드는 각성 해야 합성 할 수 있습니다.";
+	}
+	else if(ERROR_COMPOSE_NULL_CARD == resultCompose)
+	{
+		sendClientMessage->message = "합성할 카드가 없습니다.";
+	}
+	else if(INFO_NEW_EVOLUTION == resultCompose)
+	{
+		sendClientMessage->message = "이제 각성 가능한 카드가 되었습니다.";
+	}
+	else
+	{
+		sendClientMessage->message = "합성 성공";
+	}
+	
+	sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+
+	return 0;
+}
+
+int CCommandController::cardAwake(shared_ptr<CLink> shared_clientInfo, const string & targetCardNum, MessageStruct * sendClientMessage)
+{
+	CLink* clientInfo = nullptr;
+	int channelNum = 0;
+	readyCommand(shared_clientInfo, clientInfo, channelNum);
+	int targetCardNumInt = stoi(targetCardNum);
+
+	int resultAwake = mCardManager.AwakeCard(*clientInfo, targetCardNumInt);
+
+	if (ERROR_NULL_CARD_ITERATOR == resultAwake)
+	{
+		sendClientMessage->message = "각성 실패.. 카드가 없습니다.";
+	}
+	else if (ERROR_COMPOSE_NO_EVOUTION_CARD == resultAwake)
+	{
+		sendClientMessage->message = "아직 각성 할 수 있는 카드가 아닙니다.";
+	}
+	else
+	{
+		sendClientMessage->message = "각성 완료";
+	}
+	sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+	return 0;
+}
+
 int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage)
 {
 	
 	CLink* clientInfo = nullptr;
+	char* resultCardName = nullptr;
 	int channelNum = 0;
 	readyCommand(shared_clientInfo, clientInfo, channelNum);
 
@@ -190,82 +246,104 @@ int CCommandController::cardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 		return CErrorHandler::ErrorHandler(ERROR_MONEY_FAIL);
 	}
 
-	int randNum = mGacharHandler.randNumber();
-	Card* gaCharResult = mGacharHandler.gaCharResult(randNum);
-	if (nullptr == gaCharResult)
+	int resultCardNum = mCardManager.GacharCard(*clientInfo, resultCardName);
+	if (ERROR_GACHAR == resultCardNum)
 	{
 		sendClientMessage->message = "카드 뽑기 오류.";
 		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 		return CErrorHandler::ErrorHandler(ERROR_GACHAR);
 	}
-	sendClientMessage->message = gaCharResult->name;
-	sendClientMessage->sendRecvSize = strlen(gaCharResult->name);
 
-	clientInfo->pushCard(gaCharResult);
-	// 기록
-	MyCardListIt myCardListIt;
-	clientInfo->isHaveCard(gaCharResult->cardNum, myCardListIt);
-	int curCardAmount = (*myCardListIt)->getAmount();
-	mCardManager.ChangeUserCardAmount(NameMemberCardInfoTxt.c_str(), curCardAmount, clientInfo->GetMyPKNumber(), gaCharResult->cardNum);
+	sendClientMessage->message = resultCardName;
+	sendClientMessage->sendRecvSize = strlen(resultCardName);
 	return SUCCES_COMMAND_MESSAGE;
 }
 
 
-int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, char * command, MessageStruct* sendClientMessage)
+int CCommandController::commandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, MessageStruct* sendClientMessage)
 {
-	if (command == nullptr)
-		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
-	cout << "명령 처리 시작" << endl;
-	command++;
+	try
+	{
+		vector<string>::iterator iterBegin = commandString.begin();
+		for (; iterBegin != commandString.end(); ++iterBegin)
+		{
+			cout << "명령 = " << (*iterBegin).c_str() << endl;
+		}
+
+		cout << "명령 처리 시작" << endl;
 #pragma region 명령처리
-	if (*command == 'e') // 방에 입장
-	{
-		enterRoom(shared_clientInfo);
-		sendClientMessage->message = "방에 입장 하셨습니다.";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'c')
-	{
-		changeChannel(shared_clientInfo);
-		sendClientMessage->message = "채널을 변경 했습니다.";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'm')
-	{
-		makeRoom(command, shared_clientInfo);
-		sendClientMessage->message = "방을 만들었습니다.";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'o')
-	{
-		outRoom(shared_clientInfo);
-		sendClientMessage->message = "방에서 나왔습니다.";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'i')
-	{
-		mergeRoom(shared_clientInfo);
-		sendClientMessage->message = "방 병합 완료";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'n')
-	{
-		CLink* clientInfo = nullptr;
-		int channelNum = 0;
-		readyCommand(shared_clientInfo, clientInfo, channelNum);
-		// 기존 이름 변경
-		clientInfo->changeName(command, 1);
-		cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
-		sendClientMessage->message = "이름 변경 되었습니다.";
-		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
-	}
-	else if (*command == 'g')
-	{
-		return cardSelect(shared_clientInfo, sendClientMessage);
-		//return SUCCES_COMMAND_MESSAGE;
-	}
+		if (0 == commandString.at(0).compare(CommandEnter)) // 방에 입장
+		{
+			enterRoom(shared_clientInfo);
+			sendClientMessage->message = "방에 입장 하셨습니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandChannal))
+		{
+			changeChannel(shared_clientInfo);
+			sendClientMessage->message = "채널을 변경 했습니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandMakeRoom))
+		{
+			makeRoom(commandString.at(1).c_str(), shared_clientInfo);
+			sendClientMessage->message = "방을 만들었습니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandOutRoom))
+		{
+			outRoom(shared_clientInfo);
+			sendClientMessage->message = "방에서 나왔습니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandMergeRoom))
+		{
+			mergeRoom(shared_clientInfo);
+			sendClientMessage->message = "방 병합 완료";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandChangeName))
+		{
+			CLink* clientInfo = nullptr;
+			int channelNum = 0;
+			readyCommand(shared_clientInfo, clientInfo, channelNum);
+			// 기존 이름 변경
+			clientInfo->changeName(commandString.at(1));
+			cout << clientInfo->getMyName() << " 으로 이름 변경 됨" << endl;
+			sendClientMessage->message = "이름 변경 되었습니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
+		else if (0 == commandString.at(0).compare(CommandGachar))
+		{
+			return cardSelect(shared_clientInfo, sendClientMessage);
+			//return SUCCES_COMMAND_MESSAGE;
+		}
+		else if (0 == commandString.at(0).compare(CommandCompose))
+		{
+			cardCompose(shared_clientInfo, commandString.at(1), commandString.at(2), sendClientMessage);
+		}
+		else if (0 == commandString.at(0).compare(CommandAwake))
+		{
+			cardAwake(shared_clientInfo, commandString.at(1), sendClientMessage);
+		}
+		else
+		{
+			sendClientMessage->message = "잘 못 된 명령 입니다.";
+			sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		}
 #pragma endregion
-	return SUCCES_COMMAND;
+		return SUCCES_COMMAND;
+	}
+	catch (const std::exception&)
+	{
+		cout << "명령처리 오류" << endl;
+		sendClientMessage->message = "잘 못 된 명령 입니다.";
+		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
+		return CErrorHandler::ErrorHandler(ERROR_COMMAND);
+	}
+	//if (commandString == nullptr)
+	//	return CErrorHandler::ErrorHandler(ERROR_COMMAND);
+	
 }
 
 bool CCommandController::deleteClientSocket(CLink& clientInfo)

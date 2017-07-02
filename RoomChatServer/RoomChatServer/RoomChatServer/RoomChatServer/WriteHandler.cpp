@@ -122,17 +122,21 @@ bool CWriteHandler::write(const char * textFileName, int count, ...)
 //	return offset;
 //}
 
-// 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록될갯수, 신규카드인가?)
-void CWriteHandler::WriteCard(const char* textName, int offset, int cardNum, int cardAmount)
+// 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록할숫자, 자릿수)
+void CWriteHandler::WriteCard(const string& textName, int offset, int recordedNumber, int cipher)
 {
-	char chCardNum[3];
-	IntToAlphabet(cardNum, chCardNum);
 	char chCardAmount[3];
-	IntToAlphabet(cardAmount, chCardAmount);
-
-	string strCardNum(chCardNum);
+	if (2 <= cipher)
+	{
+		IntToAlphabet(recordedNumber, chCardAmount);
+	}
+	else
+	{
+		_itoa_s(recordedNumber, chCardAmount, 10);
+		chCardAmount[1] = '\0';
+	}
 	string strCardAmount(chCardAmount);
-	string result = strCardNum + '/' + strCardAmount + '|';
+	string result = strCardAmount;
 
 	ofstream output(textName, ios::out | ios::in);
 

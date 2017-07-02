@@ -11,6 +11,7 @@ CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name_) :
 	size_t length = strlen(name_) + 1;
 	Name = new char[length];
 	strcpy_s(Name, length, name_);
+	mMyCards.reserve(CardKind);
 }
 
 
@@ -28,42 +29,11 @@ void CLink::EmptyCard()
 	mMyCards.clear();
 }
 
-bool CLink::isHaveCard(int cardNum, MyCardListIt& cardIter)
-{
-	MyCardListIt begin = GetIterMyCardBegin();
-	MyCardListIt end = GetIterMyCardEnd();
-	for (; begin != end; ++begin)
-	{
-		if ((*begin).get()->getCardNumber() == cardNum)
-		{
-			cardIter = begin;
-			return true;
-		}
-	}
-	return false;
-}
-
-void CLink::initCard(Card * card, int amount, float exp)
+void CLink::initCard(Card * card, int amount, int exp, int evol, int star)
 {
 	ScopeLock<MUTEX> MU(RAII_LinkMUTEX);
 	shared_ptr<Card> newCard_(card);
-	MyCardInfo* cardInfo = new MyCardInfo(newCard_, amount, exp);
-	shared_ptr<MyCardInfo> newCard(cardInfo);
-	mMyCards.push_back(newCard);
-}
-
-void CLink::pushCard(Card* card)
-{
-	MyMoney -= CardCost;
-	MyCardListIt cardIter;
-	if (isHaveCard(card->cardNum, cardIter))
-	{
-		((*cardIter).get())->increaseCard();
-		return;
-	}
-	ScopeLock<MUTEX> MU(RAII_LinkMUTEX);
-	shared_ptr<Card> newCard_(card);
-	MyCardInfo* cardInfo = new MyCardInfo(newCard_, 1, 0.0f);
+	MyCardInfo* cardInfo = new MyCardInfo(newCard_, amount, exp, evol, star);
 	shared_ptr<MyCardInfo> newCard(cardInfo);
 	mMyCards.push_back(newCard);
 }

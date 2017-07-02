@@ -50,9 +50,25 @@ enum EnumErrorCode
 	SUCCES_GACHAR = 106,
 	ERROR_NEWCARD = 107, // 서버 .txt 파일에 저장 할 준비가 되어있지 않음
 	ERROR_SAVE_CARD = 109, // 유저 보유 카드 저장 에러
-	ERROR_INIT_USER_CARD = 111, // 유저 로그인시 보유 카드정보 불러오기 실패
+	ERROR_SAVE_EXP = 111,
+	ERROR_SAVE_EVOLUTION = 113,
+	ERROR_SAVE_STAR = 115,
+	ERROR_INIT_USER_CARD = 117, // 유저 로그인시 보유 카드정보 불러오기 실패
+	ERROR_CARDEXP_FULL = 119, // 카드 경험치 가득이라 경험치 더 얻을 수 없음.
+	ERROR_CURSER_SIZE = 121, // 커서 이동 크기 잘 못 가져옴
+	ERROR_COMPOSE_NULL_CARD = 123, // 합성할 카드가 없다.
+	ERROR_COMPOSE_EVOUTION_CARD = 125, // 각성해야할 카드
+	ERROR_COMPOSE_NO_EVOUTION_CARD = 127, // 아직 각성불가(합성해야함.)
+	ERROR_INCREACE_CARD = 129,
+	ERROR_DECREACE_CARD = 131,
+	ERROR_AWAKE_CARD = 133,
+	ERROR_NULL_CARD_ITERATOR = 135, // 카드를 찾지 못해서 반복자를 가져오지 못함.
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876
 };
 
+enum EnumInfoCode
+{
+	INFO_NEW_EVOLUTION = 1
+};

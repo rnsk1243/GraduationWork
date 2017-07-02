@@ -1153,7 +1153,7 @@ public: // Worksheet functions.
 	bool RenameWorksheet(const wchar_t* from, const wchar_t* to);	///< Rename an Excel worksheet that has given Unicode name to another Unicode name. Returns true if successful, false if otherwise.
 
 	char* CharToMultiByte(BasicExcelCell* cell);
-	void SelectSaveCols(int objCol, BasicExcelCell* cell, int& cardNum, int& prob, int& stat);
+	void SelectSaveCols(int objCol, BasicExcelCell* cell, int& cardNum, int& prob, int& stat, int & giveExp);
 	bool ReadExcel(char* excelName);
 private: // Functions to read and write raw Excel format.
 	size_t Read(const char* data, size_t dataSize);

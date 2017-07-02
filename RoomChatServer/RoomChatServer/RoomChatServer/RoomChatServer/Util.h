@@ -1,4 +1,5 @@
 #pragma once
+#include<random>
 #include<iostream>
 using namespace std;
 
@@ -31,14 +32,13 @@ static const string IntToString(const int& targetInt)
 }
 
 // 자릿수 누적
-static const int AddCipHer(const int Number)
+static const int AddCipHer(const int number)
 {
-	if (Number < 1)
+	if (number < 1)
 		return -1;
 	int result = 0;
 	int curNumber = 0;
-	int objLine = Number;
-	while (curNumber != objLine)
+	while (curNumber != number)
 	{
 		curNumber++;
 		if (curNumber < 10)
@@ -57,3 +57,12 @@ static const int AddCipHer(const int Number)
 	return result;
 }
 
+static const int RandNumber(int max = 100)
+{
+	// 기본 1 이상 100 이하 값 나옴
+	random_device rn;
+	mt19937_64 rnd(rn());
+
+	uniform_int_distribution<int> range(1, max);
+	return range(rnd);
+}

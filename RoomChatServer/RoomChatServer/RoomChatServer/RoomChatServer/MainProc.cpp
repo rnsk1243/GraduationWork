@@ -1,4 +1,4 @@
-#pragma comment(lib,"version.lib")
+//#pragma comment(lib,"version.lib")
 #include<iostream>
 #include"ReadyNetWork.h"
 #include"CommandController.h"
@@ -104,8 +104,8 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 
 	cout << "========== 보유 카드 =============" << endl;
 
-	MyCardListIt cardBegin = clientInfo->GetIterMyCardBegin();
-	MyCardListIt cardEnd = clientInfo->GetIterMyCardEnd();
+	MyCardVectorIt cardBegin = clientInfo->GetIterMyCardBegin();
+	MyCardVectorIt cardEnd = clientInfo->GetIterMyCardEnd();
 	for (; cardBegin != cardEnd; ++cardBegin)
 	{
 		cout << (*cardBegin).get()->getCardName() << endl;
@@ -115,10 +115,10 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 
 	while (true)
 	{
-		int isRecvSuccesResultValue = actionNetWork.recvn(shared_clientInfo, commandController);
+		int isRecvSuccesResultValue = actionNetWork.Recvn(shared_clientInfo, commandController);
 		if (SUCCES_RECV == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
-			if (ERROR_SEND == actionNetWork.sendn(*clientInfo, roomManager, channelManager))
+			if (ERROR_SEND == actionNetWork.Sendn(*clientInfo, roomManager, channelManager))
 			{
 				if (!commandController.deleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 				{

@@ -56,7 +56,7 @@ bool CRoomHandler::exitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	return false;
 }
 
-bool CRoomHandler::makeRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, char* roomName)
+bool CRoomHandler::makeRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, const string& roomName)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())
@@ -131,20 +131,20 @@ bool CRoomHandler::enterRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* 
 	return false;
 }
 
-char * CRoomHandler::returnRoomName(char * message)
-{
-	*message++; // 'm' or 'ㅣ' or 'c' 다음 포인터로 옮김
-	int i = 0;
-	char* roomName = new char[NameSize]; //return할 방 이름
-	while (*message != '\0') // null 아닐때까지
-	{
-		roomName[i] = *message;
-		*message++;
-		i++;
-	}
-	roomName[i] = '\0';
-	return roomName;
-}
+//char * CRoomHandler::returnRoomName(char * message)
+//{
+//	*message++; // 'm' or 'ㅣ' or 'c' 다음 포인터로 옮김
+//	int i = 0;
+//	char* roomName = new char[NameSize]; //return할 방 이름
+//	while (*message != '\0') // null 아닐때까지
+//	{
+//		roomName[i] = *message;
+//		*message++;
+//		i++;
+//	}
+//	roomName[i] = '\0';
+//	return roomName;
+//}
 
 
 /*

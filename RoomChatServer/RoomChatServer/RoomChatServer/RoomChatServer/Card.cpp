@@ -4,6 +4,7 @@
 
 CCard::CCard()
 {
+	mCards.reserve(CardKind);
 }
 
 
@@ -22,5 +23,6 @@ CCard * CCard::getInstance()
 
 void CCard::pushCard(shared_ptr<Card> card)
 {
+	cout << "pushCard = " << card.get()->name << endl;
 	mCards.push_back(card);
 }
