@@ -6,37 +6,46 @@
 #include"ErrorCode.h"
 #include"ConstEnumInfo.h"
 
-int CCardManager::GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatCardInfoCurser, const int & cardNum)
-{
-	int resultCurserSize = 0;
+// 예외 안전성 기본적인 보장
+// 1. 자원누수 방지
+// 2. 자료구조 오염 방지
 
-	const int moveSize1 = AddCipHer(userPK); // 회원 번호까지 누적 자릿수 더하기
+// 예외처리 완료된 함수
+bool CCardManager::GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatCardInfoCurser, const int & cardNum, int& resultCursorSize)
+{
+	int tempResult = 0;
+	int moveSize1 = 0;
+	if (false == AddCipHer(userPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
+	{
+		CErrorHandler::ErrorHandler(ERROR_CURSER_SIZE);
+		return false;
+	}
 	const int userPKnumBefore = userPK - 1;
 	// 회원 번호까지 카드 템플릿 누적 마지막에 1더한 것은 pk 옆 | 때문임.
-	const int moveSize2 = (userPKnumBefore * CardTemplateSize) + ((cardNum - 1) * CardInfoSize) + 1; 
+	const int moveSize2 = (userPKnumBefore * CardTemplateSize) + ((cardNum - 1) * CardInfoSize) + 1;
 	const int moveCurserSize = moveSize1 + moveSize2;
-
-	resultCurserSize = moveCurserSize;
+	tempResult = moveCurserSize;
 	switch (whatCardInfoCurser)
 	{
 	case WhatCardCurserSize::CardNum:
-		return resultCurserSize;
-	case WhatCardCurserSize::CardAmount:
-		resultCurserSize += 3;
-		return resultCurserSize;
-	case WhatCardCurserSize::CardExp:
-		resultCurserSize += 6;
-		return resultCurserSize;
-	case WhatCardCurserSize::CardEvolution:
-		resultCurserSize += 9;
-		return resultCurserSize;
-	case WhatCardCurserSize::CardStar:
-		resultCurserSize += 11;
-		return resultCurserSize;
-	default:
 		break;
+	case WhatCardCurserSize::CardAmount:
+		tempResult += 3;
+		break;
+	case WhatCardCurserSize::CardExp:
+		tempResult += 6;
+		break;
+	case WhatCardCurserSize::CardEvolution:
+		tempResult += 9;
+		break;
+	case WhatCardCurserSize::CardStar:
+		tempResult += 11;
+		break;
+	default:
+		return false;
 	}
-	return CErrorHandler::ErrorHandler(ERROR_CURSER_SIZE);
+	resultCursorSize = tempResult;
+	return true;
 }
 
 CCardManager::CCardManager()
@@ -62,74 +71,78 @@ CCardManager::~CCardManager()
 //	WriteHandlerStatic->TargetLineToUserCurserMoveSize(targetLine, strCardNum, isNewCard, cardAmount);
 //	return cardAmount;
 //}
-
-int CCardManager::IsHaveCard(int cardNum, MyCardVectorIt& cardIter, CLink& targetClient)
+// 예외처리 완료된 함수
+MyCardVectorIt CCardManager::IsHaveCard(int cardNum, CLink& targetClient)
 {
 	MyCardVectorIt begin = targetClient.GetIterMyCardBegin();
 	MyCardVectorIt end = targetClient.GetIterMyCardEnd();
-	int amount = 0;
 
 	for (; begin != end; ++begin)
 	{
-		if ((*begin).get()->getCardNumber() == cardNum)
+		if ((*begin).get()->GetCardNumber() == cardNum)
 		{
-			cardIter = begin;
-			amount = (*begin)->getAmount();
-			break;
+			// 카드 번호에 해당하는 반복자 리턴
+			return begin;
 		}
 	}
-	if ((*cardIter) == nullptr)
-	{
-		return CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);
-	}
-	return amount;
+	CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);
+	return end;
 }
-
-int CCardManager::IncreaseCardAmount(int cardNum, CLink& targetClient)
+// 예외처리 완료된 함수
+bool CCardManager::IncreaseCardAmount(int cardNum, CLink& targetClient)
 {
-	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
+	MyCardVectorIt cardIter = IsHaveCard(cardNum, targetClient); //
+	if (targetClient.GetIterMyCardEnd() != cardIter)
 	{
-		(*cardIter)->increaseCard();
-		int curCardAmount = (*cardIter)->getAmount();
+		int increasedCardAmount = (*cardIter)->GetAmount() + 1;
+		if (SaveUserCardAmount(increasedCardAmount, targetClient.GetMyPKNumber(), cardNum))
+		{
+			(*cardIter)->IncreaseCard(); // 쓰기 성공하면 실제 증가시킴
+			return true;
+		}
+	}
+	CErrorHandler::ErrorHandler(ERROR_INCREACE_CARD);
+	return false;
+}
+// 예외처리 완료된 함수
+bool CCardManager::DecreaseCardAmount(int cardNum, CLink& targetClient)
+{
+	MyCardVectorIt cardIter = IsHaveCard(cardNum, targetClient);
+	if (targetClient.GetIterMyCardEnd() != cardIter)
+	{
+		
+		int curCardAmount = (*cardIter)->GetAmount() - 1;
+		if (curCardAmount < 0)
+		{
+			CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
+			return false;
+		}
 		if (SaveUserCardAmount(curCardAmount, targetClient.GetMyPKNumber(), cardNum))
 		{
-			return (*cardIter)->getAmount();
+			(*cardIter)->DecreaseCard();
+			return true;
 		}
 	}
-	return CErrorHandler::ErrorHandler(ERROR_INCREACE_CARD);
+	CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
+	return false;
 }
-
-int CCardManager::DecreaseCardAmount(int cardNum, CLink& targetClient)
+// 예외처리 완료된 함수
+bool CCardManager::IncreaseCardStar(int cardNum, CLink & targetClient)
 {
-	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
+	MyCardVectorIt cardIter = IsHaveCard(cardNum, targetClient);
+	if (targetClient.GetIterMyCardEnd() != cardIter)
 	{
-		(*cardIter)->decreaseCard();
-		int curCardAmount = (*cardIter)->getAmount();
-		if (SaveUserCardAmount(curCardAmount, targetClient.GetMyPKNumber(), cardNum))
-		{
-			return (*cardIter)->getAmount();
-		}
-	}
-	return CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
-}
-
-int CCardManager::IncreaseCardStar(int cardNum, CLink & targetClient)
-{
-	MyCardVectorIt cardIter;
-	if (ERROR_NULL_CARD_ITERATOR != IsHaveCard(cardNum, cardIter, targetClient))
-	{
-		(*cardIter)->increaseStar();
-		int curCardStar = (*cardIter)->getStar();
+		(*cardIter)->IncreaseStar();
+		int curCardStar = (*cardIter)->GetStar();
 		if (SaveUserCardStar(curCardStar, targetClient.GetMyPKNumber(), cardNum))
 		{
-			return (*cardIter)->getStar();
+			return true;
 		}
 	}
-	return CErrorHandler::ErrorHandler(ERROR_EVOLUTION_CARD);
+	CErrorHandler::ErrorHandler(ERROR_EVOLUTION_CARD);
+	return false;
 }
-
+// 예외처리 완료된 함수
 bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum)
 {
 	try
@@ -149,10 +162,15 @@ bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& user
 		//	CErrorHandler::ErrorHandler(ERROR_DECREASE_CARD);
 		//	return false;
 		//}
-
-		const int moveCurserSize = GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardAmount, cardNum);
-		WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveCardAmount);
-		return true;
+		int moveCurserSize = -1;
+		if (true == GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardAmount, cardNum, moveCurserSize))
+		{
+			if (true == WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveCardAmount, SaveCardAmountCipherTextSize))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	catch (const std::exception&)
 	{
@@ -160,14 +178,20 @@ bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& user
 		return false;
 	}
 }
-
+// 예외 처리 완료된 함수
 bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum)
 {
 	try
 	{
-		const int moveCurserSize = GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardExp, cardNum);
-		WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveExp, 2);
-		return true;
+		int moveCurserSize = -1;
+		if (true == GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardExp, cardNum, moveCurserSize))
+		{
+			if (WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveExp, SaveCardExpCipherTextSize))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	catch (const std::exception&)
 	{
@@ -175,35 +199,45 @@ bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, con
 		return false;
 	}
 }
-
+// 예외처리 완료된 함수
 bool CCardManager::SaveUserCardEvolution(const bool & isEvolution, const int & userPKnum, const int & cardNum)
 {
 	try
 	{
 		int recordedNum = 0;
-		if (isEvolution)
+		if (isEvolution) // 진화 가능하게 바꾸고 싶으면 1을 저장하기 위해 1을 대입
 		{
 			recordedNum = 1;
 		}
-		const int moveCurserSize = GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardEvolution, cardNum);
-		WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, recordedNum, 1);
-		return true;
+		int moveCurserSize = -1;
+		if (true == GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardEvolution, cardNum, moveCurserSize))
+		{
+			if (true == WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, recordedNum, SaveCardEvolutionCipherTextSize))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	catch (const std::exception&)
 	{
-		CErrorHandler::ErrorHandler(ERROR_SAVE_CARD);
 		return false;
 	}
 }
-
+// 예외처리 완료된 함수
 bool CCardManager::SaveUserCardStar(const int & saveStar, const int & userPKnum, const int & cardNum)
 {
 	try
 	{
-
-		const int moveCurserSize = GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardStar, cardNum);
-		WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveStar, 1);
-		return true;
+		int moveCurserSize = -1;
+		if (true == GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardStar, cardNum, moveCurserSize))
+		{
+			if (true == WriteHandlerStatic->WriteCard(NameMemberCardInfoTxt, moveCurserSize, saveStar, SaveCardStarCipherTextSize))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	catch (const std::exception&)
 	{
@@ -211,74 +245,92 @@ bool CCardManager::SaveUserCardStar(const int & saveStar, const int & userPKnum,
 		return false;
 	}
 }
-
-int CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceCard)
+// 성공이면 true 반환 
+bool CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceCard)
 {
-	MyCardVectorIt targetCardIter;
-	MyCardVectorIt sourceCardIter;
+	MyCardVectorIt targetCardIter = IsHaveCard(targetCard, targetClient);
+	MyCardVectorIt sourceCardIter = IsHaveCard(sourceCard, targetClient);
 	const int userPk = targetClient.GetMyPKNumber();
-	//이터레이터 없애기
-	const int targetCardAmount = IsHaveCard(targetCard, targetCardIter, targetClient);
-	const int sourceCardAmount = IsHaveCard(sourceCard, sourceCardIter, targetClient);
-	if (ERROR_NULL_CARD_ITERATOR != targetCardAmount && ERROR_NULL_CARD_ITERATOR != sourceCardAmount)
+
+	if (targetClient.GetIterMyCardEnd() != targetCardIter && targetClient.GetIterMyCardEnd() != sourceCardIter)
 	{
+		const int targetCardAmount = (*targetCardIter)->GetAmount();
+		const int sourceCardAmount = (*sourceCardIter)->GetAmount();
 		if ((targetCardAmount > 0) && (sourceCardAmount > 0))
 		{
-			if ((*targetCardIter).get()->isEvoution())
+			if (true == (*targetCardIter).get()->IsEvoution()) // 진화해야 하는 카드 인가?
 			{
-				return CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
+				CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
+				return false;
 			}
-			int addExp = (*sourceCardIter).get()->getCardExp();
-			int resultExp = (*targetCardIter).get()->setExp(addExp);
-
-			if ((*targetCardIter).get()->isEvoution())
+			int addExp = (*sourceCardIter).get()->GetCardExp();
+			//const int beforeExp = (*targetCardIter).get()->GetCurExp();
+			int resultExp = 0;
+			// 바로 위에서 진화해야 하는 카드 인지 아닌지 검사를 했으므로 SetExp는 항상 true를 반환하게 되어있다.
+			(*targetCardIter).get()->SetExp(addExp, resultExp);
+			if (true == (*targetCardIter).get()->IsEvoution())
 			{
 				// 진화 가능 기록 함수 호출
-				SaveUserCardEvolution(true, userPk, targetCard);
-				resultExp = 0;
+				if (false == SaveUserCardEvolution(true, userPk, targetCard))
+				{
+					return false;
+				}
 			}
+			// SaveUserCardEvolution함수에서 false를 반환하지 않았다면 true가 나오므로 예외처리 안시킴
 			SaveUserCardExp(resultExp, userPk, targetCard);
+			int resultSourceCardNum = 0;
 			DecreaseCardAmount(sourceCard, targetClient);
-			return resultExp;
+			CErrorHandler::ErrorHandler(SUCCES_COMPOSE_CARD);
+			return true;
 		}
 	}
-	return CErrorHandler::ErrorHandler(ERROR_COMPOSE_NULL_CARD);
+	CErrorHandler::ErrorHandler(ERROR_COMPOSE_NULL_CARD);
+	return false;
 }
 
 
-int CCardManager::GacharCard(CLink & targetClient, char*& resultCardName)
+bool CCardManager::GacharCard(CLink & targetClient, int& resultCardNum, char*& resultCardName)
 {
 	Card* resultCard = mGacharHandler.GaCharResult(RandNumber());
 	if (nullptr == resultCard)
 	{
-		return CErrorHandler::ErrorHandler(ERROR_GACHAR);
+		CErrorHandler::ErrorHandler(ERROR_GACHAR);
+		return false;
 	}
 	resultCardName = resultCard->mName;
-	int curCardAmount = IncreaseCardAmount(resultCard->mCardNum, targetClient);
-	return resultCard->mCardNum;
+	if (IncreaseCardAmount(resultCard->mCardNum, targetClient))
+	{
+		resultCardNum = resultCard->mCardNum;
+		return true;
+	}
+	return false;
 }
 
-int CCardManager::EvolutionCard(CLink & targetClient, int targetCard)
+bool CCardManager::EvolutionCard(CLink & targetClient, int targetCard)
 {
-	MyCardVectorIt targetCardIter;
+	MyCardVectorIt targetCardIter = IsHaveCard(targetCard, targetClient);
 	const int userPk = targetClient.GetMyPKNumber();
-	const int cardAmount = IsHaveCard(targetCard, targetCardIter, targetClient);
-	if (ERROR_NULL_CARD_ITERATOR != cardAmount)
+	
+	if (targetClient.GetIterMyCardEnd() != targetCardIter)
 	{
+		const int cardAmount = (*targetCardIter)->GetAmount();
 		if (1 < cardAmount)
 		{
-			if (!(*targetCardIter).get()->isEvoution())
+			if (!(*targetCardIter).get()->IsEvoution())
 			{
-				return CErrorHandler::ErrorHandler(ERROR_COMPOSE_NO_EVOUTION_CARD);
+				CErrorHandler::ErrorHandler(ERROR_COMPOSE_NO_EVOUTION_CARD);
+				return false;
 			}
-			const int curSatr = IncreaseCardStar(targetCard, targetClient);
-			SaveUserCardStar(curSatr, userPk, targetCard);
+			const int curStar = IncreaseCardStar(targetCard, targetClient);
+			SaveUserCardStar(curStar, userPk, targetCard);
 			SaveUserCardEvolution(false, userPk, targetCard);
 			DecreaseCardAmount(targetCard, targetClient);
-			return curSatr;
+			CErrorHandler::ErrorHandler(SUCCES_EVOLUTION_CARD);
+			return true;
 		}
 	}
-	return ERROR_NULL_CARD_ITERATOR;
+	CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);
+	return false;
 }
 
 

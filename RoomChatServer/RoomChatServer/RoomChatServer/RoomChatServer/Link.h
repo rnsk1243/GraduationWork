@@ -53,33 +53,37 @@ public:
 		mCard(card), mAmount(amount), mExp(exp), mIsEvolution(isEvolution), mStar(star)
 	{
 	}
-	void increaseStar() { ++mStar; }
-	void increaseCard() { ++mAmount; }
-	void decreaseCard() 
+	void IncreaseStar() { ++mStar; }
+	void IncreaseCard() { ++mAmount; }
+	void DecreaseCard() 
 	{ 
 		if (mAmount > 0) { --mAmount; } 
 	}
-	int getAmount() { return mAmount; }
-	int getStar() { return mStar; }
-	int setExp(int addExp)
+	int GetAmount() { return mAmount; }
+	int GetStar() { return mStar; }
+	int GetCurExp() { return mExp; }
+	bool SetExp(int addExp, int& resultExp)
 	{
 		if (1 == mIsEvolution)
 		{
-			return CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
+			CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
+			return false;
 		}
 		mExp += addExp;
 		if (100 <= mExp)
 		{
 			mExp = 0;
+			resultExp = mExp;
 			mIsEvolution = 1;
-			return INFO_NEW_EVOLUTION;
+			return true;
 		}
-		return mExp;
+		resultExp = mExp;
+		return true;
 	}
-	char* getCardName() { return mCard.get()->mName; }
-	const int getCardNumber() { return mCard.get()->mCardNum; }
-	const int getCardExp() { return mCard.get()->mGiveExp; }
-	bool isEvoution()
+	char* GetCardName() { return mCard.get()->mName; }
+	const int GetCardNumber() { return mCard.get()->mCardNum; }
+	const int GetCardExp() { return mCard.get()->mGiveExp; }
+	bool IsEvoution()
 	{
 		if (1 == mIsEvolution)
 		{

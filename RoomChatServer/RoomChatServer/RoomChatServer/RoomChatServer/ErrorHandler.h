@@ -13,6 +13,7 @@ class CErrorHandler
 		_endthreadex(0);
 		return code;
 	}
+	// 에러 뜰 경우 이전 유저 카드 정보 txt에 저장 할 것.
 	static EnumErrorCode TakeError(EnumErrorCode code)
 	{
 		cout << "에러코드 = " << EnumErrorCode(code) << endl;

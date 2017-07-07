@@ -2,6 +2,7 @@
 
 enum EnumErrorCode
 {
+	ERROR_VALUE_RETURN = -1,
 	// 취소
 	Cancel = 4444,
 
@@ -56,13 +57,21 @@ enum EnumErrorCode
 	ERROR_INIT_USER_CARD = 117, // 유저 로그인시 보유 카드정보 불러오기 실패
 	ERROR_CARDEXP_FULL = 119, // 카드 경험치 가득이라 경험치 더 얻을 수 없음.
 	ERROR_CURSER_SIZE = 121, // 커서 이동 크기 잘 못 가져옴
+	SUCCES_COMPOSE_CARD = 122, // 합성 성공
 	ERROR_COMPOSE_NULL_CARD = 123, // 합성할 카드가 없다.
 	ERROR_COMPOSE_EVOUTION_CARD = 125, // 진화해야할 카드
 	ERROR_COMPOSE_NO_EVOUTION_CARD = 127, // 아직 진화불가(합성해야함.)
 	ERROR_INCREACE_CARD = 129,
 	ERROR_DECREACE_CARD = 131,
+	SUCCES_EVOLUTION_CARD = 132, // 카드 진화 성공
 	ERROR_EVOLUTION_CARD = 133,
 	ERROR_NULL_CARD_ITERATOR = 135, // 카드를 찾지 못해서 반복자를 가져오지 못함.
+	ERROR_CIPHER_OUT_RANGE = 137, // 누적 자릿수 범위 초과
+	ERROR_INT_TO_ALPHABET_OUT_RANGE = 139, // 숫자를 문자로 바꾸는 범위 초과
+	SUCCES_IS_EVOLUTION_CARD = 140, // 이제 진화 할 수 있는 카드
+	ERROR_SET_EXP = 141,
+	SUCCES_SET_EXP = 142, // set exp 성공
+	ERROR_SAVE = 143, // save 에러
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876
@@ -70,5 +79,5 @@ enum EnumErrorCode
 
 enum EnumInfoCode
 {
-	INFO_NEW_EVOLUTION = 1
+	//INFO_NEW_EVOLUTION = 1
 };

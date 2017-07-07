@@ -123,12 +123,16 @@ bool CWriteHandler::Write(const char * textFileName, int count, ...)
 //}
 
 // 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록할숫자, 자릿수)
-void CWriteHandler::WriteCard(const string& textName, int offset, int recordedNumber, int cipher)
+// 예외처리 완료된 함수
+bool CWriteHandler::WriteCard(const string& textName, int offset, int recordedNumber, int cipher)
 {
 	char chCardAmount[3];
 	if (2 <= cipher)
 	{
-		IntToAlphabet(recordedNumber, chCardAmount);
+		if (false == IntToAlphabet(recordedNumber, chCardAmount))
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -144,8 +148,8 @@ void CWriteHandler::WriteCard(const string& textName, int offset, int recordedNu
 
 	const char* doWrite = result.c_str();
 	output.write(doWrite, strlen(doWrite));
-
 	output.close();
+	return true;
 	/*
 	중간에 삽입이 불가능 하다고.. 파일 새로 만들고 모든 데이터를 복사하는 도중에 삽입해야 합니다.
 	You cannot insert in the middle of the file.

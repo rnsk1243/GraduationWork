@@ -108,8 +108,8 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	MyCardVectorIt cardEnd = clientInfo->GetIterMyCardEnd();
 	for (; cardBegin != cardEnd; ++cardBegin)
 	{
-		cout << (*cardBegin).get()->getCardName() << endl;
-		cout << (*cardBegin).get()->getAmount() << endl;
+		cout << (*cardBegin).get()->GetCardName() << endl;
+		cout << (*cardBegin).get()->GetAmount() << endl;
 	}
 	cout << "==================================" << endl;
 

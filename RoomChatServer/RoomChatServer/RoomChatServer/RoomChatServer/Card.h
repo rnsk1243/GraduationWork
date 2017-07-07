@@ -7,11 +7,11 @@ using namespace std;
 
 struct Card
 {
-	int mCardNum;
+	const int mCardNum;
 	char* mName;
-	int mProb; // 확률
-	int mStat; // 스탯
-	int mGiveExp; // 이 카드를 합성하면 얻는 경험치
+	const int mProb; // 확률
+	const int mStat; // 스탯
+	const  int mGiveExp; // 이 카드를 합성하면 얻는 경험치
 	Card(int num, char* cardName, int prob, int stat, int giveExp) :
 		mCardNum(num),
 		mProb(prob),

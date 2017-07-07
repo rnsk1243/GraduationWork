@@ -58,3 +58,7 @@ const int IndexCardInfoTxtAmount = 1;
 const int IndexCardInfoTxtExp = 2;
 const int IndexCardInfoTxtEvolution = 3;
 const int IndexCardInfoTxtStar = 4;
+const int SaveCardAmountCipherTextSize = 2;// txt에 저장되는 자릿수, 한 자리, 두 자리 ...
+const int SaveCardExpCipherTextSize = 2;
+const int SaveCardEvolutionCipherTextSize = 1;
+const int SaveCardStarCipherTextSize = 1;

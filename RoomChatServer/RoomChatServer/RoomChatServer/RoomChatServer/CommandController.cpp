@@ -183,24 +183,15 @@ int CCommandController::CardCompose(shared_ptr<CLink> shared_clientInfo, const s
 
 	int targetCardNumInt = stoi(targetCardNum);
 	int sourceCardNumInt = stoi(sourceCardNum);
-	int resultCompose = mCardManager.ComposeCard(*clientInfo, targetCardNumInt, sourceCardNumInt);
-	if (ERROR_COMPOSE_EVOUTION_CARD == resultCompose)
-	{
-		sendClientMessage->message = "이 카드는 진화 해야 합성 할 수 있습니다.";
-	}
-	else if(ERROR_COMPOSE_NULL_CARD == resultCompose)
-	{
-		sendClientMessage->message = "합성할 카드가 없습니다.";
-	}
-	else if(INFO_NEW_EVOLUTION == resultCompose)
-	{
-		sendClientMessage->message = "이제 진화 가능한 카드가 되었습니다.";
-	}
-	else
+
+	if (mCardManager.ComposeCard(*clientInfo, targetCardNumInt, sourceCardNumInt))
 	{
 		sendClientMessage->message = "합성 성공";
 	}
-	
+	else
+	{
+		sendClientMessage->message = "합성 하는데 실패 하였습니다.";
+	}	
 	sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 
 	return 0;
@@ -213,19 +204,13 @@ int CCommandController::CardEvolution(shared_ptr<CLink> shared_clientInfo, const
 	ReadyCommand(shared_clientInfo, clientInfo, channelNum);
 	int targetCardNumInt = stoi(targetCardNum);
 
-	int resultEvolution = mCardManager.EvolutionCard(*clientInfo, targetCardNumInt);
-
-	if (ERROR_NULL_CARD_ITERATOR == resultEvolution)
+	if (mCardManager.EvolutionCard(*clientInfo, targetCardNumInt))
 	{
-		sendClientMessage->message = "진화 실패.. 카드가 없습니다.";
-	}
-	else if (ERROR_COMPOSE_NO_EVOUTION_CARD == resultEvolution)
-	{
-		sendClientMessage->message = "아직 진화 할 수 있는 카드가 아닙니다.";
+		sendClientMessage->message = "진화 완료";
 	}
 	else
 	{
-		sendClientMessage->message = "진화 완료";
+		sendClientMessage->message = "진화 하는데 실패 하였습니다.";
 	}
 	sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);
 	return 0;
@@ -246,8 +231,9 @@ int CCommandController::CardSelect(shared_ptr<CLink> shared_clientInfo, MessageS
 		return CErrorHandler::ErrorHandler(ERROR_MONEY_FAIL);
 	}
 
-	int resultCardNum = mCardManager.GacharCard(*clientInfo, resultCardName);
-	if (ERROR_GACHAR == resultCardNum)
+	int resultCardNum = -1;
+	
+	if (false == mCardManager.GacharCard(*clientInfo, resultCardNum, resultCardName))
 	{
 		sendClientMessage->message = "카드 뽑기 오류.";
 		sendClientMessage->sendRecvSize = strlen(sendClientMessage->message);

@@ -3,22 +3,29 @@
 #include<iostream>
 using namespace std;
 
-static void IntToAlphabet(const int num, char* chResult)
+static bool IntToAlphabet(const int num, char* chResult)
 {
 	char temp[10];
-	if (10 > num)
+	if (10 > num && 0 <= num)
 	{
 		chResult[0] = '0';
 		_itoa_s(num, temp, 10);
 		chResult[1] = temp[0];
 		chResult[2] = '\0';
+		return true;
 	}
-	else
+	else if(10 <= num && 100 > num)
 	{
 		_itoa_s(num, temp, 10);
 		chResult[0] = temp[0];
 		chResult[1] = temp[1];
 		chResult[2] = '\0';
+		return true;
+	}
+	else
+	{
+		CErrorHandler::ErrorHandler(ERROR_INT_TO_ALPHABET_OUT_RANGE);
+		return false;
 	}
 }
 
@@ -32,10 +39,13 @@ static const string IntToString(const int& targetInt)
 }
 
 // ÀÚ¸´¼ö ´©Àû
-static const int AddCipHer(const int number)
+static const bool AddCipHer(const int number, int& cipHerResult)
 {
-	if (number < 1)
-		return -1;
+	if (number < 1 || number > 1000)
+	{
+		CErrorHandler::ErrorHandler(ERROR_CIPHER_OUT_RANGE);
+		return false;
+	}
 	int result = 0;
 	int curNumber = 0;
 	while (curNumber != number)
@@ -54,7 +64,8 @@ static const int AddCipHer(const int number)
 			result += 3;
 		}
 	}
-	return result;
+	cipHerResult = result;
+	return true;
 }
 
 static const int RandNumber(int max = 100)
