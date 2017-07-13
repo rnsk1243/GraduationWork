@@ -13,7 +13,7 @@
 // 예외처리 완료된 함수
 bool CCardManager::GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatCardInfoCurser, const int & cardNum, int& resultCursorSize)
 {
-	int tempResult = 0;
+	//int tempResult = 0;
 	int moveSize1 = 0;
 	if (false == AddCipHer(userPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
 	{
@@ -24,27 +24,28 @@ bool CCardManager::GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatC
 	// 회원 번호까지 카드 템플릿 누적 마지막에 1더한 것은 pk 옆 | 때문임.
 	const int moveSize2 = (userPKnumBefore * CardTemplateSize) + ((cardNum - 1) * CardInfoSize) + 1;
 	const int moveCurserSize = moveSize1 + moveSize2;
-	tempResult = moveCurserSize;
+	//tempResult = moveCurserSize;
+	resultCursorSize = moveCurserSize;
 	switch (whatCardInfoCurser)
 	{
 	case WhatCardCurserSize::CardNum:
 		break;
 	case WhatCardCurserSize::CardAmount:
-		tempResult += 3;
+		resultCursorSize += 3;
 		break;
 	case WhatCardCurserSize::CardExp:
-		tempResult += 6;
+		resultCursorSize += 6;
 		break;
 	case WhatCardCurserSize::CardEvolution:
-		tempResult += 9;
+		resultCursorSize += 9;
 		break;
 	case WhatCardCurserSize::CardStar:
-		tempResult += 11;
+		resultCursorSize += 11;
 		break;
 	default:
 		return false;
 	}
-	resultCursorSize = tempResult;
+	//resultCursorSize = tempResult;
 	return true;
 }
 
@@ -147,21 +148,6 @@ bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& user
 {
 	try
 	{
-		//char targetLine[BufSize];
-		//char chCardNum[3];
-		//bool isNewCard = true;
-		//int cardAmount = 0;
-		//string strUserName = userName;
-		//int line = ReadHandlerStatic->Search(textName, 1, strUserName);
-		//int moveSize1 = WriteHandlerStatic->BeginToTargetUserLineCurserMoveSize(textName, line, targetLine);
-		//IntToAlphabet(cardNum, chCardNum);
-		//string strCardNum = chCardNum;
-		//int movesize2 = WriteHandlerStatic->TargetLineToUserCurserMoveSize(targetLine, strCardNum, isNewCard, cardAmount);
-		//if (0 > cardAmount && isIncrease == false)
-		//{
-		//	CErrorHandler::ErrorHandler(ERROR_DECREASE_CARD);
-		//	return false;
-		//}
 		int moveCurserSize = -1;
 		if (true == GetMoveCurserSize(userPKnum, WhatCardCurserSize::CardAmount, cardNum, moveCurserSize))
 		{
@@ -278,7 +264,6 @@ bool CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceC
 			}
 			// SaveUserCardEvolution함수에서 false를 반환하지 않았다면 true가 나오므로 예외처리 안시킴
 			SaveUserCardExp(resultExp, userPk, targetCard);
-			int resultSourceCardNum = 0;
 			DecreaseCardAmount(sourceCard, targetClient);
 			CErrorHandler::ErrorHandler(SUCCES_COMPOSE_CARD);
 			return true;
@@ -327,6 +312,11 @@ bool CCardManager::EvolutionCard(CLink & targetClient, int targetCard)
 			DecreaseCardAmount(targetCard, targetClient);
 			CErrorHandler::ErrorHandler(SUCCES_EVOLUTION_CARD);
 			return true;
+		}
+		else
+		{
+			CErrorHandler::ErrorHandler(ERROR_CARD_AMOUNT_LACK);
+			return false;
 		}
 	}
 	CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);

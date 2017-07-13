@@ -1,3 +1,20 @@
-﻿  CardManager.cpp
+﻿  ErrorHandler.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  WriteHandler.cpp
+  RoomManager.cpp
+  RoomHandler.cpp
+  Room.cpp
+  ReadHandler.cpp
+  MainProc.cpp
+  Lobby.cpp
+  Link.cpp
+  CommandController.cpp
+  ChannelManager.cpp
+  ChannelHandler.cpp
+  Channel.cpp
+  CardManager.cpp
+  ActionNetWork.cpp
+  코드를 생성하고 있습니다...
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)

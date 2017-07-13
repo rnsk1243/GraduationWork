@@ -5,6 +5,12 @@ using namespace std;
 
 static bool IntToAlphabet(const int num, char* chResult)
 {
+	if(num < 0 || num >= 100)
+	{
+		CErrorHandler::ErrorHandler(ERROR_INT_TO_ALPHABET_OUT_RANGE);
+		return false;
+	}
+
 	char temp[10];
 	if (10 > num && 0 <= num)
 	{
@@ -12,7 +18,6 @@ static bool IntToAlphabet(const int num, char* chResult)
 		_itoa_s(num, temp, 10);
 		chResult[1] = temp[0];
 		chResult[2] = '\0';
-		return true;
 	}
 	else if(10 <= num && 100 > num)
 	{
@@ -20,13 +25,9 @@ static bool IntToAlphabet(const int num, char* chResult)
 		chResult[0] = temp[0];
 		chResult[1] = temp[1];
 		chResult[2] = '\0';
-		return true;
 	}
-	else
-	{
-		CErrorHandler::ErrorHandler(ERROR_INT_TO_ALPHABET_OUT_RANGE);
-		return false;
-	}
+
+	return true;
 }
 
 static const string IntToString(const int& targetInt)
@@ -46,25 +47,26 @@ static const bool AddCipHer(const int number, int& cipHerResult)
 		CErrorHandler::ErrorHandler(ERROR_CIPHER_OUT_RANGE);
 		return false;
 	}
-	int result = 0;
+	//int result = 0;
 	int curNumber = 0;
 	while (curNumber != number)
 	{
 		curNumber++;
 		if (curNumber < 10)
 		{
-			++result;
+			++cipHerResult;
 		}
 		else if (curNumber >= 10 && curNumber < 100)
 		{
-			result += 2;
+			cipHerResult += 2;
 		}
 		else if (curNumber >= 100 && curNumber < 1000)
 		{
-			result += 3;
+			cipHerResult += 3;
 		}
 	}
-	cipHerResult = result;
+//	cipHerResult = result;
+
 	return true;
 }
 

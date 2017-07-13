@@ -72,6 +72,7 @@ enum EnumErrorCode
 	ERROR_SET_EXP = 141,
 	SUCCES_SET_EXP = 142, // set exp 성공
 	ERROR_SAVE = 143, // save 에러
+	ERROR_CARD_AMOUNT_LACK = 145, // 무언가 하는데 필요한 카드가 부족
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876
