@@ -2,7 +2,7 @@
 #include<list>
 #include<iostream>
 #include"Room.h"
-#include"ErrorHandler.h"
+
 class CLink;
 class CRoom;
 using namespace std;
@@ -27,11 +27,6 @@ public:
 
 	void PushRoom(shared_ptr<CRoom> shared_newRoom)
 	{
-		if (0 >= shared_newRoom.use_count())
-		{
-			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-			return;
-		}
 		ScopeLock<MUTEX> MU(mRAII_RoomManagerMUTEX);
 		mRooms.push_back(shared_newRoom);
 	}

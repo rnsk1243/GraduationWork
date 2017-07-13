@@ -4,6 +4,7 @@
 #include"ChannelManager.h"
 #include"RoomManager.h"
 #include"CardManager.h"
+
 class CCommandController
 {
 	CChannelManager mChannelManager;

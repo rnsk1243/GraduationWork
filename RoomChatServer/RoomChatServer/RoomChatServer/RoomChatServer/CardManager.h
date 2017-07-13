@@ -1,4 +1,5 @@
 #pragma once
+#include"ErrorHandler.h"
 #include"GaChar.h"
 #include"ConstEnumInfo.h"
 #include"Link.h"
@@ -13,13 +14,13 @@ private:
 	bool DecreaseCardAmount(int cardNum, CLink& targetClient); // 카드 갯수 감소
 	bool IncreaseCardStar(int cardNum, CLink& targetClient); // 별 증가
 	// 유저 카드 갯수 기록
-	bool SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum);
+	bool SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum, CLink* targetClient);
 	// 유저 카드 경험치 기록
-	bool SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum);
+	bool SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum, CLink* client);
 	// 유저 카드 진화 유무 기록
-	bool SaveUserCardEvolution(const bool& isEvolution, const int& userPKnum, const int& cardNum);
+	bool SaveUserCardEvolution(const bool& isEvolution, const int& userPKnum, const int& cardNum, CLink* client);
 	// 유저 카드 별 기록
-	bool SaveUserCardStar(const int& saveStar, const int& userPKnum, const int& cardNum);
+	bool SaveUserCardStar(const int& saveStar, const int& userPKnum, const int& cardNum, CLink* client);
 public:
 	CCardManager();
 	~CCardManager();

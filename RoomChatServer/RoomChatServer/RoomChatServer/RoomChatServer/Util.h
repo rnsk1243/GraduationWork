@@ -7,7 +7,7 @@ static bool IntToAlphabet(const int num, char* chResult)
 {
 	if(num < 0 || num >= 100)
 	{
-		CErrorHandler::ErrorHandler(ERROR_INT_TO_ALPHABET_OUT_RANGE);
+		ErrorHandStatic->ErrorHandler(ERROR_INT_TO_ALPHABET_OUT_RANGE);
 		return false;
 	}
 
@@ -44,7 +44,7 @@ static const bool AddCipHer(const int number, int& cipHerResult)
 {
 	if (number < 1 || number > 1000)
 	{
-		CErrorHandler::ErrorHandler(ERROR_CIPHER_OUT_RANGE);
+		ErrorHandStatic->ErrorHandler(ERROR_CIPHER_OUT_RANGE);
 		return false;
 	}
 	//int result = 0;
@@ -79,3 +79,4 @@ static const int RandNumber(int max = 100)
 	uniform_int_distribution<int> range(1, max);
 	return range(rnd);
 }
+

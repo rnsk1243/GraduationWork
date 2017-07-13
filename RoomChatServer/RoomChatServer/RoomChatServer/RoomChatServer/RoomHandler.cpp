@@ -1,8 +1,8 @@
 #include "RoomHandler.h"
+#include"ErrorHandler.h"
 #include"Link.h"
 #include"Room.h"
 //#include"ConstEnumInfo.h"
-#include"ErrorHandler.h"
 
 CRoomHandler::CRoomHandler()
 {
@@ -27,7 +27,7 @@ bool CRoomHandler::ExitRoom(CLink* clientInfo, CRoomManager* roomManager)
 		return false;
 	if (0 >= (*myRoomIter).use_count())
 	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		ErrorHandStatic->ErrorHandler(ERROR_SHARED_ROOM_COUNT_ZORO, clientInfo);
 		return false;
 	}
 	CRoom* currentRoom = (*myRoomIter).get();
@@ -65,7 +65,7 @@ bool CRoomHandler::MakeRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* r
 	}
 	else
 	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 		return false;
 	}
 
@@ -105,7 +105,7 @@ bool CRoomHandler::EnterRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* 
 	}
 	else
 	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 		return false;
 	}
 
@@ -116,7 +116,7 @@ bool CRoomHandler::EnterRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* 
 	{
 		if ((*iterBegin).use_count() < 0)
 		{
-			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+			ErrorHandStatic->ErrorHandler(ERROR_SHARED_ROOM_COUNT_ZORO, clientInfo);
 			continue;
 		}
 		CRoom* curRoom = (*iterBegin).get();

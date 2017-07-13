@@ -2,7 +2,7 @@
 #include"WriteHandler.h"
 #include"ReadHandler.h"
 #include"Util.h"
-#include"ErrorHandler.h"
+
 #include"ErrorCode.h"
 #include"ConstEnumInfo.h"
 
@@ -17,7 +17,7 @@ bool CCardManager::GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatC
 	int moveSize1 = 0;
 	if (false == AddCipHer(userPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
 	{
-		CErrorHandler::ErrorHandler(ERROR_CURSER_SIZE);
+		ErrorHandStatic->ErrorHandler(ERROR_CURSER_SIZE);
 		return false;
 	}
 	const int userPKnumBefore = userPK - 1;
@@ -86,7 +86,7 @@ MyCardVectorIt CCardManager::IsHaveCard(int cardNum, CLink& targetClient)
 			return begin;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);
+	ErrorHandStatic->ErrorHandler(ERROR_NULL_CARD_ITERATOR, &targetClient);
 	return end;
 }
 // 예외처리 완료된 함수
@@ -96,13 +96,13 @@ bool CCardManager::IncreaseCardAmount(int cardNum, CLink& targetClient)
 	if (targetClient.GetIterMyCardEnd() != cardIter)
 	{
 		int increasedCardAmount = (*cardIter)->GetAmount() + 1;
-		if (SaveUserCardAmount(increasedCardAmount, targetClient.GetMyPKNumber(), cardNum))
+		if (SaveUserCardAmount(increasedCardAmount, targetClient.GetMyPKNumber(), cardNum, &targetClient))
 		{
 			(*cardIter)->IncreaseCard(); // 쓰기 성공하면 실제 증가시킴
 			return true;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_INCREACE_CARD);
+	ErrorHandStatic->ErrorHandler(ERROR_INCREACE_CARD, &targetClient);
 	return false;
 }
 // 예외처리 완료된 함수
@@ -115,16 +115,16 @@ bool CCardManager::DecreaseCardAmount(int cardNum, CLink& targetClient)
 		int curCardAmount = (*cardIter)->GetAmount() - 1;
 		if (curCardAmount < 0)
 		{
-			CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
+			ErrorHandStatic->ErrorHandler(ERROR_DECREACE_CARD, &targetClient);
 			return false;
 		}
-		if (SaveUserCardAmount(curCardAmount, targetClient.GetMyPKNumber(), cardNum))
+		if (SaveUserCardAmount(curCardAmount, targetClient.GetMyPKNumber(), cardNum, &targetClient))
 		{
 			(*cardIter)->DecreaseCard();
 			return true;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_DECREACE_CARD);
+	ErrorHandStatic->ErrorHandler(ERROR_DECREACE_CARD, &targetClient);
 	return false;
 }
 // 예외처리 완료된 함수
@@ -135,16 +135,16 @@ bool CCardManager::IncreaseCardStar(int cardNum, CLink & targetClient)
 	{
 		(*cardIter)->IncreaseStar();
 		int curCardStar = (*cardIter)->GetStar();
-		if (SaveUserCardStar(curCardStar, targetClient.GetMyPKNumber(), cardNum))
+		if (SaveUserCardStar(curCardStar, targetClient.GetMyPKNumber(), cardNum, &targetClient))
 		{
 			return true;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_EVOLUTION_CARD);
+	ErrorHandStatic->ErrorHandler(ERROR_EVOLUTION_CARD, &targetClient);
 	return false;
 }
 // 예외처리 완료된 함수
-bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum)
+bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum, CLink* client)
 {
 	try
 	{
@@ -160,12 +160,12 @@ bool CCardManager::SaveUserCardAmount(const int& saveCardAmount, const int& user
 	}
 	catch (const std::exception&)
 	{
-		CErrorHandler::ErrorHandler(ERROR_SAVE_CARD);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_CARD_AMOUNT, client);
 		return false;
 	}
 }
 // 예외 처리 완료된 함수
-bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum)
+bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum, CLink* client)
 {
 	try
 	{
@@ -181,12 +181,12 @@ bool CCardManager::SaveUserCardExp(const int& saveExp, const int& userPKnum, con
 	}
 	catch (const std::exception&)
 	{
-		CErrorHandler::ErrorHandler(ERROR_SAVE_CARD);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_CARD_EXP, client);
 		return false;
 	}
 }
 // 예외처리 완료된 함수
-bool CCardManager::SaveUserCardEvolution(const bool & isEvolution, const int & userPKnum, const int & cardNum)
+bool CCardManager::SaveUserCardEvolution(const bool & isEvolution, const int & userPKnum, const int & cardNum, CLink* client)
 {
 	try
 	{
@@ -211,7 +211,7 @@ bool CCardManager::SaveUserCardEvolution(const bool & isEvolution, const int & u
 	}
 }
 // 예외처리 완료된 함수
-bool CCardManager::SaveUserCardStar(const int & saveStar, const int & userPKnum, const int & cardNum)
+bool CCardManager::SaveUserCardStar(const int & saveStar, const int & userPKnum, const int & cardNum, CLink* client)
 {
 	try
 	{
@@ -227,7 +227,7 @@ bool CCardManager::SaveUserCardStar(const int & saveStar, const int & userPKnum,
 	}
 	catch (const std::exception&)
 	{
-		CErrorHandler::ErrorHandler(ERROR_SAVE_CARD);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_CARD_STAR, client);
 		return false;
 	}
 }
@@ -246,7 +246,7 @@ bool CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceC
 		{
 			if (true == (*targetCardIter).get()->IsEvoution()) // 진화해야 하는 카드 인가?
 			{
-				CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
+				ErrorHandStatic->ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD, &targetClient);
 				return false;
 			}
 			int addExp = (*sourceCardIter).get()->GetCardExp();
@@ -257,19 +257,19 @@ bool CCardManager::ComposeCard(CLink & targetClient, int targetCard, int sourceC
 			if (true == (*targetCardIter).get()->IsEvoution())
 			{
 				// 진화 가능 기록 함수 호출
-				if (false == SaveUserCardEvolution(true, userPk, targetCard))
+				if (false == SaveUserCardEvolution(true, userPk, targetCard, &targetClient))
 				{
 					return false;
 				}
 			}
 			// SaveUserCardEvolution함수에서 false를 반환하지 않았다면 true가 나오므로 예외처리 안시킴
-			SaveUserCardExp(resultExp, userPk, targetCard);
+			SaveUserCardExp(resultExp, userPk, targetCard, &targetClient);
 			DecreaseCardAmount(sourceCard, targetClient);
-			CErrorHandler::ErrorHandler(SUCCES_COMPOSE_CARD);
+			ErrorHandStatic->ErrorHandler(SUCCES_COMPOSE_CARD, &targetClient);
 			return true;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_COMPOSE_NULL_CARD);
+	ErrorHandStatic->ErrorHandler(ERROR_COMPOSE_NULL_CARD, &targetClient);
 	return false;
 }
 
@@ -279,7 +279,7 @@ bool CCardManager::GacharCard(CLink & targetClient, int& resultCardNum, char*& r
 	Card* resultCard = mGacharHandler.GaCharResult(RandNumber());
 	if (nullptr == resultCard)
 	{
-		CErrorHandler::ErrorHandler(ERROR_GACHAR);
+		ErrorHandStatic->ErrorHandler(ERROR_GACHAR, &targetClient);
 		return false;
 	}
 	resultCardName = resultCard->mName;
@@ -303,23 +303,23 @@ bool CCardManager::EvolutionCard(CLink & targetClient, int targetCard)
 		{
 			if (!(*targetCardIter).get()->IsEvoution())
 			{
-				CErrorHandler::ErrorHandler(ERROR_COMPOSE_NO_EVOUTION_CARD);
+				ErrorHandStatic->ErrorHandler(ERROR_COMPOSE_NO_EVOUTION_CARD, &targetClient);
 				return false;
 			}
 			const int curStar = IncreaseCardStar(targetCard, targetClient);
-			SaveUserCardStar(curStar, userPk, targetCard);
-			SaveUserCardEvolution(false, userPk, targetCard);
+			SaveUserCardStar(curStar, userPk, targetCard, &targetClient);
+			SaveUserCardEvolution(false, userPk, targetCard, &targetClient);
 			DecreaseCardAmount(targetCard, targetClient);
-			CErrorHandler::ErrorHandler(SUCCES_EVOLUTION_CARD);
+			ErrorHandStatic->ErrorHandler(SUCCES_EVOLUTION_CARD, &targetClient);
 			return true;
 		}
 		else
 		{
-			CErrorHandler::ErrorHandler(ERROR_CARD_AMOUNT_LACK);
+			ErrorHandStatic->ErrorHandler(ERROR_CARD_AMOUNT_LACK, &targetClient);
 			return false;
 		}
 	}
-	CErrorHandler::ErrorHandler(ERROR_NULL_CARD_ITERATOR);
+	ErrorHandStatic->ErrorHandler(ERROR_NULL_CARD_ITERATOR, &targetClient);
 	return false;
 }
 

@@ -1,6 +1,21 @@
 #include "ChannelManager.h"
+#include"ErrorHandler.h"
 #include"CommandController.h"
 
+void CChannelManager::PushChannel(shared_ptr<CChannel> shared_newChannel)
+{
+	if (0 >= shared_newChannel.use_count())
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_SHARED_CHANNEL_COUNT_ZORO);
+		return;
+	}
+	//{
+	// 채널이 삭제 되거나 하지 않으므로 lock 걸필요는 없다.
+	//ScopeLock<MUTEX> MU(RAII_ChannelManagerMUTEX); // lock
+	//Channels.push_back(newChannel);
+	//}// unlock
+	mChannels.push_back(shared_newChannel);
+}
 
 CChannelManager::CChannelManager()
 {

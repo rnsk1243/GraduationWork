@@ -2,13 +2,12 @@
 #pragma once
 #include<WinSock2.h>
 #include<iostream>
+#include<vector>
 using namespace std;
 #include"ConstEnumInfo.h"
 #include"RAII.h"
 #include"GaChar.h"
-#include<vector>
-#include"ErrorHandler.h"
-
+//class CErrorHandler;
 // 클라이언트가 개인적으로 가지고 있는 구조체
 struct MessageStruct
 {
@@ -53,6 +52,10 @@ public:
 		mCard(card), mAmount(amount), mExp(exp), mIsEvolution(isEvolution), mStar(star)
 	{
 	}
+	~MyCardInfo()
+	{
+
+	}
 	void IncreaseStar() { ++mStar; }
 	void IncreaseCard() { ++mAmount; }
 	void DecreaseCard() 
@@ -62,24 +65,7 @@ public:
 	int GetAmount() { return mAmount; }
 	int GetStar() { return mStar; }
 	int GetCurExp() { return mExp; }
-	bool SetExp(int addExp, int& resultExp)
-	{
-		if (1 == mIsEvolution)
-		{
-			CErrorHandler::ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
-			return false;
-		}
-		mExp += addExp;
-		if (100 <= mExp)
-		{
-			mExp = 0;
-			resultExp = mExp;
-			mIsEvolution = 1;
-			return true;
-		}
-		resultExp = mExp;
-		return true;
-	}
+	bool SetExp(int addExp, int& resultExp);
 	char* GetCardName() { return mCard.get()->mName; }
 	const int GetCardNumber() { return mCard.get()->mCardNum; }
 	const int GetCardExp() { return mCard.get()->mGiveExp; }

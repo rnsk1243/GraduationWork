@@ -12,24 +12,24 @@ int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork, vector<
 	actionNetWork.AskClient(clientSocket, MS, "ID : ");
 	id = MS.message;
 	if (0 == id.compare("9"))
-		return CErrorHandler::ErrorHandler(Cancel);
+		return ErrorHandStatic->ErrorHandler(CANCLE);
 
 	// PW 묻기
 	actionNetWork.AskClient(clientSocket, MS, "PW : ");
 	pw = MS.message;
 	if (0 == pw.compare("9"))
-		return CErrorHandler::ErrorHandler(Cancel);
+		return ErrorHandStatic->ErrorHandler(CANCLE);
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 2, id, pw))
 	{
 		cout << "로그인 성공" << endl;
 		actionNetWork.NotificationClient(clientSocket, MS, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
 		strcpy(MS.message, id.c_str());
-		return CErrorHandler::ErrorHandler(SUCCES_LOGIN);
+		return ErrorHandStatic->ErrorHandler(SUCCES_LOGIN);
 	}
 	cout << "아이디 혹은 비밀번호가 틀립니다." << endl;
 	actionNetWork.NotificationClient(clientSocket, MS, "아이디 혹은 비밀번호가 틀립니다.");
 	strcpy(MS.message, id.c_str());
-	return CErrorHandler::ErrorHandler(ERROR_LOGIN);
+	return ErrorHandStatic->ErrorHandler(ERROR_LOGIN);
 }
 
 
@@ -39,22 +39,22 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 	nextUserNum = IntToString(NextUserNum);
 	// ID 묻기
 	if (SUCCES_ASKCLIENT != actionNetWork.AskClient(clientSocket, MS, "원하는 ID : "))
-		return CErrorHandler::ErrorHandler(ERROR_RECV);
+		return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_RECV);
 	id = MS.message;
 	if (0 == id.compare("9"))
-		return CErrorHandler::ErrorHandler(Cancel);
+		return ErrorHandStatic->ErrorHandler(CANCLE);
 
 	if(SUCCES_ASKCLIENT != actionNetWork.AskClient(clientSocket, MS, "PW 입력 : "))
-		return CErrorHandler::ErrorHandler(ERROR_RECV);
+		return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_RECV);
 	pw = MS.message;
 	if (0 == pw.compare("9"))
-		return CErrorHandler::ErrorHandler(Cancel);
+		return ErrorHandStatic->ErrorHandler(CANCLE);
 
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 1, id))
 	{
 		cout << "id 중복 입니다." << endl;
 		actionNetWork.NotificationClient(clientSocket, MS, "id 중복 입니다.");
-		return CErrorHandler::ErrorHandler(OVERLAPID);
+		return ErrorHandStatic->ErrorHandler(OVERLAPID);
 	}
 	
 	if (WriteHandlerStatic->Write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) /*&& WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory)*/)
@@ -73,9 +73,9 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 	{
 		cout << "회원가입 실패" << endl;
 		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 실패 입니다.");
-		return CErrorHandler::ErrorHandler(ERROR_JOIN);
+		return ErrorHandStatic->ErrorHandler(ERROR_JOIN);
 	}
-	return CErrorHandler::ErrorHandler(ERROR_EXCEPTION);
+	return ErrorHandStatic->ErrorHandler(ERROR_EXCEPTION);
 }
 
 int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & actionNetWork)
@@ -95,10 +95,10 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 		SendMenuInfo(clientSocket, actionNetWork);
 		return 9;
 	default:
-
+		cout << "잘 못 입력" << endl;
 		break;
 	}
-	return CErrorHandler::ErrorHandler(ERROR_MENUOUT);
+	return ErrorHandStatic->ErrorHandler(ERROR_MENUOUT);
 }
 
 int CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
@@ -110,7 +110,10 @@ int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWo
 {
 	int resultLoginFunc = 0;
 	SendMenuInfo(clientSocket, actionNetWork);
-	actionNetWork.Recvn(clientSocket, getMessageStruct());
+	if (ERROR_NULL_LINK_RECV == actionNetWork.Recvn(clientSocket, getMessageStruct()))
+	{
+		return ERROR_NULL_LINK_RECV;
+	}
 	int choose = ChooseMenu(getMessageStruct().message, clientSocket, actionNetWork);
 	switch (choose)
 	{
@@ -120,21 +123,21 @@ int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWo
 		{
 			return SUCCES_LOGIN;
 		}
-		else if (Cancel == resultLoginFunc)
+		else if (CANCLE == resultLoginFunc)
 		{
-			return Cancel;
+			return CANCLE;
 		}
 		else if (ERROR_LOGIN == resultLoginFunc)
 		{
 			return ERROR_LOGIN;
 		}
-		return ERROR_RECV;
+		return ERROR_NULL_LINK_RECV;
 	case 2:
 		return JoinMember(clientSocket, actionNetWork, tempUserInfo);
 	case 9:
-		return Cancel;
+		return CANCLE;
 	default:
 		return ERROR_WRONG_INPUT;
 	}
-	return ERROR_SEND;
+	return ERROR_NULL_LINK_SEND;
 }

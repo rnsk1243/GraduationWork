@@ -1,5 +1,4 @@
 #include "ChannelHandler.h"
-#include"ErrorHandler.h"
 
 CChannelHandler::CChannelHandler()
 {
@@ -19,7 +18,7 @@ bool CChannelHandler::MoveNextChannel(shared_ptr<CLink> shared_clientInfo, CChan
 	}
 	else
 	{
-		CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 		return false;
 	}
 	// channel¸®½ºÆ® iterator

@@ -4,7 +4,6 @@
 #include<memory>
 using namespace std;
 #include"Card.h"
-
 class CGaChar
 {
 public:

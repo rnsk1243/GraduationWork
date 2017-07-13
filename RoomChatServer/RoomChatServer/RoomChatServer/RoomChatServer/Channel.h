@@ -4,9 +4,9 @@
 #include<iostream>
 #include"Link.h"
 #include"RAII.h"
-#include"ErrorHandler.h"
 using namespace std;
 class CLink;
+
 //typedef list<CLink*> LinkList;
 typedef list<shared_ptr<CLink>> LinkList;
 typedef LinkList::iterator LinkListIt;
@@ -30,16 +30,7 @@ public:
 #pragma endregion
 
 #pragma region push,erase ÇÔ¼ö
-	void PushClient(shared_ptr<CLink> shared_client)
-	{
-		if (0 >= shared_client.use_count())
-		{
-			CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
-			return;
-		}
-		ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
-		mClientInfos.push_back(shared_client);
-	}
+	void PushClient(shared_ptr<CLink> shared_client);
 	LinkListIt EraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;

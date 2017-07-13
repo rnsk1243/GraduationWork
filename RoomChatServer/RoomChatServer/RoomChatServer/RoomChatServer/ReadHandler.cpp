@@ -169,7 +169,7 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 	Card* pushCard;
 	if (!ReadUserCardLine(textFileName, client->GetMyPKNumber(), userCardInfo))
 	{
-		CErrorHandler::ErrorHandler(ERROR_INIT_USER_CARD);
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_USER_CARD, client);
 		return false;
 	}
 	if (!client->IsEmptyCard())

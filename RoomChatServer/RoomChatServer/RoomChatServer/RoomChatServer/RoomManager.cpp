@@ -1,4 +1,5 @@
 #include "RoomManager.h"
+#include"ErrorHandler.h"
 #include "RoomHandler.h"
 
 CRoomManager::CRoomManager()

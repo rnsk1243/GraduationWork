@@ -4,19 +4,20 @@ enum EnumErrorCode
 {
 	ERROR_VALUE_RETURN = -1,
 	// 취소
-	Cancel = 4444,
+	CANCLE = 4444,
 
 	// recv관련 10~19 return
 	SUCCES_RECV = 10,
 	// recv 에러
 	ERROR_RECV = 11,
-
+	ERROR_NULL_LINK_RECV = 13,
 	// enum으로 만들어라
 
 	// send관련 20~29 return
 	SUCCES_SEND = 20,
 	// send 에러
 	ERROR_SEND = 21,
+	ERROR_NULL_LINK_SEND = 23, // link 없이 보내기 실패
 
 	///////////// 기타 관련 60~89 return////////////
 	// 잘못 입력
@@ -44,13 +45,13 @@ enum EnumErrorCode
 	ERROR_MAKE_ROOM = 95,
 	ERROR_ENTER_ROOM = 97,
 	ERROR_DELETE_SOCKET = 99,
-	ERROR_SHARED_COUNT_ZORO = 101,
+	ERROR_SHARED_LINK_COUNT_ZORO = 101,
 	ERROR_MONEY_FAIL = 103,
 	SUCCES_COMMAND_MESSAGE = 104,
 	ERROR_GACHAR = 105,
 	SUCCES_GACHAR = 106,
 	ERROR_NEWCARD = 107, // 서버 .txt 파일에 저장 할 준비가 되어있지 않음
-	ERROR_SAVE_CARD = 109, // 유저 보유 카드 저장 에러
+	ERROR_SAVE_CARD_AMOUNT = 109, // 유저 보유 카드 갯수 저장 에러
 	ERROR_SAVE_EXP = 111,
 	ERROR_SAVE_EVOLUTION = 113,
 	ERROR_SAVE_STAR = 115,
@@ -73,6 +74,10 @@ enum EnumErrorCode
 	SUCCES_SET_EXP = 142, // set exp 성공
 	ERROR_SAVE = 143, // save 에러
 	ERROR_CARD_AMOUNT_LACK = 145, // 무언가 하는데 필요한 카드가 부족
+	ERROR_SHARED_ROOM_COUNT_ZORO = 147, // roomList에 
+	ERROR_SAVE_CARD_EXP = 149,
+	ERROR_SAVE_CARD_STAR = 151,
+	ERROR_SHARED_CHANNEL_COUNT_ZORO = 153,
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

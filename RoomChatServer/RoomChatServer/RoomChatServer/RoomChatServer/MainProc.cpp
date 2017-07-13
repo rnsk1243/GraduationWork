@@ -34,7 +34,7 @@ void printVersionInfo()
 	// 파일로부터 버전정보데이터의 크기가 얼마인지를 구합니다.
 	infoSize = GetFileVersionInfoSize(name, 0);
 	if (infoSize == 0) return;
-
+	
 	// 버퍼할당
 	buffer = new char[infoSize];
 	if (buffer)
@@ -75,12 +75,13 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	while (SUCCES_LOGIN != isLogin)
 	{
 		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork, userInfo);
-		CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
-		if (ERROR_RECV == isLogin || ERROR_SEND == isLogin)
+		if (ERROR_NULL_LINK_RECV == isLogin || ERROR_NULL_LINK_SEND == isLogin)
 		{
-			return CErrorHandler::ErrorHandler(EnumErrorCode(isLogin));
+			cout << "종료" << endl;
+			return ErrorHandStatic->ErrorHandler(EnumErrorCode(isLogin));
 			//_endthreadex(0);
 		}
+		ErrorHandStatic->ErrorHandler(EnumErrorCode(isLogin));
 	}
 	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], lobby.getMessageStruct().message));
 	CChannelManager& channelManager = commandController.GetChannelManager();
@@ -88,7 +89,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	// EnterChannelNum 채널에 입장
 	if (!commandController.GetChannelHandler().MoveNextChannel(shared_clientInfo, channelManager, EnterChannelNum))
 	{
-		return CErrorHandler::ErrorHandler(ERROR_ENTER_CHANNEL);
+		return ErrorHandStatic->ErrorHandler(ERROR_ENTER_CHANNEL, shared_clientInfo.get());
 	}
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())
@@ -97,7 +98,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	}
 	else
 	{
-		return CErrorHandler::ErrorHandler(ERROR_SHARED_COUNT_ZORO);
+		return ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 	}
 
 	ReadHandlerStatic->ReadUserCard(clientInfo, NameMemberCardInfoTxt);
@@ -122,7 +123,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 			{
 				if (!commandController.DeleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 				{
-					return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+					return ErrorHandStatic->ErrorHandler(ERROR_DELETE_SOCKET, clientInfo);
 					//_endthreadex(0);
 				}
 			}
@@ -132,7 +133,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
 			if (!commandController.DeleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
 			{
-				return CErrorHandler::ErrorHandler(ERROR_DELETE_SOCKET);
+				return ErrorHandStatic->ErrorHandler(ERROR_DELETE_SOCKET, clientInfo);
 				//_endthreadex(0);
 			}
 			return 0;
@@ -152,6 +153,9 @@ void main()
 
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
+	
+	ErrorHandStatic->setCommand(&commandController);
+	
 	CActionNetWork actionNetWork;
 	string strNextUserNum = ReadHandlerStatic->GetNextUserNum(MakeNextJoinNumberTxt);
 	int nextUserNum = stoi(strNextUserNum);
