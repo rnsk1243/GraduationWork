@@ -73,6 +73,9 @@
     <Filter Include="Room\RoomHandler">
       <UniqueIdentifier>{bc71e515-45b6-47a5-87da-053d9a81ff3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Goods">
+      <UniqueIdentifier>{0ef36b2a-d34d-4279-91a1-da901f031d2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Card</Filter>
+    </ClCompile>
+    <ClCompile Include="Goods.cpp">
+      <Filter>Goods</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Card</Filter>
+    </ClInclude>
+    <ClInclude Include="Goods.h">
+      <Filter>Goods</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

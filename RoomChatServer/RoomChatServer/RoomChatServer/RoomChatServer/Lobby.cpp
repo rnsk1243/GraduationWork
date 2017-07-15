@@ -59,9 +59,10 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 	
 	if (WriteHandlerStatic->Write(NameMemberInfoTxt.c_str(), 3, nextUserNum, id, pw) /*&& WriteHandlerStatic->write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory)*/)
 	{
-		if (NextUserNum > NameMemberCardInfoTxtCapacity)
+		if (NextUserNum > JoinMemberTxtCapacity)
 		{
 			WriteHandlerStatic->Write(NameMemberCardInfoTxt.c_str(), 2, nextUserNum, StartCardInventory);
+			WriteHandlerStatic->Write(NameMemberGoodsTxt.c_str(), 2, nextUserNum, StartGoodsInventory);
 		}
 		cout << "회원가입 성공" << endl;
 		WriteHandlerStatic->WriteNextJoinUserNum(MakeNextJoinNumberTxt, NextUserNum);

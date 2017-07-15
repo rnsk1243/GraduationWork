@@ -18,7 +18,7 @@ public:
 	//int writeGacharResult(const char* textFileName, const char* userName);
 	//int BeginToTargetUserLineCurserMoveSize(const char * textName, int targetUserLineNum, char * targetLine);
 	//int TargetLineToUserCurserMoveSize(const char * targetSouce, string & searchCardNum, bool & isNewCard, int & cardAmount);
-	bool WriteCard(const string& textName, int offset, int recordedNumber, int cipher);
+	bool WriteObj(const string& textName, int offset, int recordedNumber, int cipher);
 	bool WriteNextJoinUserNum(const string& textFileName,const int& nextUserNum);
 };
 static CWriteHandler* WriteHandlerStatic = CWriteHandler::GetInstance();

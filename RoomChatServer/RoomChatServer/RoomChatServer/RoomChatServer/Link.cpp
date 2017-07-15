@@ -6,8 +6,9 @@ CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name) :
 	mClientSocket(clientSocket),
 	mMyChannelNum(0),
 	mMyRoomNum(NoneRoom),
-	mMyMoney(StartMoney),
-	mMyPKNumber(stoi(strPKNumber))
+	mMyPKNumber(stoi(strPKNumber)),
+	mIsInitCards(false),
+	mIsInitGoods(false)
 {
 	size_t length = strlen(name) + 1;
 	mName = new char[length];
@@ -33,11 +34,26 @@ void CLink::EmptyCard()
 
 void CLink::InitCard(Card * card, int amount, int exp, int evol, int star)
 {
+	if (true == mIsInitCards) // 초기화 한적이 있다면 에러
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_CARD_TRUE, this);
+		return;
+	}
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
 	shared_ptr<Card> newCard_(card);
 	MyCardInfo* cardInfo = new MyCardInfo(newCard_, amount, exp, evol, star);
 	shared_ptr<MyCardInfo> newCard(cardInfo);
 	mMyCards.push_back(newCard);
+}
+
+bool CLink::InitGoods(int initMoney)
+{
+	if (true == mIsInitGoods)
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_GOODS_TRUE, this);
+		return false;
+	}
+	return InitMoney(initMoney);
 }
 
 bool MyCardInfo::SetExp(int addExp, int & resultExp)

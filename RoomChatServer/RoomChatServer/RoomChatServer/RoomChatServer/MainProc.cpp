@@ -101,8 +101,10 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		return ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 	}
 
-	ReadHandlerStatic->ReadUserCard(clientInfo, NameMemberCardInfoTxt);
-
+	if (false == ReadHandlerStatic->ReadUserCard(clientInfo, NameMemberCardInfoTxt))
+		return 0;
+	if (false == ReadHandlerStatic->ReadUserGoods(clientInfo, NameMemberGoodsTxt))
+		return 0;
 	cout << "========== 보유 카드 =============" << endl;
 
 	MyCardVectorIt cardBegin = clientInfo->GetIterMyCardBegin();
@@ -113,7 +115,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		cout << (*cardBegin).get()->GetAmount() << endl;
 	}
 	cout << "==================================" << endl;
-
+	cout << "보유 재화 = " << clientInfo->GetMyMoney() << endl;
 	while (true)
 	{
 		int isRecvSuccesResultValue = actionNetWork.Recvn(shared_clientInfo, commandController);

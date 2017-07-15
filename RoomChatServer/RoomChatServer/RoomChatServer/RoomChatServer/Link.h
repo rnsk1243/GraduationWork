@@ -7,6 +7,7 @@ using namespace std;
 #include"ConstEnumInfo.h"
 #include"RAII.h"
 #include"GaChar.h"
+#include"Goods.h"
 //class CErrorHandler;
 // 클라이언트가 개인적으로 가지고 있는 구조체
 struct MessageStruct
@@ -89,6 +90,7 @@ typedef MyCardVector::iterator MyCardVectorIt;
 
 class CLink
 {
+private:
 	char* mName;
 	// 현재 내가 속한 방 번호
 	int mMyRoomNum;
@@ -97,12 +99,17 @@ class CLink
 	// 클라이언트 소켓
 	SOCKET& mClientSocket;
 	MessageStruct mMS;
-	// 나의 골드
-	int mMyMoney;
+	// 나의 재화
+	CGoods mMyGoods;
 	MyCardVector mMyCards;
 	MUTEX mRAII_LinkMUTEX;
 	// 내 회원번호
 	const int mMyPKNumber;
+	bool mIsInitCards; // 카드 초기화 했나?
+	bool mIsInitGoods; // 재화 초기화 했나?
+	bool InitMoney(int money) { return mMyGoods.InitMoney(money); }
+	bool AddMoney(const int& addMoney) { return mMyGoods.AddMyMoney(addMoney, this); }
+	bool MinusMyMoney(const int& minusMoney) { return mMyGoods.MinusMyMoney(minusMoney, this); }
 public:
 	CLink(SOCKET& clientSocket, string strPKNumber, char* name);
 	CLink(const CLink&) = delete;
@@ -117,15 +124,21 @@ public:
 	void SetDefaultName() { if (nullptr == mName) { mName = "이름없음"; } }
 	void SetMyRoomNum(int myRoomNum) { mMyRoomNum = myRoomNum; }
 	void SetMyChannelNum(int myChannelNum) { mMyChannelNum = myChannelNum; }
-	bool IsMoneyOKGaChar() { return mMyMoney >= CardCost; } // 가챠 할 수 있나?
-	void PayCardGachar() { if (IsMoneyOKGaChar()) { mMyMoney -= CardCost; } }
+	bool IsMoneyOKGaChar() { return GetMyMoney() >= CardCost; } // 가챠 할 수 있나?
+	bool PayCardGachar() { if (IsMoneyOKGaChar()) { return MinusMyMoney(CardCost); } }
 	MyCardVectorIt GetIterMyCardBegin() { return mMyCards.begin(); }
 	MyCardVectorIt GetIterMyCardEnd() { return mMyCards.end(); }
 	bool IsEmptyCard() { return mMyCards.empty(); }
+	bool IsZeroMoney() { return mMyGoods.IsZeroMoney(); }
+	bool SetZeroMoney() { return mMyGoods.SetZeroMoney(this); }
+	const int GetMyMoney() { return mMyGoods.GetMyMoney(); }
 	void EmptyCard();
 	const int GetMyPKNumber()const { return mMyPKNumber; }
 #pragma endregion
 	void InitCard(Card* card, int amount = 0, int exp = 0, int evol = 0, int star = 0);
+	bool InitGoods(int initMoney);
+	void SetInitCards() { mIsInitCards = true; }
+	void SetInitGoods() { mIsInitGoods = true; }
 	void ChangeName(const string& newName)
 	{
 		size_t size = strlen(newName.c_str()) + 1;

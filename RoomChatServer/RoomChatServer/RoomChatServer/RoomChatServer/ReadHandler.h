@@ -10,8 +10,8 @@ using namespace std;
 class CReadHandler
 {
 	CReadHandler();
-	// 유저 카드 라인 가져오기
-	bool ReadUserCardLine(const string& textFileName, const int& userPKNum, vector<string>& targetTemp);
+	// 유저 객체 라인 가져오기
+	bool ReadUserObjectLine(const string& textFileName, const int& userPKNum, vector<string>& targetTemp);
 	// 마지막 라인 가져오기
 	const string GetLastLine(const string& textFileName);
 public:
@@ -25,6 +25,8 @@ public:
 	vector<string> Parse(const string& str, const char& ch);
 	// 유저 카드 읽기
 	bool ReadUserCard(CLink* client, const string& textFileName);
+	// 유저 재화 읽기
+	bool ReadUserGoods(CLink* client, const string& textFileName);
 	// 다음 유저 번호 가져오기
 	const string GetNextUserNum(const string& textFileName);
 	//// 스트링id, 스트링password

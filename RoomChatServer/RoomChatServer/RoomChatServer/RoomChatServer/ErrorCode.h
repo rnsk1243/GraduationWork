@@ -78,6 +78,19 @@ enum EnumErrorCode
 	ERROR_SAVE_CARD_EXP = 149,
 	ERROR_SAVE_CARD_STAR = 151,
 	ERROR_SHARED_CHANNEL_COUNT_ZORO = 153,
+	ERROR_INIT_USER_GOODS = 155, // 유저 재화 초기화 실패
+	ERROR_ADD_MONEY_MAX = 157, // 유저 머니 최대치라서 추가 불가
+	ERROR_MINUS_MONEY_MIN = 159, // 유저 머니 최소치라서 감소 불가
+	ERROR_READ_GOODS_TXT_INDEX_OUTOFLANGE = 161, // 재화 txt읽었지만 인덱스를 벗어남
+	ERROR_INIT_CARD_TRUE = 163, // 이미 카드 초기화가 되어있어서 더 이상 초기화할 수 없음.
+	ERROR_INIT_GOODS_TRUE = 165, // 이미 재화 초기화가 되어있어서 더 이상 초기화할 수 없음.
+	ERROR_SAVE_TXT_CAPACITY_CIPHER = 167, // 저장하려는 숫자 자릿수와 txt에 자릿수 공간 틀림
+	ERROR_INT_TO_ALPHABET_OUT_RANGE_MONEY = 169, // 돈을 문자로 바꾸는 범위 초과
+	ERROR_CALC_CIPHER_MINUS_NUMBER = 171, // 자릿수 계산에 음수 들어옴.
+	ERROR_MAXCIPHER_OVER = 173, // 최대 자릿수 초과
+	ERROR_VALID_NUMBER_OUT_OF_RANGE = 175, // 유효 숫자 범위 초과
+	ERROR_SAVE_MONEY = 177, // 돈 저장 실패
+	ERROR_INIT_GOODS = 179, // 재화 초기화 실패
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

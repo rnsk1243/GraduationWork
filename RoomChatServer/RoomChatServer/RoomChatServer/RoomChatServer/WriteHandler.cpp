@@ -122,31 +122,23 @@ bool CWriteHandler::Write(const char * textFileName, int count, ...)
 //	return offset;
 //}
 
-// 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록할숫자, 자릿수)
 // 예외처리 완료된 함수
-bool CWriteHandler::WriteCard(const string& textName, int offset, int recordedNumber, int cipher)
+// 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록할숫자, 자릿수)
+bool CWriteHandler::WriteObj(const string& textName, int offset, int recordedNumber, int maxCipher)
 {
-	char chCardAmount[3];
-	if (2 <= cipher)
+	char charObj[20];
+	if (false == IntToAlphabet(recordedNumber, maxCipher, charObj))
 	{
-		if (false == IntToAlphabet(recordedNumber, chCardAmount))
-		{
-			return false;
-		}
+		return false;
 	}
-	else
-	{
-		_itoa_s(recordedNumber, chCardAmount, 10);
-		chCardAmount[1] = '\0';
-	}
-	string strCardAmount(chCardAmount);
-	string result = strCardAmount;
+	string strObj(charObj);
 
 	ofstream output(textName, ios::out | ios::in);
 
 	output.seekp(offset, ios::beg);
 
-	const char* doWrite = result.c_str();
+	const char* doWrite = strObj.c_str();
+	cout << "기록 될 문자열 = " << doWrite << endl;
 	output.write(doWrite, strlen(doWrite));
 	output.close();
 	return true;

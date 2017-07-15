@@ -80,7 +80,10 @@ CErrorHandler * CErrorHandler::GetInstance()
 
 void CErrorHandler::setCommand(CCommandController * command)
 {
-	mCommandPtr = command;
+	if (nullptr == mCommandPtr)
+	{
+		mCommandPtr = command;
+	}
 }
 
 EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, CLink * client)
@@ -92,6 +95,10 @@ EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, CLink * client)
 
 	switch (code)
 	{
+	case ERROR_VALID_NUMBER_OUT_OF_RANGE:
+	case ERROR_MAXCIPHER_OVER:
+	case ERROR_CALC_CIPHER_MINUS_NUMBER:
+	case ERROR_SAVE_TXT_CAPACITY_CIPHER:
 	case ERROR_CIPHER_OUT_RANGE:
 	case ERROR_INT_TO_ALPHABET_OUT_RANGE:
 	case ERROR_SHARED_CHANNEL_COUNT_ZORO:

@@ -127,7 +127,7 @@ const string CReadHandler::GetLastLine(const string & textFileName)
 }
 
 
-bool CReadHandler::ReadUserCardLine(const string& textFileName, const int& userPKNum, vector<string>& targetTemp)
+bool CReadHandler::ReadUserObjectLine(const string& textFileName, const int& userPKNum, vector<string>& targetTemp)
 {
 	string strUserName = IntToString(userPKNum);
 	ifstream inFile(textFileName);
@@ -167,7 +167,7 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 {
 	vector<string> userCardInfo;
 	Card* pushCard;
-	if (!ReadUserCardLine(textFileName, client->GetMyPKNumber(), userCardInfo))
+	if (!ReadUserObjectLine(textFileName, client->GetMyPKNumber(), userCardInfo))
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_INIT_USER_CARD, client);
 		return false;
@@ -182,14 +182,14 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 	CardVectorIt CardBegin = CardStatic->GetCardListIterBegin();
 	CardVectorIt CardEnd = CardStatic->GetCardListIterEnd();
 
-	++userCardInfoIterBegin; // 아이디 부분 넘김
+	++userCardInfoIterBegin; // pk 부분 넘김
 	for (; userCardInfoIterBegin != userCardInfoIterEnd; ++userCardInfoIterBegin)
 	{
 		// (카드번호/카드갯수)을 '/'을 기준으로 자름
 		vector<string> invenBox = ReadHandlerStatic->Parse((*userCardInfoIterBegin), '/');
 		//cout << "카드번호 = " << invenBox[0].c_str() << endl;
 		//cout << "카드갯수 = " << invenBox[1].c_str() << endl;
-		int myCardNum = stoi(invenBox[IndexCardInfoTxtNumber]);
+		//int myCardNum = stoi(invenBox[IndexCardInfoTxtNumber]);
 		int myCardAmount = 0;
 		int myCardExp = 0;
 		int myCardEvol = 0;
@@ -214,7 +214,47 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 			++CardBegin;
 		}
 	}
+	client->SetInitCards();
 	return true;
+}
+
+bool CReadHandler::ReadUserGoods(CLink * client, const string & textFileName)
+{
+	typedef vector<string> goodsInfoVec;
+	typedef goodsInfoVec::iterator goodsInfoVecIter;
+
+	goodsInfoVec userGoodsInfo;
+	if (!ReadUserObjectLine(textFileName, client->GetMyPKNumber(), userGoodsInfo))
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_USER_GOODS, client);
+		return false;
+	}
+	if (!client->IsZeroMoney())
+	{
+		client->SetZeroMoney();
+	}
+	
+	if (IndexGoodsInfoTxtMoney < userGoodsInfo.size())
+	{
+		int myMoney = stoi(userGoodsInfo[IndexGoodsInfoTxtMoney]);
+		cout << "읽어 온 돈 = " << myMoney << endl;
+		if (client->InitGoods(myMoney))
+		{
+			client->SetInitGoods();
+			return true;
+		}
+		else
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_INIT_GOODS, client);
+			return false;
+		}
+	}
+	else
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_READ_GOODS_TXT_INDEX_OUTOFLANGE, client);
+		return false;
+	}
+	return false;
 }
 
 const string CReadHandler::GetNextUserNum(const string & textFileName)

@@ -163,6 +163,7 @@
     <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="GaChar.h" />
+    <ClInclude Include="Goods.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="MinidumpHelp.h" />
     <ClInclude Include="RAII.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="ChannelManager.cpp" />
     <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="GaChar.cpp" />
+    <ClCompile Include="Goods.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MinidumpHelp.cpp" />
     <ClCompile Include="ReadHandler.cpp" />

@@ -8,19 +8,19 @@ class CCardManager
 {
 private:
 	CGaChar mGacharHandler;
-	bool GetMoveCurserSize(const int& userPK, WhatCardCurserSize whatCardInfoCurser, const int & cardNum, int& resultCursorSize);
+	bool GetMoveCurserSize(const int& userPK, WhatCardCursorSize whatCardInfoCurser, const int & cardNum, int& resultCursorSize);
 	MyCardVectorIt IsHaveCard(int cardNum, CLink& targetClient);
 	bool IncreaseCardAmount(int cardNum, CLink& targetClient); // 카드 갯수 증가
 	bool DecreaseCardAmount(int cardNum, CLink& targetClient); // 카드 갯수 감소
 	bool IncreaseCardStar(int cardNum, CLink& targetClient); // 별 증가
 	// 유저 카드 갯수 기록
-	bool SaveUserCardAmount(const int& saveCardAmount, const int& userPKnum, const int& cardNum, CLink* targetClient);
+	bool SaveUserCardAmount(const int& saveCardAmount, const int& cardNum, CLink* targetClient);
 	// 유저 카드 경험치 기록
-	bool SaveUserCardExp(const int& saveExp, const int& userPKnum, const int& cardNum, CLink* client);
+	bool SaveUserCardExp(const int& saveExp, const int& cardNum, CLink* client);
 	// 유저 카드 진화 유무 기록
-	bool SaveUserCardEvolution(const bool& isEvolution, const int& userPKnum, const int& cardNum, CLink* client);
+	bool SaveUserCardEvolution(const bool& isEvolution, const int& cardNum, CLink* client);
 	// 유저 카드 별 기록
-	bool SaveUserCardStar(const int& saveStar, const int& userPKnum, const int& cardNum, CLink* client);
+	bool SaveUserCardStar(const int& saveStar, const int& cardNum, CLink* client);
 public:
 	CCardManager();
 	~CCardManager();
