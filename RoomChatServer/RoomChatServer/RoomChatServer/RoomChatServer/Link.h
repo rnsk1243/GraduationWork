@@ -43,14 +43,14 @@ struct MessageStruct
 class MyCardInfo
 {
 private:
-	shared_ptr<Card> mCard;
+	int mCardNumber; // 카드번호
 	int mAmount; // 이 카드에 대한 보유 갯수
 	int mExp; // 이 카드에 대한 경험치
 	int mIsEvolution; // 이 카드 진화 가능?
 	int mStar; // 몇 성?
 public:
-	MyCardInfo(const shared_ptr<Card>& card, int amount = 0, int exp = 0, int isEvolution = 0, int star = 0):
-		mCard(card), mAmount(amount), mExp(exp), mIsEvolution(isEvolution), mStar(star)
+	MyCardInfo(int cardNumber, int amount = 0, int exp = 0, int isEvolution = 0, int star = 0):
+		mCardNumber(cardNumber), mAmount(amount), mExp(exp), mIsEvolution(isEvolution), mStar(star)
 	{
 	}
 	~MyCardInfo()
@@ -67,9 +67,9 @@ public:
 	int GetStar() { return mStar; }
 	int GetCurExp() { return mExp; }
 	bool SetExp(int addExp, int& resultExp);
-	char* GetCardName() { return mCard.get()->mName; }
-	const int GetCardNumber() { return mCard.get()->mCardNum; }
-	const int GetCardExp() { return mCard.get()->mGiveExp; }
+	char* GetCardName() { return CardStatic->GetCardName(mCardNumber); }
+	const int GetCardNumber() { return mCardNumber; }
+	const int GetCardExp() { return CardStatic->GetCardExp(mCardNumber); }
 	bool IsEvoution()
 	{
 		if (1 == mIsEvolution)
@@ -105,11 +105,16 @@ private:
 	MUTEX mRAII_LinkMUTEX;
 	// 내 회원번호
 	const int mMyPKNumber;
+	// 게임할 준비 됐나?
+	bool mIsGameOK;
+	// 내가 배팅에 낸 카드번호
+	int mBattingCardNum;
 	bool mIsInitCards; // 카드 초기화 했나?
 	bool mIsInitGoods; // 재화 초기화 했나?
 	bool InitMoney(int money) { return mMyGoods.InitMoney(money); }
 	bool AddMoney(const int& addMoney) { return mMyGoods.AddMyMoney(addMoney, this); }
 	bool MinusMyMoney(const int& minusMoney) { return mMyGoods.MinusMyMoney(minusMoney, this); }
+	bool IsHaveCard(int cardNum);
 public:
 	CLink(SOCKET& clientSocket, string strPKNumber, char* name);
 	CLink(const CLink&) = delete;
@@ -125,7 +130,7 @@ public:
 	void SetMyRoomNum(int myRoomNum) { mMyRoomNum = myRoomNum; }
 	void SetMyChannelNum(int myChannelNum) { mMyChannelNum = myChannelNum; }
 	bool IsMoneyOKGaChar() { return GetMyMoney() >= CardCost; } // 가챠 할 수 있나?
-	bool PayCardGachar() { if (IsMoneyOKGaChar()) { return MinusMyMoney(CardCost); } }
+	bool PayCardGachar();
 	MyCardVectorIt GetIterMyCardBegin() { return mMyCards.begin(); }
 	MyCardVectorIt GetIterMyCardEnd() { return mMyCards.end(); }
 	bool IsEmptyCard() { return mMyCards.empty(); }
@@ -134,11 +139,17 @@ public:
 	const int GetMyMoney() { return mMyGoods.GetMyMoney(); }
 	void EmptyCard();
 	const int GetMyPKNumber()const { return mMyPKNumber; }
-#pragma endregion
-	void InitCard(Card* card, int amount = 0, int exp = 0, int evol = 0, int star = 0);
-	bool InitGoods(int initMoney);
 	void SetInitCards() { mIsInitCards = true; }
 	void SetInitGoods() { mIsInitGoods = true; }
+	void SetReadyGame() { mIsGameOK = true; }
+	void SetNoReadyGame() { mIsGameOK = false; }
+	bool GetReadyGame() { return mIsGameOK; }
+	bool SetMyBattingCard(int cardNum);
+	bool GetReadyBatting();
+	int GetMyBattingCardNumber();
+#pragma endregion
+	void InitCard(int cardName, int amount = 0, int exp = 0, int evol = 0, int star = 0);
+	bool InitGoods(int initMoney);
 	void ChangeName(const string& newName)
 	{
 		size_t size = strlen(newName.c_str()) + 1;

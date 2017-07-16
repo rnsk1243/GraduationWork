@@ -91,6 +91,9 @@ enum EnumErrorCode
 	ERROR_VALID_NUMBER_OUT_OF_RANGE = 175, // 유효 숫자 범위 초과
 	ERROR_SAVE_MONEY = 177, // 돈 저장 실패
 	ERROR_INIT_GOODS = 179, // 재화 초기화 실패
+	ERROR_ROOM_ENTRER_BATTING_MONEY = 181, // 룸에 들어가는데 배팅금액 부족
+	ERROR_ROOM_NULL = 183, // 없는 방
+	ERROR_MAKE_ROOM_BATTING_MONEY_SHORTAGE = 185, // 방 만드는데 내가 가진 돈 보다 배팅금액이 더 큼
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

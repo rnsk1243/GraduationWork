@@ -166,7 +166,6 @@ bool CReadHandler::ReadUserObjectLine(const string& textFileName, const int& use
 bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 {
 	vector<string> userCardInfo;
-	Card* pushCard;
 	if (!ReadUserObjectLine(textFileName, client->GetMyPKNumber(), userCardInfo))
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_INIT_USER_CARD, client);
@@ -178,9 +177,6 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 	}
 	vector<string>::iterator userCardInfoIterBegin = userCardInfo.begin();
 	vector<string>::iterator userCardInfoIterEnd = userCardInfo.end();
-	// Card list 가져옴
-	CardVectorIt CardBegin = CardStatic->GetCardListIterBegin();
-	CardVectorIt CardEnd = CardStatic->GetCardListIterEnd();
 
 	++userCardInfoIterBegin; // pk 부분 넘김
 	for (; userCardInfoIterBegin != userCardInfoIterEnd; ++userCardInfoIterBegin)
@@ -190,29 +186,19 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 		//cout << "카드번호 = " << invenBox[0].c_str() << endl;
 		//cout << "카드갯수 = " << invenBox[1].c_str() << endl;
 		//int myCardNum = stoi(invenBox[IndexCardInfoTxtNumber]);
+		int myCardNumber = 0;
 		int myCardAmount = 0;
 		int myCardExp = 0;
 		int myCardEvol = 0;
 		int myCardStar = 0;
-		if (0 == invenBox[IndexCardInfoTxtAmount].compare(CardEmpty))
-		{
-			cout << "넘김!!!!!!!!!!!!!!!!!!!!" << endl;
-		}
-		else
-		{
-			myCardAmount = stoi(invenBox[IndexCardInfoTxtAmount]);
-			// exp 가져올 곳
-			myCardExp = stoi(invenBox[IndexCardInfoTxtExp]);
-			myCardEvol = stoi(invenBox[IndexCardInfoTxtEvolution]);
-			myCardStar = stoi(invenBox[IndexCardInfoTxtStar]);
-		}
-		if (CardBegin != CardEnd)
-		{
-			pushCard = (*CardBegin).get();
-			cout << "추가 한 카드 = " << pushCard->mName << " // 몇장? = " << myCardAmount << " // 경험치 = " << myCardExp << " 진화가능 = " << myCardEvol << " // 몇성 = " << myCardStar << endl;
-			client->InitCard(pushCard, myCardAmount, myCardExp, myCardEvol, myCardStar);
-			++CardBegin;
-		}
+
+		myCardNumber = stoi(invenBox[IndexCardInfoTxtNumber]);
+		myCardAmount = stoi(invenBox[IndexCardInfoTxtAmount]);
+		// exp 가져올 곳
+		myCardExp = stoi(invenBox[IndexCardInfoTxtExp]);
+		myCardEvol = stoi(invenBox[IndexCardInfoTxtEvolution]);
+		myCardStar = stoi(invenBox[IndexCardInfoTxtStar]);
+		client->InitCard(myCardNumber, myCardAmount, myCardExp, myCardEvol, myCardStar);
 	}
 	client->SetInitCards();
 	return true;

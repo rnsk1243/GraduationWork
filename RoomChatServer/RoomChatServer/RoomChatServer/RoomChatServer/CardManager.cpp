@@ -282,16 +282,16 @@ bool CCardManager::GacharCard(CLink & targetClient, int& resultCardNum, char*& r
 	// 일단 돈 부터 깍는데 성고하면
 	if (true == targetClient.PayCardGachar())
 	{
-		Card* resultCard = mGacharHandler.GaCharResult(RandNumber());
-		if (nullptr == resultCard)
+		int resultCardNumber = mGacharHandler.GaCharResult(RandNumber());
+		if (-1 == resultCardNumber)
 		{
 			ErrorHandStatic->ErrorHandler(ERROR_GACHAR, &targetClient); // 돈만 깍이고 카드는 못 뽑음. // 로그 확인해서 보상 필요
 			return false;
 		}
-		resultCardName = resultCard->mName;
-		if (IncreaseCardAmount(resultCard->mCardNum, targetClient))
+		resultCardName = CardStatic->GetCardName(resultCardNumber);
+		if (IncreaseCardAmount(resultCardNumber, targetClient))
 		{
-			resultCardNum = resultCard->mCardNum;
+			resultCardNum = resultCardNumber;
 			return true;
 		}
 	}

@@ -44,19 +44,24 @@ struct Card
 };
 
 typedef vector<shared_ptr<Card>> CardVector;
-typedef CardVector::iterator CardVectorIt;
+typedef CardVector::const_iterator CardConstVectorIt; // const_iterator 붙여서 가리키는 객체 변경 불가
 
 class CCard
 {
 	CardVector mCards;
 	CCard();
+	CardConstVectorIt GetCardListIterBegin() { return mCards.begin(); }
+	CardConstVectorIt GetCardListIterEnd() { return mCards.end(); }
+	Card* GetCard(int cardNum);
 public:
 	CCard(const CCard& copy) = delete;
 	CCard& operator=(const CCard& copy) = delete;
 	~CCard();
 	static CCard* GetInstance();
 	void PushCard(shared_ptr<Card> card);
-	CardVectorIt GetCardListIterBegin() { return mCards.begin(); }
-	CardVectorIt GetCardListIterEnd() { return mCards.end(); }
+	int GetCardStat(int cardNum);
+	int GetCardProb(int cardNum);
+	char* GetCardName(int cardNum);
+	int GetCardExp(int cardNum);
 };
 static CCard* CardStatic = CCard::GetInstance();

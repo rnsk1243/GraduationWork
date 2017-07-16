@@ -14,13 +14,16 @@ class CCommandController
 	CCardManager mCardManager;
 	int CardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
 	int ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum);
-	int EnterRoom(shared_ptr<CLink> shared_clientInfo);
+	bool EnterRoom(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
 	int ChangeChannel(shared_ptr<CLink> shared_clientInfo);
-	int MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo);
+	int MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo,const int& battingMoney);
 	int OutRoom(shared_ptr<CLink> shared_clientInfo);
 	int MergeRoom(shared_ptr<CLink> shared_clientInfo);
 	int CardCompose(shared_ptr<CLink> shared_clientInfo,const string& targetCardNum , const string& sourceCardNum, MessageStruct* sendClientMessage);
 	int CardEvolution(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, MessageStruct* sendClientMessage);
+	bool SendAllReadyGameNotice(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
+	bool IsHaveCard(shared_ptr<CLink> shared_clientInfo, int cardNum, MessageStruct* sendClientMessage);
+	bool SendBattingResult(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
 	// 명령 처리 함수(방 만들기 등)
 public:
 	CCommandController();

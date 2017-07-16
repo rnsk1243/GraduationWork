@@ -8,7 +8,6 @@ class CChannel;
 class CLink;
 using namespace std;
 
-
 class CRoom
 {
 	LinkList mClientInfos;
@@ -19,30 +18,19 @@ class CRoom
 	int mAmountPeople;
 	MUTEX mRAII_RoomMUTEX;
 	//CRITICALSECTION CT;
+	int mBattingMoney;
+	
+	//int mReadyPeopleAmount; // 준비된 사람 수
 	void IncreasePeople() { mAmountPeople++; }
 	void DecreasePeople() { if (mAmountPeople > 0) mAmountPeople--; }
 public:
 	CRoom(const CRoom&) = delete;
 	CRoom& operator=(const CRoom&) = delete;
-	CRoom(int roomNum,int channelNum, const string& roomName);
+	CRoom(int roomNum,int channelNum, const string& roomName,const int& battingMoney);
 	~CRoom();
 #pragma region push, erase 함수
-	void PushClient(shared_ptr<CLink> shared_client)
-	{
-		ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
-		mClientInfos.push_back(shared_client);
-		IncreasePeople();
-	}
-	LinkListIt EraseClient(LinkListIt myInfoListIt)
-	{
-		LinkListIt temp;
-		{
-			ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
-			temp = mClientInfos.erase(myInfoListIt);
-			DecreasePeople();
-		}
-		return temp;
-	}
+	void PushClient(shared_ptr<CLink> shared_client);
+	LinkListIt EraseClient(LinkListIt myInfoListIt);
 #pragma endregion
 #pragma region get,set 함수
 	int GetRoomNum() { return mRoomNum; }
@@ -51,30 +39,12 @@ public:
 	LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
 	LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
 	int GetAmountPeople() { return mAmountPeople; }
+	int GetBattingMoney() { return mBattingMoney; }
+	//void IncreaseReadyPeople() { ++mReadyPeopleAmount; }
 #pragma endregion
-	bool MergeRoom(CRoom* targetRoom)
-	{
-		{
-			ScopeLock<MUTEX> MU(mRAII_RoomMUTEX); // rock0
-			{
-				ScopeLock<MUTEX> MU(targetRoom->mRAII_RoomMUTEX); // rock1
-				// 실제 옮기기 전에 준비작업으로 room정보 수정
-#pragma region 옮기는 방안에 있는 클라이언트들의 room정보 수정(방 번호라든지..)
-				LinkListIt linkBegin = targetRoom->GetIterMyInfoBegin();
-				LinkListIt linkEnd = targetRoom->GetIterMyInfoEnd();
-				for (; linkBegin != linkEnd; ++linkBegin)
-				{
-					CLink* targetClient = (*linkBegin).get();
-					targetClient->SetMyRoomNum(mRoomNum);
-					IncreasePeople(); // 방 인원수 갱신
-				}
-#pragma endregion 
-//				ClientInfos.sort();
-//				targetRoom->ClientInfos.sort();
-				mClientInfos.merge(targetRoom->mClientInfos); // 실제 옮김
-			} // rock1 unlock
-		} // rock0 unlock
-		return true;
-	}
+	bool MergeRoom(CRoom* targetRoom);
+	bool IsAllReadyBatting();
+	bool IsAllReady();
+	CLink* BattingResult();
 };
 

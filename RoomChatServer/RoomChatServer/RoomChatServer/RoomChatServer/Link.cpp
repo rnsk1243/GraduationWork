@@ -8,7 +8,9 @@ CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name) :
 	mMyRoomNum(NoneRoom),
 	mMyPKNumber(stoi(strPKNumber)),
 	mIsInitCards(false),
-	mIsInitGoods(false)
+	mIsInitGoods(false),
+	mIsGameOK(false),
+	mBattingCardNum(-1)
 {
 	size_t length = strlen(name) + 1;
 	mName = new char[length];
@@ -26,13 +28,76 @@ CLink::~CLink()
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
+bool CLink::PayCardGachar()
+{
+	if (IsMoneyOKGaChar()) 
+	{ 
+		return MinusMyMoney(CardCost); 
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void CLink::EmptyCard()
 {
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
 	mMyCards.clear();
 }
 
-void CLink::InitCard(Card * card, int amount, int exp, int evol, int star)
+bool CLink::IsHaveCard(int cardNum)
+{
+	MyCardVectorIt myCardIterBegin = GetIterMyCardBegin();
+	for (; myCardIterBegin != GetIterMyCardEnd(); ++myCardIterBegin)
+	{
+		if ((*myCardIterBegin).use_count() > 0)
+		{
+			MyCardInfo* myCard = (*myCardIterBegin).get();
+			if (cardNum == myCard->GetCardNumber())
+			{
+				if (myCard->GetAmount() > 0)
+				{
+					return true;
+				}
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	return false;
+}
+
+bool CLink::SetMyBattingCard(int cardNum)
+{
+	if (true == IsHaveCard(cardNum))
+	{
+		mBattingCardNum = cardNum;
+		return true;
+	}
+	return false;
+}
+
+bool CLink::GetReadyBatting()
+{
+	if (-1 == mBattingCardNum)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+int CLink::GetMyBattingCardNumber()
+{
+	return mBattingCardNum;
+}
+
+void CLink::InitCard(int cardName, int amount, int exp, int evol, int star)
 {
 	if (true == mIsInitCards) // 초기화 한적이 있다면 에러
 	{
@@ -40,8 +105,7 @@ void CLink::InitCard(Card * card, int amount, int exp, int evol, int star)
 		return;
 	}
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
-	shared_ptr<Card> newCard_(card);
-	MyCardInfo* cardInfo = new MyCardInfo(newCard_, amount, exp, evol, star);
+	MyCardInfo* cardInfo = new MyCardInfo(cardName, amount, exp, evol, star);
 	shared_ptr<MyCardInfo> newCard(cardInfo);
 	mMyCards.push_back(newCard);
 }
