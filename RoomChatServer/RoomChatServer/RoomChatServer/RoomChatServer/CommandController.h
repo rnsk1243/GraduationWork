@@ -5,6 +5,9 @@
 #include"RoomManager.h"
 #include"CardManager.h"
 
+typedef vector<SOCKET> SocketVec;
+typedef SocketVec::iterator SocketVecIt;
+
 class CCommandController
 {
 	CChannelManager mChannelManager;
@@ -12,25 +15,25 @@ class CCommandController
 	CChannelHandler mChannelHandler;
 	CRoomHandler mRoomHandler;
 	CCardManager mCardManager;
-	int CardSelect(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
-	int ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum);
-	bool EnterRoom(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
-	int ChangeChannel(shared_ptr<CLink> shared_clientInfo);
-	int MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo,const int& battingMoney);
-	int OutRoom(shared_ptr<CLink> shared_clientInfo);
-	int MergeRoom(shared_ptr<CLink> shared_clientInfo);
-	int CardCompose(shared_ptr<CLink> shared_clientInfo,const string& targetCardNum , const string& sourceCardNum, MessageStruct* sendClientMessage);
-	int CardEvolution(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, MessageStruct* sendClientMessage);
-	bool SendAllReadyGameNotice(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
-	bool IsHaveCard(shared_ptr<CLink> shared_clientInfo, int cardNum, MessageStruct* sendClientMessage);
-	bool SendBattingResult(shared_ptr<CLink> shared_clientInfo, MessageStruct* sendClientMessage);
+	bool CardSelect(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage);
+	bool ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum);
+	bool EnterRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage);
+	bool ChangeChannel(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage);
+	bool MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo,const int& battingMoney, string& sendClientMessage);
+	bool OutRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage);
+	bool MergeRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage);
+	bool CardCompose(shared_ptr<CLink> shared_clientInfo,const string& targetCardNum , const string& sourceCardNum, string& sendClientMessage);
+	bool CardEvolution(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, string& sendClientMessage);
+	bool SendAllReadyGameNotice(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks);
+	bool IsHaveCard(shared_ptr<CLink> shared_clientInfo, int cardNum, string& sendClientMessage);
+	bool SendBattingResult(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks);
 	// 명령 처리 함수(방 만들기 등)
 public:
 	CCommandController();
 	CCommandController(const CCommandController&) = delete;
 	CCommandController& operator=(const CCommandController&) = delete;
 	~CCommandController();
-	int CommandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, MessageStruct* sendClientMessage);
+	bool CommandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, string& sendClientMessage, SocketVec& clientSocks);
 #pragma region get 함수
 	//CRoomHandlere* getRoomHandlere() { return RoomHandlere; }
 	CChannelHandler& GetChannelHandler() { return mChannelHandler; }

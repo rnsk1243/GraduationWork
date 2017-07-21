@@ -10,7 +10,8 @@ CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name) :
 	mIsInitCards(false),
 	mIsInitGoods(false),
 	mIsGameOK(false),
-	mBattingCardNum(-1)
+	mBattingCardNum(-1),
+	mMyGoods(mMyPKNumber)
 {
 	size_t length = strlen(name) + 1;
 	mName = new char[length];
@@ -24,7 +25,7 @@ CLink::~CLink()
 	cout << mName << "클라이언트 정보가 삭제 됩니다. = " << endl;
 	delete[] mName;
 	closesocket(mClientSocket);
-
+	delete &mClientSocket;
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
@@ -40,10 +41,49 @@ bool CLink::PayCardGachar()
 	}
 }
 
+bool CLink::SetZeroMoney()
+{
+	EnumErrorCode resultcode;
+	if (false == mMyGoods.SetZeroMoney(resultcode))
+	{
+		ErrorHandStatic->ErrorHandler(resultcode, this);
+	}
+	return true;
+}
+
 void CLink::EmptyCard()
 {
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
 	mMyCards.clear();
+}
+
+bool CLink::InitMoney(int money)
+{
+	if (false == mMyGoods.InitMoney(money))
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_MONEY, this);
+	}
+	return true;
+}
+
+bool CLink::AddMoney(const int & addMoney)
+{
+	EnumErrorCode resultcode;
+	if (false == mMyGoods.AddMyMoney(addMoney, resultcode))
+	{
+		ErrorHandStatic->ErrorHandler(resultcode, this);
+	}
+	return true;
+}
+
+bool CLink::MinusMyMoney(const int & minusMoney)
+{
+	EnumErrorCode resultcode;
+	if (false == mMyGoods.MinusMyMoney(minusMoney, resultcode))
+	{
+		ErrorHandStatic->ErrorHandler(resultcode, this);
+	}
+	return true;
 }
 
 bool CLink::IsHaveCard(int cardNum)

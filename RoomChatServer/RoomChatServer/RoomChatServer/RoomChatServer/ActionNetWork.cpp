@@ -127,20 +127,24 @@ int CActionNetWork::Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannel
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::Sendn(SOCKET & socket, MessageStruct & MS, int flags)
+int CActionNetWork::Sendn(SOCKET & socket, string & MS, int flags)
 {
 	int isSuccess = 0;
-	char* message = MS.message;
-	size_t size = MS.sendRecvSize;
+	const char* message = MS.c_str();
+	size_t size = strlen(message);
 	isSuccess = send(socket, (char*)&size, IntSize, flags); // 사이즈 보내기
 	if (isSuccess == SOCKET_ERROR)
+	{
 		return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);
+	}
 	int temp = 0;
 	while (true)
 	{
 		temp += send(socket, message, (int)size, flags);
 		if (temp == SOCKET_ERROR)
+		{
 			return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);
+		}
 		if (temp >= (int)size)
 			break;
 	}
@@ -174,6 +178,7 @@ int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 #pragma region 메세지 받기
 	size_t left = MS.sendRecvSize;
 	isSuccess = 0;
+	cout << "MS.message = " << MS.message << " // size = " << sizeof(MS.message) << endl;
 	while (left > 0)
 	{
 		isSuccess += recv(clientSocket, MS.message, (int)left, flags);
@@ -196,8 +201,24 @@ int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandControlle
 		string commandString = MS.message;
 		cout << "명령 내용 = " << commandString.c_str() << endl;
 		vector<string> para = ReadHandlerStatic->Parse(commandString, '/');
-		int commandResult = commandController.CommandHandling(shared_clientInfo, para, &mSendClientMessage);
-		Sendn(clientSocket, mSendClientMessage);
+		SocketVec clientSocks;
+		clientSocks.reserve(EnterRoomPeopleLimit);
+		string resultMessage;
+		// 명령 처리
+		int commandResult = commandController.CommandHandling(shared_clientInfo, para, resultMessage, clientSocks);
+		//Sendn(clientSocket, resultMessage);
+		int multiResult = MultiSendn(clientSocks, resultMessage);
+		if (ERROR_NULL_LINK_SEND == multiResult)
+		{
+			return ERROR_NULL_LINK_SEND;
+		}
+		else if (ERROR_MULTI_SEND == multiResult)
+		{
+			if (ERROR_NULL_LINK_SEND == Sendn(clientSocket, resultMessage))
+			{
+				return ERROR_NULL_LINK_SEND;
+			}
+		}
 		return SUCCES_RECV;
 	}
 #pragma endregion
@@ -242,8 +263,12 @@ int CActionNetWork::SendMyName(SOCKET& clientSocket, CLink& clientInfo, int flag
 int CActionNetWork::AskClient(SOCKET & clientSocket, MessageStruct& MS, char * question)
 {
 	strcpy(MS.message, question);
-	MS.sendRecvSize = strlen(MS.message);
-	Sendn(clientSocket, MS);
+	//MS.sendRecvSize = strlen(MS.message);
+	string message = MS.message;
+	if (ERROR_NULL_LINK_SEND == Sendn(clientSocket, message))
+	{
+		return ERROR_NULL_LINK_SEND;
+	}
 	if(ERROR_NULL_LINK_RECV == Recvn(clientSocket, MS))
 		return ERROR_NULL_LINK_RECV;
 	return SUCCES_ASKCLIENT;
@@ -252,7 +277,30 @@ int CActionNetWork::AskClient(SOCKET & clientSocket, MessageStruct& MS, char * q
 int CActionNetWork::NotificationClient(SOCKET & clientSocket, MessageStruct & MS, char * notification)
 {
 	strcpy(MS.message, notification);
-	MS.sendRecvSize = strlen(MS.message);
-	Sendn(clientSocket, MS);
+	//MS.sendRecvSize = strlen(MS.message);
+	string message = MS.message;
+	if (ERROR_NULL_LINK_SEND == Sendn(clientSocket, message))
+	{
+		return ERROR_NULL_LINK_SEND;
+	}
 	return SUCCES_NOTIFICATION;
+}
+
+int CActionNetWork::MultiSendn(SocketVec& sockets, string & MS, int flags)
+{
+
+	if (true == sockets.empty())
+	{
+		return ErrorHandStatic->ErrorHandler(ERROR_MULTI_SEND);
+	}
+	SocketVecIt iterBegin = sockets.begin();
+	string message = MS;
+	for (; iterBegin != sockets.end(); ++iterBegin)
+	{
+		if (ERROR_NULL_LINK_SEND == Sendn((*iterBegin), message, flags))
+		{
+			return ERROR_NULL_LINK_SEND;
+		}
+	}
+	return SUCCES_MULTI_SEND;
 }

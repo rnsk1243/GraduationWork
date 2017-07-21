@@ -4,7 +4,9 @@
 #include"WriteHandler.h"
 #include"Link.h"
 
-CGoods::CGoods():mGoods(0)
+CGoods::CGoods(const int& pkNumber):
+	mClientPK(pkNumber), 
+	mGoods(0)
 {
 }
 
@@ -13,16 +15,16 @@ CGoods::~CGoods()
 {
 }
 
-bool CGoods::GetMoveCurserSizeGoods(const int& userPK, WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize)
+bool CGoods::GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize)
 {
 	//int tempResult = 0;
 	int moveSize1 = 0;
-	if (false == AddCipHer(userPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
+	if (false == AddCipHer(mClientPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_CURSER_SIZE);
 		return false;
 	}
-	const int userPKnumBefore = userPK - 1;
+	const int userPKnumBefore = mClientPK - 1;
 	// 회원 번호까지 재화 템플릿 누적 마지막에 1더한 것은 pk 옆 | 때문임.
 	const int moveSize2 = (userPKnumBefore * GoodsTemplateSize) + 1;
 	const int moveCurserSize = moveSize1 + moveSize2;
@@ -40,24 +42,25 @@ bool CGoods::GetMoveCurserSizeGoods(const int& userPK, WhatGoodsCursorSize whatC
 	return true;
 }
 
-bool CGoods::SaveUserMoney(const int& saveMoney, CLink* client)
+bool CGoods::SaveUserMoney(const int & saveMoney, EnumErrorCode& resultcode)
 {
+	ScopeLock<MUTEX> MU(mRAII_GoodsMUTEX);
 	try
 	{
 		int moveCursorSize = -1;
-		int userPK = client->GetMyPKNumber();
-		if (true == GetMoveCurserSizeGoods(userPK, WhatGoodsCursorSize::Money, moveCursorSize))
+		if (true == GetMoveCurserSizeGoods(WhatGoodsCursorSize::Money, moveCursorSize))
 		{
 			if (true == WriteHandlerStatic->WriteObj(NameMemberGoodsTxt, moveCursorSize, saveMoney, MaxMoneyCipher))
 			{
 				return true;
 			}
 		}
+		resultcode = ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
 		return false;
 	}
 	catch (const std::exception&)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY, client);
+		resultcode = ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
 		return false;
 	}
 }
@@ -71,9 +74,9 @@ bool CGoods::IsZeroMoney()
 	return false;
 }
 
-bool CGoods::SetZeroMoney(CLink* client)
+bool CGoods::SetZeroMoney(EnumErrorCode& resultcode)
 {
-	if (MinusMyMoney(GetMyMoney(), client))
+	if (MinusMyMoney(GetMyMoney(), resultcode))
 	{
 		return true;
 	}
@@ -94,16 +97,15 @@ bool CGoods::InitMoney(int & initMoney)
 
 }
 
-bool CGoods::AddMyMoney (const int& addMoney, CLink* client)
+bool CGoods::AddMyMoney (const int& addMoney, EnumErrorCode& resultcode)
 {
 	int saveMoney = (GetMyMoney() + addMoney);
 	if (MaxMoney < saveMoney)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_ADD_MONEY_MAX, client);
+		resultcode = ErrorHandStatic->ErrorHandler(ERROR_ADD_MONEY_MAX);
 		return false;
 	}
-	ScopeLock<MUTEX> MU(mRAII_GoodsMUTEX);
-	if (SaveUserMoney(saveMoney, client))
+	if (SaveUserMoney(saveMoney, resultcode))
 	{
 		mGoods.money += addMoney;
 		return true;
@@ -111,18 +113,15 @@ bool CGoods::AddMyMoney (const int& addMoney, CLink* client)
 	return false;
 }
 
-bool CGoods::MinusMyMoney(int minusMoney, CLink* client)
+bool CGoods::MinusMyMoney(int minusMoney, EnumErrorCode& resultcode)
 {
 	int saveMoney = (GetMyMoney() - minusMoney);
 	if (MinMoney > saveMoney)
 	{
-		//ErrorHandStatic->ErrorHandler(ERROR_MINUS_MONEY_MIN, client);
-		//return false;
 		saveMoney = 0;
 		minusMoney = GetMyMoney();
 	}
-	ScopeLock<MUTEX> MU(mRAII_GoodsMUTEX);
-	if (SaveUserMoney(saveMoney, client)) // txt파일에 신규 돈 저장 하면
+	if (SaveUserMoney(saveMoney, resultcode)) // txt파일에 신규 돈 저장 하면
 	{
 		mGoods.money -= minusMoney; // 자료 돈 저장
 		return true;

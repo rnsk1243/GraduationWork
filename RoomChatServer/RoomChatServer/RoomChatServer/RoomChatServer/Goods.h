@@ -1,6 +1,7 @@
 #pragma once
 #include"RAII.h"
 #include"ConstEnumInfo.h"
+#include"ErrorCode.h"
 class CLink;
 
 struct Goods
@@ -16,20 +17,21 @@ struct Goods
 
 class CGoods
 {
+	const int mClientPK; // 이 재화의 주인 PK 번호
 	Goods mGoods;
 	MUTEX mRAII_GoodsMUTEX;
-	bool GetMoveCurserSizeGoods(const int& userPK, WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize);
-	bool SaveUserMoney(const int & saveMoney, CLink * client);
+	bool GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize);
+	bool SaveUserMoney(const int & saveMoney, EnumErrorCode& resultcode);
 public:
 	CGoods(const CGoods& copy) = delete;
 	CGoods& operator=(const CGoods& copy) = delete;
-	CGoods();
+	CGoods(const int& pkNumber);
 	~CGoods();
 	bool IsZeroMoney();
-	bool SetZeroMoney(CLink* client);
+	bool SetZeroMoney(EnumErrorCode& resultcode);
 	int GetMyMoney() { return mGoods.money; }
 	bool InitMoney(int& initMoney);
-	bool AddMyMoney(const int& addMoney, CLink* client);
-	bool MinusMyMoney(int minusMoney, CLink* client);
+	bool AddMyMoney(const int& addMoney, EnumErrorCode& resultcode);
+	bool MinusMyMoney(int minusMoney, EnumErrorCode& resultcode);
 };
 

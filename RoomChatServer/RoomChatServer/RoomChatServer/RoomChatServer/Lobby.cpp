@@ -85,15 +85,24 @@ int CLobby::ChooseMenu(char * message, SOCKET & clientSocket, CActionNetWork & a
 	{
 	case '1':
 		cout << "로그인" << endl;
-		actionNetWork.NotificationClient(clientSocket, MS, "로그인 화면 입니다. 9번입력 : 취소");
+		if (ERROR_NULL_LINK_SEND == actionNetWork.NotificationClient(clientSocket, MS, "로그인 화면 입니다. 9번입력 : 취소"))
+		{
+			return ERROR_NULL_LINK_SEND;
+		}
 		return 1;
 	case '2':
 		cout << "회원가입" << endl;
-		actionNetWork.NotificationClient(clientSocket, MS, "회원가입 화면 입니다. 9번입력 : 취소");
+		if (ERROR_NULL_LINK_SEND == actionNetWork.NotificationClient(clientSocket, MS, "회원가입 화면 입니다. 9번입력 : 취소"))
+		{
+			return ERROR_NULL_LINK_SEND;
+		}
 		return 2;
 	case '9':
 		cout << "이전 메뉴로 돌아가기" << endl;
-		SendMenuInfo(clientSocket, actionNetWork);
+		if (ERROR_NULL_LINK_SEND == SendMenuInfo(clientSocket, actionNetWork))
+		{
+			return ERROR_NULL_LINK_SEND;
+		}
 		return 9;
 	default:
 		cout << "잘 못 입력" << endl;

@@ -14,7 +14,10 @@ struct MessageStruct
 {
 	char* message;
 	size_t sendRecvSize;
-	MessageStruct() :message(new char[BufSize]) { cout << "메시지 생성자 호출 주소 = " << &message << endl; }
+	MessageStruct() :message(new char[BufSize]),sendRecvSize(0)
+	{
+		cout << "메시지 생성자 호출 주소 = " << &message << endl; 
+	}
 	MessageStruct& operator=(const MessageStruct& copyMS)
 	{
 		if (this == &copyMS)
@@ -43,7 +46,7 @@ struct MessageStruct
 class MyCardInfo
 {
 private:
-	int mCardNumber; // 카드번호
+	const int mCardNumber; // 카드번호
 	int mAmount; // 이 카드에 대한 보유 갯수
 	int mExp; // 이 카드에 대한 경험치
 	int mIsEvolution; // 이 카드 진화 가능?
@@ -111,9 +114,9 @@ private:
 	int mBattingCardNum;
 	bool mIsInitCards; // 카드 초기화 했나?
 	bool mIsInitGoods; // 재화 초기화 했나?
-	bool InitMoney(int money) { return mMyGoods.InitMoney(money); }
-	bool AddMoney(const int& addMoney) { return mMyGoods.AddMyMoney(addMoney, this); }
-	bool MinusMyMoney(const int& minusMoney) { return mMyGoods.MinusMyMoney(minusMoney, this); }
+	bool InitMoney(int money);
+	bool AddMoney(const int& addMoney);
+	bool MinusMyMoney(const int& minusMoney);
 	bool IsHaveCard(int cardNum);
 public:
 	CLink(SOCKET& clientSocket, string strPKNumber, char* name);
@@ -135,7 +138,7 @@ public:
 	MyCardVectorIt GetIterMyCardEnd() { return mMyCards.end(); }
 	bool IsEmptyCard() { return mMyCards.empty(); }
 	bool IsZeroMoney() { return mMyGoods.IsZeroMoney(); }
-	bool SetZeroMoney() { return mMyGoods.SetZeroMoney(this); }
+	bool SetZeroMoney();
 	const int GetMyMoney() { return mMyGoods.GetMyMoney(); }
 	void EmptyCard();
 	const int GetMyPKNumber()const { return mMyPKNumber; }

@@ -27,9 +27,9 @@ using namespace std;
 //	}
 //	return true;
 //}
-// char으로 변환할 숫자, txt에 저장되는 최대자릿수 공간, 변환되어 저장될 공간
 static bool CalcCipher(const int& number, int& resultCipher);
 
+// char으로 변환할 숫자, txt에 저장되는 최대자릿수 공간, 변환되어 저장될 공간
 static bool IntToAlphabet(const int& number, const int& maxCipher, char* chResult)
 {
 	int numberCipher = 0;

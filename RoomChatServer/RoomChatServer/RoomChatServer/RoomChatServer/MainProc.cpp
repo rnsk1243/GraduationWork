@@ -78,6 +78,8 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		if (ERROR_NULL_LINK_RECV == isLogin || ERROR_NULL_LINK_SEND == isLogin)
 		{
 			cout << "Á¾·á" << endl;
+			closesocket(clientSocket);
+			delete &clientSocket;
 			return ErrorHandStatic->ErrorHandler(EnumErrorCode(isLogin));
 			//_endthreadex(0);
 		}

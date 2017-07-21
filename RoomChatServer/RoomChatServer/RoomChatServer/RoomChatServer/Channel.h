@@ -27,6 +27,8 @@ public:
 	int GetChannelNum() { return mChannelNum; }
 	LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
 	LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
+	// 채널에 속해 있는 소켓 가져오기.(결과 담을 벡터)
+	bool GetChannelSockets(vector<SOCKET>& channelSockets);
 #pragma endregion
 
 #pragma region push,erase 함수

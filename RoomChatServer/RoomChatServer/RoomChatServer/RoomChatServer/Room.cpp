@@ -103,12 +103,12 @@ bool CRoom::IsAllReady()
 	return true;
 }
 
-CLink * CRoom::BattingResult()
+int CRoom::BattingResult()
 {
 	// 나 혼자 이면 무조건 false;
 	if (1 == mAmountPeople)
 	{
-		return nullptr;
+		return -1;
 	}
 	LinkListIt iterBegin = GetIterMyInfoBegin();
 	CLink* winner = (*iterBegin).get();
@@ -125,11 +125,31 @@ CLink * CRoom::BattingResult()
 		else
 		{
 			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-			return nullptr;
+			return -1;
 		}
 	}
-	return winner;
+	return winner->GetMyPKNumber();
 }
+
+bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets)
+{
+	LinkListIt linkBegin = GetIterMyInfoBegin();
+	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	{
+		if ((*linkBegin).use_count() > 0)
+		{
+			roomSockets.push_back((*linkBegin).get()->GetClientSocket());
+		}
+		else
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
+			return false;
+		}
+	}
+	return true;
+}
+
+
 
 bool CRoom::IsAllReadyBatting()
 {

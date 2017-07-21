@@ -21,6 +21,24 @@ CChannel::~CChannel()
 	// DeleteCriticalSection(&CS);
 }
 
+bool CChannel::GetChannelSockets(vector<SOCKET>& channelSockets)
+{
+	LinkListIt linkBegin = GetIterMyInfoBegin();
+	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	{
+		if ((*linkBegin).use_count() > 0)
+		{
+			channelSockets.push_back((*linkBegin).get()->GetClientSocket());
+		}
+		else
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
+			return false;
+		}
+	}
+	return true;
+}
+
 void CChannel::PushClient(shared_ptr<CLink> shared_client)
 {
 	if (0 >= shared_client.use_count())

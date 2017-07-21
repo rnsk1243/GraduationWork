@@ -18,6 +18,8 @@ enum EnumErrorCode
 	// send 에러
 	ERROR_SEND = 21,
 	ERROR_NULL_LINK_SEND = 23, // link 없이 보내기 실패
+	SUCCES_MULTI_SEND = 24,
+	ERROR_MULTI_SEND = 25,
 
 	///////////// 기타 관련 60~89 return////////////
 	// 잘못 입력
@@ -94,6 +96,9 @@ enum EnumErrorCode
 	ERROR_ROOM_ENTRER_BATTING_MONEY = 181, // 룸에 들어가는데 배팅금액 부족
 	ERROR_ROOM_NULL = 183, // 없는 방
 	ERROR_MAKE_ROOM_BATTING_MONEY_SHORTAGE = 185, // 방 만드는데 내가 가진 돈 보다 배팅금액이 더 큼
+	ERROR_INIT_MONEY = 187, // 돈 초기화 에러
+	ERROR_MESSAGESTRUCT_INIT = 189, // 메세지 초기화 안됨.
+	
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

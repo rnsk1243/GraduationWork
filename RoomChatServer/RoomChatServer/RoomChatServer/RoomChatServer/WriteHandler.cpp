@@ -124,10 +124,10 @@ bool CWriteHandler::Write(const char * textFileName, int count, ...)
 
 // 예외처리 완료된 함수
 // 카드 기록(기록할텍스트이름, 수정할곳까지 이동해야하는 수, 갯수수정할카드, 기록할숫자, 자릿수)
-bool CWriteHandler::WriteObj(const string& textName, int offset, int recordedNumber, int maxCipher)
+bool CWriteHandler::WriteObj(const string& textName, int offset, int recordedNumber, int cipher)
 {
 	char charObj[20];
-	if (false == IntToAlphabet(recordedNumber, maxCipher, charObj))
+	if (false == IntToAlphabet(recordedNumber, cipher, charObj))
 	{
 		return false;
 	}

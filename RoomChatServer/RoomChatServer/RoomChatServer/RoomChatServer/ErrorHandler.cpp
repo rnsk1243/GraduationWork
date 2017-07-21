@@ -92,29 +92,14 @@ EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, CLink * client)
 	{
 		return TakeSucces(code);
 	}
+	if (nullptr == client)
+	{
+		return TakeNullLinkError(code);
+	}
 
 	switch (code)
 	{
-	case ERROR_VALID_NUMBER_OUT_OF_RANGE:
-	case ERROR_MAXCIPHER_OVER:
-	case ERROR_CALC_CIPHER_MINUS_NUMBER:
-	case ERROR_SAVE_TXT_CAPACITY_CIPHER:
-	case ERROR_CIPHER_OUT_RANGE:
-	case ERROR_INT_TO_ALPHABET_OUT_RANGE:
-	case ERROR_SHARED_CHANNEL_COUNT_ZORO:
-	case ERROR_CURSER_SIZE:
-	case OVERLAPID:
-	case ERROR_EXCEPTION:
-	case ERROR_JOIN:
-	case ERROR_MENUOUT:
-	case ERROR_WRONG_INPUT:
-	case ERROR_LOGIN:
-	case CANCLE:
-	case ERROR_COMPOSE_EVOUTION_CARD:
-	case ERROR_SHARED_LINK_COUNT_ZORO:
-	case ERROR_NULL_LINK_RECV:
-	case ERROR_NULL_LINK_SEND:
-		return TakeNullLinkError(code);
+	case ERROR_INIT_MONEY:
 	case ERROR_RECV:
 	case ERROR_SEND:
 		return CriticalError(code, client);
