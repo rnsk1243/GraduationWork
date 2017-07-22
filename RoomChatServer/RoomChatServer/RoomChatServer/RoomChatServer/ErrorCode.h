@@ -98,7 +98,10 @@ enum EnumErrorCode
 	ERROR_MAKE_ROOM_BATTING_MONEY_SHORTAGE = 185, // 방 만드는데 내가 가진 돈 보다 배팅금액이 더 큼
 	ERROR_INIT_MONEY = 187, // 돈 초기화 에러
 	ERROR_MESSAGESTRUCT_INIT = 189, // 메세지 초기화 안됨.
-	
+	ERROR_GETROOMSOCKET_MYCLIENT_NULLPTR = 191, // 나를 제외한 room 소켓 가져오기 실패
+	ERROR_GET_CHANNEL_SOCKET_MYCLIENT_NULLPTR = 193, // 나를 제외한 channel 소켓 가져오기 실패
+	ERROR_MULTI_SEND_EMPTY = 195, // 멀티 샌드 보낼 사람 없음
+	ERROR_BATTING_RESULT_ALONE = 197, // 배팅 결과 혼자임.
 	//////////////////////////////////////////////
 	// 예외처리가 안된 오류
 	ERROR_EXCEPTION = 9876

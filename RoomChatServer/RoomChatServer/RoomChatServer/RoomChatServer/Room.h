@@ -45,8 +45,8 @@ public:
 	bool MergeRoom(CRoom* targetRoom);
 	bool IsAllReadyBatting();
 	bool IsAllReady();
-	int BattingResult();
+	bool BattingResult(int& resultPK);
 	// 방에 속해 있는 소켓 가져오기.(결과 담을 벡터)
-	bool GetRoomSockets(vector<SOCKET>& roomSockets);
+	bool GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const SOCKET* myClientSock = nullptr);
 };
 

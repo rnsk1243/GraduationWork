@@ -119,7 +119,7 @@ private:
 	bool MinusMyMoney(const int& minusMoney);
 	bool IsHaveCard(int cardNum);
 public:
-	CLink(SOCKET& clientSocket, string strPKNumber, char* name);
+	CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name);
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
 	~CLink();

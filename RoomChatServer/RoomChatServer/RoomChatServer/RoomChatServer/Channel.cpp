@@ -21,14 +21,29 @@ CChannel::~CChannel()
 	// DeleteCriticalSection(&CS);
 }
 
-bool CChannel::GetChannelSockets(vector<SOCKET>& channelSockets)
+bool CChannel::GetChannelSockets(vector<SOCKET>& channelSockets, bool isMyInclude, const SOCKET* myClientSock)
 {
 	LinkListIt linkBegin = GetIterMyInfoBegin();
 	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
 	{
 		if ((*linkBegin).use_count() > 0)
 		{
-			channelSockets.push_back((*linkBegin).get()->GetClientSocket());
+			if (true == isMyInclude)
+			{
+				channelSockets.push_back((*linkBegin).get()->GetClientSocket());
+			}
+			else
+			{
+				if (nullptr == myClientSock)
+				{
+					ErrorHandStatic->ErrorHandler(ERROR_GET_CHANNEL_SOCKET_MYCLIENT_NULLPTR);
+					return false;
+				}
+				if (*myClientSock != (*linkBegin).get()->GetClientSocket())
+				{
+					channelSockets.push_back((*linkBegin).get()->GetClientSocket());
+				}
+			}
 		}
 		else
 		{

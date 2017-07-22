@@ -8,6 +8,7 @@ CGoods::CGoods(const int& pkNumber):
 	mClientPK(pkNumber), 
 	mGoods(0)
 {
+	cout << "CGOODS 생성자 = " << pkNumber << endl;
 }
 
 
@@ -19,6 +20,7 @@ bool CGoods::GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int&
 {
 	//int tempResult = 0;
 	int moveSize1 = 0;
+	cout << "mClientPK = " << mClientPK << endl;
 	if (false == AddCipHer(mClientPK, moveSize1))// 회원 번호까지 누적 자릿수 더하기
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_CURSER_SIZE);
@@ -105,7 +107,7 @@ bool CGoods::AddMyMoney (const int& addMoney, EnumErrorCode& resultcode)
 		resultcode = ErrorHandStatic->ErrorHandler(ERROR_ADD_MONEY_MAX);
 		return false;
 	}
-	if (SaveUserMoney(saveMoney, resultcode))
+	if (true == SaveUserMoney(saveMoney, resultcode))
 	{
 		mGoods.money += addMoney;
 		return true;
@@ -118,10 +120,11 @@ bool CGoods::MinusMyMoney(int minusMoney, EnumErrorCode& resultcode)
 	int saveMoney = (GetMyMoney() - minusMoney);
 	if (MinMoney > saveMoney)
 	{
-		saveMoney = 0;
-		minusMoney = GetMyMoney();
+		resultcode = ErrorHandStatic->ErrorHandler(ERROR_MINUS_MONEY_MIN);
+		return false;
 	}
-	if (SaveUserMoney(saveMoney, resultcode)) // txt파일에 신규 돈 저장 하면
+
+	if (true == SaveUserMoney(saveMoney, resultcode)) // txt파일에 신규 돈 저장 하면
 	{
 		mGoods.money -= minusMoney; // 자료 돈 저장
 		return true;

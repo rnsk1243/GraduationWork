@@ -2,7 +2,7 @@
 #include"RoomHandler.h"
 #include"ErrorHandler.h"
 
-CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name) :
+CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
 	mClientSocket(clientSocket),
 	mMyChannelNum(0),
 	mMyRoomNum(NoneRoom),
@@ -11,7 +11,7 @@ CLink::CLink(SOCKET& clientSocket, string strPKNumber, char* name) :
 	mIsInitGoods(false),
 	mIsGameOK(false),
 	mBattingCardNum(-1),
-	mMyGoods(mMyPKNumber)
+	mMyGoods(stoi(strPKNumber))
 {
 	size_t length = strlen(name) + 1;
 	mName = new char[length];
@@ -31,7 +31,7 @@ CLink::~CLink()
 
 bool CLink::PayCardGachar()
 {
-	if (IsMoneyOKGaChar()) 
+	if (true == IsMoneyOKGaChar()) 
 	{ 
 		return MinusMyMoney(CardCost); 
 	}
@@ -47,6 +47,7 @@ bool CLink::SetZeroMoney()
 	if (false == mMyGoods.SetZeroMoney(resultcode))
 	{
 		ErrorHandStatic->ErrorHandler(resultcode, this);
+		return false;
 	}
 	return true;
 }
@@ -62,6 +63,7 @@ bool CLink::InitMoney(int money)
 	if (false == mMyGoods.InitMoney(money))
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_INIT_MONEY, this);
+		return false;
 	}
 	return true;
 }
@@ -72,6 +74,7 @@ bool CLink::AddMoney(const int & addMoney)
 	if (false == mMyGoods.AddMyMoney(addMoney, resultcode))
 	{
 		ErrorHandStatic->ErrorHandler(resultcode, this);
+		return false;
 	}
 	return true;
 }
@@ -82,6 +85,7 @@ bool CLink::MinusMyMoney(const int & minusMoney)
 	if (false == mMyGoods.MinusMyMoney(minusMoney, resultcode))
 	{
 		ErrorHandStatic->ErrorHandler(resultcode, this);
+		return false;
 	}
 	return true;
 }

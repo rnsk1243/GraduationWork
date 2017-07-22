@@ -278,6 +278,11 @@ bool CCommandController::SendAllReadyGameNotice(shared_ptr<CLink> shared_clientI
 		sendClientMessage = "알 수 없는 에러..죄송합니다.";
 		return false;
 	}
+	if (NoneRoom == clientInfo->GetMyRoomNum())
+	{
+		sendClientMessage = "방에 들어와 있지 않습니다.";
+		return false;
+	}
 	clientInfo->SetReadyGame();
 	int roomNum = clientInfo->GetMyRoomNum();
 	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
@@ -293,9 +298,12 @@ bool CCommandController::SendAllReadyGameNotice(shared_ptr<CLink> shared_clientI
 		isAllReady = false;
 	}
 	
-	if (false == myRoom->GetRoomSockets(clientSocks))
+	if (true == isAllReady)
 	{
-		return false;
+		if (false == myRoom->GetRoomSockets(clientSocks, true))
+		{
+			isAllReady = false;
+		}
 	}
 	return isAllReady;
 }
@@ -307,6 +315,11 @@ bool CCommandController::IsHaveCard(shared_ptr<CLink> shared_clientInfo, int car
 	if (false == ReadyCommand(shared_clientInfo, clientInfo, channelNum))
 	{
 		sendClientMessage = "알 수 없는 에러..죄송합니다.";
+		return false;
+	}
+	if (NoneRoom == clientInfo->GetMyRoomNum())
+	{
+		sendClientMessage = "방에 들어와 있지 않습니다.";
 		return false;
 	}
 	int roomNum = clientInfo->GetMyRoomNum();
@@ -339,22 +352,20 @@ bool CCommandController::SendBattingResult(shared_ptr<CLink> shared_clientInfo, 
 	}
 	int roomNum = clientInfo->GetMyRoomNum();
 	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
-	if (false == myRoom->GetRoomSockets(clientSocks))
+	if (false == myRoom->GetRoomSockets(clientSocks, true))
 	{
 		return false;
 	}
 	if (true == myRoom->IsAllReadyBatting())
 	{
-		int winnerPK = myRoom->BattingResult();
-		if (-1 != winnerPK)
+		int winnerPK = -1;
+		if (true == myRoom->BattingResult(winnerPK))
 		{
-			cout << "승리자 = " << winnerPK;
-			sendClientMessage = "결과 나옴";
-			return true;
+			// 승리자 보상 수령 함수 호출 부분.
 		}
 		else
 		{
-			sendClientMessage = "에러..";
+			sendClientMessage = "베팅 결과 에러 발생";
 			return false;
 		}
 	}
@@ -421,7 +432,7 @@ bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, ve
 		{
 			int battingMoney = stoi(commandString.at(2));
 			MakeRoom(commandString.at(1).c_str(), shared_clientInfo, battingMoney, sendClientMessage);
-			sendClientMessage = "방을 만들었습니다.";
+			sendClientMessage = "방을 만들었습니다. 준비 되셨으면 /Start 를 입력해 주세요.";
 		}
 		else if (0 == commandString.at(0).compare(CommandOutRoom))
 		{

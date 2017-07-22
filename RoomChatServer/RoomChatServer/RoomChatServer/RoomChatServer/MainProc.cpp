@@ -85,7 +85,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		}
 		ErrorHandStatic->ErrorHandler(EnumErrorCode(isLogin));
 	}
-	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], lobby.getMessageStruct().message));
+	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], userInfo[IndexUserID].c_str()));
 	CChannelManager& channelManager = commandController.GetChannelManager();
 	CRoomManager& roomManager = commandController.GetRoomManager();
 	// EnterChannelNum 채널에 입장
@@ -132,7 +132,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 				}
 			}
 		}
-		else if (ERROR_RECV == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
+		else if (ERROR_RECV == isRecvSuccesResultValue || ERROR_NULL_LINK_SEND == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
 			if (!commandController.DeleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면

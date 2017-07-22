@@ -53,5 +53,6 @@ CChannel * CChannelManager::GetMyChannel(int ChannelNum)
 			return (*iterBegin).get();
 	}
 	cout << ChannelNum << "번 채널이 없습니다." << endl;
+	ErrorHandStatic->ErrorHandler(ERROR_GET_CHANNEL);
 	return nullptr;
 }

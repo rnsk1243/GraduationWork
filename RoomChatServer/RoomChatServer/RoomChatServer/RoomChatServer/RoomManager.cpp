@@ -38,6 +38,7 @@ RoomListIt CRoomManager::GetMyRoomIter(int ChannelNum, int roomNum)
 		}	
 	}
 	cout << roomNum << "번 방이 없습니다." << endl;
+	ErrorHandStatic->ErrorHandler(ERROR_GET_ROOM);
 	//RoomListIt* error = nullptr;
 	return iterBegin; // iterBegin == iterEnd 이면 방이없다.
 }

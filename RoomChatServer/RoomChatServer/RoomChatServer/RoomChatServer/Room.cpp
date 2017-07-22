@@ -103,12 +103,13 @@ bool CRoom::IsAllReady()
 	return true;
 }
 
-int CRoom::BattingResult()
+bool CRoom::BattingResult(int& resultPK)
 {
 	// 나 혼자 이면 무조건 false;
 	if (1 == mAmountPeople)
 	{
-		return -1;
+		ErrorHandStatic->ErrorHandler(ERROR_BATTING_RESULT_ALONE);
+		return false;
 	}
 	LinkListIt iterBegin = GetIterMyInfoBegin();
 	CLink* winner = (*iterBegin).get();
@@ -125,20 +126,36 @@ int CRoom::BattingResult()
 		else
 		{
 			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-			return -1;
+			return false;
 		}
 	}
-	return winner->GetMyPKNumber();
+	resultPK = winner->GetMyPKNumber();
+	return true;
 }
 
-bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets)
+bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const SOCKET* myClientSock)
 {
 	LinkListIt linkBegin = GetIterMyInfoBegin();
 	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
 	{
 		if ((*linkBegin).use_count() > 0)
 		{
-			roomSockets.push_back((*linkBegin).get()->GetClientSocket());
+			if (true == isMyInclude)
+			{
+				roomSockets.push_back((*linkBegin).get()->GetClientSocket());
+			}
+			else
+			{
+				if (nullptr == myClientSock)
+				{
+					ErrorHandStatic->ErrorHandler(ERROR_GETROOMSOCKET_MYCLIENT_NULLPTR);
+					return false;
+				}
+				if (*myClientSock != (*linkBegin).get()->GetClientSocket())
+				{
+					roomSockets.push_back((*linkBegin).get()->GetClientSocket());
+				}
+			}
 		}
 		else
 		{
