@@ -78,8 +78,8 @@ bool CRoom::MergeRoom(CRoom * targetRoom)
 
 bool CRoom::IsAllReady()
 {
-	// 나 혼자 이면 무조건 false;
-	if (1 == mAmountPeople)
+	// 인원수가 모자르면 무조건 false;
+	if (EnterRoomPeopleLimit > mAmountPeople)
 	{
 		return false;
 	}
@@ -105,8 +105,8 @@ bool CRoom::IsAllReady()
 
 bool CRoom::BattingResult(int& resultPK)
 {
-	// 나 혼자 이면 무조건 false;
-	if (1 == mAmountPeople)
+	// 인원수가 모자르면 무조건 false;
+	if (EnterRoomPeopleLimit > mAmountPeople)
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_BATTING_RESULT_ALONE);
 		return false;
@@ -167,11 +167,11 @@ bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const 
 }
 
 
-
+// 모두 카드 냈나?
 bool CRoom::IsAllReadyBatting()
 {
-	// 나 혼자 이면 무조건 false;
-	if (1 == mAmountPeople)
+	// 인원수가 모자르면 무조건 false;
+	if (EnterRoomPeopleLimit > mAmountPeople)
 	{
 		return false;
 	}
@@ -192,6 +192,7 @@ bool CRoom::IsAllReadyBatting()
 			return false;
 		}
 	}
+	// 모두 카드 냄
 	return true;
 }
 

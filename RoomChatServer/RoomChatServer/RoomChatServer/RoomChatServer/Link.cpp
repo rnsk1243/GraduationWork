@@ -10,7 +10,7 @@ CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
 	mIsInitCards(false),
 	mIsInitGoods(false),
 	mIsGameOK(false),
-	mBattingCardNum(-1),
+	mBattingCardNum(NoneCard),
 	mMyGoods(stoi(strPKNumber))
 {
 	size_t length = strlen(name) + 1;
@@ -121,12 +121,17 @@ bool CLink::SetMyBattingCard(int cardNum)
 		mBattingCardNum = cardNum;
 		return true;
 	}
+	else
+	{
+		mBattingCardNum = NoneCard;
+		return false;
+	}
 	return false;
 }
 
 bool CLink::GetReadyBatting()
 {
-	if (-1 == mBattingCardNum)
+	if (NoneCard == mBattingCardNum)
 	{
 		return false;
 	}

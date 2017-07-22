@@ -76,6 +76,9 @@
     <Filter Include="Goods">
       <UniqueIdentifier>{0ef36b2a-d34d-4279-91a1-da901f031d2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Betting">
+      <UniqueIdentifier>{de216f73-8dab-447d-b95a-440b08cc8454}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Room.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="Goods.cpp">
       <Filter>Goods</Filter>
+    </ClCompile>
+    <ClCompile Include="Betting.cpp">
+      <Filter>Betting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Goods.h">
       <Filter>Goods</Filter>
+    </ClInclude>
+    <ClInclude Include="Betting.h">
+      <Filter>Betting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

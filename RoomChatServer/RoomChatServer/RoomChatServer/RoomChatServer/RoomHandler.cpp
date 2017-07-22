@@ -158,15 +158,17 @@ bool CRoomHandler::EnterRoom(shared_ptr<CLink> shared_clientInfo, CRoomManager* 
 bool CRoomHandler::IsAllReadyGame(CLink * clientInfo, CRoomManager * roomManager)
 {
 	RoomListIt myRoomIter;
-	GetMyRoomIter(clientInfo, roomManager, myRoomIter);
-	CRoom* currentRoom = (*myRoomIter).get();
-	if (nullptr == currentRoom)
+	if (true == GetMyRoomIter(clientInfo, roomManager, myRoomIter))
 	{
-		return false;
-	}
-	if (currentRoom->IsAllReady())
-	{
-		return true;
+		CRoom* currentRoom = (*myRoomIter).get();
+		if (nullptr == currentRoom)
+		{
+			return false;
+		}
+		if (currentRoom->IsAllReady())
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -174,15 +176,17 @@ bool CRoomHandler::IsAllReadyGame(CLink * clientInfo, CRoomManager * roomManager
 bool CRoomHandler::IsAllReadyBatting(CLink * clientInfo, CRoomManager * roomManager)
 {
 	RoomListIt myRoomIter;
-	GetMyRoomIter(clientInfo, roomManager, myRoomIter);
-	CRoom* currentRoom = (*myRoomIter).get();
-	if (nullptr == currentRoom)
+	if (true == GetMyRoomIter(clientInfo, roomManager, myRoomIter))
 	{
-		return false;
-	}
-	if (currentRoom->IsAllReadyBatting())
-	{
-		return true;
+		CRoom* currentRoom = (*myRoomIter).get();
+		if (nullptr == currentRoom)
+		{
+			return false;
+		}
+		if (currentRoom->IsAllReadyBatting())
+		{
+			return true;
+		}
 	}
 	return false;
 }

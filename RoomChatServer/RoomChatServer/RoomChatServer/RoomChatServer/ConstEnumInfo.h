@@ -24,6 +24,7 @@ const string CommandGameStart = "Start"; // 게임 시작
 const string CommandGameCardSubmit = "CardSubmit"; // 카드 게임 카드 제출
 
 const string StartCardInventory("01/00/00/0/0|02/00/00/0/0|03/00/00/0/0|04/00/00/0/0|05/00/00/0/0|06/00/00/0/0|07/00/00/0/0|08/00/00/0/0|09/00/00/0/0|10/00/00/0/0|11/00/00/0/0"); // 카드번호/카드갯수
+const string CardEmpty = "00";
 //const int StartMoney = 100; // 시작 머니
 const string StartGoodsInventory("0000100"); // 회원 가입 시작 머니
 const int JoinMemberTxtCapacity = 9;
@@ -31,7 +32,6 @@ const string NameMemberInfoTxt = "MemberInfo.txt";
 const string NameMemberCardInfoTxt = "MemberCardInfo.txt";
 const string MakeNextJoinNumberTxt = "MakeNextJoinNumber.txt";
 const string NameMemberGoodsTxt = "MemberGoods.txt";
-const string CardEmpty = "00";
 // 값
 const int Port = 9000;
 const int BufSize = 1024;
@@ -48,7 +48,8 @@ const int EnterChannelNum = 1; // 처음 접속 채널
 const int EnterRoomPeopleLimit = 4; // 방에 입장 가능한 최대 인원
 const int MaxChannelNum = 5;
 const int ChannelAmount = 5;
-const int NoneRoom = -1;
+const int NoneRoom = -1; // 방에 들어와 있지 않음
+const int NoneCard = -1; // 베팅 카드 없음.
 const int CardNumCols = 0; // 액셀파일 카드 번호 열번호
 const int CardNameCols = 1; 
 const int CardProbCols = 2;

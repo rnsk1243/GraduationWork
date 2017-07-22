@@ -135,18 +135,31 @@ bool CCommandController::MakeRoom(const string& roomName, shared_ptr<CLink> shar
 		sendClientMessage = "알 수 없는 에러..죄송합니다.";
 		return false;
 	}
-	cout << "방 만들기" << endl;
-	if (false == mRoomHandler.MakeRoom(shared_clientInfo, &mRoomManager, roomName, battingMoney))
+	if (clientInfo->GetMyMoney() >= battingMoney)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_MAKE_ROOM, clientInfo);
+		cout << "방 만들기" << endl;
+		if (false == mRoomHandler.MakeRoom(shared_clientInfo, &mRoomManager, roomName, battingMoney))
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_MAKE_ROOM, clientInfo);
+			return false;
+		}
+		//원래 채널에서는 나가기
+		if (false == mChannelHandler.ExitChannel(*clientInfo, mChannelManager))
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_EXIT_CHANNEL, clientInfo);
+			return false;
+		}
+		else
+		{
+			sendClientMessage = "방을 만들었습니다. 준비 되셨으면 /Start 를 입력해 주세요.";
+		}
+	}
+	else
+	{
+		sendClientMessage = "가지고 있는 돈이 베팅 금액보다 적어서 방을 만들 수 없습니다.";
 		return false;
 	}
-	//원래 채널에서는 나가기
-	if (false == mChannelHandler.ExitChannel(*clientInfo, mChannelManager))
-	{
-		ErrorHandStatic->ErrorHandler(ERROR_EXIT_CHANNEL, clientInfo);
-		return false;
-	}
+
 	return false;
 }
 
@@ -284,22 +297,21 @@ bool CCommandController::SendAllReadyGameNotice(shared_ptr<CLink> shared_clientI
 		return false;
 	}
 	clientInfo->SetReadyGame();
-	int roomNum = clientInfo->GetMyRoomNum();
-	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 	bool isAllReady = false;
-	if (mRoomHandler.IsAllReadyGame(clientInfo, &mRoomManager))
+	if (true == mRoomHandler.IsAllReadyGame(clientInfo, &mRoomManager))
 	{
 		sendClientMessage = "모든 사람들이 게임 준비가 되었습니다. 내실 카드번호를 입력해 주세요.";
 		isAllReady = true;
 	}
 	else
 	{
-		sendClientMessage = "당신은 준비가 되셨지만 아직 준비가 되지 않은 분이 계십니다. 혹은 방에 당신 혼자 입니다.";
+		sendClientMessage = "당신은 준비가 되셨지만 아직 준비가 되지 않은 분이 계십니다.";
 		isAllReady = false;
 	}
-	
 	if (true == isAllReady)
 	{
+		int roomNum = clientInfo->GetMyRoomNum();
+		CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 		if (false == myRoom->GetRoomSockets(clientSocks, true))
 		{
 			isAllReady = false;
@@ -326,18 +338,22 @@ bool CCommandController::IsHaveCard(shared_ptr<CLink> shared_clientInfo, int car
 	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 	if (true == myRoom->IsAllReady())
 	{
-		if (clientInfo->SetMyBattingCard(cardNum))
+		if (true == clientInfo->SetMyBattingCard(cardNum))
 		{
 			sendClientMessage = "카드를 던졌습니다!!! 결과를 기다리세요.";
 			return true;
 		}
+		else
+		{
+			sendClientMessage = "정말 가지고 있으세요? 카드를 못 찾았습니다.";
+			return false;
+		}
 	}
 	else
 	{
-		sendClientMessage = "정말 가지고 있으세요?";
+		sendClientMessage = "모든 사람이 게임 준비가 되지 않아 아직 카드를 낼 수 없습니다.";
+		return false;
 	}
-	sendClientMessage = "카드는 내셨고 아직 모든 인원이 카드를 내지 않았습니다.";
-	
 	return false;
 }
 
@@ -354,8 +370,10 @@ bool CCommandController::SendBattingResult(shared_ptr<CLink> shared_clientInfo, 
 	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 	if (false == myRoom->GetRoomSockets(clientSocks, true))
 	{
+		sendClientMessage = "알 수 없는 에러..죄송합니다.";
 		return false;
 	}
+	// 모두 카드 냈나?
 	if (true == myRoom->IsAllReadyBatting())
 	{
 		int winnerPK = -1;
@@ -432,7 +450,7 @@ bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, ve
 		{
 			int battingMoney = stoi(commandString.at(2));
 			MakeRoom(commandString.at(1).c_str(), shared_clientInfo, battingMoney, sendClientMessage);
-			sendClientMessage = "방을 만들었습니다. 준비 되셨으면 /Start 를 입력해 주세요.";
+			
 		}
 		else if (0 == commandString.at(0).compare(CommandOutRoom))
 		{
@@ -478,7 +496,7 @@ bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, ve
 		else if (0 == commandString.at(0).compare(CommandGameCardSubmit))
 		{
 			int cardNum = stoi(commandString.at(1));
-			if (IsHaveCard(shared_clientInfo, cardNum, sendClientMessage))
+			if (true == IsHaveCard(shared_clientInfo, cardNum, sendClientMessage))
 			{
 				SendBattingResult(shared_clientInfo, sendClientMessage, clientSocks);
 			}
