@@ -11,7 +11,9 @@ CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
 	mIsInitGoods(false),
 	mIsGameOK(false),
 	mBattingCardNum(NoneCard),
-	mMyGoods(stoi(strPKNumber))
+	mMyGoods(stoi(strPKNumber)),
+	mDebtMoney(0),
+	mPayBackMoney(0)
 {
 	size_t length = strlen(name) + 1;
 	mName = new char[length];
@@ -22,6 +24,8 @@ CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
 
 CLink::~CLink()
 {
+	cout << "CLINK 소멸자 호출" << endl;
+	SaveCalculateMoney();// 갈땐 가더라도 정산은 하고 가야지?
 	cout << mName << "클라이언트 정보가 삭제 됩니다. = " << endl;
 	delete[] mName;
 	closesocket(mClientSocket);
@@ -70,6 +74,11 @@ bool CLink::InitMoney(int money)
 
 bool CLink::AddMoney(const int & addMoney)
 {
+	if (0 == addMoney)
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, this);
+		return false;
+	}
 	EnumErrorCode resultcode;
 	if (false == mMyGoods.AddMyMoney(addMoney, resultcode))
 	{
@@ -81,6 +90,11 @@ bool CLink::AddMoney(const int & addMoney)
 
 bool CLink::MinusMyMoney(const int & minusMoney)
 {
+	if (0 == minusMoney)
+	{
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, this);
+		return false;
+	}
 	EnumErrorCode resultcode;
 	if (false == mMyGoods.MinusMyMoney(minusMoney, resultcode))
 	{
@@ -114,16 +128,29 @@ bool CLink::IsHaveCard(int cardNum)
 	return false;
 }
 
-bool CLink::SetMyBattingCard(int cardNum)
+bool CLink::PayBackMoney(const int & payBack)
+{
+	// 받을 돈 증가 실제 .txt에 쓰지는 않음 그러나 나중에 이 만큼 증가
+	mPayBackMoney += payBack;
+	return true;
+}
+
+bool CLink::SetMyBattingCard(int cardNum, int bettingMoney)
 {
 	if (true == IsHaveCard(cardNum))
 	{
+		if (NoneCard == mBattingCardNum)
+		{
+			if (false == PayDebtMoney(bettingMoney))
+			{
+				return false;
+			}
+		}
 		mBattingCardNum = cardNum;
 		return true;
 	}
 	else
 	{
-		mBattingCardNum = NoneCard;
 		return false;
 	}
 	return false;
@@ -144,6 +171,56 @@ bool CLink::GetReadyBatting()
 int CLink::GetMyBattingCardNumber()
 {
 	return mBattingCardNum;
+}
+bool CLink::GetPrizeBattingMoney(const int bettingMoney)
+{
+	int prizeMoney = EnterRoomPeopleLimit * bettingMoney; // 총 상금
+	PayBackMoney(prizeMoney);
+	return true;
+}
+bool CLink::SaveCalculateMoney()
+{
+	//정산하고 저장할 돈
+	int calculateMoney = 0;
+	if (mPayBackMoney == mDebtMoney)
+	{
+		mPayBackMoney = 0;
+		mDebtMoney = 0;
+		return true;
+	}
+	if (mPayBackMoney > mDebtMoney)
+	{
+		// 받을 돈 - 나갈 돈
+		calculateMoney = (mPayBackMoney - mDebtMoney);
+		if (true == AddMoney(calculateMoney))
+		{
+			mPayBackMoney = 0;
+			mDebtMoney = 0;
+			return true;
+		}
+	}
+	else
+	{
+		calculateMoney = (mDebtMoney - mPayBackMoney);
+		if (true == MinusMyMoney(calculateMoney))
+		{
+			mPayBackMoney = 0;
+			mDebtMoney = 0;
+			return true;
+		}
+	}
+	return false;
+}
+// 나중에 차감할 돈을 축적
+bool CLink::PayDebtMoney(const int& debt)
+{
+	if (GetMyMoney() >= debt) // 빚보다 돈이 더 많으면
+	{
+		// 돈 감소 (일단 빚으로) 실제 .txt에 쓰지는 않음 그러나 나중에 이 만큼 차감함.
+		mDebtMoney += debt;
+		return true;
+	}
+	return false;
 }
 
 void CLink::InitCard(int cardName, int amount, int exp, int evol, int star)
@@ -167,6 +244,37 @@ bool CLink::InitGoods(int initMoney)
 		return false;
 	}
 	return InitMoney(initMoney);
+}
+
+bool CLink::InitBetting()
+{
+	mIsGameOK = false;
+	mBattingCardNum = NoneCard;
+	return true;
+}
+
+bool CLink::RefundBettingMoney(const int& bettingMoney)
+{
+	if (NoneCard == mBattingCardNum) // 카드 안냈으면 환불 불필요
+	{
+		return false;
+	}
+	if (0 <= (mDebtMoney - bettingMoney))
+	{
+		mDebtMoney -= bettingMoney;
+		return true;
+	}
+	else
+	{
+		mDebtMoney = 0;
+		return false;
+	}
+	return false;
+}
+
+void CLink::FineGamePlayingOut()
+{
+	PayDebtMoney(FineGamePlayingOutMoney);
 }
 
 bool MyCardInfo::SetExp(int addExp, int & resultExp)

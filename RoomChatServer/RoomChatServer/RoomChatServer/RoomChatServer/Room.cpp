@@ -2,12 +2,13 @@
 #include"ErrorHandler.h"
 
 
-CRoom::CRoom(int roomNum, int channelNum, const string& roomName,const int& battingMoney) :
+CRoom::CRoom(int roomNum, int channelNum, const string& roomName, const int& battingMoney) :
 	mRoomNum(roomNum),
 	mChannelNum(channelNum),
 	mRoomName(roomName),
 	mAmountPeople(0),
-	mBattingMoney(battingMoney)
+	mBettingMoney(battingMoney),
+	mPlayingGame(false)
 {
 	//InitializeCriticalSection(&CS_MyInfoList);
 }
@@ -100,10 +101,11 @@ bool CRoom::IsAllReady()
 			return false;
 		}
 	}
+	SetGame();
 	return true;
 }
 
-bool CRoom::BattingResult(int& resultPK)
+bool CRoom::BattingResult(int& resultPK, bool& isDrawResult)
 {
 	// 인원수가 모자르면 무조건 false;
 	if (EnterRoomPeopleLimit > mAmountPeople)
@@ -113,14 +115,25 @@ bool CRoom::BattingResult(int& resultPK)
 	}
 	LinkListIt iterBegin = GetIterMyInfoBegin();
 	CLink* winner = (*iterBegin).get();
+	int curWinnerStat = CardStatic->GetCardStat(winner->GetMyBattingCardNumber()); // 현재 가장 높은 스텟 크기
+	bool isDraw = true; // 최고 높은 스텟을 낸 사람이 둘 이상인가? 
+	++iterBegin;
 	for (; iterBegin != GetIterMyInfoEnd(); ++iterBegin)
 	{
 		if ((*iterBegin).use_count() > 0)
 		{
 			CLink* client = (*iterBegin).get();
-			if (CardStatic->GetCardStat(winner->GetMyBattingCardNumber()) < CardStatic->GetCardStat(client->GetMyBattingCardNumber()))
+			const int challengerStat = CardStatic->GetCardStat(client->GetMyBattingCardNumber());
+			if (curWinnerStat < challengerStat)
 			{
+				curWinnerStat = challengerStat;
 				winner = client;
+				isDraw = false;
+			}
+			else if (curWinnerStat == challengerStat)
+			{
+				// 비김
+				isDraw = true;
 			}
 		}
 		else
@@ -129,8 +142,18 @@ bool CRoom::BattingResult(int& resultPK)
 			return false;
 		}
 	}
-	resultPK = winner->GetMyPKNumber();
-	return true;
+	isDrawResult = isDraw;
+	if (false == isDraw)
+	{
+		resultPK = winner->GetMyPKNumber();
+		winner->GetPrizeBattingMoney(mBettingMoney);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	return false;
 }
 
 bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const SOCKET* myClientSock)
@@ -166,9 +189,60 @@ bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const 
 	return true;
 }
 
+bool CRoom::AllCalculateMoney()
+{
+	LinkListIt linkBegin = mClientInfos.begin();
+	bool isSaveResult = true; // 모두 .txt에 저장 되었나? 한 명이라도 안되면 false 반환
+	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	{
+		if ((*linkBegin).use_count() > 0)
+		{
+			if (false == (*linkBegin).get()->SaveCalculateMoney())
+			{
+				ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY, (*linkBegin).get());
+				isSaveResult = false;
+				continue;
+			}
+		}
+		else
+		{
+			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
+			isSaveResult = false;
+		}
+	}
+	return isSaveResult;
+}
+
+bool CRoom::AllInitBetting()
+{
+	LinkListIt linkBegin = mClientInfos.begin();
+	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	{
+		if ((*linkBegin).use_count() > 0)
+		{
+			(*linkBegin).get()->InitBetting();
+		}
+	}
+	SetGameOver();
+	return true;
+}
+
+bool CRoom::AllRefundBettingMoney()
+{
+	LinkListIt linkBegin = mClientInfos.begin();
+	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	{
+		if ((*linkBegin).use_count() > 0)
+		{
+			(*linkBegin).get()->RefundBettingMoney(mBettingMoney);
+		}
+	}
+	return true;
+}
+
 
 // 모두 카드 냈나?
-bool CRoom::IsAllReadyBatting()
+bool CRoom::IsAllReadyBetting()
 {
 	// 인원수가 모자르면 무조건 false;
 	if (EnterRoomPeopleLimit > mAmountPeople)

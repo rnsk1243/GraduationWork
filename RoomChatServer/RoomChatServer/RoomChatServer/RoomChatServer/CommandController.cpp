@@ -179,6 +179,16 @@ bool CCommandController::OutRoom(shared_ptr<CLink> shared_clientInfo, string& se
 		return false;
 	}
 	cout << "방에서 나가기" << endl;
+	int roomNum = clientInfo->GetMyRoomNum();
+	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
+	if (true == myRoom->IsGame())
+	{
+		clientInfo->FineGamePlayingOut(); // 벌금
+		// 게임 중이었다면 다시 게임 시작 전으로
+		myRoom->AllRefundBettingMoney(); // 순서 중요 맨위에 있어야함.
+		myRoom->AllInitBetting();
+		sendClientMessage = "게임도중 방에서 나간 사람이 있어요 게임을 다시 시작해야합니다. 준비되시면 /Start 해주세요.";
+	}
 	if (false == mRoomHandler.ExitRoom(clientInfo, &mRoomManager))
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_EXIT_ROOM, clientInfo);
@@ -338,14 +348,14 @@ bool CCommandController::IsHaveCard(shared_ptr<CLink> shared_clientInfo, int car
 	CRoom* myRoom = (*mRoomManager.GetMyRoomIter(channelNum, roomNum)).get();
 	if (true == myRoom->IsAllReady())
 	{
-		if (true == clientInfo->SetMyBattingCard(cardNum))
+		if (true == clientInfo->SetMyBattingCard(cardNum, myRoom->GetBattingMoney()))
 		{
-			sendClientMessage = "카드를 던졌습니다!!! 결과를 기다리세요.";
+			sendClientMessage = "카드를 던졌습니다!!! 결과를 기다리세요. 주의!! 나가시면 베팅 금액 만큼 돈 잃어요.";
 			return true;
 		}
 		else
 		{
-			sendClientMessage = "정말 가지고 있으세요? 카드를 못 찾았습니다.";
+			sendClientMessage = "정말 가지고 있으세요? 혹은 돈이 부족해요. 카드를 못 찾았습니다.";
 			return false;
 		}
 	}
@@ -374,21 +384,39 @@ bool CCommandController::SendBattingResult(shared_ptr<CLink> shared_clientInfo, 
 		return false;
 	}
 	// 모두 카드 냈나?
-	if (true == myRoom->IsAllReadyBatting())
+	if (true == myRoom->IsAllReadyBetting())
 	{
 		int winnerPK = -1;
-		if (true == myRoom->BattingResult(winnerPK))
+		bool isDraw = false;
+		if (true == myRoom->BattingResult(winnerPK, isDraw))
 		{
-			// 승리자 보상 수령 함수 호출 부분.
+			// 승리자 보상/ 패배자 벌금
+			if (true == myRoom->AllCalculateMoney())
+			{
+				myRoom->AllInitBetting();
+				// 승리자 알림 부분
+				return true;
+			}
+			else
+			{
+				// .txt 저장 실패 있음
+				return false;
+			}
 		}
 		else
 		{
+			if (true == isDraw)
+			{
+				sendClientMessage = "비김!! 게임 끝 다시 처음부터 시작하세요.";
+				myRoom->AllInitBetting();
+				myRoom->AllRefundBettingMoney(); // 베팅 금액 환불
+				return false;
+			}
 			sendClientMessage = "베팅 결과 에러 발생";
 			return false;
 		}
 	}
 	sendClientMessage = "아직 모든 사람 준비 안됨";
-
 	return false;
 }
 
@@ -455,7 +483,7 @@ bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, ve
 		else if (0 == commandString.at(0).compare(CommandOutRoom))
 		{
 			OutRoom(shared_clientInfo, sendClientMessage);
-			sendClientMessage = "방에서 나왔습니다.";
+			//sendClientMessage = "방에서 나왔습니다.";
 		}
 		else if (0 == commandString.at(0).compare(CommandMergeRoom))
 		{
@@ -498,7 +526,11 @@ bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, ve
 			int cardNum = stoi(commandString.at(1));
 			if (true == IsHaveCard(shared_clientInfo, cardNum, sendClientMessage))
 			{
-				SendBattingResult(shared_clientInfo, sendClientMessage, clientSocks);
+				if (true == SendBattingResult(shared_clientInfo, sendClientMessage, clientSocks))
+				{
+					// 게임 종료 // txt 저장
+					
+				}
 			}
 		}
 		else

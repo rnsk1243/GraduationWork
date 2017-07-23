@@ -51,6 +51,8 @@ bool CRoomHandler::ExitRoom(CLink* clientInfo, CRoomManager* roomManager)
 		if (client == clientInfo)
 		{
 			client->SetMyRoomNum(NoneRoom);
+			(*iterBegin).get()->InitBetting(); // 베팅 초기화 시킴
+			(*iterBegin).get()->SaveCalculateMoney(); // 갈땐 가더라도 정산은..해야지
 			iterBegin = currentRoom->EraseClient(iterBegin); // 원래 있던 방에서 빼기	
 			if (0 == currentRoom->GetAmountPeople())
 			{
@@ -183,7 +185,7 @@ bool CRoomHandler::IsAllReadyBatting(CLink * clientInfo, CRoomManager * roomMana
 		{
 			return false;
 		}
-		if (currentRoom->IsAllReadyBatting())
+		if (currentRoom->IsAllReadyBetting())
 		{
 			return true;
 		}

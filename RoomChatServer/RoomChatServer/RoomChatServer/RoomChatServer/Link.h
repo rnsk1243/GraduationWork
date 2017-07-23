@@ -112,12 +112,16 @@ private:
 	bool mIsGameOK;
 	// 내가 배팅에 낸 카드번호
 	int mBattingCardNum;
+	int mDebtMoney;	// 앞으로 없어질 돈.
+	int mPayBackMoney; // 앞으로 받을 돈.
 	bool mIsInitCards; // 카드 초기화 했나?
 	bool mIsInitGoods; // 재화 초기화 했나?
 	bool InitMoney(int money);
 	bool AddMoney(const int& addMoney);
 	bool MinusMyMoney(const int& minusMoney);
 	bool IsHaveCard(int cardNum);
+	bool PayBackMoney(const int& payBack);
+	bool PayDebtMoney(const int& debt); // 나중에 차감할 돈 축적
 public:
 	CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name);
 	CLink(const CLink&) = delete;
@@ -147,12 +151,17 @@ public:
 	void SetReadyGame() { mIsGameOK = true; }
 	void SetNoReadyGame() { mIsGameOK = false; }
 	bool GetReadyGame() { return mIsGameOK; }
-	bool SetMyBattingCard(int cardNum);
+	bool SetMyBattingCard(int cardNum, int bettingMoney);
 	bool GetReadyBatting();
 	int GetMyBattingCardNumber();
+	bool GetPrizeBattingMoney(const int bettingMoney); // 베팅머니 받기
+	bool SaveCalculateMoney();
 #pragma endregion
 	void InitCard(int cardName, int amount = 0, int exp = 0, int evol = 0, int star = 0);
 	bool InitGoods(int initMoney);
+	bool InitBetting();
+	bool RefundBettingMoney(const int& bettingMoney);
+	void FineGamePlayingOut();
 	void ChangeName(const string& newName)
 	{
 		size_t size = strlen(newName.c_str()) + 1;

@@ -46,6 +46,7 @@ const int MinMoney = 0;		// 돈 최소치
 const int MakeThreadNum = 3;
 const int EnterChannelNum = 1; // 처음 접속 채널
 const int EnterRoomPeopleLimit = 4; // 방에 입장 가능한 최대 인원
+const int FineGamePlayingOutMoney = 20; // 게임도중 도주 벌금
 const int MaxChannelNum = 5;
 const int ChannelAmount = 5;
 const int NoneRoom = -1; // 방에 들어와 있지 않음

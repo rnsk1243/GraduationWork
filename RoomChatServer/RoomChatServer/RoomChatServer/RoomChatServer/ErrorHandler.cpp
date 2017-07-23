@@ -21,6 +21,7 @@ EnumErrorCode CErrorHandler::CriticalError(EnumErrorCode code, CLink * client)
 	{
 		if (mCommandPtr->DeleteClientSocket(*client))
 		{
+			delete client;
 			cout << "스레드를 강제 종료 시킵니다." << endl;
 			_endthreadex(0);
 			return code;
