@@ -11,6 +11,12 @@ enum WhatGoodsCursorSize
 {
 	Money
 };
+
+enum ErrorLevel
+{
+	Serious, Normal, Low, Succes
+};
+
 const string CommandEnter = "e"; // 방 입장
 const string CommandChannal = "c"; // 채널 변경
 const string CommandMakeRoom = "m"; // 방 만들기
@@ -32,6 +38,7 @@ const string NameMemberInfoTxt = "MemberInfo.txt";
 const string NameMemberCardInfoTxt = "MemberCardInfo.txt";
 const string MakeNextJoinNumberTxt = "MakeNextJoinNumber.txt";
 const string NameMemberGoodsTxt = "MemberGoods.txt";
+const string ErrorLogTxt = "ErrorLog.txt";
 // 값
 const int Port = 9000;
 const int BufSize = 1024;

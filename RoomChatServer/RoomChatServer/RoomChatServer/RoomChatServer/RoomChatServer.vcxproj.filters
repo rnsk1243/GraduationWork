@@ -158,9 +158,6 @@
     <ClInclude Include="CommandController.h">
       <Filter>NetWork</Filter>
     </ClInclude>
-    <ClInclude Include="Link.h">
-      <Filter>Link</Filter>
-    </ClInclude>
     <ClInclude Include="RoomHandler.h">
       <Filter>Room\RoomHandler</Filter>
     </ClInclude>
@@ -226,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Betting.h">
       <Filter>Betting</Filter>
+    </ClInclude>
+    <ClInclude Include="Link.h">
+      <Filter>Link</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

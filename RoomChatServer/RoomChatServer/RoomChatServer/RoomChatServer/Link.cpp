@@ -135,13 +135,13 @@ bool CLink::PayBackMoney(const int & payBack)
 	return true;
 }
 
-bool CLink::SetMyBattingCard(int cardNum, int bettingMoney)
+bool CLink::SetMyBattingCard(int cardNum, int bettingMoney)/////////// 매개변수 하나 안쓰는중
 {
 	if (true == IsHaveCard(cardNum))
 	{
 		if (NoneCard == mBattingCardNum)
 		{
-			if (false == PayDebtMoney(bettingMoney))
+			if (false == FineGamePlayingOut())
 			{
 				return false;
 			}
@@ -149,10 +149,7 @@ bool CLink::SetMyBattingCard(int cardNum, int bettingMoney)
 		mBattingCardNum = cardNum;
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+
 	return false;
 }
 
@@ -211,17 +208,6 @@ bool CLink::SaveCalculateMoney()
 	}
 	return false;
 }
-// 나중에 차감할 돈을 축적
-bool CLink::PayDebtMoney(const int& debt)
-{
-	if (GetMyMoney() >= debt) // 빚보다 돈이 더 많으면
-	{
-		// 돈 감소 (일단 빚으로) 실제 .txt에 쓰지는 않음 그러나 나중에 이 만큼 차감함.
-		mDebtMoney += debt;
-		return true;
-	}
-	return false;
-}
 
 void CLink::InitCard(int cardName, int amount, int exp, int evol, int star)
 {
@@ -272,9 +258,15 @@ bool CLink::RefundBettingMoney(const int& bettingMoney)
 	return false;
 }
 
-void CLink::FineGamePlayingOut()
+bool CLink::FineGamePlayingOut()
 {
-	PayDebtMoney(FineGamePlayingOutMoney);
+	if (GetMyMoney() >= FineGamePlayingOutMoney) // 빚보다 돈이 더 많으면
+	{
+		// 돈 감소 (일단 빚으로) 실제 .txt에 쓰지는 않음 그러나 나중에 이 만큼 차감함.
+		mDebtMoney += FineGamePlayingOutMoney;
+		return true;
+	}
+	return false;
 }
 
 bool MyCardInfo::SetExp(int addExp, int & resultExp)

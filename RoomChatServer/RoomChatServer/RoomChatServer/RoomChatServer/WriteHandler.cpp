@@ -43,6 +43,26 @@ bool CWriteHandler::Write(const char * textFileName, int count, ...)
 	return true;
 }
 
+bool CWriteHandler::Write(const char * textFileName, const vector<string>& strWrite)
+{
+	ofstream outFile(textFileName, ios::app);
+	if (!outFile)
+	{
+		cout << "파일이 없습니다." << endl;
+		return false;
+	}
+	vector<string>::const_iterator iterBeginWrite = strWrite.begin();
+	for (; iterBeginWrite != strWrite.end(); ++iterBeginWrite)
+	{
+		outFile << (*iterBeginWrite).c_str() << '|';
+	}
+	outFile << '\n';
+	outFile.close();
+	return true;
+}
+
+
+
 //int CWriteHandler::writeGacharResult(const char * textFileName, const char * userName)
 //{
 //	string userNameString = userName;

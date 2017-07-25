@@ -121,7 +121,6 @@ private:
 	bool MinusMyMoney(const int& minusMoney);
 	bool IsHaveCard(int cardNum);
 	bool PayBackMoney(const int& payBack);
-	bool PayDebtMoney(const int& debt); // 나중에 차감할 돈 축적
 public:
 	CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name);
 	CLink(const CLink&) = delete;
@@ -161,7 +160,7 @@ public:
 	bool InitGoods(int initMoney);
 	bool InitBetting();
 	bool RefundBettingMoney(const int& bettingMoney);
-	void FineGamePlayingOut();
+	bool FineGamePlayingOut();
 	void ChangeName(const string& newName)
 	{
 		size_t size = strlen(newName.c_str()) + 1;

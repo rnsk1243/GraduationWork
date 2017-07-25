@@ -15,9 +15,7 @@ public:
 	static CWriteHandler* GetInstance();
 	// 파일명, 몇개, 스트링
 	bool Write(const char* textFileName, int count, ...);
-	//int writeGacharResult(const char* textFileName, const char* userName);
-	//int BeginToTargetUserLineCurserMoveSize(const char * textName, int targetUserLineNum, char * targetLine);
-	//int TargetLineToUserCurserMoveSize(const char * targetSouce, string & searchCardNum, bool & isNewCard, int & cardAmount);
+	bool Write(const char* textFileName, const vector<string>& strWrite);
 	bool WriteObj(const string& textName, int offset, int recordedNumber, int cipher);
 	bool WriteNextJoinUserNum(const string& textFileName,const int& nextUserNum);
 };

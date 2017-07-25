@@ -1,8 +1,9 @@
 #pragma once
+#include<vector>
 #include<iostream>
 #include<process.h>
 using namespace std;
-//#include"ConstEnumInfo.h"
+#include"ConstEnumInfo.h"
 #include"ErrorCode.h"
 class CLink;
 class CCommandController;
@@ -20,6 +21,9 @@ private:
 	CErrorHandler(const CErrorHandler&) = delete;
 	CErrorHandler& operator=(const CErrorHandler&) = delete;
 	~CErrorHandler();
+	bool GetErrorMemberInfo(CLink * client, vector<string>& memberInfoVec);
+	void GetErrorCode(EnumErrorCode code, vector<string>& memberInfoVec);
+	void GetErrorLevel(ErrorLevel level, vector<string>& memberInfoVec);
 public:
 	static CErrorHandler* GetInstance();
 	void setCommand(CCommandController* command);
