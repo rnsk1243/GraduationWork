@@ -8,6 +8,7 @@ EnumErrorCode CErrorHandler::CriticalError(EnumErrorCode code, CLink * client)
 {
 	//cout << "[심각한 에러 발생] 에러코드 = [ " << EnumErrorCode(code) << " ]" << endl;
 	vector<string> errorMessageVec;
+	GetErrorCurTime(errorMessageVec);
 	GetErrorLevel(ErrorLevel::Serious, errorMessageVec);
 	GetErrorCode(code, errorMessageVec);
 	GetErrorMemberInfo(client, errorMessageVec);
@@ -44,6 +45,7 @@ EnumErrorCode CErrorHandler::CriticalError(EnumErrorCode code, CLink * client)
 EnumErrorCode CErrorHandler::TakeNullLinkError(EnumErrorCode code)
 {
 	vector<string> errorMessageVec;
+	GetErrorCurTime(errorMessageVec);
 	GetErrorLevel(ErrorLevel::Normal, errorMessageVec);
 	GetErrorCode(code, errorMessageVec);
 	string message("client가 없는 에러코드");
@@ -57,6 +59,7 @@ EnumErrorCode CErrorHandler::TakeNullLinkError(EnumErrorCode code)
 EnumErrorCode CErrorHandler::TakeSucces(EnumErrorCode code)
 {
 	vector<string> errorMessageVec;
+	GetErrorCurTime(errorMessageVec);
 	GetErrorLevel(ErrorLevel::Succes, errorMessageVec);
 	GetErrorCode(code, errorMessageVec);
 	WriteHandlerStatic->Write(ErrorLogTxt.c_str(), errorMessageVec);
@@ -73,6 +76,7 @@ EnumErrorCode CErrorHandler::TakeError(EnumErrorCode code, CLink * client)
 		return code;
 	}
 	vector<string> errorMessageVec;
+	GetErrorCurTime(errorMessageVec);
 	GetErrorLevel(ErrorLevel::Normal, errorMessageVec);
 	GetErrorCode(code, errorMessageVec);
 	GetErrorMemberInfo(client, errorMessageVec);
@@ -83,6 +87,13 @@ EnumErrorCode CErrorHandler::TakeError(EnumErrorCode code, CLink * client)
 CErrorHandler::CErrorHandler():mCommandPtr(nullptr)
 {
 	cout << "ErrorHandler 생성자 호출" << endl;
+	mTimeUnit.reserve(timeKind);
+	mTimeUnit.push_back("년");
+	mTimeUnit.push_back("월");
+	mTimeUnit.push_back("일");
+	mTimeUnit.push_back("시");
+	mTimeUnit.push_back("분");
+	mTimeUnit.push_back("초");
 }
 
 
@@ -98,7 +109,7 @@ bool CErrorHandler::GetErrorMemberInfo(CLink * client, vector<string>& memberInf
 		memberInfoVec.push_back(message);
 		return false;
 	}
-	char chPk[10];
+	char chPk[TimeSize];
 	_itoa_s(client->GetMyPKNumber(), chPk, 10);
 	const char* chName = client->GetMyName();
 	memberInfoVec.push_back(string(chPk));
@@ -128,6 +139,31 @@ void CErrorHandler::GetErrorLevel(ErrorLevel level, vector<string>& memberInfoVe
 		break;
 	}
 	memberInfoVec.push_back(strLevel);
+}
+
+void CErrorHandler::GetErrorCurTime(vector<string>& timeStringVec)
+{
+	const time_t curTime(time(NULL));	// localtime함수에 넣을 인자 선언 // 1970년1월1일부터 몇초가 지났는지 계산
+	tm timeStruct;
+	localtime_s(&timeStruct, &curTime); // 지역 시간 기준으로 변환
+	vector<string>::iterator timeUnitBegin = mTimeUnit.begin();
+	vector<int> timeIntVec; timeIntVec.reserve(timeKind);
+	timeIntVec.push_back((timeStruct.tm_year - 100));
+	timeIntVec.push_back(timeStruct.tm_mon + 1);
+	timeIntVec.push_back(timeStruct.tm_mday);
+	timeIntVec.push_back(timeStruct.tm_hour);
+	timeIntVec.push_back(timeStruct.tm_min);
+	timeIntVec.push_back(timeStruct.tm_sec);
+	vector<int>::iterator timeIntBegin = timeIntVec.begin();
+	for (; timeIntBegin != timeIntVec.end(); ++timeIntBegin)
+	{
+		char chTemp[TimeSize];
+		_itoa_s((*timeIntBegin), chTemp, 10);
+		string strTime(chTemp);
+		string strHap = strTime + (*timeUnitBegin);
+		timeStringVec.push_back(strHap);
+		++timeUnitBegin;
+	}
 }
 
 void CErrorHandler::GetErrorCode(EnumErrorCode code, vector<string>& memberInfoVec)

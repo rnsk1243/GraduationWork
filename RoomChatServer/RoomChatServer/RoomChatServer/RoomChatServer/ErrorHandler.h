@@ -11,6 +11,7 @@ class CCommandController;
 class CErrorHandler
 {
 private:
+	vector<string> mTimeUnit;
 	CCommandController* mCommandPtr;
 	EnumErrorCode CriticalError(EnumErrorCode code, CLink* client);
 	EnumErrorCode TakeNullLinkError(EnumErrorCode code);
@@ -24,6 +25,7 @@ private:
 	bool GetErrorMemberInfo(CLink * client, vector<string>& memberInfoVec);
 	void GetErrorCode(EnumErrorCode code, vector<string>& memberInfoVec);
 	void GetErrorLevel(ErrorLevel level, vector<string>& memberInfoVec);
+	void GetErrorCurTime(vector<string>& timeStringVec);
 public:
 	static CErrorHandler* GetInstance();
 	void setCommand(CCommandController* command);
