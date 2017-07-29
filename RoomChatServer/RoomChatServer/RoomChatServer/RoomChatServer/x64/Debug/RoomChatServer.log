@@ -1,202 +1,21 @@
-﻿  WriteHandler.cpp
-  ActionNetWork.cpp
+﻿  MainProc.cpp
+  ErrorHandler.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  WriteHandler.cpp
+  RoomManager.cpp
   RoomHandler.cpp
   Room.cpp
-  CommandController.cpp
-  Link.cpp
-  ReadyNetWork.cpp
-  MainProc.cpp
-  RoomManager.cpp
   ReadHandler.cpp
-  MinidumpHelp.cpp
-c:\program files (x86)\windows kits\8.1\include\um\dbghelp.h(1544): warning C4091: 'typedef ': 변수를 선언하지 않으면 '' 왼쪽은 무시됩니다.
-c:\program files (x86)\windows kits\8.1\include\um\dbghelp.h(3190): warning C4091: 'typedef ': 변수를 선언하지 않으면 '' 왼쪽은 무시됩니다.
   Lobby.cpp
+  Link.cpp
   Goods.cpp
-  GaChar.cpp
-  ErrorHandler.cpp
+  CommandController.cpp
   ChannelManager.cpp
   ChannelHandler.cpp
   Channel.cpp
   CardManager.cpp
-  Card.cpp
-  코드를 생성하고 있습니다...
-  컴파일하고 있습니다...
-  Betting.cpp
-  BasicExcel.cpp
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(314): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(341): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(859): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(862): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(863): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(868): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(871): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(872): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(875): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1078): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1090): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1102): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1116): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1126): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1138): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1150): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1176): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1188): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1200): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1242): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1252): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1264): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1277): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1293): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1349): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1360): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1371): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1384): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1394): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1404): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1495): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1534): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1549): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1571): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1572): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1585): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1616): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1622): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1731): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1749): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1770): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1781): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1782): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1851): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1852): warning C4267: '-=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(1998): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2215): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2222): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2228): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2234): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2340): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2346): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2351): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2366): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2375): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2380): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2389): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2396): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2399): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2406): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2409): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2550): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2568): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2641): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2644): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2670): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2677): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2698): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2704): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2725): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2744): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2832): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2974): warning C4309: '초기화 중': 상수 값이 잘립니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3010): warning C4309: '초기화 중': 상수 값이 잘립니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3109): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3110): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3122): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3126): warning C4267: '/=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3127): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3134): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3140): warning C4267: '+=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3292): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3293): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3294): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3308): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3309): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3310): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3373): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3427): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3442): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3556): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3562): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3571): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3575): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3606): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3621): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3697): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3701): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3728): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3741): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3813): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3825): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3849): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3860): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3884): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3895): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3946): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3952): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4211): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4222): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4269): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4320): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4382): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4413): warning C4244: '*=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4427): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4429): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4439): warning C4244: '초기화 중': '__int64'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4441): warning C4805: '|=': 연산에 'int' 형식과 'bool' 형식을 함께 사용하는 것은 안전하지 않습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4456): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4458): warning C4244: '초기화 중': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4602): warning C4477: 'sprintf' : 서식 문자열 '%d'에 'int' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'std::size_t'입니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4602): note: 서식 문자열에서 '%zd'을(를) 사용하는 것이 좋습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4926): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(4975): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5007): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5048): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5059): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5102): warning C4267: '=': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5103): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5210): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5248): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5256): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5257): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5286): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5287): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5288): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5302): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5303): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5328): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5329): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5330): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5346): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5347): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5353): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5354): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5366): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5367): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5405): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(5406): warning C4267: '=': 'size_t'에서 'short'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.hpp(160): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3692): note: 컴파일 중인 함수 템플릿 인스턴스화 'void YCompoundFiles::LittleEndian::ReadString<char>(const std::vector<char,std::allocator<char>> &,Type *,int,int)'에 대한 참조를 확인하십시오.
-          with
-          [
-              Type=char
-          ]
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.hpp(126): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2524): note: 컴파일 중인 함수 템플릿 인스턴스화 'void YCompoundFiles::LittleEndian::ReadString<char>(const char *,Type *,int,int)'에 대한 참조를 확인하십시오.
-          with
-          [
-              Type=char
-          ]
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.hpp(177): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(3738): note: 컴파일 중인 함수 템플릿 인스턴스화 'void YCompoundFiles::LittleEndian::WriteString<char>(std::vector<char,std::allocator<char>> &,Type *,int,int)'에 대한 참조를 확인하십시오.
-          with
-          [
-              Type=char
-          ]
-d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.hpp(143): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  d:\graduationwork\graduationwork\roomchatserver\roomchatserver\roomchatserver\roomchatserver\basicexcel.cpp(2550): note: 컴파일 중인 함수 템플릿 인스턴스화 'void YCompoundFiles::LittleEndian::WriteString<char>(char *,Type *,int,int)'에 대한 참조를 확인하십시오.
-          with
-          [
-              Type=char
-          ]
+  ActionNetWork.cpp
   코드를 생성하고 있습니다...
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
   RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)

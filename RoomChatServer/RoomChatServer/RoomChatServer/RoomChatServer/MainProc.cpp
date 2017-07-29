@@ -118,6 +118,7 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 	}
 	cout << "==================================" << endl;
 	cout << "보유 재화 = " << clientInfo->GetMyMoney() << endl;
+	ErrorHandStatic->ErrorHandler(SUCCES_LOGIN, clientInfo);
 	while (true)
 	{
 		int isRecvSuccesResultValue = actionNetWork.Recvn(shared_clientInfo, commandController);

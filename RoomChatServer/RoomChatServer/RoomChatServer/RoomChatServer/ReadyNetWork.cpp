@@ -16,6 +16,7 @@ CReadyNetWork::CReadyNetWork():
 
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
+
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servAddr.sin_port = htons(Port);
 
