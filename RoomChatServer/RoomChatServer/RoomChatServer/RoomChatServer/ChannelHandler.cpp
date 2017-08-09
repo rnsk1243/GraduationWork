@@ -9,7 +9,7 @@ CChannelHandler::~CChannelHandler()
 {
 }
 
-bool CChannelHandler::MoveNextChannel(shared_ptr<CLink> shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
+bool CChannelHandler::MoveNextChannel(const shared_ptr<CLink>& shared_clientInfo, CChannelManager& channelManager, int targetChannelNo)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())
@@ -22,8 +22,8 @@ bool CChannelHandler::MoveNextChannel(shared_ptr<CLink> shared_clientInfo, CChan
 		return false;
 	}
 	// channel리스트 iterator
-	ChannelListIt iterBegin = channelManager.GetIterChannelBegin();
-	ChannelListIt iterEnd = channelManager.GetIterChannelEnd();
+	ChannelVecIt iterBegin = channelManager.GetIterChannelBegin();
+	ChannelVecIt iterEnd = channelManager.GetIterChannelEnd();
 	
 	// 옮기고자 하는 번호의 Channel 포인터 얻기
 	for (; iterBegin != iterEnd; ++iterBegin)

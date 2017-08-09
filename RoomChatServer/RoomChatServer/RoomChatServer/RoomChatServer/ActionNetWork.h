@@ -15,7 +15,7 @@ public:
 	~CActionNetWork();
 	// room에서 메시지 보내기
 	int Sendn(CLink& clientInfo, CRoomManager& roomManager, CChannelManager& channelManager, int flags = 0);
-	int Recvn(shared_ptr<CLink> clientInfo, CCommandController& commandController, int flags = 0);
+	int Recvn(const shared_ptr<CLink>& clientInfo, CCommandController& commandController, int flags = 0);
 	int SendMyName(SOCKET& clientSocket, CLink& clientInfo, int flags = 0);
 	int MultiSendn(SocketVec& sockets, const string& MS, int flags = 0);
 	// 클라이언트 한명에게 보내기

@@ -34,7 +34,7 @@ CRoom::~CRoom()
 	cout << "방 삭제 완료" << endl;
 }
 
-void CRoom::PushClient(shared_ptr<CLink> shared_client)
+void CRoom::PushClient(const shared_ptr<CLink>& shared_client)
 {
 	ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
 	mClientInfos.push_back(shared_client);

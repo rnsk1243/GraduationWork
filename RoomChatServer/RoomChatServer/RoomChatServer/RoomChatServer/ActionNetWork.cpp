@@ -112,7 +112,7 @@ int CActionNetWork::Sendn(SOCKET & socket, const string & strMessage, int flags)
 	return SUCCES_SEND;
 }
 
-int CActionNetWork::Recvn(shared_ptr<CLink> shared_clientInfo, CCommandController& commandController, int flags)
+int CActionNetWork::Recvn(const shared_ptr<CLink>& shared_clientInfo, CCommandController& commandController, int flags)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())

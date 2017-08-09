@@ -31,7 +31,7 @@ public:
 	CRoom(int roomNum,int channelNum, const string& roomName,const int& battingMoney);
 	~CRoom();
 #pragma region push, erase 함수
-	void PushClient(shared_ptr<CLink> shared_client);
+	void PushClient(const shared_ptr<CLink>& shared_client);
 	LinkListIt EraseClient(LinkListIt myInfoListIt);
 #pragma endregion
 #pragma region get,set 함수

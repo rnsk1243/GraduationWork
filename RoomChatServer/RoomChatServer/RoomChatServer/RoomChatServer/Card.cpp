@@ -34,7 +34,7 @@ CCard * CCard::GetInstance()
 	return CardStatic;
 }
 
-void CCard::PushCard(shared_ptr<Card> card)
+void CCard::PushCard(const shared_ptr<Card>& card)
 {
 	cout << "pushCard = " << card.get()->mName << endl;
 	mCards.push_back(card);

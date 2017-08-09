@@ -68,7 +68,7 @@ bool CRoomHandler::ExitRoom(CLink* clientInfo, CRoomManager* roomManager)
 	return false;
 }
 
-bool CRoomHandler::MakeRoom(const shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, const string& roomName,const int& battingMoney)
+bool CRoomHandler::MakeRoom(const shared_ptr<CLink>& shared_clientInfo, CRoomManager* roomManager, const string& roomName,const int& battingMoney)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())
@@ -112,7 +112,7 @@ bool CRoomHandler::MakeRoom(const shared_ptr<CLink> shared_clientInfo, CRoomMana
 	return true;
 }
 
-bool CRoomHandler::EnterRoom(const shared_ptr<CLink> shared_clientInfo, CRoomManager* roomManager, int targetRoomNo)
+bool CRoomHandler::EnterRoom(const shared_ptr<CLink>& shared_clientInfo, CRoomManager* roomManager, int targetRoomNo)
 {
 	CLink* clientInfo = nullptr;
 	if (0 < shared_clientInfo.use_count())

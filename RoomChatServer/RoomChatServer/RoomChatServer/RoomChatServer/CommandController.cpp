@@ -15,7 +15,7 @@ CCommandController::~CCommandController()
 	cout << "CNetWork °´Ã¼ ¼Ò¸êÀÚ È£Ãâ" << endl;
 }
 
-bool CCommandController::ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink*& clientInfo, int& channelNum)
+bool CCommandController::ReadyCommand(const shared_ptr<CLink>& shared_clientInfo, CLink*& clientInfo, int& channelNum)
 {
 	if (0 < shared_clientInfo.use_count())
 	{
@@ -31,7 +31,7 @@ bool CCommandController::ReadyCommand(shared_ptr<CLink> shared_clientInfo, CLink
 	return false;
 }
 
-bool CCommandController::EnterRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage)
+bool CCommandController::EnterRoom(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr; 
 	int channelNum = 0;
@@ -77,7 +77,7 @@ bool CCommandController::EnterRoom(shared_ptr<CLink> shared_clientInfo, string& 
 	return false;
 }
 
-bool CCommandController::ChangeChannel(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage)
+bool CCommandController::ChangeChannel(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -106,8 +106,8 @@ bool CCommandController::ChangeChannel(shared_ptr<CLink> shared_clientInfo, stri
 		//SUCCES_COMMAND;
 		return true;
 	}
-	ChannelListIt channelBegin = mChannelManager.GetIterChannelBegin(); // const iterator·Î ¹Ù²Þ
-	ChannelListIt channelEnd = mChannelManager.GetIterChannelEnd();
+	ChannelVecIt channelBegin = mChannelManager.GetIterChannelBegin(); // const iterator·Î ¹Ù²Þ
+	ChannelVecIt channelEnd = mChannelManager.GetIterChannelEnd();
 	for (; channelBegin != channelEnd; ++channelBegin)
 	{
 		if ((*channelBegin)->GetChannelNum() == channelNum)
@@ -126,7 +126,7 @@ bool CCommandController::ChangeChannel(shared_ptr<CLink> shared_clientInfo, stri
 	return false;
 }
 
-bool CCommandController::MakeRoom(const string& roomName, shared_ptr<CLink> shared_clientInfo,const int& battingMoney, string& sendClientMessage)
+bool CCommandController::MakeRoom(const string& roomName, const shared_ptr<CLink>& shared_clientInfo,const int& battingMoney, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -163,7 +163,7 @@ bool CCommandController::MakeRoom(const string& roomName, shared_ptr<CLink> shar
 	return false;
 }
 
-bool CCommandController::OutRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage)
+bool CCommandController::OutRoom(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -197,7 +197,7 @@ bool CCommandController::OutRoom(shared_ptr<CLink> shared_clientInfo, string& se
 	return true;
 }
 
-bool CCommandController::MergeRoom(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage)
+bool CCommandController::MergeRoom(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -243,7 +243,7 @@ bool CCommandController::MergeRoom(shared_ptr<CLink> shared_clientInfo, string& 
 	return false;
 }
 
-bool CCommandController::CardCompose(shared_ptr<CLink> shared_clientInfo, const string& targetCardNum, const string& sourceCardNum, string& sendClientMessage)
+bool CCommandController::CardCompose(const shared_ptr<CLink>& shared_clientInfo, const string& targetCardNum, const string& sourceCardNum, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -268,7 +268,7 @@ bool CCommandController::CardCompose(shared_ptr<CLink> shared_clientInfo, const 
 	return false;
 }
 
-bool CCommandController::CardEvolution(shared_ptr<CLink> shared_clientInfo, const string & targetCardNum, string& sendClientMessage)
+bool CCommandController::CardEvolution(const shared_ptr<CLink>& shared_clientInfo, const string & targetCardNum, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -292,7 +292,7 @@ bool CCommandController::CardEvolution(shared_ptr<CLink> shared_clientInfo, cons
 	return false;
 }
 
-bool CCommandController::SendAllReadyGameNotice(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks)
+bool CCommandController::SendAllReadyGameNotice(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -330,7 +330,7 @@ bool CCommandController::SendAllReadyGameNotice(shared_ptr<CLink> shared_clientI
 	return isAllReady;
 }
 
-bool CCommandController::IsHaveCard(shared_ptr<CLink> shared_clientInfo, int cardNum, string& sendClientMessage)
+bool CCommandController::IsHaveCard(const shared_ptr<CLink>& shared_clientInfo, int cardNum, string& sendClientMessage)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -367,7 +367,7 @@ bool CCommandController::IsHaveCard(shared_ptr<CLink> shared_clientInfo, int car
 	return false;
 }
 
-bool CCommandController::SendBattingResult(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks)
+bool CCommandController::SendBattingResult(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage, SocketVec& clientSocks)
 {
 	CLink* clientInfo = nullptr;
 	int channelNum = 0;
@@ -420,7 +420,7 @@ bool CCommandController::SendBattingResult(shared_ptr<CLink> shared_clientInfo, 
 	return false;
 }
 
-bool CCommandController::CardSelect(shared_ptr<CLink> shared_clientInfo, string& sendClientMessage)
+bool CCommandController::CardSelect(const shared_ptr<CLink>& shared_clientInfo, string& sendClientMessage)
 {
 	
 	CLink* clientInfo = nullptr;
@@ -453,7 +453,7 @@ bool CCommandController::CardSelect(shared_ptr<CLink> shared_clientInfo, string&
 }
 
 
-bool CCommandController::CommandHandling(shared_ptr<CLink> shared_clientInfo, vector<string>& commandString, string& sendClientMessage, SocketVec& clientSocks)
+bool CCommandController::CommandHandling(const shared_ptr<CLink>& shared_clientInfo, vector<string>& commandString, string& sendClientMessage, SocketVec& clientSocks)
 {
 	try
 	{

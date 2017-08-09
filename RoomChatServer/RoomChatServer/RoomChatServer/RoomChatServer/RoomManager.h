@@ -25,7 +25,7 @@ public:
 	~CRoomManager();
 #pragma region push, erase ¸Þ¼Òµå
 
-	void PushRoom(shared_ptr<CRoom> shared_newRoom)
+	void PushRoom(const shared_ptr<CRoom>& shared_newRoom)
 	{
 		ScopeLock<MUTEX> MU(mRAII_RoomManagerMUTEX);
 		mRooms.push_back(shared_newRoom);

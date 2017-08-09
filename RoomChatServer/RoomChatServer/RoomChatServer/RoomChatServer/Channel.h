@@ -13,6 +13,7 @@ typedef LinkList::iterator LinkListIt;
 
 class CChannel
 {
+	int mPeopleAmount;
 	int mChannelNum;
 	LinkList mClientInfos;
 	//CRITICAL_SECTION CS_MyInfoList;
@@ -32,13 +33,17 @@ public:
 #pragma endregion
 
 #pragma region push,erase ÇÔ¼ö
-	void PushClient(shared_ptr<CLink> shared_client);
+	void PushClient(const shared_ptr<CLink>& shared_client);
 	LinkListIt EraseClient(LinkListIt myInfoListIt)
 	{
 		LinkListIt temp;
 		{
 			ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
 			temp = mClientInfos.erase(myInfoListIt);
+			if (0 < mPeopleAmount)
+			{
+				--mPeopleAmount;
+			}
 		}
 		return temp;
 	}

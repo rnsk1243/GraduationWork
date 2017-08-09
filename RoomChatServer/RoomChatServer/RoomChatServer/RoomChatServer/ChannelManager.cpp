@@ -2,7 +2,7 @@
 #include"ErrorHandler.h"
 #include"CommandController.h"
 
-void CChannelManager::PushChannel(shared_ptr<CChannel> shared_newChannel)
+void CChannelManager::PushChannel(const shared_ptr<CChannel>& shared_newChannel)
 {
 	if (0 >= shared_newChannel.use_count())
 	{
@@ -19,6 +19,7 @@ void CChannelManager::PushChannel(shared_ptr<CChannel> shared_newChannel)
 
 CChannelManager::CChannelManager()
 {
+	mChannels.reserve(ChannelAmount);
 	//InitializeCriticalSection(&CS_Channel);
 	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
 	{
@@ -44,8 +45,8 @@ CChannelManager::~CChannelManager()
 
 CChannel * CChannelManager::GetMyChannel(int ChannelNum)
 {
-	ChannelListIt iterBegin = mChannels.begin();
-	ChannelListIt iterEnd = mChannels.end();
+	ChannelVecIt iterBegin = mChannels.begin();
+	ChannelVecIt iterEnd = mChannels.end();
 
 	for (; iterBegin != iterEnd; ++iterBegin)
 	{

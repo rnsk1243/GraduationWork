@@ -166,14 +166,6 @@ public:
 		size_t size = strlen(newName.c_str()) + 1;
 		mName = new char[size];
 		strcpy_s(mName, size, newName.c_str());
-		////Name = '\0';
-		//size_t char_size = strlen(name) - 1; // 명령연산자를 제외한 크기
-		//for (size_t i = 0; i < char_size; i++)
-		//{
-		//	Name[i] = name[i + start]; // 명령연산자제외하고 인덱스2부터 복사
-		//}
-		//Name[char_size] = '\0';
-		//cout << "바뀐 이름 = " << Name << endl;
 	}
 };
 

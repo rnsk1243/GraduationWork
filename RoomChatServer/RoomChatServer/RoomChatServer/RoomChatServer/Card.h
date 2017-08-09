@@ -58,7 +58,7 @@ public:
 	CCard& operator=(const CCard& copy) = delete;
 	~CCard();
 	static CCard* GetInstance();
-	void PushCard(shared_ptr<Card> card);
+	void PushCard(const shared_ptr<Card>& card);
 	int GetCardStat(int cardNum);
 	int GetCardProb(int cardNum);
 	char* GetCardName(int cardNum);
