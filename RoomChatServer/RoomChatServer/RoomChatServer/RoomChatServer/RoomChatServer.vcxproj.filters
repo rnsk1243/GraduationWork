@@ -67,12 +67,6 @@
     <Filter Include="Card\CardManager">
       <UniqueIdentifier>{ef033b01-82d4-467c-919e-6487bcacd7d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Channel\ChannelHandler">
-      <UniqueIdentifier>{e7dea1ce-49c6-45d7-ba07-9b590cfa20dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Room\RoomHandler">
-      <UniqueIdentifier>{bc71e515-45b6-47a5-87da-053d9a81ff3c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Goods">
       <UniqueIdentifier>{0ef36b2a-d34d-4279-91a1-da901f031d2b}</UniqueIdentifier>
     </Filter>
@@ -96,20 +90,11 @@
     <ClCompile Include="Link.cpp">
       <Filter>Link</Filter>
     </ClCompile>
-    <ClCompile Include="RoomHandler.cpp">
-      <Filter>Room\RoomHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="ChannelHandler.cpp">
-      <Filter>Channel\ChannelHandler</Filter>
-    </ClCompile>
     <ClCompile Include="ChannelManager.cpp">
       <Filter>Channel\ChannelManager</Filter>
     </ClCompile>
     <ClCompile Include="RoomManager.cpp">
       <Filter>Room\RoomManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ActionNetWork.cpp">
-      <Filter>ActionNetWork</Filter>
     </ClCompile>
     <ClCompile Include="ReadyNetWork.cpp">
       <Filter>ReadyNetWork</Filter>
@@ -147,6 +132,15 @@
     <ClCompile Include="Betting.cpp">
       <Filter>Betting</Filter>
     </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>ActionNetWork</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCardInfo.cpp">
+      <Filter>Card</Filter>
+    </ClCompile>
+    <ClCompile Include="GuestLink.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Room.h">
@@ -157,12 +151,6 @@
     </ClInclude>
     <ClInclude Include="CommandController.h">
       <Filter>NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomHandler.h">
-      <Filter>Room\RoomHandler</Filter>
-    </ClInclude>
-    <ClInclude Include="ChannelHandler.h">
-      <Filter>Channel\ChannelHandler</Filter>
     </ClInclude>
     <ClInclude Include="ChannelManager.h">
       <Filter>Channel\ChannelManager</Filter>
@@ -181,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
-    </ClInclude>
-    <ClInclude Include="ActionNetWork.h">
-      <Filter>ActionNetWork</Filter>
     </ClInclude>
     <ClInclude Include="ConstEnumInfo.h">
       <Filter>헤더 파일</Filter>
@@ -226,6 +211,15 @@
     </ClInclude>
     <ClInclude Include="Link.h">
       <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>ActionNetWork</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCardInfo.h">
+      <Filter>Card</Filter>
+    </ClInclude>
+    <ClInclude Include="GuestLink.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

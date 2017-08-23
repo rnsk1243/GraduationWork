@@ -2,7 +2,7 @@
 #include"ErrorHandler.h"
 #include"CommandController.h"
 
-void CChannelManager::PushChannel(const shared_ptr<CChannel>& shared_newChannel)
+void CChannelManager::PushChannel(const ChannelPtr& shared_newChannel)
 {
 	if (0 >= shared_newChannel.use_count())
 	{
@@ -20,27 +20,11 @@ void CChannelManager::PushChannel(const shared_ptr<CChannel>& shared_newChannel)
 CChannelManager::CChannelManager()
 {
 	mChannels.reserve(ChannelAmount);
-	//InitializeCriticalSection(&CS_Channel);
 	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
 	{
 		shared_ptr<CChannel> newChannel(new CChannel(i));
-		//CChannel* newChannel = new CChannel(i);
 		PushChannel(newChannel);
 	}
-}
-
-
-CChannelManager::~CChannelManager()
-{
-	cout << "ChannelManager ¼Ò¸êÀÚ È£Ãâ" << endl;
-	//ChannelListIt begin = getIterChannelBegin();
-	//ChannelListIt end = getIterChannelEnd();
-	//for (; begin != end; ++begin)
-	//{
-	//	delete(*begin);
-	//}
-	//Channels.clear();
-	//DeleteCriticalSection(&CS_Channel);
 }
 
 CChannel * CChannelManager::GetMyChannel(int ChannelNum)
@@ -57,3 +41,53 @@ CChannel * CChannelManager::GetMyChannel(int ChannelNum)
 	ErrorHandStatic->ErrorHandler(ERROR_GET_CHANNEL);
 	return nullptr;
 }
+
+CChannelManager::~CChannelManager()
+{
+	cout << "ChannelManager ¼Ò¸êÀÚ È£Ãâ" << endl;
+}
+
+bool CChannelManager::MoveChannel(const LinkPtr& shared_clientInfo, const int & moveChannelNumber)
+{
+	if (nullptr == shared_clientInfo.get())
+		return false;
+	ChannelVecIt iterBegin = mChannels.begin();
+	CChannel* nextChannel;
+	if (ChannelAmount < moveChannelNumber || EnterChannelNum > moveChannelNumber)
+	{
+		nextChannel = GetMyChannel(shared_clientInfo.get()->GetMyChannelNum());
+	}
+	else
+	{
+		nextChannel = GetMyChannel(moveChannelNumber);
+	}
+	if (nullptr == nextChannel)
+		return false;
+	return nextChannel->PushClient(shared_clientInfo, moveChannelNumber);
+}
+
+bool CChannelManager::ExitChannel(const LinkPtr& shared_clientInfo)
+{
+	CLink* client = shared_clientInfo.get();
+	if (nullptr == client)
+		return false;
+	int curChannelNumber = client->GetMyChannelNum();
+	CChannel* nextChannel = GetMyChannel(curChannelNumber);
+	if (nullptr == nextChannel)
+		return false;
+	nextChannel->EraseClient(shared_clientInfo);
+	return true;
+}
+
+void CChannelManager::Talk(const LinkPtr & shared_clientInfo, const string & message, int flags)
+{
+	CLink* client = shared_clientInfo.get();
+	if (nullptr == client)
+		return;
+	CChannel* myChannel = GetMyChannel(client->GetMyChannelNum());
+	if (nullptr != myChannel)
+	{
+		myChannel->Talk(shared_clientInfo, message, flags);
+	}
+}
+

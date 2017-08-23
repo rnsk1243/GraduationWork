@@ -24,29 +24,13 @@ public:
 	~CChannel();
 	CChannel(const CChannel&) = delete;
 	CChannel& operator=(const CChannel&) = delete;
-#pragma region get,set 함수
-	int GetChannelNum() { return mChannelNum; }
-	LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
-	LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
+	int GetChannelNum();
+	//LinkListIt GetIterMyInfoBegin() { return mClientInfos.begin(); }
+	//LinkListIt GetIterMyInfoEnd() { return mClientInfos.end(); }
 	// 채널에 속해 있는 소켓 가져오기.(결과 담을 벡터)
-	bool GetChannelSockets(vector<SOCKET>& channelSockets, bool isMyInclude, const SOCKET* myClientSock);
-#pragma endregion
-
-#pragma region push,erase 함수
-	void PushClient(const shared_ptr<CLink>& shared_client);
-	LinkListIt EraseClient(LinkListIt myInfoListIt)
-	{
-		LinkListIt temp;
-		{
-			ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
-			temp = mClientInfos.erase(myInfoListIt);
-			if (0 < mPeopleAmount)
-			{
-				--mPeopleAmount;
-			}
-		}
-		return temp;
-	}
-#pragma endregion
+	bool PushClient(const shared_ptr<CLink>& shared_client, const int& channelNumber);
+	LinkListIt EraseClient(const shared_ptr<CLink>& shared_clientInfo);
+	void Broadcast(const string& message, int flags = 0);
+	void Talk(const LinkPtr& myClient, const string& message, int flags = 0);
 };
 

@@ -12,63 +12,64 @@ CChannel::CChannel(int channelNum):
 CChannel::~CChannel()
 {
 	cout << "채널 삭제" << endl;
-	/*LinkListIt begin = getIterMyInfoBegin();
-	LinkListIt end = getIterMyInfoEnd();
-	for (; begin != end; ++begin)
-	{
-		delete(*begin);
-	}
-	ClientInfos.clear();*/
-	// DeleteCriticalSection(&CS);
 }
 
-bool CChannel::GetChannelSockets(vector<SOCKET>& channelSockets, bool isMyInclude, const SOCKET* myClientSock)
+int CChannel::GetChannelNum()
 {
-	LinkListIt linkBegin = GetIterMyInfoBegin();
-
-	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
-	{
-		if ((*linkBegin).use_count() > 0)
-		{
-			channelSockets.reserve(mPeopleAmount);
-			if (true == isMyInclude)
-			{
-				channelSockets.push_back((*linkBegin).get()->GetClientSocket());
-			}
-			else
-			{
-				if (nullptr == myClientSock)
-				{
-					ErrorHandStatic->ErrorHandler(ERROR_GET_CHANNEL_SOCKET_MYCLIENT_NULLPTR);
-					return false;
-				}
-				for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
-				{
-					if (*myClientSock != (*linkBegin).get()->GetClientSocket())
-					{
-						channelSockets.push_back((*linkBegin).get()->GetClientSocket());
-					}
-				}
-			}
-			return true;
-		}
-		else
-		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-			return false;
-		}
-	}
-	return false;
+	return mChannelNum;
 }
 
-void CChannel::PushClient(const shared_ptr<CLink>& shared_client)
+bool CChannel::PushClient(const shared_ptr<CLink>& shared_client, const int& channelNumber)
 {
 	if (nullptr == shared_client.get())
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-		return;
+		return false;
 	}
 	ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
 	mClientInfos.push_back(shared_client);
+	shared_client.get()->SetMyChannelNum(channelNumber);
 	mPeopleAmount++;
+	return true;
+}
+
+LinkListIt CChannel::EraseClient(const shared_ptr<CLink>& shared_clientInfo)
+{
+	LinkListIt eraseClientIter = find(mClientInfos.begin(), mClientInfos.end(), shared_clientInfo);
+	{
+		ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
+		eraseClientIter = mClientInfos.erase(eraseClientIter);
+		if (0 < mPeopleAmount)
+		{
+			--mPeopleAmount;
+		}
+	}
+	return eraseClientIter;
+}
+
+void CChannel::Broadcast(const string & message, int flags)
+{
+	LinkListIt clientIterBegin = mClientInfos.begin();
+	for (; clientIterBegin != mClientInfos.end(); ++clientIterBegin)
+	{
+		(*clientIterBegin).get()->SendnMine(message, flags);
+	}
+}
+
+void CChannel::Talk(const LinkPtr & myClient, const string & message, int flags)
+{
+	LinkListIt clientIterBegin = mClientInfos.begin();
+	LinkListIt myIter = find(mClientInfos.begin(), mClientInfos.end(), myClient);
+	if (mClientInfos.end() == myIter)
+	{
+		Broadcast(message, flags);
+		return;
+	}
+	for (; clientIterBegin != mClientInfos.end(); ++clientIterBegin)
+	{
+		if (clientIterBegin != myIter)
+		{
+			(*clientIterBegin).get()->SendnMine(message, flags);
+		}
+	}
 }

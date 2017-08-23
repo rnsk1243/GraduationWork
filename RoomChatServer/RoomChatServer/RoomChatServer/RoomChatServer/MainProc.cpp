@@ -8,7 +8,7 @@
 #include"RoomManager.h"
 #include"ChannelManager.h"
 #include"Channel.h"
-#include"ActionNetWork.h"
+#include"Listener.h"
 #include"Lobby.h"
 #include<process.h>
 #include<thread>
@@ -63,18 +63,19 @@ void printVersionInfo()
 
 //thSendRecv(SOCKET& clientSocket, CCommandController& commandController, CActionNetWork& actionNetWork)
 
-int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNetWork, void* v_lobby)
+int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_listener, void* v_lobby)
 {
 	SOCKET& clientSocket = (*(SOCKET*)v_clientSocket);
 	CCommandController& commandController = (*(CCommandController*)v_commandController);
-	CActionNetWork& actionNetWork = (*(CActionNetWork*)v_actionNetWork);
+	CListener& listener = (*(CListener*)v_listener);
 	CLobby& lobby = (*(CLobby*)v_lobby);
+	CGuestLink guest(clientSocket);
 	//CLobby lobby;
 	int isLogin = 0;
 	vector<string> userInfo;
 	while (SUCCES_LOGIN != isLogin)
 	{
-		isLogin = lobby.ActionServiceLobby(clientSocket, actionNetWork, userInfo);
+		isLogin = lobby.ActionServiceLobby(guest, listener, userInfo);
 		if (ERROR_NULL_LINK_RECV == isLogin || ERROR_NULL_LINK_SEND == isLogin)
 		{
 			cout << "종료" << endl;
@@ -85,62 +86,44 @@ int thSendRecv(void* v_clientSocket, void* v_commandController, void* v_actionNe
 		}
 		ErrorHandStatic->ErrorHandler(EnumErrorCode(isLogin));
 	}
-	shared_ptr<CLink> shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], userInfo[IndexUserID].c_str()));
-	CChannelManager& channelManager = commandController.GetChannelManager();
-	CRoomManager& roomManager = commandController.GetRoomManager();
-	// EnterChannelNum 채널에 입장
-	if (!commandController.GetChannelHandler().MoveNextChannel(shared_clientInfo, channelManager, EnterChannelNum))
-	{
-		return ErrorHandStatic->ErrorHandler(ERROR_ENTER_CHANNEL, shared_clientInfo.get());
-	}
-	CLink* clientInfo = nullptr;
-	if (0 < shared_clientInfo.use_count())
-	{
-		clientInfo = shared_clientInfo.get();
-	}
-	else
-	{
-		return ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-	}
+	LinkPtr shared_clientInfo(new CLink(clientSocket, userInfo[IndexUserPK], userInfo[IndexUserID].c_str()));
 
-	if (false == ReadHandlerStatic->ReadUserCard(clientInfo, NameMemberCardInfoTxt))
+	// EnterChannelNum 채널에 입장
+	vector<string> commandChannel;
+	commandChannel.push_back(CommandChannal);
+	commandChannel.push_back("1");
+	commandController.CommandHandling(shared_clientInfo, commandChannel);
+
+	if (false == ReadHandlerStatic->ReadUserCard(shared_clientInfo, NameMemberCardInfoTxt))
 		return 0;
-	if (false == ReadHandlerStatic->ReadUserGoods(clientInfo, NameMemberGoodsTxt))
+	if (false == ReadHandlerStatic->ReadUserGoods(shared_clientInfo, NameMemberGoodsTxt))
 		return 0;
 	cout << "========== 보유 카드 =============" << endl;
 
-	MyCardVectorIt cardBegin = clientInfo->GetIterMyCardBegin();
-	MyCardVectorIt cardEnd = clientInfo->GetIterMyCardEnd();
+	MyCardVectorIt cardBegin = shared_clientInfo->GetIterMyCardBegin();
+	MyCardVectorIt cardEnd = shared_clientInfo->GetIterMyCardEnd();
 	for (; cardBegin != cardEnd; ++cardBegin)
 	{
 		cout << (*cardBegin).get()->GetCardName() << endl;
 		cout << (*cardBegin).get()->GetAmount() << endl;
 	}
 	cout << "==================================" << endl;
-	cout << "보유 재화 = " << clientInfo->GetMyMoney() << endl;
-	ErrorHandStatic->ErrorHandler(SUCCES_LOGIN, clientInfo);
+	cout << "보유 재화 = " << shared_clientInfo->GetMyMoney() << endl;
+	shared_clientInfo.get()->SendnMine("로그인 성공");
+	ErrorHandStatic->ErrorHandler(SUCCES_LOGIN, shared_clientInfo);
 	while (true)
 	{
-		int isRecvSuccesResultValue = actionNetWork.Recvn(shared_clientInfo, commandController);
+		string recvMessage;
+		int isRecvSuccesResultValue = listener.Recvn(shared_clientInfo.get()->GetClientSocket(), recvMessage);
 		if (SUCCES_RECV == isRecvSuccesResultValue)// 메시지 받기 성공 일때 각 클라이언트에게 메시지 보냄
 		{
-			if (ERROR_SEND == actionNetWork.Sendn(*clientInfo, roomManager, channelManager))
-			{
-				if (!commandController.DeleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
-				{
-					return ErrorHandStatic->ErrorHandler(ERROR_DELETE_SOCKET, clientInfo);
-					//_endthreadex(0);
-				}
-			}
+			vector<string> commandMessage = ReadHandlerStatic->Parse(recvMessage, '/');
+			commandController.CommandHandling(shared_clientInfo, commandMessage);
 		}
 		else if (ERROR_RECV == isRecvSuccesResultValue || ERROR_NULL_LINK_SEND == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
-			if (!commandController.DeleteClientSocket(*clientInfo)) // 채널 또는 방의 MyInfoList에서 제거한 후 성공하면
-			{
-				return ErrorHandStatic->ErrorHandler(ERROR_DELETE_SOCKET, clientInfo);
-				//_endthreadex(0);
-			}
+			commandController.DeleteClientSocket(shared_clientInfo);
 			return 0;
 		}
 	}
@@ -159,9 +142,8 @@ void main()
 	CReadyNetWork readyNetWork;
 	CCommandController commandController;
 	
-	ErrorHandStatic->setCommand(&commandController);
 	
-	CActionNetWork actionNetWork;
+	CListener listener;
 	string strNextUserNum = ReadHandlerStatic->GetNextUserNum(MakeNextJoinNumberTxt);
 	int nextUserNum = stoi(strNextUserNum);
 	CLobby lobby(nextUserNum);
@@ -171,7 +153,7 @@ void main()
 		SOCKET* clientSocket = new SOCKET();
 		readyNetWork.Accept(*clientSocket);
 		
-		thread clientThread(thSendRecv, clientSocket, &commandController, &actionNetWork, &lobby);
+		thread clientThread(thSendRecv, clientSocket, &commandController, &listener, &lobby);
 		clientThread.detach();
 	}
 	

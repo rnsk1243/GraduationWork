@@ -60,7 +60,7 @@ int CCard::GetCardProb(int cardNum)
 	return card->mProb;
 }
 
-char* CCard::GetCardName(int cardNum)
+string CCard::GetCardName(int cardNum)
 {
 	Card* card = GetCard(cardNum);
 	if (nullptr == card)

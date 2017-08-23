@@ -17,65 +17,61 @@ CRoom::CRoom(int roomNum, int channelNum, const string& roomName, const int& bat
 CRoom::~CRoom()
 {
 	cout << mRoomNum << " 번 방이 삭제 됩니다." << endl;
-	//if (ClientInfos.empty())
-	//{
-	//	LinkListIt begin = getIterMyInfoBegin();
-	//	LinkListIt end = getIterMyInfoEnd();
-	//	for (; begin != end; ++begin)
-	//	{
-	//		delete(*begin);
-	//	}
-	//	ClientInfos.clear();
-	//	//DeleteCriticalSection(&CS_MyInfoList);
-	//}else
-	//{
-	//	cout << "방 삭제 실패" << endl;
-	//}
-	cout << "방 삭제 완료" << endl;
 }
 
-void CRoom::PushClient(const shared_ptr<CLink>& shared_client)
+void CRoom::PushClient(const LinkPtr& shared_client, const int& enterRoomNumber)
 {
 	ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
 	mClientInfos.push_back(shared_client);
+	shared_client.get()->SetMyRoomNum(enterRoomNumber);
+	shared_client.get()->SendnMine("방에 입장했습니다.");
 	IncreasePeople();
 }
 
-LinkListIt CRoom::EraseClient(LinkListIt myInfoListIt)
+LinkListIt CRoom::EraseClient(const LinkPtr& shared_client)
 {
-	LinkListIt temp;
+	LinkListIt delLinkIter = find(mClientInfos.begin(), mClientInfos.end(), shared_client);
 	{
 		ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
-		temp = mClientInfos.erase(myInfoListIt);
+		delLinkIter = mClientInfos.erase(delLinkIter);
 		DecreasePeople();
 	}
-	return temp;
+	return delLinkIter;
 }
 
-bool CRoom::MergeRoom(CRoom * targetRoom)
+bool CRoom::IsRoomEmpty()
 {
+	if (0 >= mAmountPeople)
 	{
-		ScopeLock<MUTEX> MU(mRAII_RoomMUTEX); // rock0
-		{
-			ScopeLock<MUTEX> MU(targetRoom->mRAII_RoomMUTEX); // rock1
-															  // 실제 옮기기 전에 준비작업으로 room정보 수정
-#pragma region 옮기는 방안에 있는 클라이언트들의 room정보 수정(방 번호라든지..)
-			LinkListIt linkBegin = targetRoom->GetIterMyInfoBegin();
-			LinkListIt linkEnd = targetRoom->GetIterMyInfoEnd();
-			for (; linkBegin != linkEnd; ++linkBegin)
-			{
-				CLink* targetClient = (*linkBegin).get();
-				targetClient->SetMyRoomNum(mRoomNum);
-				IncreasePeople(); // 방 인원수 갱신
-			}
-#pragma endregion 
-			//				ClientInfos.sort();
-			//				targetRoom->ClientInfos.sort();
-			mClientInfos.merge(targetRoom->mClientInfos); // 실제 옮김
-		} // rock1 unlock
-	} // rock0 unlock
-	return true;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	return false;
 }
+
+//bool CRoom::MergeRoom(CRoom * targetRoom)
+//{
+//	{
+//		ScopeLock<MUTEX> MU(mRAII_RoomMUTEX); // rock0
+//		{
+//			ScopeLock<MUTEX> MU(targetRoom->mRAII_RoomMUTEX); // rock1
+//															  // 실제 옮기기 전에 준비작업으로 room정보 수정
+//			LinkListIt linkBegin = targetRoom->GetIterMyInfoBegin();
+//			LinkListIt linkEnd = targetRoom->GetIterMyInfoEnd();
+//			for (; linkBegin != linkEnd; ++linkBegin)
+//			{
+//				CLink* targetClient = (*linkBegin).get();
+//				targetClient->SetMyRoomNum(mRoomNum);
+//				IncreasePeople(); // 방 인원수 갱신
+//			}
+//			mClientInfos.merge(targetRoom->mClientInfos); // 실제 옮김
+//		} // rock1 unlock
+//	} // rock0 unlock
+//	return true;
+//}
 
 bool CRoom::IsAllReady()
 {
@@ -84,20 +80,12 @@ bool CRoom::IsAllReady()
 	{
 		return false;
 	}
-	LinkListIt iterBegin = GetIterMyInfoBegin();
-	for (; iterBegin != GetIterMyInfoEnd(); ++iterBegin)
+	LinkListIt iterBegin = mClientInfos.begin();
+	for (; iterBegin != mClientInfos.end(); ++iterBegin)
 	{
-		if ((*iterBegin).use_count() > 0)
+		CLink* client = (*iterBegin).get();
+		if (false == client->GetReadyGame())
 		{
-			CLink* client = (*iterBegin).get();
-			if (false == client->GetReadyGame())
-			{
-				return false;
-			}
-		}
-		else
-		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 			return false;
 		}
 	}
@@ -113,33 +101,26 @@ bool CRoom::BattingResult(int& resultPK, bool& isDrawResult)
 		ErrorHandStatic->ErrorHandler(ERROR_BATTING_RESULT_ALONE);
 		return false;
 	}
-	LinkListIt iterBegin = GetIterMyInfoBegin();
-	CLink* winner = (*iterBegin).get();
+	LinkListIt iterBegin = mClientInfos.begin();
+	LinkPtr winner = (*iterBegin);
 	int curWinnerStat = CardStatic->GetCardStat(winner->GetMyBattingCardNumber()); // 현재 가장 높은 스텟 크기
 	bool isDraw = true; // 최고 높은 스텟을 낸 사람이 둘 이상인가? 
 	++iterBegin;
-	for (; iterBegin != GetIterMyInfoEnd(); ++iterBegin)
+	for (; iterBegin != mClientInfos.end(); ++iterBegin)
 	{
-		if ((*iterBegin).use_count() > 0)
+		LinkPtr client = (*iterBegin);
+		const int challengerStat = CardStatic->GetCardStat(client->GetMyBattingCardNumber());
+		if (curWinnerStat < challengerStat)
 		{
-			CLink* client = (*iterBegin).get();
-			const int challengerStat = CardStatic->GetCardStat(client->GetMyBattingCardNumber());
-			if (curWinnerStat < challengerStat)
-			{
-				curWinnerStat = challengerStat;
-				winner = client;
-				isDraw = false;
-			}
-			else if (curWinnerStat == challengerStat)
-			{
-				// 비김
-				isDraw = true;
-			}
+			curWinnerStat = challengerStat;
+			winner = client;
+			isDraw = false;
+			SendBattingResult(winner);
 		}
-		else
+		else if (curWinnerStat == challengerStat)
 		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-			return false;
+			// 비김
+			isDraw = true;
 		}
 	}
 	isDrawResult = isDraw;
@@ -156,58 +137,18 @@ bool CRoom::BattingResult(int& resultPK, bool& isDrawResult)
 	return false;
 }
 
-bool CRoom::GetRoomSockets(vector<SOCKET>& roomSockets, bool isMyInclude, const SOCKET* myClientSock)
-{
-	LinkListIt linkBegin = GetIterMyInfoBegin();
-	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
-	{
-		if ((*linkBegin).use_count() > 0)
-		{
-			if (true == isMyInclude)
-			{
-				roomSockets.push_back((*linkBegin).get()->GetClientSocket());
-			}
-			else
-			{
-				if (nullptr == myClientSock)
-				{
-					ErrorHandStatic->ErrorHandler(ERROR_GETROOMSOCKET_MYCLIENT_NULLPTR);
-					return false;
-				}
-				if (*myClientSock != (*linkBegin).get()->GetClientSocket())
-				{
-					roomSockets.push_back((*linkBegin).get()->GetClientSocket());
-				}
-			}
-		}
-		else
-		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
-			return false;
-		}
-	}
-	return true;
-}
 
 bool CRoom::AllCalculateMoney()
 {
 	LinkListIt linkBegin = mClientInfos.begin();
 	bool isSaveResult = true; // 모두 .txt에 저장 되었나? 한 명이라도 안되면 false 반환
-	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	for (; linkBegin != mClientInfos.end(); ++linkBegin)
 	{
-		if ((*linkBegin).use_count() > 0)
+		if (false == (*linkBegin).get()->SaveCalculateMoney())
 		{
-			if (false == (*linkBegin).get()->SaveCalculateMoney())
-			{
-				ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY, (*linkBegin).get());
-				isSaveResult = false;
-				continue;
-			}
-		}
-		else
-		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
+			ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY, (*linkBegin));
 			isSaveResult = false;
+			continue;
 		}
 	}
 	return isSaveResult;
@@ -216,7 +157,7 @@ bool CRoom::AllCalculateMoney()
 bool CRoom::AllInitBetting()
 {
 	LinkListIt linkBegin = mClientInfos.begin();
-	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	for (; linkBegin != mClientInfos.end(); ++linkBegin)
 	{
 		if ((*linkBegin).use_count() > 0)
 		{
@@ -230,7 +171,7 @@ bool CRoom::AllInitBetting()
 bool CRoom::AllRefundBettingMoney()
 {
 	LinkListIt linkBegin = mClientInfos.begin();
-	for (; linkBegin != GetIterMyInfoEnd(); ++linkBegin)
+	for (; linkBegin != mClientInfos.end(); ++linkBegin)
 	{
 		if ((*linkBegin).use_count() > 0)
 		{
@@ -238,6 +179,50 @@ bool CRoom::AllRefundBettingMoney()
 		}
 	}
 	return true;
+}
+
+void CRoom::Broadcast(const string& message, int flags)
+{
+	LinkListIt clientIterBegin = mClientInfos.begin();
+	for (; clientIterBegin != mClientInfos.end(); ++clientIterBegin)
+	{
+		(*clientIterBegin).get()->SendnMine(message, flags);
+	}
+}
+
+void CRoom::Talk(const LinkPtr& myClient, const string & message, int flags)
+{
+	LinkListIt clientIterBegin = mClientInfos.begin();
+	LinkListIt myIter = find(mClientInfos.begin(), mClientInfos.end(), myClient);
+	if (mClientInfos.end() == myIter)
+	{
+		Broadcast(message, flags);
+		return;
+	}
+	for (; clientIterBegin != mClientInfos.end(); ++clientIterBegin)
+	{
+		if (clientIterBegin != myIter)
+		{
+			(*clientIterBegin).get()->SendnMine(message, flags);
+		}
+	}
+}
+
+void CRoom::SendBattingResult(const LinkPtr& winner, int flags)
+{
+	LinkListIt clientIterBegin = mClientInfos.begin();
+	LinkListIt winnerIter = find(mClientInfos.begin(), mClientInfos.end(), winner);
+	for (; clientIterBegin != mClientInfos.end(); ++clientIterBegin)
+	{
+		if (clientIterBegin != winnerIter)
+		{
+			(*clientIterBegin).get()->SendnMine("당신은 졌습니다.", flags);
+		}
+		else
+		{
+			(*clientIterBegin).get()->SendnMine("당신은 이겼습니다.", flags);
+		}
+	}
 }
 
 
@@ -249,20 +234,12 @@ bool CRoom::IsAllReadyBetting()
 	{
 		return false;
 	}
-	LinkListIt iterBegin = GetIterMyInfoBegin();
-	for (; iterBegin != GetIterMyInfoEnd(); ++iterBegin)
+	LinkListIt iterBegin = mClientInfos.begin();
+	for (; iterBegin != mClientInfos.end(); ++iterBegin)
 	{
-		if ((*iterBegin).use_count() > 0)
+		CLink* client = (*iterBegin).get();
+		if (false == client->GetReadyBatting())
 		{
-			CLink* client = (*iterBegin).get();
-			if (false == client->GetReadyBatting())
-			{
-				return false;
-			}
-		}
-		else
-		{
-			ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 			return false;
 		}
 	}

@@ -3,63 +3,58 @@
 #include"ErrorHandler.h"
 #include"ReadHandler.h"
 #include"WriteHandler.h"
+#include"GuestLink.h"
 #include"Util.h"
 
-int CLobby::Login(SOCKET & clientSocket, CActionNetWork & actionNetWork, vector<string>& tempUserInfo)
+int CLobby::Login(CGuestLink& guest , CListener& listener, vector<string>& tempUserInfo)
 {
 	string id, pw;
 	// ID 묻기
-	if (SUCCES_SEND == actionNetWork.Sendn(clientSocket, "ID : "))
-	{
-		actionNetWork.Recvn(clientSocket, id);
-	}
+	guest.Sendn("ID : ");
+	listener.Recvn(guest.GetClientSocket(), id);
+	
 	
 	if (0 == id.compare("9"))
 		return ErrorHandStatic->ErrorHandler(CANCLE);
 
 	// PW 묻기
-	if (SUCCES_SEND == actionNetWork.Sendn(clientSocket, "PW : "))
-	{
-		actionNetWork.Recvn(clientSocket, pw);
-	}
+	guest.Sendn("PW : ");
+	listener.Recvn(guest.GetClientSocket(), pw);
+	
 	if (0 == pw.compare("9"))
 		return ErrorHandStatic->ErrorHandler(CANCLE);
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 2, id, pw))
 	{
 		cout << "로그인 성공" << endl;
-		actionNetWork.Sendn(clientSocket, "로그인 성공 하셨습니다. 즐거운 대화 되세요.");
+		guest.Sendn("로그인 성공 하셨습니다. 즐거운 대화 되세요.");
 		return ErrorHandStatic->ErrorHandler(SUCCES_LOGIN);
 	}
-	actionNetWork.Sendn(clientSocket, "아이디 혹은 비밀번호가 틀립니다.");
+	guest.Sendn("아이디 혹은 비밀번호가 틀립니다.");
 	return ErrorHandStatic->ErrorHandler(ERROR_LOGIN);
 }
 
 
-int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, vector<string>& tempUserInfo)
+int CLobby::JoinMember(CGuestLink& guest, CListener& listener, vector<string>& tempUserInfo)
 {
 	string id, pw, nextUserNum;
 	nextUserNum = IntToString(NextUserNum);
 	// ID 묻기
-	if (SUCCES_SEND == actionNetWork.Sendn(clientSocket, "원하는 ID : "))
-	{
-		actionNetWork.Recvn(clientSocket, id);
-	}
+	guest.Sendn("원하는 ID : ");
+	listener.Recvn(guest.GetClientSocket(), id);
 	
 	if (0 == id.compare("9"))
 		return ErrorHandStatic->ErrorHandler(CANCLE);
 
-	if (SUCCES_SEND == actionNetWork.Sendn(clientSocket, "PW 입력 : "))
-	{
-		actionNetWork.Recvn(clientSocket, pw);
-	}
-	
+	guest.Sendn("PW 입력 : ");
+	listener.Recvn(guest.GetClientSocket(), pw);
+
 	if (0 == pw.compare("9"))
 		return ErrorHandStatic->ErrorHandler(CANCLE);
 
 	if (ReadHandlerStatic->Search(NameMemberInfoTxt.c_str(), tempUserInfo, 1, id))
 	{
 		cout << "id 중복 입니다." << endl;
-		actionNetWork.Sendn(clientSocket, "id 중복 입니다.");
+		guest.Sendn("id 중복 입니다.");
 		return ErrorHandStatic->ErrorHandler(OVERLAPID);
 	}
 	
@@ -73,36 +68,33 @@ int CLobby::JoinMember(SOCKET & clientSocket, CActionNetWork & actionNetWork, ve
 		cout << "회원가입 성공" << endl;
 		WriteHandlerStatic->WriteNextJoinUserNum(MakeNextJoinNumberTxt, NextUserNum);
 		++NextUserNum;
-		actionNetWork.Sendn(clientSocket, "회원가입 성공 했습니다. 로그인 해주세요.");
+		guest.Sendn("회원가입 성공 했습니다. 로그인 해주세요.");
 		return SUCCES_JOIN;
 	}
 	else
 	{
 		cout << "회원가입 실패" << endl;
-		actionNetWork.Sendn(clientSocket, "회원가입 실패 입니다.");
+		guest.Sendn("회원가입 실패 입니다.");
 		return ErrorHandStatic->ErrorHandler(ERROR_JOIN);
 	}
 	return ErrorHandStatic->ErrorHandler(ERROR_EXCEPTION);
 }
 
-int CLobby::ChooseMenu(const char * message, SOCKET & clientSocket, CActionNetWork & actionNetWork)
+int CLobby::ChooseMenu(const char * message, CGuestLink& guest)
 {
 	switch (message[0])
 	{
 	case '1':
 		cout << "로그인" << endl;
-		actionNetWork.Sendn(clientSocket, "로그인 화면 입니다. 9번입력 : 취소"); //AskClient(clientSocket, MS, "ID : ");
+		guest.Sendn("로그인 화면 입니다. 9번입력 : 취소"); //AskClient(clientSocket, MS, "ID : ");
 		return 1;
 	case '2':
 		cout << "회원가입" << endl;
-		actionNetWork.Sendn(clientSocket, "회원가입 화면 입니다. 9번입력 : 취소");
+		guest.Sendn("회원가입 화면 입니다. 9번입력 : 취소");
 		return 2;
 	case '9':
 		cout << "이전 메뉴로 돌아가기" << endl;
-		if (ERROR_NULL_LINK_SEND == SendMenuInfo(clientSocket, actionNetWork))
-		{
-			return ERROR_NULL_LINK_SEND;
-		}
+		guest.Sendn("환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");
 		return 9;
 	default:
 		cout << "잘 못 입력" << endl;
@@ -111,25 +103,20 @@ int CLobby::ChooseMenu(const char * message, SOCKET & clientSocket, CActionNetWo
 	return ErrorHandStatic->ErrorHandler(ERROR_MENUOUT);
 }
 
-int CLobby::SendMenuInfo(SOCKET & clientSocket, CActionNetWork & actionNetWork)
-{
-	return actionNetWork.Sendn(clientSocket, "환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");;
-}
 
-int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWork, vector<string>& tempUserInfo)
+int CLobby::ActionServiceLobby(CGuestLink& guest, CListener& listener, vector<string>& tempUserInfo)
 {
 	int resultLoginFunc = 0;
-	SendMenuInfo(clientSocket, actionNetWork);
+	guest.Sendn("환영합니다. 1번입력 : 로그인 / 2번입력 : 회원가입 / 9번입력 : 취소");
+
 	string strMessage;
-	if (ERROR_NULL_LINK_RECV == actionNetWork.Recvn(clientSocket, strMessage))
-	{
-		return ERROR_NULL_LINK_RECV;
-	}
-	int choose = ChooseMenu(strMessage.c_str(), clientSocket, actionNetWork);
+	listener.Recvn(guest.GetClientSocket(), strMessage);
+
+	int choose = ChooseMenu(strMessage.c_str(), guest);
 	switch (choose)
 	{
 	case 1:
-		resultLoginFunc = Login(clientSocket, actionNetWork, tempUserInfo);
+		resultLoginFunc = Login(guest, listener, tempUserInfo);
 		if (SUCCES_LOGIN == resultLoginFunc)
 		{
 			return SUCCES_LOGIN;
@@ -144,7 +131,7 @@ int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWo
 		}
 		return ERROR_NULL_LINK_RECV;
 	case 2:
-		return JoinMember(clientSocket, actionNetWork, tempUserInfo);
+		return JoinMember(guest, listener, tempUserInfo);
 	case 9:
 		return CANCLE;
 	default:
@@ -152,3 +139,19 @@ int CLobby::ActionServiceLobby(SOCKET& clientSocket, CActionNetWork& actionNetWo
 	}
 	return ERROR_NULL_LINK_SEND;
 }
+
+//void CLobby::PushGuest(const GuestLinkPtr & newGuest)
+//{
+//	ScopeLock<MUTEX> lock(mRAII_GuestMUTEX);
+//	mGuestList.push_back(newGuest);
+//}
+//
+//void CLobby::EraseGuest(const GuestLinkPtr & targetGuest)
+//{
+//	ScopeLock<MUTEX> lock(mRAII_GuestMUTEX);
+//	GuestListIt targetIter = find(mGuestList.begin(), mGuestList.end(), targetGuest);
+//	if (mGuestList.end() != targetIter)
+//	{
+//		mGuestList.erase(targetIter);
+//	}
+//}

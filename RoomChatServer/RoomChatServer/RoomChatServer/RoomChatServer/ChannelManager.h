@@ -7,8 +7,10 @@ using namespace std;
 class CChannel;
 class CLink;
 class CErrorHandler;
-//typedef list<CChannel*> ChannelList;
-typedef vector<shared_ptr<CChannel>> ChannelVector;
+
+
+typedef shared_ptr<CChannel> ChannelPtr;
+typedef vector<ChannelPtr> ChannelVector;
 typedef ChannelVector::iterator ChannelVecIt;
 
 class CChannelManager
@@ -16,14 +18,18 @@ class CChannelManager
 	ChannelVector mChannels;
 	MUTEX mRAII_ChannelManagerMUTEX;
 	//CRITICAL_SECTION CS_Channel;
-	void PushChannel(const shared_ptr<CChannel>& shared_newChannel);
+	void PushChannel(const ChannelPtr& shared_newChannel);
+	CChannel * GetMyChannel(int ChannelNum);
 public:
 	CChannelManager();
 	~CChannelManager();
 	CChannelManager& operator=(const CChannelManager&) = delete;
 	CChannelManager(const CChannelManager&) = delete;
-	ChannelVecIt GetIterChannelBegin() { return mChannels.begin(); }
-	ChannelVecIt GetIterChannelEnd() { return mChannels.end(); }
-	CChannel * GetMyChannel(int ChannelNum);
+	// 채널옮김 함수(옮기는 링크, 옮기고싶은 채널 번호)
+	bool MoveChannel(const LinkPtr& shared_clientInfo, const int & moveChannelNumber = -1);
+	// 채널 에서 나가기 (나가고자하는 소켓)
+	bool ExitChannel(const LinkPtr& shared_clientInfo);
+	// 해당 링크가 들어있는 수다
+	void Talk(const LinkPtr& shared_clientInfo, const string& message, int flags = 0);
 };
 

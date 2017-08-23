@@ -33,6 +33,15 @@ CLink::~CLink()
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
+bool CLink::IsRoomEnterState()
+{
+	if (NoneRoom != mMyRoomNum)
+	{
+		return true;
+	}
+	return false;
+}
+
 bool CLink::PayCardGachar()
 {
 	if (true == IsMoneyOKGaChar()) 
@@ -50,7 +59,7 @@ bool CLink::SetZeroMoney()
 	EnumErrorCode resultcode;
 	if (false == mMyGoods.SetZeroMoney(resultcode))
 	{
-		ErrorHandStatic->ErrorHandler(resultcode, this);
+		ErrorHandStatic->ErrorHandler(resultcode, LinkPtr(this));
 		return false;
 	}
 	return true;
@@ -66,7 +75,7 @@ bool CLink::InitMoney(int money)
 {
 	if (false == mMyGoods.InitMoney(money))
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_INIT_MONEY, this);
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_MONEY, LinkPtr(this));
 		return false;
 	}
 	return true;
@@ -76,13 +85,13 @@ bool CLink::AddMoney(const int & addMoney)
 {
 	if (0 == addMoney)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, this);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, LinkPtr(this));
 		return false;
 	}
 	EnumErrorCode resultcode;
 	if (false == mMyGoods.AddMyMoney(addMoney, resultcode))
 	{
-		ErrorHandStatic->ErrorHandler(resultcode, this);
+		ErrorHandStatic->ErrorHandler(resultcode, LinkPtr(this));
 		return false;
 	}
 	return true;
@@ -92,13 +101,13 @@ bool CLink::MinusMyMoney(const int & minusMoney)
 {
 	if (0 == minusMoney)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, this);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY_ZERO, LinkPtr(this));
 		return false;
 	}
 	EnumErrorCode resultcode;
 	if (false == mMyGoods.MinusMyMoney(minusMoney, resultcode))
 	{
-		ErrorHandStatic->ErrorHandler(resultcode, this);
+		ErrorHandStatic->ErrorHandler(resultcode, LinkPtr(this));
 		return false;
 	}
 	return true;
@@ -111,7 +120,7 @@ bool CLink::IsHaveCard(int cardNum)
 	{
 		if ((*myCardIterBegin).use_count() > 0)
 		{
-			MyCardInfo* myCard = (*myCardIterBegin).get();
+			CMyCardInfo* myCard = (*myCardIterBegin).get();
 			if (cardNum == myCard->GetCardNumber())
 			{
 				if (myCard->GetAmount() > 0)
@@ -135,7 +144,7 @@ bool CLink::PayBackMoney(const int & payBack)
 	return true;
 }
 
-bool CLink::SetMyBattingCard(int cardNum, int bettingMoney)/////////// 매개변수 하나 안쓰는중
+bool CLink::SetMyBattingCard(int cardNum)
 {
 	if (true == IsHaveCard(cardNum))
 	{
@@ -213,12 +222,12 @@ void CLink::InitCard(int cardName, int amount, int exp, int evol, int star)
 {
 	if (true == mIsInitCards) // 초기화 한적이 있다면 에러
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_INIT_CARD_TRUE, this);
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_CARD_TRUE, LinkPtr(this));
 		return;
 	}
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
-	MyCardInfo* cardInfo = new MyCardInfo(cardName, amount, exp, evol, star);
-	shared_ptr<MyCardInfo> newCard(cardInfo);
+	CMyCardInfo* cardInfo = new CMyCardInfo(cardName, amount, exp, evol, star);
+	shared_ptr<CMyCardInfo> newCard(cardInfo);
 	mMyCards.push_back(newCard);
 }
 
@@ -226,7 +235,7 @@ bool CLink::InitGoods(int initMoney)
 {
 	if (true == mIsInitGoods)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_INIT_GOODS_TRUE, this);
+		ErrorHandStatic->ErrorHandler(ERROR_INIT_GOODS_TRUE, LinkPtr(this));
 		return false;
 	}
 	return InitMoney(initMoney);
@@ -269,21 +278,26 @@ bool CLink::FineGamePlayingOut()
 	return false;
 }
 
-bool MyCardInfo::SetExp(int addExp, int & resultExp)
+
+void CLink::SendnMine(const string & message, int flags)
 {
-	if (1 == mIsEvolution)
+	int isSuccess = 0;
+	const char* chMessage = message.c_str();
+	size_t size = strlen(chMessage);
+	isSuccess = send(mClientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
+	if (isSuccess == SOCKET_ERROR)
 	{
-		ErrorHandStatic->ErrorHandler(ERROR_COMPOSE_EVOUTION_CARD);
-		return false;
+		//return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);
 	}
-	mExp += addExp;
-	if (100 <= mExp)
+	int temp = 0;
+	while (true)
 	{
-		mExp = 0;
-		resultExp = mExp;
-		mIsEvolution = 1;
-		return true;
+		temp += send(mClientSocket, chMessage, (int)size, flags);
+		if (temp == SOCKET_ERROR)
+		{
+			//return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);
+		}
+		if (temp >= (int)size)
+			break;
 	}
-	resultExp = mExp;
-	return true;
 }

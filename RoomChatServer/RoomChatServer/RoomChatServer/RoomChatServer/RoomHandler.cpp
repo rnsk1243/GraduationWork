@@ -160,19 +160,28 @@ bool CRoomHandler::EnterRoom(const shared_ptr<CLink>& shared_clientInfo, CRoomMa
 bool CRoomHandler::IsAllReadyGame(CLink * clientInfo, CRoomManager * roomManager)
 {
 	RoomListIt myRoomIter;
+	bool check = false;
 	if (true == GetMyRoomIter(clientInfo, roomManager, myRoomIter))
 	{
 		CRoom* currentRoom = (*myRoomIter).get();
 		if (nullptr == currentRoom)
 		{
-			return false;
+			check = false;
 		}
 		if (currentRoom->IsAllReady())
 		{
-			return true;
+			check = true;
 		}
 	}
-	return false;
+	if (check)
+	{
+		currentRoom->AllSend(string);
+	}
+	else
+	{
+		currentRoom->AllSend(string);
+		Errorch
+	}
 }
 
 bool CRoomHandler::IsAllReadyBatting(CLink * clientInfo, CRoomManager * roomManager)

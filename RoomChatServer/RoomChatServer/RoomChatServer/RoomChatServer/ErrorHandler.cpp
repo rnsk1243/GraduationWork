@@ -4,41 +4,17 @@
 #include"WriteHandler.h"
 #include"Util.h"
 
-EnumErrorCode CErrorHandler::CriticalError(EnumErrorCode code, CLink * client)
+EnumErrorCode CErrorHandler::CriticalError(EnumErrorCode code, LinkPtr client)
 {
 	//cout << "[심각한 에러 발생] 에러코드 = [ " << EnumErrorCode(code) << " ]" << endl;
 	vector<string> errorMessageVec;
-	vector<string> temp;	temp.reserve(1);
 	GetErrorCurTime(errorMessageVec);
 	GetErrorLevel(ErrorLevel::Serious, errorMessageVec);
 	GetErrorCode(code, errorMessageVec);
 	GetErrorMemberInfo(client, errorMessageVec);
-	if (nullptr == client)
-	{
-		cout << "client가 초기화 되지 않아 심각한 오류 에러코드 = [ " << EnumErrorCode(code) << " ]를 처리할 수 없습니다." << endl;
-		temp.push_back("client가 초기화 되지 않아 심각한 오류를 처리 못함.");
-	}else if (nullptr == mCommandPtr)
-	{
-		temp.push_back("CommandController가 초기화 되지 않아 심각한 오류를 처리할 수 없습니다.");
-		cout << "CommandController가 초기화 되지 않아 심각한 오류 에러코드 = [ " << EnumErrorCode(code) << " ]를 처리할 수 없습니다." << endl;
-	}
-	else
-	{
-		if (false == mCommandPtr->DeleteClientSocket(*client))
-		{
-			cout << "에러가 발생한 클라이언트를 채널 혹은 room에서 제거하지 못했습니다." << endl;
-			temp.push_back("에러가 발생한 클라이언트를 채널 혹은 room에서 제거하지 못했습니다.");
-		}
-		else
-		{
-			delete client;
-			temp.push_back("스레드를 강제 종료 시킵니다.");
-			cout << "스레드를 강제 종료 시킵니다." << endl;
-		}
-	}
-	errorMessageVec.insert(errorMessageVec.end(), temp.begin(), temp.end()); // 범위 삽입       
+    
 	WriteHandlerStatic->Write(ErrorLogTxt.c_str(), errorMessageVec);
-	_endthreadex(0);
+	//_endthreadex(0);
 	return code;
 }
 
@@ -57,7 +33,7 @@ EnumErrorCode CErrorHandler::TakeNullLinkError(EnumErrorCode code)
 	return code;
 }
 
-EnumErrorCode CErrorHandler::TakeSucces(EnumErrorCode code, CLink* client)
+EnumErrorCode CErrorHandler::TakeSucces(EnumErrorCode code, LinkPtr client)
 {
 	vector<string> errorMessageVec;
 	GetErrorCurTime(errorMessageVec);
@@ -72,7 +48,7 @@ EnumErrorCode CErrorHandler::TakeSucces(EnumErrorCode code, CLink* client)
 	return code;
 }
 
-EnumErrorCode CErrorHandler::TakeError(EnumErrorCode code, CLink * client)
+EnumErrorCode CErrorHandler::TakeError(EnumErrorCode code, LinkPtr client)
 {
 	cout << "에러코드 = " << EnumErrorCode(code) << endl;
 	//_endthreadex(0);
@@ -89,16 +65,9 @@ EnumErrorCode CErrorHandler::TakeError(EnumErrorCode code, CLink * client)
 	return code;
 }
 
-CErrorHandler::CErrorHandler():mCommandPtr(nullptr)
+CErrorHandler::CErrorHandler()
 {
 	cout << "ErrorHandler 생성자 호출" << endl;
-	//mTimeUnit.reserve(timeKind); // 반복적인 메모리 재할당 방지
-	//mTimeUnit.push_back("년");
-	//mTimeUnit.push_back("월");
-	//mTimeUnit.push_back("일");
-	//mTimeUnit.push_back("시");
-	//mTimeUnit.push_back("분");
-	//mTimeUnit.push_back("초");
 }
 
 
@@ -106,7 +75,7 @@ CErrorHandler::~CErrorHandler()
 {
 }
 
-bool CErrorHandler::GetErrorMemberInfo(CLink * client, vector<string>& memberInfoVec)
+bool CErrorHandler::GetErrorMemberInfo(LinkPtr client, vector<string>& memberInfoVec)
 {
 	vector<string> localStrVector;
 	bool returnVal = false; // 성공 여부
@@ -186,15 +155,7 @@ CErrorHandler * CErrorHandler::GetInstance()
 	return ErrorHandStatic;
 }
 
-void CErrorHandler::setCommand(CCommandController * command)
-{
-	if (nullptr == mCommandPtr)
-	{
-		mCommandPtr = command;
-	}
-}
-
-EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, CLink * client)
+EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, LinkPtr client)
 {
 	if (0 == code % 2)
 	{

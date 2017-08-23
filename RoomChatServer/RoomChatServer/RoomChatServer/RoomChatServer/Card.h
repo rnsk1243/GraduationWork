@@ -8,7 +8,7 @@ using namespace std;
 struct Card
 {
 	const int mCardNum;
-	char* mName;
+	string mName;
 	const int mProb; // 확률
 	const int mStat; // 스탯
 	const  int mGiveExp; // 이 카드를 합성하면 얻는 경험치
@@ -18,16 +18,12 @@ struct Card
 		mStat(stat),
 		//name(cardName),
 		mGiveExp(giveExp),
-		mName(new char[CardNameBuf])
+		mName(cardName)
 	{
-		size_t size = strlen(cardName) + 1;
-		strcpy_s(mName, size, cardName);
-		mName[size] = '\0';
 	}
 
 	~Card() {
 		cout << "카드 소멸" << endl;
-		delete[] mName;
 	}
 	Card(const Card& copy) = delete;
 	//Card(const Card& copy):
@@ -61,7 +57,7 @@ public:
 	void PushCard(const shared_ptr<Card>& card);
 	int GetCardStat(int cardNum);
 	int GetCardProb(int cardNum);
-	char* GetCardName(int cardNum);
+	string GetCardName(int cardNum);
 	int GetCardExp(int cardNum);
 };
 static CCard* CardStatic = CCard::GetInstance();

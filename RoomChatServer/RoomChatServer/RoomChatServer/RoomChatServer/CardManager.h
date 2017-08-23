@@ -9,26 +9,26 @@ class CCardManager
 private:
 	CGaChar mGacharHandler;
 	bool GetMoveCurserSize(const int& userPK, WhatCardCursorSize whatCardInfoCurser, const int & cardNum, int& resultCursorSize);
-	MyCardVectorIt IsHaveCard(int cardNum, CLink& targetClient);
-	bool IncreaseCardAmount(int cardNum, CLink& targetClient); // 카드 갯수 증가
-	bool DecreaseCardAmount(int cardNum, CLink& targetClient); // 카드 갯수 감소
-	bool IncreaseCardStar(int cardNum, CLink& targetClient); // 별 증가
+	MyCardVectorIt GetMyCard(int cardNum, const LinkPtr & shared_clientInfo);
+	bool IncreaseCardAmount(int cardNum, const LinkPtr & shared_clientInfo); // 카드 갯수 증가
+	bool DecreaseCardAmount(int cardNum, const LinkPtr & shared_clientInfo); // 카드 갯수 감소
+	bool IncreaseCardStar(int cardNum, const LinkPtr & shared_clientInfo); // 별 증가
 	// 유저 카드 갯수 기록
-	bool SaveUserCardAmount(const int& saveCardAmount, const int& cardNum, CLink* targetClient);
+	bool SaveUserCardAmount(const int& saveCardAmount, const int& cardNum, const LinkPtr & shared_clientInfo);
 	// 유저 카드 경험치 기록
-	bool SaveUserCardExp(const int& saveExp, const int& cardNum, CLink* client);
+	bool SaveUserCardExp(const int& saveExp, const int& cardNum, const LinkPtr & shared_clientInfo);
 	// 유저 카드 진화 유무 기록
-	bool SaveUserCardEvolution(const bool& isEvolution, const int& cardNum, CLink* client);
+	bool SaveUserCardEvolution(const bool& isEvolution, const int& cardNum, const LinkPtr & shared_clientInfo);
 	// 유저 카드 별 기록
-	bool SaveUserCardStar(const int& saveStar, const int& cardNum, CLink* client);
+	bool SaveUserCardStar(const int& saveStar, const int& cardNum, const LinkPtr & shared_clientInfo);
 public:
 	CCardManager();
 	~CCardManager();
 	//const int getCardAmount(const char* textName, char* userName, int cardNum);
 	// 카드 합성
-	bool ComposeCard(CLink& targetClient, int targetCard, int sourceCard);
+	bool ComposeCard(const LinkPtr & shared_clientInfo, int targetCard, int sourceCard);
 	// 카드 뽑기
-	bool GacharCard(CLink & targetClient, int& resultCardNum, char*& resultCardName);
+	bool GacharCard(const LinkPtr & shared_clientInfo);
 	// 카드 진화
-	bool EvolutionCard(CLink& targetClient, int targetCard);
+	bool EvolutionCard(const LinkPtr & shared_clientInfo, int targetCard);
 };

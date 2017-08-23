@@ -158,15 +158,16 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardManager.h" />
     <ClInclude Include="Channel.h" />
-    <ClInclude Include="ChannelHandler.h" />
     <ClInclude Include="ChannelManager.h" />
     <ClInclude Include="ConstEnumInfo.h" />
     <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="ErrorHandler.h" />
     <ClInclude Include="GaChar.h" />
     <ClInclude Include="Goods.h" />
+    <ClInclude Include="GuestLink.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="MinidumpHelp.h" />
+    <ClInclude Include="MyCardInfo.h" />
     <ClInclude Include="RAII.h" />
     <ClInclude Include="ReadHandler.h" />
     <ClInclude Include="resource.h" />
@@ -175,8 +176,7 @@
     <ClInclude Include="Link.h" />
     <ClInclude Include="CommandController.h" />
     <ClInclude Include="Room.h" />
-    <ClInclude Include="RoomHandler.h" />
-    <ClInclude Include="ActionNetWork.h" />
+    <ClInclude Include="Listener.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="WriteHandler.h" />
   </ItemGroup>
@@ -186,13 +186,14 @@
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardManager.cpp" />
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="ChannelHandler.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
     <ClCompile Include="ErrorHandler.cpp" />
     <ClCompile Include="GaChar.cpp" />
     <ClCompile Include="Goods.cpp" />
+    <ClCompile Include="GuestLink.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MinidumpHelp.cpp" />
+    <ClCompile Include="MyCardInfo.cpp" />
     <ClCompile Include="ReadHandler.cpp" />
     <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="MainProc.cpp" />
@@ -200,8 +201,7 @@
     <ClCompile Include="Link.cpp" />
     <ClCompile Include="CommandController.cpp" />
     <ClCompile Include="Room.cpp" />
-    <ClCompile Include="RoomHandler.cpp" />
-    <ClCompile Include="ActionNetWork.cpp" />
+    <ClCompile Include="Listener.cpp" />
     <ClCompile Include="WriteHandler.cpp" />
   </ItemGroup>
   <ItemGroup>

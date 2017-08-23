@@ -1,6 +1,5 @@
 #include "ReadHandler.h"
-//#include"ConstEnumInfo.h"
-#include"ActionNetWork.h"
+#include"Listener.h"
 #include"Util.h"
 
 CReadHandler::CReadHandler()
@@ -163,7 +162,7 @@ bool CReadHandler::ReadUserObjectLine(const string& textFileName, const int& use
 }
 
 
-bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
+bool CReadHandler::ReadUserCard(const LinkPtr& client, const string& textFileName)
 {
 	vector<string> userCardInfo;
 	if (!ReadUserObjectLine(textFileName, client->GetMyPKNumber(), userCardInfo))
@@ -204,7 +203,7 @@ bool CReadHandler::ReadUserCard(CLink* client, const string& textFileName)
 	return true;
 }
 
-bool CReadHandler::ReadUserGoods(CLink * client, const string & textFileName)
+bool CReadHandler::ReadUserGoods(const LinkPtr& client, const string & textFileName)
 {
 	typedef vector<string> goodsInfoVec;
 	typedef goodsInfoVec::iterator goodsInfoVecIter;
