@@ -17,13 +17,13 @@ typedef MyCardVector::iterator MyCardVectorIt;
 class CLink
 {
 private:
-	char* mName;
+	string mName;
 	// 현재 내가 속한 방 번호
 	int mMyRoomNum;
 	// 현재 내가 속한 채널 번호
 	int mMyChannelNum;
 	// 클라이언트 소켓
-	SOCKET& mClientSocket;
+	const SOCKET* mClientSocket;
 	//MessageStruct mMS;
 	// 나의 재화
 	CGoods mMyGoods;
@@ -45,39 +45,37 @@ private:
 	bool IsHaveCard(int cardNum);
 	bool PayBackMoney(const int& payBack);
 public:
-	CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name);
+	CLink(const SOCKET* clientSocket, const string& strPKNumber,const char* name);
 	CLink(const CLink&) = delete;
 	CLink& operator=(const CLink&) = delete;
 	~CLink();
-#pragma region get, set 함수
-	//MessageStruct& GetMessageStruct() { return mMS; }
-	SOCKET& GetClientSocket() { return mClientSocket; }
-	int GetMyRoomNum() { return mMyRoomNum; }
 	bool IsRoomEnterState();
-	int GetMyChannelNum() { return mMyChannelNum; }
-	char* GetMyName() { return mName; }
-	void SetDefaultName() { if (nullptr == mName) { mName = "이름없음"; } }
-	void SetMyRoomNum(int myRoomNum) { mMyRoomNum = myRoomNum; }
-	void SetMyChannelNum(int myChannelNum) { mMyChannelNum = myChannelNum; }
-	bool IsMoneyOKGaChar() { return GetMyMoney() >= CardCost; } // 가챠 할 수 있나?
+	bool IsMoneyOKGaChar(); // 가챠 할 수 있나?
+#pragma region get, set 함수
+	const SOCKET* GetClientSocket();
+	int GetMyRoomNum();
+	void SetMyRoomNum(const int& myRoomNum);
+	int GetMyChannelNum();
+	void SetMyChannelNum(const int& myChannelNum);
+	string GetMyName();
 	bool PayCardGachar();
-	MyCardVectorIt GetIterMyCardBegin() { return mMyCards.begin(); }
-	MyCardVectorIt GetIterMyCardEnd() { return mMyCards.end(); }
-	bool IsEmptyCard() { return mMyCards.empty(); }
-	bool IsZeroMoney() { return mMyGoods.IsZeroMoney(); }
+	MyCardVectorIt GetIterMyCardBegin();
+	MyCardVectorIt GetIterMyCardEnd();
+	bool IsEmptyCard();
+	bool IsZeroMoney();
 	bool SetZeroMoney();
-	const int GetMyMoney() { return mMyGoods.GetMyMoney(); }
+	const int GetMyMoney();
 	void EmptyCard();
-	const int GetMyPKNumber()const { return mMyPKNumber; }
-	void SetInitCards() { mIsInitCards = true; }
-	void SetInitGoods() { mIsInitGoods = true; }
-	void SetReadyGame() { mIsGameOK = true; }
-	void SetNoReadyGame() { mIsGameOK = false; }
-	bool GetReadyGame() { return mIsGameOK; }
+	const int GetMyPKNumber()const;
+	void SetInitCards();
+	void SetInitGoods();
+	void SetReadyGame();
+	void SetNoReadyGame();
+	bool GetReadyGame();
 	bool SetMyBattingCard(int cardNum);
 	bool GetReadyBatting();
 	int GetMyBattingCardNumber();
-	bool GetPrizeBattingMoney(const int bettingMoney); // 베팅머니 받기
+	bool GetPrizeBattingMoney(const int& bettingMoney); // 베팅머니 받기
 	bool SaveCalculateMoney();
 #pragma endregion
 	void InitCard(int cardName, int amount = 0, int exp = 0, int evol = 0, int star = 0);
@@ -85,12 +83,7 @@ public:
 	bool InitBetting();
 	bool RefundBettingMoney(const int& bettingMoney);
 	bool FineGamePlayingOut();
-	void ChangeName(const string& newName)
-	{
-		size_t size = strlen(newName.c_str()) + 1;
-		mName = new char[size];
-		strcpy_s(mName, size, newName.c_str());
-	}
+	void ChangeName(const string& newName);
 	////////////////////
 	void SendnMine(const string& message, int flags = 0);
 };

@@ -29,32 +29,5 @@ public:
 	bool ReadUserGoods(const LinkPtr& client, const string& textFileName);
 	// 다음 유저 번호 가져오기
 	const string GetNextUserNum(const string& textFileName);
-	//// 스트링id, 스트링password
-	//bool CheckIDandPassWord(const string& id, const string& password)
-	//{
-	//	if (Search(NameMemberInfoTxt, 2, id, password))
-	//	{
-	//		return true;
-	//	}
-	//	else
-	//	{
-	//		return false;
-	//	}
-	//}
-	//// 스트링id
-	//bool CheckOverlapID(const string& id)
-	//{
-	//	if (Search(NameMemberInfoTxt, 1, id))
-	//	{
-	//		// 중복됨 
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		// 사용가능
-	//		return true;
-	//	}
-	//}
-	
 };
 static CReadHandler* ReadHandlerStatic = CReadHandler::GetInstance();

@@ -28,6 +28,15 @@ CReadyNetWork::CReadyNetWork():
 		cout << "listen..." << endl;
 }
 
+CReadyNetWork * CReadyNetWork::GetInstance()
+{
+	if (nullptr == ReadyNetWorkStatic)
+	{
+		ReadyNetWorkStatic = new CReadyNetWork();
+	}
+	return ReadyNetWorkStatic;
+}
+
 
 CReadyNetWork::~CReadyNetWork()
 {
@@ -35,7 +44,7 @@ CReadyNetWork::~CReadyNetWork()
 	delete mServSock;
 }
 
-void CReadyNetWork::Accept(SOCKET& hClientSock)
+void CReadyNetWork::Accept(SOCKET * hClientSock)
 {
 	if (mServSock == nullptr)
 	{
@@ -47,9 +56,9 @@ void CReadyNetWork::Accept(SOCKET& hClientSock)
 	int szClntAddr;
 	// accept
 	szClntAddr = sizeof(*hClntAddr);
-	hClientSock = accept(*mServSock, (SOCKADDR*)hClntAddr, &szClntAddr);// list나 벡터에 저장
+	*hClientSock = accept(*mServSock, (SOCKADDR*)hClntAddr, &szClntAddr);// list나 벡터에 저장
 																		 //cout << "accept 에서의 주소 = " << hClntSock << endl;
-	if (hClientSock == INVALID_SOCKET)
+	if (*hClientSock == INVALID_SOCKET)
 		cout << "accept() error" << endl;
 	else
 		cout << "Connected client" << endl;

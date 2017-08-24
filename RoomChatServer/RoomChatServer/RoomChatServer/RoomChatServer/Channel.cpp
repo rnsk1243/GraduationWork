@@ -19,21 +19,26 @@ int CChannel::GetChannelNum()
 	return mChannelNum;
 }
 
-bool CChannel::PushClient(const shared_ptr<CLink>& shared_client, const int& channelNumber)
+bool CChannel::PushClient(const LinkPtr& shared_client, const int& channelNumber)
 {
 	if (nullptr == shared_client.get())
 	{
 		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 		return false;
 	}
+	if (shared_client.get()->GetMyChannelNum() == channelNumber)
+	{
+		return false;
+	}
 	ScopeLock<MUTEX> MU(mRAII_ChannelMUTEX);
 	mClientInfos.push_back(shared_client);
 	shared_client.get()->SetMyChannelNum(channelNumber);
 	mPeopleAmount++;
+	shared_client.get()->SendnMine("채널에 들어왔습니다.");
 	return true;
 }
 
-LinkListIt CChannel::EraseClient(const shared_ptr<CLink>& shared_clientInfo)
+LinkListIt CChannel::EraseClient(const LinkPtr& shared_clientInfo)
 {
 	LinkListIt eraseClientIter = find(mClientInfos.begin(), mClientInfos.end(), shared_clientInfo);
 	{

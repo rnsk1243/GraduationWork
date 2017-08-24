@@ -40,6 +40,10 @@ const string NameMemberCardInfoTxt = "MemberCardInfo.txt";
 const string MakeNextJoinNumberTxt = "MakeNextJoinNumber.txt";
 const string NameMemberGoodsTxt = "MemberGoods.txt";
 const string ErrorLogTxt = "ErrorLog.txt";
+
+// 보낼 메세지
+const string EnterRoomMoneyLack = "돈이 부족하여 방에 입장 하실 수 없습니다.";
+const string MakeRoomMoneyLack = "가진 돈 보다 베팅 금액이 더 커서 방을 만들 수 없습니다.";
 // 값
 const int Port = 9000;
 const int BufSize = 1024;
@@ -54,7 +58,7 @@ const int MaxMoneyCipher = 7; // 돈 최대치 자릿수
 const int MinMoney = 0;		// 돈 최소치
 const int MakeThreadNum = 3;
 const int timeKind = 6; // 시간 종류 갯수 (년, 월, 일, 시, 분, 초) 6개
-const int EnterChannelNum = 1; // 처음 접속 채널
+const int StartEnterChannelNum = 1; // 처음 접속 채널
 const int StartRoomNum = 1; // 처음 만들어지는 룸 번호
 const int EnterRoomPeopleLimit = 4; // 방에 입장 가능한 최대 인원
 const int FineGamePlayingOutMoney = 20; // 게임도중 도주 벌금

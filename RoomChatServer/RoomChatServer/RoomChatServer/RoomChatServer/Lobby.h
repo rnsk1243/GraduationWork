@@ -2,26 +2,24 @@
 #include"Listener.h"
 #include"GuestLink.h"
 #include<vector>
-//
-//typedef shared_ptr<CGuestLink> GuestLinkPtr;
-//typedef list<GuestLinkPtr> GuestList;
-//typedef GuestList::iterator GuestListIt;
 
 class CLobby
 {
-	int Login(CGuestLink& guest, CListener& listener, vector<string>& tempUserInfo);
-	int JoinMember(CGuestLink& guest, CListener& listener, vector<string>& tempUserInfo);
-	int ChooseMenu(const char * message, CGuestLink& guest);
-	int NextUserNum;
-	//GuestList mGuestList;
-	//MUTEX mRAII_GuestMUTEX;
+	void AskedID(const CGuestLink * guest, string & id);
+	void AskedPW(const CGuestLink * guest, string & pw);
+	int Login(const CGuestLink * guest, vector<string>& tempUserInfo);
+	int JoinMember(const CGuestLink* guest, vector<string>& tempUserInfo);
+	int ChooseMenu(const char * message, const CGuestLink* guest);
+	int mNextUserNum;
+	CLobby(int NextUserNum_);
+	void SetNextUserPKNumber();
 public:
-	CLobby(int NextUserNum_):NextUserNum(NextUserNum_){}
+	static CLobby* GetInstance(const int& NextUserNum);
 	CLobby(const CLobby&) = delete;
 	CLobby& operator=(const CLobby&) = delete;
 	~CLobby(){}
-	int ActionServiceLobby(CGuestLink& guest, CListener& listener, vector<string>& tempUserInfo);
+	int ActionServiceLobby(const CGuestLink* guest, vector<string>& tempUserInfo);
 	//void PushGuest(const GuestLinkPtr & newGuest);
 	//void EraseGuest(const GuestLinkPtr & targetGuest);
 };
-
+static CLobby* LobbyStatic = CLobby::GetInstance(0);

@@ -6,11 +6,12 @@ using namespace std;
 class CReadyNetWork
 {
 	SOCKET* mServSock;
-public:
 	CReadyNetWork();
+public:
+	static CReadyNetWork* GetInstance();
 	CReadyNetWork(const CReadyNetWork&) = delete;
 	CReadyNetWork&  operator=(const CReadyNetWork&) = delete;
 	~CReadyNetWork();
-	void Accept(SOCKET& hClientSock);
+	void Accept(SOCKET * hClientSock);
 };
-
+static CReadyNetWork * ReadyNetWorkStatic = CReadyNetWork::GetInstance();

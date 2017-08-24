@@ -14,9 +14,26 @@ CCommandController::~CCommandController()
 	cout << "CNetWork 객체 소멸자 호출" << endl;
 }
 
+void CCommandController::SetEnterChannel(const LinkPtr & shared_clientInfo, const int & moveChannelNumber)
+{
+	if (nullptr != shared_clientInfo.get())
+	{
+		if (ChannelAmount >= moveChannelNumber && StartEnterChannelNum <= moveChannelNumber)
+		{
+			if (0 == shared_clientInfo.get()->GetMyChannelNum())
+			{
+				mChannelManager.MoveChannel(shared_clientInfo, moveChannelNumber);
+			}
+		}
+	}
+}
+
 void CCommandController::EnterRoom(const LinkPtr & shared_clientInfo, const int& roomNumber)
 {
-	mRoomManager.EnterRoom(shared_clientInfo, roomNumber);
+	if (mRoomManager.EnterRoom(shared_clientInfo, roomNumber))
+	{
+		mChannelManager.ExitChannel(shared_clientInfo);
+	}
 }
 
 void CCommandController::ChangeChannel(const LinkPtr& shared_clientInfo, const int & moveChannelNumber)
@@ -25,13 +42,12 @@ void CCommandController::ChangeChannel(const LinkPtr& shared_clientInfo, const i
 	{
 		if (false == shared_clientInfo.get()->IsRoomEnterState())
 		{
-			if (mChannelManager.ExitChannel(shared_clientInfo))
+			if (ChannelAmount >= moveChannelNumber && StartEnterChannelNum <= moveChannelNumber)
 			{
-				mChannelManager.MoveChannel(shared_clientInfo, moveChannelNumber);
-			}
-			else
-			{
-				mChannelManager.MoveChannel(shared_clientInfo, 1);
+				if (mChannelManager.ExitChannel(shared_clientInfo))
+				{
+					mChannelManager.MoveChannel(shared_clientInfo, moveChannelNumber);
+				}
 			}
 		}	
 	}
@@ -42,14 +58,16 @@ void CCommandController::MakeRoom(const LinkPtr & shared_clientInfo, const strin
 	CLink* client = shared_clientInfo.get();
 	if (nullptr != client && (false == client->IsRoomEnterState()))
 	{
-		int newRoomNumber = mRoomManager.MakeRoom(roomName, client->GetMyChannelNum(), battingMoney);
-		mRoomManager.EnterRoom(shared_clientInfo, (newRoomNumber - 1));
+		// 룸을 만들고
+		int newRoomNumber = mRoomManager.MakeRoom(shared_clientInfo, roomName, battingMoney);
+		// 룸에 들어가고
+		EnterRoom(shared_clientInfo, newRoomNumber);
 	}
 }
 
 void CCommandController::OutRoom(const LinkPtr & shared_clientInfo)
 {
-	if (true == mChannelManager.MoveChannel(shared_clientInfo)) // 채널에 들어가기
+	if (true == mChannelManager.EnterMyChannel(shared_clientInfo)) // 채널에 들어가기
 	{
 		RoomListIt roomIter = mRoomManager.ExitRoom(shared_clientInfo);	// 룸에서는 나가기
 		if (true == (*roomIter)->IsGame())					// 게임중에 나갔나?
@@ -149,6 +167,15 @@ void CCommandController::SetBattingCard(const LinkPtr& shared_clientInfo, const 
 void CCommandController::SendBattingResult(const LinkPtr& shared_clientInfo)
 {
 	mRoomManager.ResultBatting(shared_clientInfo);
+}
+
+CCommandController * CCommandController::GetInstance()
+{
+	if (nullptr == CommandControllerStatic)
+	{
+		CommandControllerStatic = new CCommandController();
+	}
+	return CommandControllerStatic;
 }
 
 void CCommandController::CardSelect(const LinkPtr& shared_clientInfo)

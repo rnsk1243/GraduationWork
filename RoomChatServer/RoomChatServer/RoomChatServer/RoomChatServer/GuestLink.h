@@ -6,10 +6,10 @@ using namespace std;
 
 class CGuestLink
 {
-	const SOCKET& mClientSocket;
+	const SOCKET* mClientSocket;
 public:
-	CGuestLink(const SOCKET & clientSocket);
+	CGuestLink(const SOCKET * clientSocket);
 	~CGuestLink();
-	const SOCKET GetClientSocket();
-	void Sendn(const string& message, int flags = 0);
+	const SOCKET* GetClientSocket() const;
+	void Sendn(const string& message, int flags = 0) const;
 };

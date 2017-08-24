@@ -20,7 +20,7 @@ void CChannelManager::PushChannel(const ChannelPtr& shared_newChannel)
 CChannelManager::CChannelManager()
 {
 	mChannels.reserve(ChannelAmount);
-	for (int i = EnterChannelNum; i <= ChannelAmount; i++)
+	for (int i = StartEnterChannelNum; i <= ChannelAmount; i++)
 	{
 		shared_ptr<CChannel> newChannel(new CChannel(i));
 		PushChannel(newChannel);
@@ -51,16 +51,7 @@ bool CChannelManager::MoveChannel(const LinkPtr& shared_clientInfo, const int & 
 {
 	if (nullptr == shared_clientInfo.get())
 		return false;
-	ChannelVecIt iterBegin = mChannels.begin();
-	CChannel* nextChannel;
-	if (ChannelAmount < moveChannelNumber || EnterChannelNum > moveChannelNumber)
-	{
-		nextChannel = GetMyChannel(shared_clientInfo.get()->GetMyChannelNum());
-	}
-	else
-	{
-		nextChannel = GetMyChannel(moveChannelNumber);
-	}
+	CChannel* nextChannel = GetMyChannel(moveChannelNumber);	
 	if (nullptr == nextChannel)
 		return false;
 	return nextChannel->PushClient(shared_clientInfo, moveChannelNumber);
@@ -76,7 +67,19 @@ bool CChannelManager::ExitChannel(const LinkPtr& shared_clientInfo)
 	if (nullptr == nextChannel)
 		return false;
 	nextChannel->EraseClient(shared_clientInfo);
+	client->SendnMine("내 채널에서 나왔습니다.");
 	return true;
+}
+
+bool CChannelManager::EnterMyChannel(const LinkPtr & shared_clientInfo)
+{
+	if (nullptr == shared_clientInfo.get())
+		return false;
+	int myChannelNumber = shared_clientInfo.get()->GetMyChannelNum();
+	CChannel* nextChannel = GetMyChannel(myChannelNumber);
+	if (nullptr == nextChannel)
+		return false;
+	return nextChannel->PushClient(shared_clientInfo, myChannelNumber);
 }
 
 void CChannelManager::Talk(const LinkPtr & shared_clientInfo, const string & message, int flags)

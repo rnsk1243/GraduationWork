@@ -2,7 +2,7 @@
 #include"RoomHandler.h"
 #include"ErrorHandler.h"
 
-CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
+CLink::CLink(const SOCKET* clientSocket, const string& strPKNumber, const char* name) :
 	mClientSocket(clientSocket),
 	mMyChannelNum(0),
 	mMyRoomNum(NoneRoom),
@@ -13,11 +13,9 @@ CLink::CLink(SOCKET& clientSocket,const string& strPKNumber,const char* name) :
 	mBattingCardNum(NoneCard),
 	mMyGoods(stoi(strPKNumber)),
 	mDebtMoney(0),
-	mPayBackMoney(0)
+	mPayBackMoney(0),
+	mName(name)
 {
-	size_t length = strlen(name) + 1;
-	mName = new char[length];
-	strcpy_s(mName, length, name);
 	mMyCards.reserve(CardKind);
 }
 
@@ -27,9 +25,8 @@ CLink::~CLink()
 	cout << "CLINK 소멸자 호출" << endl;
 	SaveCalculateMoney();// 갈땐 가더라도 정산은 하고 가야지?
 	cout << mName << "클라이언트 정보가 삭제 됩니다. = " << endl;
-	delete[] mName;
-	closesocket(mClientSocket);
-	delete &mClientSocket;
+	closesocket(*mClientSocket);
+	delete mClientSocket;
 	cout << "클라이언트 삭제 완료" << endl;
 }
 
@@ -40,6 +37,41 @@ bool CLink::IsRoomEnterState()
 		return true;
 	}
 	return false;
+}
+
+bool CLink::IsMoneyOKGaChar()
+{
+	return GetMyMoney() >= CardCost;
+}
+
+const SOCKET * CLink::GetClientSocket()
+{
+	return mClientSocket;
+}
+
+int CLink::GetMyRoomNum()
+{
+	return mMyRoomNum;
+}
+
+void CLink::SetMyRoomNum(const int & myRoomNum)
+{
+	mMyRoomNum = myRoomNum;
+}
+
+int CLink::GetMyChannelNum()
+{
+	return mMyChannelNum;
+}
+
+void CLink::SetMyChannelNum(const int& myChannelNum)
+{
+	mMyChannelNum = myChannelNum;
+}
+
+string CLink::GetMyName()
+{
+	return mName;
 }
 
 bool CLink::PayCardGachar()
@@ -54,6 +86,26 @@ bool CLink::PayCardGachar()
 	}
 }
 
+MyCardVectorIt CLink::GetIterMyCardBegin()
+{
+	return mMyCards.begin();
+}
+
+MyCardVectorIt CLink::GetIterMyCardEnd()
+{
+	return mMyCards.end();
+}
+
+bool CLink::IsEmptyCard()
+{
+	return mMyCards.empty();
+}
+
+bool CLink::IsZeroMoney()
+{
+	return mMyGoods.IsZeroMoney();
+}
+
 bool CLink::SetZeroMoney()
 {
 	EnumErrorCode resultcode;
@@ -65,12 +117,44 @@ bool CLink::SetZeroMoney()
 	return true;
 }
 
+const int CLink::GetMyMoney()
+{
+	return mMyGoods.GetMyMoney();
+}
+
 void CLink::EmptyCard()
 {
 	ScopeLock<MUTEX> MU(mRAII_LinkMUTEX);
 	mMyCards.clear();
 }
 
+const int CLink::GetMyPKNumber() const
+{
+	return mMyPKNumber;
+}
+
+void CLink::SetInitCards()
+{
+	mIsInitCards = true;
+}
+
+void CLink::SetInitGoods()
+{
+	mIsInitGoods = true;
+}
+
+void CLink::SetReadyGame()
+{
+	mIsGameOK = true;
+}
+void CLink::SetNoReadyGame()
+{
+	mIsGameOK = false;
+}
+bool CLink::GetReadyGame()
+{
+	return mIsGameOK;
+}
 bool CLink::InitMoney(int money)
 {
 	if (false == mMyGoods.InitMoney(money))
@@ -178,7 +262,7 @@ int CLink::GetMyBattingCardNumber()
 {
 	return mBattingCardNum;
 }
-bool CLink::GetPrizeBattingMoney(const int bettingMoney)
+bool CLink::GetPrizeBattingMoney(const int& bettingMoney)
 {
 	int prizeMoney = EnterRoomPeopleLimit * bettingMoney; // 총 상금
 	PayBackMoney(prizeMoney);
@@ -278,13 +362,18 @@ bool CLink::FineGamePlayingOut()
 	return false;
 }
 
+void CLink::ChangeName(const string & newName)
+{
+
+}
+
 
 void CLink::SendnMine(const string & message, int flags)
 {
 	int isSuccess = 0;
 	const char* chMessage = message.c_str();
 	size_t size = strlen(chMessage);
-	isSuccess = send(mClientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
+	isSuccess = send(*mClientSocket, (char*)&size, IntSize, flags); // 사이즈 보내기
 	if (isSuccess == SOCKET_ERROR)
 	{
 		//return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);
@@ -292,7 +381,7 @@ void CLink::SendnMine(const string & message, int flags)
 	int temp = 0;
 	while (true)
 	{
-		temp += send(mClientSocket, chMessage, (int)size, flags);
+		temp += send(*mClientSocket, chMessage, (int)size, flags);
 		if (temp == SOCKET_ERROR)
 		{
 			//return ErrorHandStatic->ErrorHandler(ERROR_NULL_LINK_SEND);

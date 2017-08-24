@@ -10,15 +10,24 @@ CListener::CListener()
 {
 }
 
+CListener* CListener::GetInstance()
+{
+	if (nullptr == ListenerStatic)
+	{
+		return new CListener();
+	}
+	return ListenerStatic;
+}
+
 
 CListener::~CListener()
 {
 }
 
-int CListener::Recvn(const SOCKET & socket, string& strMessage, int flags)
+int CListener::Recvn(const SOCKET* socket, string& strMessage, int flags)
 {
 	char temp[IntSize];
-	size_t isSuccess = recv(socket, temp, IntSize, flags);
+	size_t isSuccess = recv(*socket, temp, IntSize, flags);
 
 	if (isSuccess == SOCKET_ERROR)
 	{
@@ -33,7 +42,7 @@ int CListener::Recvn(const SOCKET & socket, string& strMessage, int flags)
 	char recvedMessage[BufSize];
 	while (sendRecvSize > 0)
 	{
-		isSuccess += recv(socket, recvedMessage, (int)sendRecvSize, flags);
+		isSuccess += recv(*socket, recvedMessage, (int)sendRecvSize, flags);
 		//cout << "success = " << isSuccess << endl;
 		if (isSuccess == SOCKET_ERROR)
 		{

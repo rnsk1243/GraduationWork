@@ -39,6 +39,26 @@ LinkListIt CRoom::EraseClient(const LinkPtr& shared_client)
 	return delLinkIter;
 }
 
+int CRoom::GetRoomNum()
+{
+	return mRoomNum;
+}
+
+int CRoom::GetChannelNum()
+{
+	return mChannelNum;
+}
+
+const string CRoom::GetRoomName()
+{
+	return mRoomName;
+}
+
+int CRoom::GetAmountPeople()
+{
+	return mAmountPeople;
+}
+
 bool CRoom::IsRoomEmpty()
 {
 	if (0 >= mAmountPeople)
@@ -50,6 +70,11 @@ bool CRoom::IsRoomEmpty()
 		return false;
 	}
 	return false;
+}
+
+int CRoom::GetBattingMoney()
+{
+	return mBettingMoney;
 }
 
 //bool CRoom::MergeRoom(CRoom * targetRoom)
@@ -181,6 +206,11 @@ bool CRoom::AllRefundBettingMoney()
 	return true;
 }
 
+bool CRoom::IsGame()
+{
+	return mPlayingGame;
+}
+
 void CRoom::Broadcast(const string& message, int flags)
 {
 	LinkListIt clientIterBegin = mClientInfos.begin();
@@ -206,6 +236,26 @@ void CRoom::Talk(const LinkPtr& myClient, const string & message, int flags)
 			(*clientIterBegin).get()->SendnMine(message, flags);
 		}
 	}
+}
+
+void CRoom::IncreasePeople()
+{
+	mAmountPeople++;
+}
+
+void CRoom::DecreasePeople()
+{
+	if (mAmountPeople > 0) mAmountPeople--;
+}
+
+void CRoom::SetGame()
+{
+	mPlayingGame = true;
+}
+
+void CRoom::SetGameOver()
+{
+	mPlayingGame = false;
 }
 
 void CRoom::SendBattingResult(const LinkPtr& winner, int flags)

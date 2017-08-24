@@ -39,7 +39,8 @@ struct Card
 	Card& operator=(const Card& copy) = delete;
 };
 
-typedef vector<shared_ptr<Card>> CardVector;
+typedef shared_ptr<Card> CardPtr;
+typedef vector<CardPtr> CardVector;
 typedef CardVector::const_iterator CardConstVectorIt; // const_iterator 붙여서 가리키는 객체 변경 불가
 
 class CCard
@@ -54,7 +55,7 @@ public:
 	CCard& operator=(const CCard& copy) = delete;
 	~CCard();
 	static CCard* GetInstance();
-	void PushCard(const shared_ptr<Card>& card);
+	void PushCard(const CardPtr& card);
 	int GetCardStat(int cardNum);
 	int GetCardProb(int cardNum);
 	string GetCardName(int cardNum);
