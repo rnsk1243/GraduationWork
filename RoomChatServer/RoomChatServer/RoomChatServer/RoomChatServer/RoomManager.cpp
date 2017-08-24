@@ -67,16 +67,26 @@ RoomListIt CRoomManager::ExitRoom(const LinkPtr & shared_clientInfo)
 	return mRooms.end();
 }
 
-int CRoomManager::MakeRoom(const string & roomName, const int & channelNumber, const int & battingMoney)
+int CRoomManager::MakeRoom(const LinkPtr & shared_clientInfo, const string& roomName, const int& battingMoney)
 {
-	RoomPtr newRoom(new CRoom(newRoomNumber, channelNumber, roomName, battingMoney));
-	PushRoom(newRoom);
-	return newRoomNumber;
+	CLink* client = shared_clientInfo.get();
+	if (client->GetMyMoney() >= battingMoney && battingMoney >= 0)
+	{
+		RoomPtr newRoom(new CRoom(newRoomNumber, client->GetMyChannelNum(), roomName, battingMoney));
+		int makedRoomNumber = newRoomNumber; // PushRoom을 호출하면 newRoomNumber가 1 증가하기때문에
+		PushRoom(newRoom);
+		return makedRoomNumber;
+	}
+	else
+	{
+		client->SendnMine(MakeRoomMoneyLack);
+		return ErrorHandStatic->ErrorHandler(ERROR_ROOM_ENTRER_BATTING_MONEY);
+	}
 }
 
 bool CRoomManager::EnterRoom(const LinkPtr & shared_clientInfo, int targetRoomNumBer)
 {
-	CLink* client = shared_clientInfo.get();
+	CLink* client = shared_clientInfo.get(); 
 	if (nullptr == client)
 		return false;
 	if (true == client->IsRoomEnterState()) // 이미 방에 있는지 확인
@@ -89,6 +99,11 @@ bool CRoomManager::EnterRoom(const LinkPtr & shared_clientInfo, int targetRoomNu
 		{
 			(*targetRoomIter)->PushClient(shared_clientInfo, targetRoomNumBer);
 			return true;
+		}
+		else
+		{
+			shared_clientInfo.get()->SendnMine(EnterRoomMoneyLack);
+			ErrorHandStatic->ErrorHandler(ERROR_ROOM_ENTRER_BATTING_MONEY, shared_clientInfo);
 		}
 	}
 	return false;
