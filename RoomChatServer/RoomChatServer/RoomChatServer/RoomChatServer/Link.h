@@ -63,13 +63,13 @@ public:
 	MyCardVectorIt GetIterMyCardEnd();
 	bool IsEmptyCard();
 	bool IsZeroMoney();
-	bool SetZeroMoney();
+	void SetZeroMoney();
 	const int GetMyMoney();
 	void EmptyCard();
 	const int GetMyPKNumber()const;
 	void SetInitCards();
 	void SetInitGoods();
-	void SetReadyGame();
+	void SetReadyGame(const int& battingMoney);
 	void SetNoReadyGame();
 	bool GetReadyGame();
 	bool SetMyBattingCard(int cardNum);
@@ -81,8 +81,7 @@ public:
 	void InitCard(int cardName, int amount = 0, int exp = 0, int evol = 0, int star = 0);
 	bool InitGoods(int initMoney);
 	bool InitBetting();
-	bool RefundBettingMoney(const int& bettingMoney);
-	bool FineGamePlayingOut();
+	void LostWillMoney(const int& fine); // °ð ¾ø¾îÁúµ· Ãß°¡
 	void ChangeName(const string& newName);
 	////////////////////
 	void SendnMine(const string& message, int flags = 0);

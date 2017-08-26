@@ -67,19 +67,29 @@ void CCommandController::MakeRoom(const LinkPtr & shared_clientInfo, const strin
 
 void CCommandController::OutRoom(const LinkPtr & shared_clientInfo)
 {
-	if (true == mChannelManager.EnterMyChannel(shared_clientInfo)) // 채널에 들어가기
+	 RoomListIt roomIter = mRoomManager.ExitRoom(shared_clientInfo);	// 룸에서 나가기
+	 if (true == (*roomIter)->IsRoomEmpty())			// 룸에 아무도 없나 확인
+	 {
+		 mRoomManager.EraseRoom(roomIter);			// 아무도 없으면 룸 삭제
+	 }
+}
+void CCommandController::DeleteClientSocket(const LinkPtr & shared_clientInfo)
+{
+
+	int myChannelNum = shared_clientInfo.get()->GetMyChannelNum();
+	int myRoomNum = shared_clientInfo.get()->GetMyRoomNum();
+	//방에 있나 채널에 있나 확인
+	if (NoneRoom == myRoomNum)
 	{
-		RoomListIt roomIter = mRoomManager.ExitRoom(shared_clientInfo);	// 룸에서는 나가기
-		if (true == (*roomIter)->IsGame())					// 게임중에 나갔나?
-		{
-			shared_clientInfo.get()->FineGamePlayingOut();	// 벌금 부과
-			(*roomIter)->AllRefundBettingMoney();			// 룸에 들어있는 사람에게 베팅금액 돌려줌
-			(*roomIter)->AllInitBetting();					// 룸에 들어있는 사람 준비 초기화
-		}
-		if (true == (*roomIter)->IsRoomEmpty())			// 룸에 아무도 없나 확인
-		{
-			mRoomManager.EraseRoom(roomIter);			// 아무도 없으면 룸 삭제
-		}
+		// 채널일때
+		cout << "channel에서 나갑니다." << endl;
+		mChannelManager.ExitChannel(shared_clientInfo);
+	}
+	else
+	{
+		// 방일때
+		cout << "room에서 나갑니다." << endl;
+		OutRoom(shared_clientInfo);
 	}
 }
 
@@ -151,14 +161,14 @@ void CCommandController::SendAllReadyGameNotice(const LinkPtr & shared_clientInf
 	}
 	else
 	{
-		mRoomManager.Broadcast(shared_clientInfo, "모든 플레이어가 되어야 합니다.");
+		shared_clientInfo.get()->SendnMine("다른 모든 플레이어가 준비 되어야 합니다.");
 	}
 	
 }
 
 void CCommandController::SetBattingCard(const LinkPtr& shared_clientInfo, const int& cardNum)
 {
-	if (mRoomManager.IsAllReadyGame(shared_clientInfo))
+	if (true == shared_clientInfo.get()->GetReadyGame())
 	{
 		shared_clientInfo.get()->SetMyBattingCard(cardNum);
 	}
@@ -180,26 +190,13 @@ CCommandController * CCommandController::GetInstance()
 
 void CCommandController::CardSelect(const LinkPtr& shared_clientInfo)
 {
-	mCardManager.GacharCard(shared_clientInfo);
-}
-
-void CCommandController::DeleteClientSocket(const LinkPtr & shared_clientInfo)
-{
-
-	int myChannelNum = shared_clientInfo.get()->GetMyChannelNum();
-	int myRoomNum = shared_clientInfo.get()->GetMyRoomNum();
-	//방에 있나 채널에 있나 확인
-	if (NoneRoom == myRoomNum)
+	if (false == mCardManager.GacharCard(shared_clientInfo))
 	{
-		// 채널일때
-		mChannelManager.ExitChannel(shared_clientInfo);
-	}
-	else
-	{
-		// 방일때
-		mRoomManager.ExitRoom(shared_clientInfo);
+		// 돈만 깍이고 카드는 못 뽑음. // 로그 확인해서 보상 필요
+		ErrorHandStatic->ErrorHandler(ERROR_GACHAR, shared_clientInfo);
 	}
 }
+
 
 void CCommandController::CommandHandling(const LinkPtr& shared_clientInfo, vector<string>& commandString)
 {
@@ -220,7 +217,10 @@ void CCommandController::CommandHandling(const LinkPtr& shared_clientInfo, vecto
 		}
 		else if (0 == commandString.at(0).compare(CommandOutRoom))
 		{
-			OutRoom(shared_clientInfo);
+			if (true == mChannelManager.EnterMyChannel(shared_clientInfo)) // 채널에 들어가기
+			{
+				OutRoom(shared_clientInfo);
+			}
 		}
 		else if (0 == commandString.at(0).compare(CommandGachar))
 		{

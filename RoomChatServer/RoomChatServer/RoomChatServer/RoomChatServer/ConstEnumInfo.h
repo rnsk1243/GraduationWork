@@ -44,6 +44,11 @@ const string ErrorLogTxt = "ErrorLog.txt";
 // 보낼 메세지
 const string EnterRoomMoneyLack = "돈이 부족하여 방에 입장 하실 수 없습니다.";
 const string MakeRoomMoneyLack = "가진 돈 보다 베팅 금액이 더 커서 방을 만들 수 없습니다.";
+const string DialogEnterRoomPeopleLimit = "방에 인원수가 초과하여 더 이상 입장하실 수 없습니다.";
+const string DialogSetReadyMoney = "베팅에 필요한 돈이 부족하여 준비 할 수 없습니다.";
+const string DialogSetCardSubmitMoneyLack = "카드를 내는데 필요한 돈이 모자릅니다.";
+const string DialogSetCardSubmitNullCard = "가지고 있지 않은 카드 입니다.";
+const string DialogSetCardName = "카드를 처음 내셨거나 바꾸셨습니다.";
 // 값
 const int Port = 9000;
 const int BufSize = 1024;

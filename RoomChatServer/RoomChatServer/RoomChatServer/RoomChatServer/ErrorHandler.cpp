@@ -157,6 +157,7 @@ CErrorHandler * CErrorHandler::GetInstance()
 
 EnumErrorCode CErrorHandler::ErrorHandler(EnumErrorCode code, LinkPtr client)
 {
+	cout << "에러 코드 = " << code << endl;
 	if (0 == code % 2)
 	{
 		return TakeSucces(code, client);

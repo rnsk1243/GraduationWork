@@ -38,8 +38,6 @@ public:
 	bool EnterRoom(const LinkPtr& shared_clientInfo, int targetRoomNumBer);
 	// 방에 있는 사람 전부 배팅 준비 됐나?
 	bool IsAllReadyGame(const LinkPtr& shared_clientInfo);
-	// 배팅 결과 보여줄 준비 됐나?
-	bool IsAllReadyBatting(const LinkPtr& shared_clientInfo);
 	// 승리 판별
 	void ResultBatting(const LinkPtr& shared_clientInfo);
 	// 해당 링크가 들어있는 방 방송

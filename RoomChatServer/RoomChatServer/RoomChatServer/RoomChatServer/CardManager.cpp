@@ -119,11 +119,7 @@ bool CCardManager::IncreaseCardStar(int cardNum, const LinkPtr & shared_clientIn
 	if (shared_clientInfo.get()->GetIterMyCardEnd() != cardIter)
 	{
 		(*cardIter)->IncreaseStar();
-		int curCardStar = (*cardIter)->GetStar();
-		if (SaveUserCardStar(curCardStar, cardNum, shared_clientInfo))
-		{
-			return true;
-		}
+		return true;
 	}
 	return false;
 }
@@ -263,7 +259,6 @@ bool CCardManager::GacharCard(const LinkPtr & shared_clientInfo)
 		int resultCardNumber = mGacharHandler.GaCharResult(RandNumber());
 		if (-1 == resultCardNumber)
 		{
-			// 돈만 깍이고 카드는 못 뽑음. // 로그 확인해서 보상 필요
 			return false;
 		}
 		if (IncreaseCardAmount(resultCardNumber, shared_clientInfo))
@@ -286,12 +281,15 @@ bool CCardManager::EvolutionCard(const LinkPtr & shared_clientInfo, int targetCa
 		const int cardAmount = (*targetCardIter)->GetAmount();
 		if (1 < cardAmount)
 		{
-			if (!(*targetCardIter).get()->IsEvoution())
+			if (false == (*targetCardIter).get()->IsEvoution())
 			{
 				return false;
 			}
-			const int curStar = IncreaseCardStar(targetCard, shared_clientInfo);
-			SaveUserCardStar(curStar, targetCard, shared_clientInfo);
+			IncreaseCardStar(targetCard, shared_clientInfo);
+			if (true == SaveUserCardStar((*targetCardIter).get()->GetStar(), targetCard, shared_clientInfo))
+			{
+				(*targetCardIter).get()->ResetEvolution();
+			}
 			SaveUserCardEvolution(false, targetCard, shared_clientInfo);
 			DecreaseCardAmount(targetCard, shared_clientInfo);
 			return true;

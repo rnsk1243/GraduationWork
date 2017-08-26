@@ -19,6 +19,7 @@ public:
 	int GetStar();
 	int GetCurExp();
 	bool SetExp(int addExp, int& resultExp);
+	void ResetEvolution();
 	string GetCardName();
 	const int GetCardNumber();
 	const int GetCardExp();

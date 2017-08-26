@@ -44,7 +44,7 @@ bool CGoods::GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int&
 	return true;
 }
 
-bool CGoods::SaveUserMoney(const int & saveMoney, EnumErrorCode& resultcode)
+bool CGoods::SaveUserMoney(const int & saveMoney)
 {
 	ScopeLock<MUTEX> MU(mRAII_GoodsMUTEX);
 	try
@@ -57,12 +57,12 @@ bool CGoods::SaveUserMoney(const int & saveMoney, EnumErrorCode& resultcode)
 				return true;
 			}
 		}
-		resultcode = ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
 		return false;
 	}
 	catch (const std::exception&)
 	{
-		resultcode = ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
+		ErrorHandStatic->ErrorHandler(ERROR_SAVE_MONEY);
 		return false;
 	}
 }
@@ -76,13 +76,9 @@ bool CGoods::IsZeroMoney()
 	return false;
 }
 
-bool CGoods::SetZeroMoney(EnumErrorCode& resultcode)
+void CGoods::SetZeroMoney()
 {
-	if (MinusMyMoney(GetMyMoney(), resultcode))
-	{
-		return true;
-	}
-	return false;
+	MinusMyMoney(GetMyMoney());
 }
 
 bool CGoods::InitMoney(int & initMoney)
@@ -99,15 +95,15 @@ bool CGoods::InitMoney(int & initMoney)
 
 }
 
-bool CGoods::AddMyMoney (const int& addMoney, EnumErrorCode& resultcode)
+bool CGoods::AddMyMoney (const int& addMoney)
 {
 	int saveMoney = (GetMyMoney() + addMoney);
 	if (MaxMoney < saveMoney)
 	{
-		resultcode = ErrorHandStatic->ErrorHandler(ERROR_ADD_MONEY_MAX);
+		ErrorHandStatic->ErrorHandler(ERROR_ADD_MONEY_MAX);
 		return false;
 	}
-	if (true == SaveUserMoney(saveMoney, resultcode))
+	if (true == SaveUserMoney(saveMoney))
 	{
 		mGoods.money += addMoney;
 		return true;
@@ -115,20 +111,23 @@ bool CGoods::AddMyMoney (const int& addMoney, EnumErrorCode& resultcode)
 	return false;
 }
 
-bool CGoods::MinusMyMoney(int minusMoney, EnumErrorCode& resultcode)
+void CGoods::MinusMyMoney(int minusMoney)
 {
 	int saveMoney = (GetMyMoney() - minusMoney);
 	if (MinMoney > saveMoney)
 	{
-		resultcode = ErrorHandStatic->ErrorHandler(ERROR_MINUS_MONEY_MIN);
-		return false;
+		saveMoney = MinMoney;
+		ErrorHandStatic->ErrorHandler(ERROR_MINUS_MONEY_MIN);
 	}
 
-	if (true == SaveUserMoney(saveMoney, resultcode)) // txt파일에 신규 돈 저장 하면
+	if (true == SaveUserMoney(saveMoney)) // txt파일에 신규 돈 저장 하면
 	{
+		if (MinMoney == saveMoney)
+		{
+			mGoods.money = MinMoney;
+			return;
+		}
 		mGoods.money -= minusMoney; // 자료 돈 저장
-		return true;
 	}
-	return false;
 }
 

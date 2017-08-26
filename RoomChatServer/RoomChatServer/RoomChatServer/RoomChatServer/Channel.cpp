@@ -26,7 +26,7 @@ bool CChannel::PushClient(const LinkPtr& shared_client, const int& channelNumber
 		ErrorHandStatic->ErrorHandler(ERROR_SHARED_LINK_COUNT_ZORO);
 		return false;
 	}
-	if (shared_client.get()->GetMyChannelNum() == channelNumber)
+	if (shared_client.get()->GetMyChannelNum() == NoneRoom)
 	{
 		return false;
 	}

@@ -21,17 +21,17 @@ class CGoods
 	Goods mGoods;
 	MUTEX mRAII_GoodsMUTEX;
 	bool GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize);
-	bool SaveUserMoney(const int & saveMoney, EnumErrorCode& resultcode);
+	bool SaveUserMoney(const int & saveMoney);
 public:
 	CGoods(const CGoods& copy) = delete;
 	CGoods& operator=(const CGoods& copy) = delete;
 	CGoods(const int& pkNumber);
 	~CGoods();
 	bool IsZeroMoney();
-	bool SetZeroMoney(EnumErrorCode& resultcode);
+	void SetZeroMoney();
 	int GetMyMoney() { return mGoods.money; }
 	bool InitMoney(int& initMoney);
-	bool AddMyMoney(const int& addMoney, EnumErrorCode& resultcode);
-	bool MinusMyMoney(int minusMoney, EnumErrorCode& resultcode);
+	bool AddMyMoney(const int& addMoney);
+	void MinusMyMoney(int minusMoney);
 };
 

@@ -58,9 +58,16 @@ RoomListIt CRoomManager::ExitRoom(const LinkPtr & shared_clientInfo)
 	RoomListIt myRoomIter = GetMyRoomIter(client->GetMyChannelNum(), client->GetMyRoomNum());
 	if (mRooms.end() != myRoomIter)
 	{
+		string outClientName(shared_clientInfo.get()->GetMyName() + " 님이 방에서 나가셨습니다.");
+		(*myRoomIter).get()->Talk(shared_clientInfo, outClientName);
 		client->SetMyRoomNum(NoneRoom);
 		client->InitBetting(); // 베팅 초기화 시킴
-		client->SaveCalculateMoney(); // 갈땐 가더라도 정산은..해야지
+		if (true == (*myRoomIter)->IsGame())					// 게임중에 나갔나?
+		{
+			client->LostWillMoney((*myRoomIter)->GetBattingMoney());	// 벌금 부과
+			client->SaveCalculateMoney(); // 갈땐 가더라도 정산은..해야지
+			(*myRoomIter)->AllInitBetting();					// 룸에 들어있는 사람 준비 초기화
+		}
 		(*myRoomIter).get()->EraseClient(shared_clientInfo);
 		return myRoomIter;
 	}
@@ -92,6 +99,11 @@ bool CRoomManager::EnterRoom(const LinkPtr & shared_clientInfo, int targetRoomNu
 	if (true == client->IsRoomEnterState()) // 이미 방에 있는지 확인
 		return false;
 	RoomListIt targetRoomIter = GetMyRoomIter(client->GetMyChannelNum(), targetRoomNumBer);
+	if (EnterRoomPeopleLimit <= (*targetRoomIter).get()->GetAmountPeople())
+	{
+		shared_clientInfo.get()->SendnMine(DialogEnterRoomPeopleLimit);
+		return false;
+	}
 	if (mRooms.end() != targetRoomIter)
 	{
 		int BattingMoney = (*targetRoomIter)->GetBattingMoney();
@@ -117,23 +129,12 @@ bool CRoomManager::IsAllReadyGame(const LinkPtr & shared_clientInfo)
 	RoomListIt targetRoomIter = GetMyRoomIter(client->GetMyChannelNum(), client->GetMyRoomNum());
 	if (mRooms.end() != targetRoomIter)
 	{
+		client->SetReadyGame((*targetRoomIter).get()->GetBattingMoney());
 		return ((*targetRoomIter)->IsAllReady());
 	}
 	return false;
 }
 
-bool CRoomManager::IsAllReadyBatting(const LinkPtr & shared_clientInfo)
-{
-	CLink* client = shared_clientInfo.get();
-	if (nullptr == client)
-		return false;
-	RoomListIt targetRoomIter = GetMyRoomIter(client->GetMyChannelNum(), client->GetMyRoomNum());
-	if (mRooms.end() != targetRoomIter)
-	{
-		return ((*targetRoomIter)->IsAllReadyBetting());
-	}
-	return false;
-}
 
 void CRoomManager::ResultBatting(const LinkPtr& shared_clientInfo)
 {
@@ -143,21 +144,7 @@ void CRoomManager::ResultBatting(const LinkPtr& shared_clientInfo)
 	RoomListIt myRoomIter = GetMyRoomIter(client->GetMyChannelNum(), client->GetMyRoomNum());
 	if (true == (*myRoomIter).get()->IsAllReadyBetting())
 	{
-		int winnerPK = -1;	bool isDraw = false;	// 승리자 번호, 비김 변수
-		if (true == (*myRoomIter).get()->BattingResult(winnerPK, isDraw))
-		{
-			(*myRoomIter).get()->AllCalculateMoney();
-			(*myRoomIter).get()->AllInitBetting();
-
-		}
-		else
-		{
-			if (true == isDraw)
-			{
-				(*myRoomIter).get()->AllInitBetting();
-				(*myRoomIter).get()->AllRefundBettingMoney();
-			}
-		}
+		(*myRoomIter).get()->BattingResult();
 	}
 }
 

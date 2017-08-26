@@ -52,12 +52,15 @@ bool CMyCardInfo::SetExp(int addExp, int & resultExp)
 	if (100 <= mExp)
 	{
 		mExp = 0;
-		resultExp = mExp;
 		mIsEvolution = 1;
-		return true;
 	}
 	resultExp = mExp;
 	return true;
+}
+
+void CMyCardInfo::ResetEvolution()
+{
+	mIsEvolution = 0;
 }
 
 string CMyCardInfo::GetCardName()

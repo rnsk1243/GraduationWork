@@ -24,7 +24,7 @@ void CRoom::PushClient(const LinkPtr& shared_client, const int& enterRoomNumber)
 	ScopeLock<MUTEX> MU(mRAII_RoomMUTEX);
 	mClientInfos.push_back(shared_client);
 	shared_client.get()->SetMyRoomNum(enterRoomNumber);
-	shared_client.get()->SendnMine("방에 입장했습니다.");
+	Broadcast(shared_client.get()->GetMyName() + "님이 방에 입장 하셨습니다.");
 	IncreasePeople();
 }
 
@@ -118,29 +118,24 @@ bool CRoom::IsAllReady()
 	return true;
 }
 
-bool CRoom::BattingResult(int& resultPK, bool& isDrawResult)
+void CRoom::BattingResult()
 {
-	// 인원수가 모자르면 무조건 false;
-	if (EnterRoomPeopleLimit > mAmountPeople)
-	{
-		ErrorHandStatic->ErrorHandler(ERROR_BATTING_RESULT_ALONE);
-		return false;
-	}
 	LinkListIt iterBegin = mClientInfos.begin();
 	LinkPtr winner = (*iterBegin);
+	winner.get()->LostWillMoney(mBettingMoney);
 	int curWinnerStat = CardStatic->GetCardStat(winner->GetMyBattingCardNumber()); // 현재 가장 높은 스텟 크기
-	bool isDraw = true; // 최고 높은 스텟을 낸 사람이 둘 이상인가? 
+	bool isDraw = false; // 최고 높은 스텟을 낸 사람이 둘 이상인가? 
 	++iterBegin;
 	for (; iterBegin != mClientInfos.end(); ++iterBegin)
 	{
 		LinkPtr client = (*iterBegin);
+		client.get()->LostWillMoney(mBettingMoney);
 		const int challengerStat = CardStatic->GetCardStat(client->GetMyBattingCardNumber());
 		if (curWinnerStat < challengerStat)
 		{
 			curWinnerStat = challengerStat;
 			winner = client;
 			isDraw = false;
-			SendBattingResult(winner);
 		}
 		else if (curWinnerStat == challengerStat)
 		{
@@ -148,18 +143,19 @@ bool CRoom::BattingResult(int& resultPK, bool& isDrawResult)
 			isDraw = true;
 		}
 	}
-	isDrawResult = isDraw;
+
 	if (false == isDraw)
 	{
-		resultPK = winner->GetMyPKNumber();
 		winner->GetPrizeBattingMoney(mBettingMoney);
-		return true;
+		AllCalculateMoney();
+		SendBattingResult(winner);
 	}
 	else
 	{
-		return false;
+		Broadcast("승자가 없습니다. 무효게임");
 	}
-	return false;
+	AllInitBetting();
+	
 }
 
 
@@ -184,25 +180,9 @@ bool CRoom::AllInitBetting()
 	LinkListIt linkBegin = mClientInfos.begin();
 	for (; linkBegin != mClientInfos.end(); ++linkBegin)
 	{
-		if ((*linkBegin).use_count() > 0)
-		{
-			(*linkBegin).get()->InitBetting();
-		}
+		(*linkBegin).get()->InitBetting();
 	}
 	SetGameOver();
-	return true;
-}
-
-bool CRoom::AllRefundBettingMoney()
-{
-	LinkListIt linkBegin = mClientInfos.begin();
-	for (; linkBegin != mClientInfos.end(); ++linkBegin)
-	{
-		if ((*linkBegin).use_count() > 0)
-		{
-			(*linkBegin).get()->RefundBettingMoney(mBettingMoney);
-		}
-	}
 	return true;
 }
 

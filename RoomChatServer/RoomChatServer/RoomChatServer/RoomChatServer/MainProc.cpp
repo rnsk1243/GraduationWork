@@ -113,7 +113,7 @@ int thSendRecv(void* v_clientSocket)
 			vector<string> commandMessage = ReadHandlerStatic->Parse(recvMessage, '/');
 			CommandControllerStatic->CommandHandling(shared_clientInfo, commandMessage);
 		}
-		else if (ERROR_RECV == isRecvSuccesResultValue || ERROR_NULL_LINK_SEND == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
+		else if (ERROR_RECV == isRecvSuccesResultValue || ERROR_NULL_LINK_RECV == isRecvSuccesResultValue) // 메시지 받기 실패 소켓 해제
 		{
 			cout << "소켓 오류로 인하여 서버에서 나갔습니다." << endl;
 			CommandControllerStatic->DeleteClientSocket(shared_clientInfo);

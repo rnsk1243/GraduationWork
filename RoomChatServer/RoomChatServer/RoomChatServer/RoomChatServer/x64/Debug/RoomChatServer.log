@@ -1,5 +1,7 @@
-﻿  CommandController.cpp
-  ChannelManager.cpp
+﻿  RoomManager.cpp
+  Room.cpp
+  Link.cpp
+  CommandController.cpp
   코드를 생성하고 있습니다...
-  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
-  RoomChatServer.vcxproj -> D:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)
+  RoomChatServer.vcxproj -> I:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.exe
+  RoomChatServer.vcxproj -> I:\graduationWork\GraduationWork\RoomChatServer\RoomChatServer\RoomChatServer\x64\Debug\RoomChatServer.pdb (Full PDB)

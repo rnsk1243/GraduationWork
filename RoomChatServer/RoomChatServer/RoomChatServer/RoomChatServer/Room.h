@@ -25,6 +25,7 @@ class CRoom
 	void SetGame();
 	void SetGameOver();
 	void SendBattingResult(const LinkPtr& winner, int flags = 0);
+	bool AllCalculateMoney(); // 방에 있는 사람 모두 정산(.txt 저장)
 public:
 	CRoom(const CRoom&) = delete;
 	CRoom& operator=(const CRoom&) = delete;
@@ -40,12 +41,11 @@ public:
 	int GetBattingMoney();
 	bool IsAllReadyBetting();
 	bool IsAllReady();
-	bool BattingResult(int& resultPK, bool& isDrawResult);
-	bool AllCalculateMoney(); // 방에 있는 사람 모두 정산(.txt 저장)
-	bool AllInitBetting();
-	bool AllRefundBettingMoney(); // 모든 사람에게 베팅 금액 환불
+	void BattingResult();
 	bool IsGame();
+	bool AllInitBetting();
 	void Broadcast(const string& message, int flags = 0);
 	void Talk(const LinkPtr& myClient, const string& message, int flags = 0);
+
 };
 
