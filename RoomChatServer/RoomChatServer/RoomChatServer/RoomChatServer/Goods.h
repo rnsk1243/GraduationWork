@@ -17,7 +17,7 @@ struct Goods
 
 class CGoods
 {
-	const int mClientPK; // 이 재화의 주인 PK 번호
+	const int mClientPK; // 이 재화의 주인 고유 번호
 	Goods mGoods;
 	MUTEX mRAII_GoodsMUTEX;
 	bool GetMoveCurserSizeGoods(WhatGoodsCursorSize whatCardInfoCurser, int& resultCursorSize);

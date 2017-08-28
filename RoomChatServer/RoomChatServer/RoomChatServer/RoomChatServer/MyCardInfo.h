@@ -5,7 +5,7 @@ class CMyCardInfo
 {
 private:
 	const int mCardNumber; // 카드번호
-	int mAmount; // 이 카드에 대한 보유 갯수
+	int mAmount; // 이 카드에 대한 보유 개수
 	int mExp; // 이 카드에 대한 경험치
 	int mIsEvolution; // 이 카드 진화 가능?
 	int mStar; // 몇 성?

@@ -9,8 +9,8 @@ CCard::CCard()
 
 Card * CCard::GetCard(int cardNum)
 {
-	CardConstVectorIt CardIterBegin = GetCardListIterBegin();
-	for (; CardIterBegin != GetCardListIterEnd(); ++CardIterBegin)
+	CardConstVectorIt CardIterBegin = mCards.begin();
+	for (; CardIterBegin != mCards.end(); ++CardIterBegin)
 	{
 		if (cardNum == (*CardIterBegin).get()->mCardNum)
 		{

@@ -26,16 +26,6 @@ struct Card
 		cout << "카드 소멸" << endl;
 	}
 	Card(const Card& copy) = delete;
-	//Card(const Card& copy):
-	//	cardNum(copy.cardNum),
-	//	prob(copy.prob),
-	//	stat(copy.stat)
-	//{
-	//	cout << "카드 복사 생성자 호출" << endl;
-	//	size_t nameSize = strlen(copy.name) + 1;
-	//	name = new char[nameSize];
-	//	strcpy_s(name, nameSize, copy.name);
-	//}
 	Card& operator=(const Card& copy) = delete;
 };
 
@@ -45,10 +35,8 @@ typedef CardVector::const_iterator CardConstVectorIt; // const_iterator 붙여서 �
 
 class CCard
 {
-	CardVector mCards;
 	CCard();
-	CardConstVectorIt GetCardListIterBegin() { return mCards.begin(); }
-	CardConstVectorIt GetCardListIterEnd() { return mCards.end(); }
+	CardVector mCards;
 	Card* GetCard(int cardNum);
 public:
 	CCard(const CCard& copy) = delete;

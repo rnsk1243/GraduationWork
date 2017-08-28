@@ -2,9 +2,6 @@
 #include"Link.h"
 #include"CommandController.h"
 
-//typedef vector<SOCKET> SocketVec;
-//typedef SocketVec::iterator SocketVecIt;
-
 class CListener
 {
 	CListener();
