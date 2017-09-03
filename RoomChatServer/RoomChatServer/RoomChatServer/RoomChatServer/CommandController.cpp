@@ -1,8 +1,6 @@
 #include "CommandController.h"
 #include"ErrorHandler.h"
 class CErrorHandler;
-//#include"ConstEnumInfo.h"
-//#include"GaChar.h"
 
 CCommandController::CCommandController()
 {
@@ -149,7 +147,10 @@ void CCommandController::CardCompose(const LinkPtr& shared_clientInfo, const str
 void CCommandController::CardEvolution(const LinkPtr& shared_clientInfo, const string & targetCardNum)
 {
 	int targetCardNumInt = stoi(targetCardNum);
-	mCardManager.EvolutionCard(shared_clientInfo, targetCardNumInt);
+	if (mCardManager.EvolutionCard(shared_clientInfo, targetCardNumInt))
+	{
+		shared_clientInfo.get()->SendnMine("카드 진화 성공");
+	}
 }
 
 void CCommandController::SendAllReadyGameNotice(const LinkPtr & shared_clientInfo)

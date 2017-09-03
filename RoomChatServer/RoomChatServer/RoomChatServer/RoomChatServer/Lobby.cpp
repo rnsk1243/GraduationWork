@@ -24,7 +24,7 @@ int CLobby::Login(const CGuestLink * guest , vector<string>& tempUserInfo)
 {
 	string id, pw;
 	// ID ¹¯±â
-	AskedPW(guest, id);
+	AskedID(guest, id);
 	if (0 == id.compare("9"))
 		return ErrorHandStatic->ErrorHandler(CANCLE);
 

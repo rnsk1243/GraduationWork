@@ -78,7 +78,6 @@ MyCardVectorIt CCardManager::GetMyCard(int cardNum, const LinkPtr & shared_clien
 // 예외처리 완료된 함수
 bool CCardManager::IncreaseCardAmount(int cardNum, const LinkPtr & shared_clientInfo)
 {
-
 	MyCardVectorIt cardIter = GetMyCard(cardNum, shared_clientInfo); 
 	if (shared_clientInfo.get()->GetIterMyCardEnd() != cardIter)
 	{
@@ -108,8 +107,7 @@ bool CCardManager::DecreaseCardAmount(int cardNum, const LinkPtr & shared_client
 			(*cardIter)->DecreaseCard();
 			return true;
 		}
-	}
-
+	}                 
 	return false;
 }
 // 예외처리 완료된 함수
@@ -244,6 +242,7 @@ bool CCardManager::ComposeCard(const LinkPtr & shared_clientInfo, int targetCard
 			// SaveUserCardEvolution함수에서 false를 반환하지 않았다면 true가 나오므로 예외처리 안시킴
 			SaveUserCardExp(resultExp, targetCard, shared_clientInfo);
 			DecreaseCardAmount(sourceCard, shared_clientInfo);
+			shared_clientInfo.get()->SendnMine("카드 합성 성공");
 			return true;
 		}
 	}
@@ -286,12 +285,14 @@ bool CCardManager::EvolutionCard(const LinkPtr & shared_clientInfo, int targetCa
 				return false;
 			}
 			IncreaseCardStar(targetCard, shared_clientInfo);
-			if (true == SaveUserCardStar((*targetCardIter).get()->GetStar(), targetCard, shared_clientInfo))
+			bool isEvolution = SaveUserCardStar((*targetCardIter).get()->GetStar(), targetCard, shared_clientInfo);
+			if (true == isEvolution)
 			{
 				(*targetCardIter).get()->ResetEvolution();
+				DecreaseCardAmount(targetCard, shared_clientInfo);
 			}
-			SaveUserCardEvolution(false, targetCard, shared_clientInfo);
-			DecreaseCardAmount(targetCard, shared_clientInfo);
+			SaveUserCardEvolution(isEvolution, targetCard, shared_clientInfo);
+			
 			return true;
 		}
 		else
